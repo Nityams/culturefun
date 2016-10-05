@@ -98,28 +98,56 @@ function scene:create( event )
 
 	local collumn = display.newImageRect( sceneGroup, sceneBuild[13],currentWidth/8,currentHeight)
 	collumn.x = currentWidth * 2 / 3 
-	collumn.y = currentHeight/2
+	collumn.y = currentHeight / 2
 
 	local pauseButton = display.newImageRect( sceneGroup, sceneBuild[10], currentWidth/20, currentHeight/14)
-	pauseButton.x = currentWidth/20 --50
-	pauseButton.y = currentHeight/5 --150
+	pauseButton.x = currentWidth / 20 --50
+	pauseButton.y = currentHeight / 5 --150
 
 	local replayButton = display.newImageRect( sceneGroup, sceneBuild[11], currentWidth/20, currentHeight/14)
 	replayButton.x = pauseButton.x + currentWidth / 16
 	replayButton.y = pauseButton.y
 
-	local pole = display.newImageRect( sceneGroup, sceneBuild[2],currentWidth/7,currentHeight/2)
+	-- Event for Pause/Replay -- NEED IMPLEMENTATION
+	local function buttonTap()
+		-- do something
+		temp = nil
+	end
+	pauseButton:addEventListener("tap", function()
+		buttonTap(pauseButton)
+	end)
+	-- End event Pause/Replay --
+
+	local pole = display.newImageRect( sceneGroup, sceneBuild[2],currentWidth/10,currentHeight/1.8)
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 60
 
+    -- !! Need implementation to choose the flags --
+	local flag = display.newImageRect( sceneGroup, countryFiles[8],currentWidth/7,currentHeight/7)
+	flag.x = pole.x
+	flag.y = pole.y * 1.2
+
+	-- TESTING
+	local function cleanUP(obj)
+		obj:removeSelf()
+	end
+	local function animating1(obj)
+		transition.to(obj,{time = 20000, y = pole.y * 1.3,onComplete = cleanUP})
+	end
+	local function animating2( obj )
+		transition.to(obj,{time = 1000, y = pole.y * 0.7,onComplete = animating1})
+	end	
+	animating2(flag)
+	-- END TESTING
+
 	local fox1 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
 	fox1.x = pole.x / 2 
-	fox1.y = currentHeight - (fox1.height *1.5)
+	fox1.y = currentHeight - (fox1.height * 1.5)
 	fox1.xScale = -1
 
 	local fox2 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
 	fox2.x = pole.x + pole.x / 2
-	fox2.y = currentHeight - (fox1.height *1.5)
+	fox2.y = currentHeight - (fox1.height * 1.5)
 
 	local optionBox1 = display.newImageRect( sceneGroup, sceneBuild[14],currentWidth/5, currentHeight/12)
 	optionBox1.x = fox1.x
@@ -134,23 +162,23 @@ function scene:create( event )
 	local textBox2 = display.newText( sceneGroup, "Country 2", optionBox2.x, optionBox2.y, native.systemFont, 44)
 
 	-- color for the text 
-	textBox1:setFillColor( 0.4, 0.4, 0.4 )
-	textBox2:setFillColor( 0.4, 0.4, 0.4 )
+	textBox1:setFillColor( 0, 0, 0 )
+	textBox2:setFillColor( 0, 0, 0 )
 
-	-- function
-	local function whenTapped( event )
-		event:removeSelf()
-		local textBox1 = display.newText( sceneGroup, "Correct", event.x, event.y, native.systemFont, 44)
-	end
+	-- Event for textboxes --
+	local function textTap( obj )
+		obj:removeSelf()
+		local textBox1 = display.newText( sceneGroup, "Correct", obj.x, obj.y, native.systemFont, 44)
+	end	
 
-	-- event listener
 	textBox1:addEventListener("tap", function()
-		whenTapped(textBox1)
+		textTap(textBox1)
 	end)
 
 	textBox2:addEventListener("tap", function()
-		whenTapped(textBox2)
+		textTap(textBox2)
 	end)
+	-- End event for textboxes --
 
 
 
