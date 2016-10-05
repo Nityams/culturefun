@@ -47,7 +47,28 @@ local countryFiles = {
 	"Assets/Images/Flags/Ukraine_Flag.png",
 	"Assets/Images/Flags/United_Kingdom_Flag.png",
 	"Assets/Images/Flags/United_States_Flag.png",
-	"Assets/Images/Flags/Vietnam_Flag.png"
+	"Assets/Images/Flags/Vietnam_Flag.png",
+	"Assets/Images/Flags/1.png"
+};
+
+local sceneBuild ={
+	"Assets/Images/Scene/1.png",
+	"Assets/Images/Scene/2.png",
+	"Assets/Images/Scene/3.png",
+	"Assets/Images/Scene/4.png",
+	"Assets/Images/Scene/5.png",
+	"Assets/Images/Scene/6.png",
+	"Assets/Images/Scene/7.png",
+	"Assets/Images/Scene/8.png",
+	"Assets/Images/Scene/9.png",
+	"Assets/Images/Scene/10.png",
+	"Assets/Images/Scene/11.png",
+	"Assets/Images/Scene/12.png",
+	"Assets/Images/Scene/col.png", -- 13
+	"Assets/Images/Scene/textBox.png",
+	"Assets/Images/Scene/rightTemp.png"
+
+
 };
 
 local function returnToMenu()
@@ -62,15 +83,88 @@ end
 
 -- create()
 function scene:create( event )
-
+	-- !! need to work on the ratio for the resolutions
 	local sceneGroup = self.view
+	local currentWidth = display.contentWidth
+	local currentHeight = display.contentHeight
+
 	-- Code here runs when the scene is first created but has not yet appeared on screen
+	-------------------------------------------------------------------------------------------------------
+	-- Left side of screen --
+	-------------------------------------------------------------------------------------------------------
+	local background = display.newImageRect( sceneGroup, sceneBuild[1], currentWidth, currentHeight )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
 
-	local flagImage = display.newImageRect( sceneGroup, countryFiles[5], 358, 206 )
-	flagImage.x = display.contentCenterX
-	flagImage.y = 230
+	local collumn = display.newImageRect( sceneGroup, sceneBuild[13],currentWidth/8,currentHeight)
+	collumn.x = currentWidth * 2 / 3 
+	collumn.y = currentHeight/2
 
-	display.newText( sceneGroup, "This is the flag game", display.contentCenterX, display.contentCenterY, native.systemFont, 44 )
+	local pauseButton = display.newImageRect( sceneGroup, sceneBuild[10], currentWidth/20, currentHeight/14)
+	pauseButton.x = currentWidth/20 --50
+	pauseButton.y = currentHeight/5 --150
+
+	local replayButton = display.newImageRect( sceneGroup, sceneBuild[11], currentWidth/20, currentHeight/14)
+	replayButton.x = pauseButton.x + currentWidth / 16
+	replayButton.y = pauseButton.y
+
+	local pole = display.newImageRect( sceneGroup, sceneBuild[2],currentWidth/7,currentHeight/2)
+	pole.x = currentWidth * 1 / 3
+	pole.y = currentHeight - pole.height + 60
+
+	local fox1 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
+	fox1.x = pole.x / 2 
+	fox1.y = currentHeight - (fox1.height *1.5)
+	fox1.xScale = -1
+
+	local fox2 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
+	fox2.x = pole.x + pole.x / 2
+	fox2.y = currentHeight - (fox1.height *1.5)
+
+	local optionBox1 = display.newImageRect( sceneGroup, sceneBuild[14],currentWidth/5, currentHeight/12)
+	optionBox1.x = fox1.x
+	optionBox1.y = fox1.y - 100
+
+	local optionBox2 = display.newImageRect( sceneGroup, sceneBuild[14],currentWidth/5, currentHeight/12)
+	optionBox2.x = fox2.x
+	optionBox2.y = fox2.y - 100	
+
+	local textBox1 = display.newText( sceneGroup, "Country 1", optionBox1.x, optionBox1.y, native.systemFont, 44)
+
+	local textBox2 = display.newText( sceneGroup, "Country 2", optionBox2.x, optionBox2.y, native.systemFont, 44)
+
+	-- color for the text 
+	textBox1:setFillColor( 0.4, 0.4, 0.4 )
+	textBox2:setFillColor( 0.4, 0.4, 0.4 )
+
+	-- function
+	local function whenTapped( event )
+		event:removeSelf()
+		local textBox1 = display.newText( sceneGroup, "Correct", event.x, event.y, native.systemFont, 44)
+	end
+
+	-- event listener
+	textBox1:addEventListener("tap", function()
+		whenTapped(textBox1)
+	end)
+
+	textBox2:addEventListener("tap", function()
+		whenTapped(textBox2)
+	end)
+
+
+
+	-------------------------------------------------------------------------------------------------------
+	-- right side of screen --
+	-------------------------------------------------------------------------------------------------------
+	-- temporary 
+	local temp = display.newImageRect(sceneGroup, sceneBuild[15],currentWidth * 1 / 3, currentHeight-190)
+	temp.x = collumn.x + collumn.x / 4
+	temp.y = currentHeight/2
+
+	-- check the resolution here 
+	--display.newText( sceneGroup, "Width: "..currentWidth, display.contentCenterX, display.contentCenterY, native.systemFont, 44 )
+	--display.newText( sceneGroup, "Height: "..currentHeight, display.contentCenterX, display.contentCenterY+100, native.systemFont, 44 )
 end
 
 
@@ -87,7 +181,7 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 
 		-- In two seconds return to the menu
-		timer.performWithDelay( 2000, returnToMenu )
+		--timer.performWithDelay( 2000, returnToMenu )
 	end
 end
 
