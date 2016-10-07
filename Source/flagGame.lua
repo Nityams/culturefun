@@ -71,6 +71,10 @@ local sceneBuild ={
 
 };
 
+local audioFiles = {
+	"Assets/Sounds/More-Monkey-Island-Band_Looping.mp3"	
+};
+
 local function returnToMenu()
 	composer.gotoScene( "Source.menu" )
 end
@@ -87,6 +91,16 @@ function scene:create( event )
 	local sceneGroup = self.view
 	local currentWidth = display.contentWidth
 	local currentHeight = display.contentHeight
+	local backgroundMusic = audio.loadStream(audioFiles[1])
+	--background music, loop infinite, fadein in 5s
+    local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
+	function checkContain(set, element)
+		for item in set do
+			if (item == element) then return true end
+		end 
+		return false
+	end 
+
 
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 	-------------------------------------------------------------------------------------------------------
@@ -122,8 +136,9 @@ function scene:create( event )
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 60
 
-    -- !! Need implementation to choose the flags --
-	local flag = display.newImageRect( sceneGroup, countryFiles[8],currentWidth/7,currentHeight/7)
+    -- !! NEED IMPLEMENTATION to choose the flags --
+    local randomFlag = math.random(1,10)
+	local flag = display.newImageRect( sceneGroup, countryFiles[randomFlag],currentWidth/7,currentHeight/7)
 	flag.x = pole.x
 	flag.y = pole.y * 1.2
 
@@ -140,47 +155,76 @@ function scene:create( event )
 	animating2(flag)
 	-- END TESTING
 
-	local fox1 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
-	fox1.x = pole.x / 2 
-	fox1.y = currentHeight - (fox1.height * 1.5)
-	fox1.xScale = -1
+	local animal1 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
+	animal1.x = pole.x / 2 
+	animal1.y = currentHeight - (animal1.height * 1.5)
+	animal1.xScale = -1
 
-	local fox2 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
-	fox2.x = pole.x + pole.x / 2
-	fox2.y = currentHeight - (fox1.height * 1.5)
+	local animal2 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
+	animal2.x = pole.x + pole.x / 2
+	animal2.y = currentHeight - (animal1.height * 1.5)
 
 	local optionBox1 = display.newImageRect( sceneGroup, sceneBuild[14],currentWidth/5, currentHeight/12)
-	optionBox1.x = fox1.x
-	optionBox1.y = fox1.y - 100
+	optionBox1.x = animal1.x
+	optionBox1.y = animal1.y - currentHeight/8
 
 	local optionBox2 = display.newImageRect( sceneGroup, sceneBuild[14],currentWidth/5, currentHeight/12)
-	optionBox2.x = fox2.x
-	optionBox2.y = fox2.y - 100	
+	optionBox2.x = animal2.x
+	optionBox2.y = animal2.y - currentHeight/8
 
-	local textBox1 = display.newText( sceneGroup, "Country 1", optionBox1.x, optionBox1.y, native.systemFont, 44)
+	-- random to choose the box 
+	local randomBox = math.random(1,2) --countryNames[randomBox]
+	local rightAnswer = countryNames[randomFlag]
+	local wrongAnswer = nil
+	local box1
+	local box2
+	-- loop to get wrong answer
+	for i=1,11 do
+		wrongAnswer = countryNames[math.random(1,13)]
+		if  wrongAnswer ~= countryNames[randomFlag] then
+			break
+		end
+	end
+	-- random placer
+	if randomBox == 1 then 
+		box1 = rightAnswer
+		box2 = wrongAnswer
+	else
+		box1 = wrongAnswer
+		box2 = rightAnswer
+	end
 
-	local textBox2 = display.newText( sceneGroup, "Country 2", optionBox2.x, optionBox2.y, native.systemFont, 44)
+	local textBox1 = display.newText( sceneGroup, box1, optionBox1.x, optionBox1.y, native.systemFont, 35)
+
+	local textBox2 = display.newText( sceneGroup, box2, optionBox2.x, optionBox2.y, native.systemFont, 35)
+
 
 	-- color for the text 
 	textBox1:setFillColor( 0, 0, 0 )
 	textBox2:setFillColor( 0, 0, 0 )
 
 	-- Event for textboxes --
-	local function textTap( obj )
+	local function textTap( obj, value )
 		obj:removeSelf()
-		local textBox1 = display.newText( sceneGroup, "Correct", obj.x, obj.y, native.systemFont, 44)
+		local textBox3 = display.newText( sceneGroup, value, obj.x, obj.y, native.systemFont, 44)
 	end	
 
 	textBox1:addEventListener("tap", function()
-		textTap(textBox1)
+		if randomBox == 1 then
+			textTap(textBox1,"Correct!")
+		else
+			textTap(textBox1,"Wrong!")
+		end
 	end)
 
 	textBox2:addEventListener("tap", function()
-		textTap(textBox2)
+		if randomBox ~= 1 then
+			textTap(textBox2,"Correct!")
+		else
+			textTap(textBox2,"Wrong!")
+		end
 	end)
 	-- End event for textboxes --
-
-
 
 	-------------------------------------------------------------------------------------------------------
 	-- right side of screen --
