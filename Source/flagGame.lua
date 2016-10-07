@@ -71,6 +71,10 @@ local sceneBuild ={
 
 };
 
+local audioFiles = {
+	"Assets/Sounds/More-Monkey-Island-Band_Looping.mp3"	
+};
+
 local function returnToMenu()
 	composer.gotoScene( "Source.menu" )
 end
@@ -87,6 +91,16 @@ function scene:create( event )
 	local sceneGroup = self.view
 	local currentWidth = display.contentWidth
 	local currentHeight = display.contentHeight
+	local backgroundMusic = audio.loadStream(audioFiles[1])
+	-- background music, loop infinite, fadein in 5s
+	-- local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
+	function checkContain(set, element)
+		for i, set.length do
+			if (set[i] == element) then return true end
+		end 
+		return false
+	end 
+
 
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 	-------------------------------------------------------------------------------------------------------
@@ -122,7 +136,7 @@ function scene:create( event )
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 60
 
-    -- !! Need implementation to choose the flags --
+    -- !! NEED IMPLEMENTATION to choose the flags --
 	local flag = display.newImageRect( sceneGroup, countryFiles[8],currentWidth/7,currentHeight/7)
 	flag.x = pole.x
 	flag.y = pole.y * 1.2
