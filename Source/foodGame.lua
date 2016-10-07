@@ -3,6 +3,7 @@ local composer = require( "composer" )
 
 local scene = composer.newScene()
 
+
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -17,16 +18,50 @@ end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
+local setbackground
+local callCharacters
+local setfoods
+local callGreetings
 
+local currentWidth
+local currentHeight
+local sceneGroup
+local character_one
 -- create()
 function scene:create( event )
+	sceneGroup = self.view
+	currentWidth = display.contentWidth
+	currentHeight = display.contentHeight
+	-- `Code here runs when the scene is first created but has not yet appeared on screen
 
-	local sceneGroup = self.view
-	-- Code here runs when the scene is first created but has not yet appeared on screen
-
-	display.newText( sceneGroup, "This is the food game", display.contentCenterX, display.contentCenterY, native.systemFont, 44 )
+	--
+setbackground()
+setfoods()
+callCharacters()
 end
 
+function setbackground()
+	local background = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/Background.png",currentWidth, currentHeight )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
+end
+
+function setfoods()
+end
+
+function callCharacters()
+	character_one = display.newImage("Assets/Images/foodGame/boy.png")
+	character_one.y = display.contentCenterY
+	character_one.x = 0
+	transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
+end
+function callGreetings()
+	local dialogBox = display.newImage("Assets/Images/foodGame/americanDialog.png")
+	dialogBox.xScale = 0.3
+	dialogBox.yScale = 0.3
+	dialogBox.y = display.contentCenterY - display.contentCenterY/1.8
+	dialogBox.x = character_one.x
+end
 
 -- show()
 function scene:show( event )
@@ -41,7 +76,7 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 
 		-- In two seconds return to the menu
-		timer.performWithDelay( 2000, returnToMenu )
+		--timer.performWithDelay( 2000, returnToMenu )
 	end
 end
 
