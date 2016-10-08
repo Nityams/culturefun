@@ -27,6 +27,10 @@ local currentWidth
 local currentHeight
 local sceneGroup
 local character_one
+
+--creating main table
+local countries = require "Countries"
+
 -- create()
 function scene:create( event )
 	sceneGroup = self.view

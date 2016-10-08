@@ -1,6 +1,9 @@
 
 local composer = require( "composer" )
 
+
+local Countries = require "Countries"
+
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -23,8 +26,18 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
+	local myString = "this is game numero 3"
+	local rand = math.random(1, 10)
+	  local printname = Countries[rand].name
+	 display.newText( sceneGroup, myString, display.contentCenterX, display.contentCenterY, native.systemFont, 44 )
+  display.newText(sceneGroup, printname, display.contentCenterX, display.contentCenterY+ 50, native.systemFont, 44)
+	local path = Countries[rand].flag
+	local picture = display.newImage(path)
 
-	display.newText( sceneGroup, "This is game 3", display.contentCenterX, display.contentCenterY, native.systemFont, 44 )
+	picture.y = display.contentCenterY + 200
+	picture. x = display.contentCenterX
+
+
 end
 
 
