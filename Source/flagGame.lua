@@ -48,7 +48,6 @@ local countryFiles = {
 	"Assets/Images/Flags/United_Kingdom_Flag.png",
 	"Assets/Images/Flags/United_States_Flag.png",
 	"Assets/Images/Flags/Vietnam_Flag.png",
-	"Assets/Images/Flags/1.png"
 };
 
 local sceneBuild ={
@@ -93,32 +92,42 @@ function scene:create( event )
 	local currentHeight = display.contentHeight
 	local backgroundMusic = audio.loadStream(audioFiles[1])
 	--background music, loop infinite, fadein in 5s
-    local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
-	function checkContain(set, element)
-		for item in set do
-			if (item == element) then return true end
-		end 
-		return false
-	end 
-
+    --local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
 
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 	-------------------------------------------------------------------------------------------------------
 	-- Left side of screen --
 	-------------------------------------------------------------------------------------------------------
-	local background = display.newImageRect( sceneGroup, sceneBuild[1], currentWidth, currentHeight )
+	-- Front-end --
+	-------------------------------------------------------------------------------------------------------
+	local background = display.newImageRect( sceneGroup,
+											 sceneBuild[1],
+											 currentWidth, 
+											 currentHeight 
+										   )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local collumn = display.newImageRect( sceneGroup, sceneBuild[13],currentWidth/8,currentHeight)
+	local collumn = display.newImageRect( sceneGroup,
+										  sceneBuild[13],
+										  currentWidth/8,
+										  currentHeight )
 	collumn.x = currentWidth * 2 / 3 
 	collumn.y = currentHeight / 2
 
-	local pauseButton = display.newImageRect( sceneGroup, sceneBuild[10], currentWidth/20, currentHeight/14)
+	local pauseButton = display.newImageRect( sceneGroup,
+										      sceneBuild[10],
+										      currentWidth/20, 
+										      currentHeight/14
+										    )
 	pauseButton.x = currentWidth / 20 --50
 	pauseButton.y = currentHeight / 5 --150
 
-	local replayButton = display.newImageRect( sceneGroup, sceneBuild[11], currentWidth/20, currentHeight/14)
+	local replayButton = display.newImageRect( sceneGroup, 
+											   sceneBuild[11], 
+											   currentWidth/20, 
+											   currentHeight/14
+											 )
 	replayButton.x = pauseButton.x + currentWidth / 16
 	replayButton.y = pauseButton.y
 
@@ -132,47 +141,87 @@ function scene:create( event )
 	end)
 	-- End event Pause/Replay --
 
-	local pole = display.newImageRect( sceneGroup, sceneBuild[2],currentWidth/10,currentHeight/1.8)
+	local pole = display.newImageRect( sceneGroup,
+									   sceneBuild[2],
+									   currentWidth/10,
+									   currentHeight/1.8
+									 )
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 60
 
-    -- !! NEED IMPLEMENTATION to choose the flags --
-    local randomFlag = math.random(1,10)
-	local flag = display.newImageRect( sceneGroup, countryFiles[randomFlag],currentWidth/7,currentHeight/7)
-	flag.x = pole.x
-	flag.y = pole.y * 1.2
-
-	-- TESTING
-	local function cleanUP(obj)
-		obj:removeSelf()
-	end
-	local function animating1(obj)
-		transition.to(obj,{time = 20000, y = pole.y * 1.3,onComplete = cleanUP})
-	end
-	local function animating2( obj )
-		transition.to(obj,{time = 1000, y = pole.y * 0.7,onComplete = animating1})
-	end	
-	animating2(flag)
-	-- END TESTING
-
-	local animal1 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
+	local animal1 = display.newImageRect( sceneGroup, 
+										  sceneBuild[3], 
+										  currentWidth/10, 
+										  currentHeight/7
+										)
 	animal1.x = pole.x / 2 
 	animal1.y = currentHeight - (animal1.height * 1.5)
 	animal1.xScale = -1
-
-	local animal2 = display.newImageRect( sceneGroup, sceneBuild[3], currentWidth/10, currentHeight/7)
+	local animal2 = display.newImageRect( sceneGroup,
+										  sceneBuild[3], 
+										  currentWidth/10, 
+										  currentHeight/7
+										)
 	animal2.x = pole.x + pole.x / 2
 	animal2.y = currentHeight - (animal1.height * 1.5)
 
-	local optionBox1 = display.newImageRect( sceneGroup, sceneBuild[14],currentWidth/5, currentHeight/12)
+	-- place holders for answer text 
+	local optionBox1 = display.newImageRect( sceneGroup, 
+											 sceneBuild[14],
+											 currentWidth/5, 
+											 currentHeight/12
+										   )
 	optionBox1.x = animal1.x
 	optionBox1.y = animal1.y - currentHeight/8
-
-	local optionBox2 = display.newImageRect( sceneGroup, sceneBuild[14],currentWidth/5, currentHeight/12)
+	local optionBox2 = display.newImageRect( sceneGroup,
+										     sceneBuild[14],
+										     currentWidth/5, 
+										     currentHeight/12
+										   )
 	optionBox2.x = animal2.x
 	optionBox2.y = animal2.y - currentHeight/8
+	-------------------------------------------------------------------------------------------------------
+	-- end front-end --
+	-------------------------------------------------------------------------------------------------------
+	-- back-end --
+	-------------------------------------------------------------------------------------------------------
+	local function cleanUP(obj)
+		obj:removeSelf()
+	end
+	local function animationStop(obj)
+		transition.fadeOut(obj ,
+		{
+			time=5000
+   	    })
+	end
+	local function animationEnd(obj)
+		transition.to(obj ,
+		{
+			time = 20000,
+		    y = pole.y * 1.3,
+		    onComplete = cleanUP
+		})
+	end
+	local function animationStart( obj )
+		transition.to(obj,
+		{
+			time = 1000, 
+			y = pole.y * 0.7,
+			onComplete = animationEnd
+		})
+	end	
 
 	-- random to choose the box 
+	-- need an array to store used flags
+	local randomFlag = math.random(1,10)
+	local flag = display.newImageRect( sceneGroup, 
+									   countryFiles[randomFlag],
+									   currentWidth/7,
+									   currentHeight/7
+									 )
+	flag.x = pole.x
+	flag.y = pole.y * 1.2
+	-- random between 2 boxes
 	local randomBox = math.random(1,2) --countryNames[randomBox]
 	local rightAnswer = countryNames[randomFlag]
 	local wrongAnswer = nil
@@ -193,11 +242,20 @@ function scene:create( event )
 		box1 = wrongAnswer
 		box2 = rightAnswer
 	end
+	-- text box to hold the answer texts
+	local textBox1 = display.newText( sceneGroup, 
+									  box1,
+									  optionBox1.x, 
+									  optionBox1.y, 
+									  native.systemFont, 35 
+									)
 
-	local textBox1 = display.newText( sceneGroup, box1, optionBox1.x, optionBox1.y, native.systemFont, 35)
-
-	local textBox2 = display.newText( sceneGroup, box2, optionBox2.x, optionBox2.y, native.systemFont, 35)
-
+	local textBox2 = display.newText( sceneGroup, 
+									  box2, 
+									  optionBox2.x, 
+									  optionBox2.y, 
+									  native.systemFont, 35
+									)
 
 	-- color for the text 
 	textBox1:setFillColor( 0, 0, 0 )
@@ -206,12 +264,18 @@ function scene:create( event )
 	-- Event for textboxes --
 	local function textTap( obj, value )
 		obj:removeSelf()
-		local textBox3 = display.newText( sceneGroup, value, obj.x, obj.y, native.systemFont, 44)
+		local textBox3 = display.newText( sceneGroup, 
+										  value, 
+										  obj.x, 
+										  obj.y, 
+										  native.systemFont, 44
+										)
 	end	
 
 	textBox1:addEventListener("tap", function()
 		if randomBox == 1 then
 			textTap(textBox1,"Correct!")
+			animationStop(flag)
 		else
 			textTap(textBox1,"Wrong!")
 		end
@@ -220,17 +284,29 @@ function scene:create( event )
 	textBox2:addEventListener("tap", function()
 		if randomBox ~= 1 then
 			textTap(textBox2,"Correct!")
+			animationStop(flag)
 		else
 			textTap(textBox2,"Wrong!")
 		end
 	end)
+
+	animationStart(flag)
+	-------------------------------------------------------------------------------------------------------
 	-- End event for textboxes --
+	-------------------------------------------------------------------------------------------------------
+	-- end back-end --
+	-------------------------------------------------------------------------------------------------------
+
 
 	-------------------------------------------------------------------------------------------------------
 	-- right side of screen --
 	-------------------------------------------------------------------------------------------------------
 	-- temporary 
-	local temp = display.newImageRect(sceneGroup, sceneBuild[15],currentWidth * 1 / 3, currentHeight-190)
+	local temp = display.newImageRect(sceneGroup, 
+									  sceneBuild[15],
+									  currentWidth * 1 / 3, 
+									  currentHeight-190
+									 )
 	temp.x = collumn.x + collumn.x / 4
 	temp.y = currentHeight/2
 
