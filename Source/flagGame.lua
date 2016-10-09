@@ -66,12 +66,13 @@ local sceneBuild ={
 	"Assets/Images/Scene/col.png", -- 13
 	"Assets/Images/Scene/textBox.png",
 	"Assets/Images/Scene/rightTemp.png"
-
-
 };
 
 local audioFiles = {
-	"Assets/Sounds/More-Monkey-Island-Band_Looping.mp3"	
+	"Assets/Sounds/Whimsical-Popsicle.mp3"	,
+	"Assets/Sounds/YAY_FX.mp3",
+	"Assets/Sounds/DING_FX.mp3",
+	"Assets/Sounds/WRONG_FX.mp3",
 };
 
 local function returnToMenu()
@@ -92,9 +93,40 @@ function scene:create( event )
 	local currentHeight = display.contentHeight
 	local backgroundMusic = audio.loadStream(audioFiles[1])
 	--background music, loop infinite, fadein in 5s
-    --local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
+    local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
+	-- animal sprite --
+	local sheetData =
+	{
+		width = 276.29,
+		height = 238.29,
+		numFrames = 49,
+		sheetContentWidth = 1934,
+		sheetContentHeight = 1668
+	};
 
-	-- Code here runs when the scene is first created but has not yet appeared on screen
+	local sequenceData = {
+		{
+			name = "idle",
+			frames = {5,6,7,12,13,14,19,20,21,26},
+			time = 2000,
+			loopCount = 0
+		},
+		{
+			name = "sad",
+			frames = {1,2,3,4,8,9,10,15,16,17},
+			time = 1000,
+			loopCount = 0
+		},
+		{
+			name = "happy",
+			frames = {29,30,31,36,37,38,43,44},
+			time = 1000,
+			loopCount = 0
+		}
+	};
+	local mySheet = graphics.newImageSheet("Assets/Images/Sprite/2.png", sheetData)
+	-- end animal sprite -- 
+
 	-------------------------------------------------------------------------------------------------------
 	-- Left side of screen --
 	-------------------------------------------------------------------------------------------------------
@@ -132,13 +164,21 @@ function scene:create( event )
 	replayButton.y = pauseButton.y
 
 	-- Event for Pause/Replay -- NEED IMPLEMENTATION
-	local function buttonTap()
+	local function pauseTap()
 		-- do something
-		temp = nil
+		local temp = nil
+	end
+	local function replayTap()
+		-- do something
+		local temp = nil
 	end
 	pauseButton:addEventListener("tap", function()
-		buttonTap(pauseButton)
+		pauseTap()
 	end)
+	replayButton:addEventListener("tap",function()
+		replayTap()
+	end
+	)
 	-- End event Pause/Replay --
 
 	local pole = display.newImageRect( sceneGroup,
@@ -149,22 +189,20 @@ function scene:create( event )
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 60
 
-	local animal1 = display.newImageRect( sceneGroup, 
-										  sceneBuild[3], 
-										  currentWidth/10, 
-										  currentHeight/7
-										)
-	animal1.x = pole.x / 2 
-	animal1.y = currentHeight - (animal1.height * 1.5)
-	animal1.xScale = -1
-	local animal2 = display.newImageRect( sceneGroup,
-										  sceneBuild[3], 
-										  currentWidth/10, 
-										  currentHeight/7
-										)
+	local animal1 = display.newSprite(sceneGroup,mySheet,sequenceData)
+	animal1:scale(0.5,0.5)
+	animal1.x = pole.x / 2
+	animal1.y = currentHeight - (animal1.height * 0.74)
+	animal1:setSequence("idle")
+	animal1:play()
+	
+	local animal2 = display.newSprite(sceneGroup,mySheet,sequenceData)
+	animal2:scale(-0.5,0.5)
 	animal2.x = pole.x + pole.x / 2
-	animal2.y = currentHeight - (animal1.height * 1.5)
-
+	animal2.y = currentHeight - (animal1.height * 0.74)
+	animal2:setSequence("idle")
+	animal2:play()
+		
 	-- place holders for answer text 
 	local optionBox1 = display.newImageRect( sceneGroup, 
 											 sceneBuild[14],
@@ -185,19 +223,38 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	-- back-end --
 	-------------------------------------------------------------------------------------------------------
-	local function cleanUP(obj)
-		obj:removeSelf()
+	local usedFlag = {}
+    local count = 0
+	local level1 = 5  -- 5 rounds
+	local textBox1 -- text box for option 1
+	local textBox2 -- text box for option 2
+	local textBox3 -- text box for answer
+	
+	-- function to decrease the Count
+	local function minusCount()
+		if count > 0 then
+			count = count - 1
+		end
 	end
+	-- function for flags transition + round control	
+	local function cleanUP( obj )
+		if obj.y >= pole.y+120 then minusCount() end -- if flag reaches bottom, count--
+		obj:removeSelf()
+	    onComplete = startGame()
+	end
+	-- function to stop when an option is chose
 	local function animationStop(obj)
+		transition.cancel(obj)
 		transition.fadeOut(obj ,
 		{
-			time=5000
+			time=2000,
+			onComplete = cleanUP
    	    })
 	end
-	local function animationEnd(obj)
+	local function animationEnd( obj )
 		transition.to(obj ,
 		{
-			time = 20000,
+			time = 1000,
 		    y = pole.y * 1.3,
 		    onComplete = cleanUP
 		})
@@ -210,90 +267,162 @@ function scene:create( event )
 			onComplete = animationEnd
 		})
 	end	
-
 	-- random to choose the box 
-	-- need an array to store used flags
-	local randomFlag = math.random(1,10)
-	local flag = display.newImageRect( sceneGroup, 
-									   countryFiles[randomFlag],
-									   currentWidth/7,
-									   currentHeight/7
-									 )
-	flag.x = pole.x
-	flag.y = pole.y * 1.2
-	-- random between 2 boxes
-	local randomBox = math.random(1,2) --countryNames[randomBox]
-	local rightAnswer = countryNames[randomFlag]
-	local wrongAnswer = nil
-	local box1
-	local box2
-	-- loop to get wrong answer
-	for i=1,11 do
-		wrongAnswer = countryNames[math.random(1,13)]
-		if  wrongAnswer ~= countryNames[randomFlag] then
-			break
+	local function startRound ()
+		local randomFlag = math.random(1,12)
+		for i,key in ipairs(usedFlag) do
+			if countryNames[randomFlag] == key then randomFlag = math.random(1,12) end
 		end
-	end
-	-- random placer
-	if randomBox == 1 then 
-		box1 = rightAnswer
-		box2 = wrongAnswer
-	else
-		box1 = wrongAnswer
-		box2 = rightAnswer
-	end
-	-- text box to hold the answer texts
-	local textBox1 = display.newText( sceneGroup, 
-									  box1,
-									  optionBox1.x, 
-									  optionBox1.y, 
-									  native.systemFont, 35 
-									)
-
-	local textBox2 = display.newText( sceneGroup, 
-									  box2, 
-									  optionBox2.x, 
-									  optionBox2.y, 
-									  native.systemFont, 35
-									)
-
-	-- color for the text 
-	textBox1:setFillColor( 0, 0, 0 )
-	textBox2:setFillColor( 0, 0, 0 )
-
-	-- Event for textboxes --
-	local function textTap( obj, value )
-		obj:removeSelf()
-		local textBox3 = display.newText( sceneGroup, 
-										  value, 
-										  obj.x, 
-										  obj.y, 
-										  native.systemFont, 44
+		local flag = display.newImageRect( sceneGroup, 
+										   countryFiles[randomFlag],
+										   currentWidth/7,
+										   currentHeight/7
+										 )
+		flag.x = pole.x
+		flag.y = pole.y * 1.2
+		-- random between 2 boxes
+		local randomBox = math.random(1,2) --countryNames[randomBox]
+		local rightAnswer = countryNames[randomFlag]
+		local wrongAnswer = nil
+		local box1
+		local box2
+		-- loop to get wrong answer
+		for i=1,11 do
+			wrongAnswer = countryNames[math.random(1,13)]
+			if  wrongAnswer ~= countryNames[randomFlag] then
+				break
+			end
+		end
+		-- random placer
+		if randomBox == 1 then 
+			box1 = rightAnswer
+			box2 = wrongAnswer
+		else
+			box1 = wrongAnswer
+			box2 = rightAnswer
+		end
+		-- text box to hold the answer texts
+		textBox1 = display.newText( sceneGroup, 
+										  box1,
+										  optionBox1.x, 
+										  optionBox1.y, 
+										  native.systemFont, 35 
 										)
-	end	
 
-	textBox1:addEventListener("tap", function()
-		if randomBox == 1 then
-			textTap(textBox1,"Correct!")
-			animationStop(flag)
-		else
-			textTap(textBox1,"Wrong!")
+		textBox2 = display.newText( sceneGroup, 
+										  box2, 
+										  optionBox2.x, 
+										  optionBox2.y, 
+										  native.systemFont, 35
+										)
+
+		-- color for the text 
+		textBox1:setFillColor( 0, 0, 0 )
+		textBox2:setFillColor( 0, 0, 0 )
+		
+		--test
+		local function handler() Runtime:removeEventListener("tap",handler) end
+
+		-- Event for textboxes --	
+		local function textTap( obj, value )
+			obj:removeSelf()
+			textBox3 = display.newText( sceneGroup, 
+								   value, 
+							  	   obj.x, 
+								   obj.y, 
+								   native.systemFont, 44
+								 )
+			if obj == textBox1 then
+				textBox2:removeSelf()
+			else
+				textBox1:removeSelf()
+			end
 		end
-	end)
-
-	textBox2:addEventListener("tap", function()
-		if randomBox ~= 1 then
-			textTap(textBox2,"Correct!")
-			animationStop(flag)
-		else
-			textTap(textBox2,"Wrong!")
-		end
-	end)
-
-	animationStart(flag)
+		-- load sound fx 
+		local ding_fx = audio.loadSound(audioFiles[3])
+		local lose_fx = audio.loadSound(audioFiles[4])
+		-- Event listener for text box 1
+		textBox1:addEventListener("tap", function()
+			if randomBox == 1 then
+				textTap(textBox1,"Correct!")
+				count = count + 1;
+				animationStop(flag)
+				table.insert(usedFlag,countryNames[randomFlag])
+				local sound1 = audio.play(ding_fx)
+				animal1:setSequence("happy")
+				animal1:play()
+			else
+				textTap(textBox1,"Wrong!")
+				animationStop(flag)
+				minusCount()
+				local sound2 = audio.play(lose_fx)
+				animal1:setSequence("sad")
+				animal1:play()
+			end
+			-- prepare for memory dump
+			textBox1 = nil
+			textBox2 = nil
+		end)
+		-- Event listener for text box 2
+		textBox2:addEventListener("tap", function()
+			if randomBox ~= 1 then
+				textTap(textBox2,"Correct!")
+				count = count + 1;
+				animationStop(flag)
+				table.insert(usedFlag,countryNames[randomFlag])
+				local sound1 = audio.play(ding_fx)
+				animal2:setSequence("happy")
+				animal2:play()
+			else
+				textTap(textBox2,"Wrong!")
+				animationStop(flag)
+				minusCount()
+				local sound2 = audio.play(lose_fx)
+				animal2:setSequence("sad")
+				animal2:play()
+			end
+			-- prepare for memory dump
+			textBox1 = nil
+			textBox2 = nil
+		end)
+		-- prepare for memory dump
+		textBox3 = nil
+		animationStart(flag)
+	end 
 	-------------------------------------------------------------------------------------------------------
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
+	-- function to start the game
+	function startGame()
+	    -- memories dump
+		animal1:setSequence("idle")
+		animal2:setSequence("idle")
+		animal1:play()
+		animal2:play()
+		if textBox1 ~= nil then
+			textBox1:removeSelf()
+		end
+		if textBox2 ~= nil then
+			textBox2:removeSelf()
+		end
+		if textBox3 ~= nil then
+			textBox3:removeSelf()
+		end
+		if textBox4 ~= nil then
+			textBox4:removeSelf()
+		end
+		-- check to start new round
+		if count ~= level1+1 then
+			startRound()
+		else
+			local win_fx = audio.loadSound(audioFiles[2])
+			local sound1 = audio.play(win_fx)
+			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,native.systemFont,44)
+		end
+		textBox4 = display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,native.systemFont,44)
+	end
+	
+	startGame()
 	-- end back-end --
 	-------------------------------------------------------------------------------------------------------
 
