@@ -423,6 +423,10 @@ function scene:create( event )
 		if count ~= level1+1 then
 			startRound()
 		else
+			animal1:setSequence("happy")
+			animal2:setSequence("happy")
+			animal1:play()
+			animal2:play()
 			local win_fx = audio.loadSound(audioFiles[2])
 			local sound1 = audio.play(win_fx)
 			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,native.systemFont,44)
