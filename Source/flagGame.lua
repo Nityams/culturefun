@@ -351,6 +351,8 @@ function scene:create( event )
 				local sound1 = audio.play(ding_fx)
 				animal1:setSequence("happy")
 				animal1:play()
+				animal2:setSequence("sad")
+				animal2:play()
 			else
 				textTap(textBox1,"Wrong!")
 				animationStop(flag)
@@ -358,6 +360,8 @@ function scene:create( event )
 				local sound2 = audio.play(lose_fx)
 				animal1:setSequence("sad")
 				animal1:play()
+				animal2:setSequence("happy")
+				animal2:play()
 			end
 			-- prepare for memory dump
 			textBox1 = nil
@@ -373,6 +377,8 @@ function scene:create( event )
 				local sound1 = audio.play(ding_fx)
 				animal2:setSequence("happy")
 				animal2:play()
+				animal1:setSequence("sad")
+				animal1:play()
 			else
 				textTap(textBox2,"Wrong!")
 				animationStop(flag)
@@ -380,6 +386,8 @@ function scene:create( event )
 				local sound2 = audio.play(lose_fx)
 				animal2:setSequence("sad")
 				animal2:play()
+				animal1:setSequence("happy")
+				animal1:play()
 			end
 			-- prepare for memory dump
 			textBox1 = nil
