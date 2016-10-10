@@ -125,7 +125,7 @@ function scene:create( event )
 		}
 	};
 	local mySheet = graphics.newImageSheet("Assets/Images/Sprite/2.png", sheetData)
-	-- end animal sprite -- 
+	-- end animal sprite --
 
 	-------------------------------------------------------------------------------------------------------
 	-- Left side of screen --
@@ -134,8 +134,8 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	local background = display.newImageRect( sceneGroup,
 											 sceneBuild[1],
-											 currentWidth, 
-											 currentHeight 
+											 currentWidth,
+											 currentHeight
 										   )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
@@ -144,20 +144,20 @@ function scene:create( event )
 										  sceneBuild[13],
 										  currentWidth/8,
 										  currentHeight )
-	collumn.x = currentWidth * 2 / 3 
+	collumn.x = currentWidth * 2 / 3
 	collumn.y = currentHeight / 2
 
 	local pauseButton = display.newImageRect( sceneGroup,
 										      sceneBuild[10],
-										      currentWidth/20, 
+										      currentWidth/20,
 										      currentHeight/14
 										    )
 	pauseButton.x = currentWidth / 20 --50
 	pauseButton.y = currentHeight / 5 --150
 
-	local replayButton = display.newImageRect( sceneGroup, 
-											   sceneBuild[11], 
-											   currentWidth/20, 
+	local replayButton = display.newImageRect( sceneGroup,
+											   sceneBuild[11],
+											   currentWidth/20,
 											   currentHeight/14
 											 )
 	replayButton.x = pauseButton.x + currentWidth / 16
@@ -171,6 +171,8 @@ function scene:create( event )
 	local function replayTap()
 		-- do something
 		local temp = nil
+		audio.stop( )
+			returnToMenu()
 	end
 	pauseButton:addEventListener("tap", function()
 		pauseTap()
@@ -195,25 +197,25 @@ function scene:create( event )
 	animal1.y = currentHeight - (animal1.height * 0.74)
 	animal1:setSequence("idle")
 	animal1:play()
-	
+
 	local animal2 = display.newSprite(sceneGroup,mySheet,sequenceData)
 	animal2:scale(-0.5,0.5)
 	animal2.x = pole.x + pole.x / 2
 	animal2.y = currentHeight - (animal1.height * 0.74)
 	animal2:setSequence("idle")
 	animal2:play()
-		
-	-- place holders for answer text 
-	local optionBox1 = display.newImageRect( sceneGroup, 
+
+	-- place holders for answer text
+	local optionBox1 = display.newImageRect( sceneGroup,
 											 sceneBuild[14],
-											 currentWidth/5, 
+											 currentWidth/5,
 											 currentHeight/12
 										   )
 	optionBox1.x = animal1.x
 	optionBox1.y = animal1.y - currentHeight/8
 	local optionBox2 = display.newImageRect( sceneGroup,
 										     sceneBuild[14],
-										     currentWidth/5, 
+										     currentWidth/5,
 										     currentHeight/12
 										   )
 	optionBox2.x = animal2.x
@@ -229,14 +231,14 @@ function scene:create( event )
 	local textBox1 -- text box for option 1
 	local textBox2 -- text box for option 2
 	local textBox3 -- text box for answer
-	
+
 	-- function to decrease the Count
 	local function minusCount()
 		if count > 0 then
 			count = count - 1
 		end
 	end
-	-- function for flags transition + round control	
+	-- function for flags transition + round control
 	local function cleanUP( obj )
 		if obj.y >= pole.y+120 then minusCount() end -- if flag reaches bottom, count--
 		obj:removeSelf()
@@ -262,18 +264,18 @@ function scene:create( event )
 	local function animationStart( obj )
 		transition.to(obj,
 		{
-			time = 1000, 
+			time = 1000,
 			y = pole.y * 0.7,
 			onComplete = animationEnd
 		})
-	end	
-	-- random to choose the box 
+	end
+	-- random to choose the box
 	local function startRound ()
 		local randomFlag = math.random(1,12)
 		for i,key in ipairs(usedFlag) do
 			if countryNames[randomFlag] == key then randomFlag = math.random(1,12) end
 		end
-		local flag = display.newImageRect( sceneGroup, 
+		local flag = display.newImageRect( sceneGroup,
 										   countryFiles[randomFlag],
 										   currentWidth/7,
 										   currentHeight/7
@@ -294,7 +296,7 @@ function scene:create( event )
 			end
 		end
 		-- random placer
-		if randomBox == 1 then 
+		if randomBox == 1 then
 			box1 = rightAnswer
 			box2 = wrongAnswer
 		else
@@ -302,34 +304,34 @@ function scene:create( event )
 			box2 = rightAnswer
 		end
 		-- text box to hold the answer texts
-		textBox1 = display.newText( sceneGroup, 
+		textBox1 = display.newText( sceneGroup,
 										  box1,
-										  optionBox1.x, 
-										  optionBox1.y, 
-										  native.systemFont, 35 
-										)
-
-		textBox2 = display.newText( sceneGroup, 
-										  box2, 
-										  optionBox2.x, 
-										  optionBox2.y, 
+										  optionBox1.x,
+										  optionBox1.y,
 										  native.systemFont, 35
 										)
 
-		-- color for the text 
+		textBox2 = display.newText( sceneGroup,
+										  box2,
+										  optionBox2.x,
+										  optionBox2.y,
+										  native.systemFont, 35
+										)
+
+		-- color for the text
 		textBox1:setFillColor( 0, 0, 0 )
 		textBox2:setFillColor( 0, 0, 0 )
-		
+
 		--test
 		local function handler() Runtime:removeEventListener("tap",handler) end
 
-		-- Event for textboxes --	
+		-- Event for textboxes --
 		local function textTap( obj, value )
 			obj:removeSelf()
-			textBox3 = display.newText( sceneGroup, 
-								   value, 
-							  	   obj.x, 
-								   obj.y, 
+			textBox3 = display.newText( sceneGroup,
+								   value,
+							  	   obj.x,
+								   obj.y,
 								   native.systemFont, 44
 								 )
 			if obj == textBox1 then
@@ -338,7 +340,7 @@ function scene:create( event )
 				textBox1:removeSelf()
 			end
 		end
-		-- load sound fx 
+		-- load sound fx
 		local ding_fx = audio.loadSound(audioFiles[3])
 		local lose_fx = audio.loadSound(audioFiles[4])
 		-- Event listener for text box 1
@@ -396,7 +398,7 @@ function scene:create( event )
 		-- prepare for memory dump
 		textBox3 = nil
 		animationStart(flag)
-	end 
+	end
 	-------------------------------------------------------------------------------------------------------
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
@@ -433,7 +435,7 @@ function scene:create( event )
 		end
 		textBox4 = display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,native.systemFont,44)
 	end
-	
+
 	startGame()
 	-- end back-end --
 	-------------------------------------------------------------------------------------------------------
@@ -442,16 +444,16 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	-- right side of screen --
 	-------------------------------------------------------------------------------------------------------
-	-- temporary 
-	local temp = display.newImageRect(sceneGroup, 
+	-- temporary
+	local temp = display.newImageRect(sceneGroup,
 									  sceneBuild[15],
-									  currentWidth * 1 / 3, 
+									  currentWidth * 1 / 3,
 									  currentHeight-190
 									 )
 	temp.x = collumn.x + collumn.x / 4
 	temp.y = currentHeight/2
 
-	-- check the resolution here 
+	-- check the resolution here
 	--display.newText( sceneGroup, "Width: "..currentWidth, display.contentCenterX, display.contentCenterY, native.systemFont, 44 )
 	--display.newText( sceneGroup, "Height: "..currentHeight, display.contentCenterX, display.contentCenterY+100, native.systemFont, 44 )
 end

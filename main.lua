@@ -4,4 +4,4 @@ display.setStatusBar( display.HiddenStatusBar )
 
 math.randomseed( os.time() )
 
-composer.gotoScene( "Source.foodGame" )
+composer.gotoScene( "Source.FoodGame" )
