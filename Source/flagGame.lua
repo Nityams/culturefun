@@ -63,9 +63,10 @@ local sceneBuild ={
 	"Assets/Images/Scene/10.png",
 	"Assets/Images/Scene/11.png",
 	"Assets/Images/Scene/12.png",
-	"Assets/Images/Scene/col.png", -- 13
-	"Assets/Images/Scene/textBox.png",
-	"Assets/Images/Scene/rightTemp.png"
+	"Assets/Images/Scene/13.png", -- 13
+	"Assets/Images/Scene/14.png",
+	"Assets/Images/Scene/15.png",
+	"Assets/Images/Scene/16.png",
 };
 
 local audioFiles = {
@@ -93,9 +94,9 @@ function scene:create( event )
 	local currentHeight = display.contentHeight
 	local backgroundMusic = audio.loadStream(audioFiles[1])
 	--background music, loop infinite, fadein in 5s
-    local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
+    -- local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
 	-- animal sprite --
-	local sheetData =
+	local sheetDataCat =
 	{
 		width = 276.29,
 		height = 238.29,
@@ -104,11 +105,11 @@ function scene:create( event )
 		sheetContentHeight = 1668
 	};
 
-	local sequenceData = {
+	local sequenceDataCat = {
 		{
 			name = "idle",
 			frames = {5,6,7,12,13,14,19,20,21,26},
-			time = 2000,
+			time = 3000,
 			loopCount = 0
 		},
 		{
@@ -124,21 +125,45 @@ function scene:create( event )
 			loopCount = 0
 		}
 	};
-	local mySheet = graphics.newImageSheet("Assets/Images/Sprite/2.png", sheetData)
-	-- end animal sprite -- 
+	local mySheetCat = graphics.newImageSheet("Assets/Images/Sprite/2.png", sheetDataCat)
+	
+	local sheetDataDog =
+	{
+		width = 547,
+		height = 481,
+		numFrames = 18,
+		sheetContentWidth = 9846,
+		sheetContentHeight = 481
+	};
 
-	-------------------------------------------------------------------------------------------------------
-	-- Left side of screen --
+	local sequenceDataDog = {
+		{
+			name = "run",
+			start = 1,
+			count = 8,
+			time = 500,
+			loopCount = 2
+		},
+		{
+			name = "idle",
+			start = 9,
+			count = 18,
+			time = 2000,
+			loopCount = 0
+		},
+	};
+	local mySheetDog = graphics.newImageSheet("Assets/Images/Sprite/3.png", sheetDataDog)
+	-- end animal sprite -- 
 	-------------------------------------------------------------------------------------------------------
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
 	local background = display.newImageRect( sceneGroup,
 											 sceneBuild[1],
 											 currentWidth, 
-											 currentHeight 
+											 currentHeight * 1
 										   )
 	background.x = display.contentCenterX
-	background.y = display.contentCenterY
+	background.y = display.contentCenterY 
 
 	local collumn = display.newImageRect( sceneGroup,
 										  sceneBuild[13],
@@ -189,14 +214,14 @@ function scene:create( event )
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 60
 
-	local animal1 = display.newSprite(sceneGroup,mySheet,sequenceData)
+	local animal1 = display.newSprite(sceneGroup,mySheetCat,sequenceDataCat)
 	animal1:scale(0.5,0.5)
 	animal1.x = pole.x / 2
 	animal1.y = currentHeight - (animal1.height * 0.74)
 	animal1:setSequence("idle")
 	animal1:play()
 	
-	local animal2 = display.newSprite(sceneGroup,mySheet,sequenceData)
+	local animal2 = display.newSprite(sceneGroup,mySheetCat,sequenceDataCat)
 	animal2:scale(-0.5,0.5)
 	animal2.x = pole.x + pole.x / 2
 	animal2.y = currentHeight - (animal1.height * 0.74)
@@ -221,7 +246,39 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	-- end front-end --
 	-------------------------------------------------------------------------------------------------------
-	-- back-end --
+	
+	-- right side of screen --
+	-------------------------------------------------------------------------------------------------------
+	local function moveUpDown(obj,num)
+		local temp = currentHeight - 135
+		if num == 0 then
+			transition.to(obj, {y = temp})
+		else
+			transition.to(obj, {y = temp - currentHeight/9 * num})
+		end
+		obj:setSequence("run")
+		obj:play()
+	end
+	-------------------------------------------------------------------------------------------------------
+	-- temporary 
+	local temp = display.newImageRect(sceneGroup, sceneBuild[16],currentWidth * 1 / 3, currentHeight)
+	temp.x = collumn.x + collumn.x / 4
+	temp.y = display.contentCenterY
+	temp:setFillColor(0,0,0)
+	local road = display.newImageRect(sceneGroup,sceneBuild[15],100,currentHeight)
+	road.x = collumn.x + collumn.x /4
+	road.y = currentHeight/2
+	
+	local animal3 = display.newSprite(sceneGroup,mySheetDog,sequenceDataDog)
+	animal3:scale(0.15,0.15)
+	animal3.x = road.x
+	animal3.y = currentHeight - (animal3.height * 0.28)
+	animal3:setSequence("idle")
+	animal3:play()
+	-- end right side of screen --
+	-------------------------------------------------------------------------------------------------------
+	
+	-- back-end -- Left side of screen --
 	-------------------------------------------------------------------------------------------------------
 	local usedFlag = {}
     local count = 0
@@ -238,7 +295,11 @@ function scene:create( event )
 	end
 	-- function for flags transition + round control	
 	local function cleanUP( obj )
-		if obj.y >= pole.y+120 then minusCount() end -- if flag reaches bottom, count--
+		-- if flag reaches bottom, count--
+		if obj.y >= pole.y+120 then
+			minusCount() 
+			moveUpDown(animal3,count)
+		end 
 		obj:removeSelf()
 	    onComplete = startGame()
 	end
@@ -353,6 +414,7 @@ function scene:create( event )
 				animal1:play()
 				animal2:setSequence("sad")
 				animal2:play()
+				moveUpDown(animal3,count)
 			else
 				textTap(textBox1,"Wrong!")
 				animationStop(flag)
@@ -362,6 +424,7 @@ function scene:create( event )
 				animal1:play()
 				animal2:setSequence("happy")
 				animal2:play()
+				moveUpDown(animal3,count)
 			end
 			-- prepare for memory dump
 			textBox1 = nil
@@ -379,6 +442,7 @@ function scene:create( event )
 				animal2:play()
 				animal1:setSequence("sad")
 				animal1:play()
+				moveUpDown(animal3,count)
 			else
 				textTap(textBox2,"Wrong!")
 				animationStop(flag)
@@ -388,6 +452,7 @@ function scene:create( event )
 				animal2:play()
 				animal1:setSequence("happy")
 				animal1:play()
+				moveUpDown(animal3,count)
 			end
 			-- prepare for memory dump
 			textBox1 = nil
@@ -407,6 +472,8 @@ function scene:create( event )
 		animal2:setSequence("idle")
 		animal1:play()
 		animal2:play()
+		animal3:setSequence("idle")
+		animal3:play()
 		if textBox1 ~= nil then
 			textBox1:removeSelf()
 		end
@@ -423,8 +490,8 @@ function scene:create( event )
 		if count ~= level1+1 then
 			startRound()
 		else
-			animal1:setSequence("happy")
-			animal2:setSequence("happy")
+			animal1:setSequence("idle")
+			animal2:setSequence("idle")
 			animal1:play()
 			animal2:play()
 			local win_fx = audio.loadSound(audioFiles[2])
@@ -435,21 +502,8 @@ function scene:create( event )
 	end
 	
 	startGame()
-	-- end back-end --
+	-- end back-end -- left side
 	-------------------------------------------------------------------------------------------------------
-
-
-	-------------------------------------------------------------------------------------------------------
-	-- right side of screen --
-	-------------------------------------------------------------------------------------------------------
-	-- temporary 
-	local temp = display.newImageRect(sceneGroup, 
-									  sceneBuild[15],
-									  currentWidth * 1 / 3, 
-									  currentHeight-190
-									 )
-	temp.x = collumn.x + collumn.x / 4
-	temp.y = currentHeight/2
 
 	-- check the resolution here 
 	--display.newText( sceneGroup, "Width: "..currentWidth, display.contentCenterX, display.contentCenterY, native.systemFont, 44 )
