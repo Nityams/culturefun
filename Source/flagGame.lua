@@ -68,6 +68,7 @@ local sceneBuild ={
 	"Assets/Images/Scene/15.png",
 	"Assets/Images/Scene/16.png",
 	"Assets/Images/Scene/17.png",
+	"Assets/Images/Scene/18.BMP",
 };
 
 local audioFiles = {
@@ -261,30 +262,52 @@ function scene:create( event )
 		obj:play()
 	end
 	-------------------------------------------------------------------------------------------------------
-	-- temporary 
+	-- temp = placeholder for all right side 
 	local temp = display.newImageRect(sceneGroup, sceneBuild[16],currentWidth * 1 / 3, currentHeight)
 	temp.x = collumn.x + collumn.x / 4
 	temp.y = display.contentCenterY
 	temp:setFillColor(0,0,0)
+	-- placeholder for road
 	local road = display.newImageRect(sceneGroup,sceneBuild[15],100,currentHeight)
 	road.x = collumn.x + collumn.x /4
 	road.y = currentHeight/2
-	
+	-- placeholder for animal on the road
 	local animal3 = display.newSprite(sceneGroup,mySheetDog,sequenceDataDog)
 	animal3:scale(0.18,0.18)
 	animal3.x = road.x
 	animal3.y = currentHeight - (animal3.height * 0.28)
 	animal3:setSequence("idle")
 	animal3:play()
+	-- place holder for trophy
+	local trophy = display.newImageRect(sceneGroup, sceneBuild[5], 46*1.5, 47*1.5)
+	trophy.x = road.x
+	trophy.y = 140
 
 	-- need to work on resolution for left.width + left.x
-	local leftRoad = display.newImageRect(sceneGroup, sceneBuild[17],120, currentHeight)
+	local leftRoad = display.newImageRect(sceneGroup, sceneBuild[17], 120, currentHeight)
 	leftRoad.x = 743
 	leftRoad.y = display.contentCenterY
+	leftRoad:setFillColor(255,255,255,1.0)
+	
 	-- need to work on resolution for right.width + right.x
 	local rightRoad = display.newImageRect(sceneGroup, sceneBuild[17],120, currentHeight)
 	rightRoad.x = road.x + road.width + 10
 	rightRoad.y = display.contentCenterY
+	rightRoad:setFillColor(255,255,255,1.0)
+	
+	-- monuments place holder
+	-- 80 -> 6 monuments -> 6 rounds
+	local size = 80
+	for i = 0, 6 do 
+		local placeHolder = display.newImageRect(sceneGroup, sceneBuild[18], size, size)
+		if i % 2 == 0 then 
+			placeHolder.x = leftRoad.x
+		else
+			placeHolder.x = rightRoad.x
+		end
+		placeHolder.y = 150 + i * size
+		placeHolder:setFillColor(255,255,255,0.9)
+	end
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
 	
