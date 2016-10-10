@@ -1,8 +1,6 @@
-
 local composer = require( "composer" )
 
 local scene = composer.newScene()
-
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -10,10 +8,8 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 
 local function returnToMenu()
-	composer.gotoScene( "Source.menu" )
+  composer.gotoScene( "Source.menu" )
 end
-
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -22,6 +18,7 @@ local setbackground
 local callCharacters
 local setfoods
 local callGreetings
+local flagAnimation
 
 local currentWidth
 local currentHeight
@@ -29,86 +26,176 @@ local sceneGroup
 local character_one
 
 --creating main table
-local countries = require "Countries"
+local Countries = require "Countries"
 
 -- create()
 function scene:create( event )
-	sceneGroup = self.view
-	currentWidth = display.contentWidth
-	currentHeight = display.contentHeight
-	-- `Code here runs when the scene is first created but has not yet appeared on screen
+  sceneGroup = self.view
+  currentWidth = display.contentWidth
+  currentHeight = display.contentHeight
+  -- `Code here runs when the scene is first created but has not yet appeared on screen
 
-	--
-setbackground()
-setfoods()
-callCharacters()
+  --
+  setbackground()
+  setfoods()
+  callCharacters()
 end
 
 function setbackground()
-	local background = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/Background.png",currentWidth, currentHeight )
-	background.x = display.contentCenterX
-	background.y = display.contentCenterY
+  local background = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/Background.png",currentWidth, currentHeight )
+  background.x = display.contentCenterX
+  background.y = display.contentCenterY
 end
 
 function setfoods()
+  local randomCountryNumber = math.random(1,10)							-- selecting random country from Countries module /table
+  randomFood = math.random(1, 4)														-- selecting random( out of 4) place in the food selection grid
+
+-- Setting random countries i.e, not the correct one on the food grid
+
+  secondRandom = (randomCountryNumber) % 10 +1								-- random country for food1
+  path = Countries[secondRandom].flag
+  local food1 = display.newImageRect(sceneGroup, path, currentWidth/5, currentHeight/5)
+	food1_name = Countries[secondRandom].name
+
+	secondRandom = (secondRandom) % 10 +1												-- random country for food 2
+  path = Countries[secondRandom].flag
+  local food2 = display.newImageRect(sceneGroup, path, currentWidth/5, currentHeight/5)
+	food2_name = Countries[secondRandom].name
+
+	secondRandom = (secondRandom ) % 10 +1											-- random country for food 3
+  path = Countries[secondRandom].flag
+  local food3 = display.newImageRect(sceneGroup, path, currentWidth/5, currentHeight/5)
+	food3_name = Countries[secondRandom].name
+
+	secondRandom = (secondRandom ) % 10 +1											-- random country for food 4
+  path = Countries[secondRandom].flag
+  local food4 = display.newImageRect(sceneGroup, path, currentWidth/5, currentHeight/5)
+	food4_name = Countries[secondRandom].name
+
+-- Setting the correct country on the random food grid
+
+	local correctPath = Countries[randomCountryNumber].flag
+  if randomFood == 1 then
+		food1 = display.newImageRect(sceneGroup, correctPath, currentWidth/5, currentHeight/5)
+		food1_name = Countries[randomCountryNumber].name
+  elseif randomFood == 2 then
+		food2 = display.newImageRect(sceneGroup, correctPath, currentWidth/5, currentHeight/5)
+		food2_name = Countries[randomCountryNumber].name
+  elseif randomFood == 3 then
+		food3 = display.newImageRect(sceneGroup, correctPath, currentWidth/5, currentHeight/5)
+		food2_name = Countries[randomCountryNumber].name
+  else
+		food4 = display.newImageRect(sceneGroup, correctPath, currentWidth/5, currentHeight/5)
+		food4_name = Countries[randomCountryNumber].name
+  end
+
+-- Setting the positio of all four grid
+
+  food1.alpha = 0; food2.alpha = 0; food3.alpha = 0; food4.alpha = 0;
+  food1:scale(0,0); food2:scale(0,0); food3:scale(0,0); food4:scale(0,0);
+  food1.x = display.contentCenterX+ 50 ; food1.y = display.contentCenterY - display.contentCenterY/8
+  food2.x = food1.x + food1.width + 100; food2.y = food1.y
+  food3.x = food1.x; food3.y = food1.y + food1.width
+  food4.x = food2.x ; food4.y = food3.y
+
+-- setting the animation (pop up) for all the food in the grid
+  local function food3Animation()
+    transition.to(food3, {time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food3Animation})
+  end
+  local function food4Animation()
+    transition.to(food4, {time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food3Animation})
+  end
+  local function food2Animation()
+    transition.to(food2, {time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food4Animation})
+  end
+  transition.to(food1, {time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food2Animation})
+
+-- tap acrion listener and answer checker for all the foods in the grid
+
+  food1:addEventListener("tap", function ()
+      if food1_name == Countries[randomCountryNumber].name then
+        print("yay yay yay")
+      else
+        print("nay nay nay")
+      end
+    end )
+  food2:addEventListener("tap", function ()
+      if food2_name == Countries[randomCountryNumber].name  then
+        print("yay yay yay")
+      else
+        print("nay nay nay")
+      end
+    end )
+  food3:addEventListener("tap", function ()
+      if food3_name == Countries[randomCountryNumber].name then
+        print("yay yay yay")
+      else
+        print("nay nay nay")
+      end
+    end )
+  food4:addEventListener("tap", function ()
+      if food4_name == Countries[randomCountryNumber].name then
+        print("yay yay yay")
+      else
+        print("nay nay nay")
+      end
+    end )
 end
 
 function callCharacters()
-	character_one = display.newImage("Assets/Images/foodGame/boy.png")
-	character_one.y = display.contentCenterY
-	character_one.x = 0
-	transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
+  character_one = display.newImage("Assets/Images/foodGame/boy.png")
+  character_one.y = display.contentCenterY
+  character_one.x = 0
+  transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
 end
 function callGreetings()
-	local dialogBox = display.newImage("Assets/Images/foodGame/americanDialog.png")
-	dialogBox.xScale = 0.3
-	dialogBox.yScale = 0.3
-	dialogBox.y = display.contentCenterY - display.contentCenterY/1.8
-	dialogBox.x = character_one.x
+  local dialogBox = display.newImage("Assets/Images/foodGame/americanDialog.png")
+  dialogBox.xScale = 0.3
+  dialogBox.yScale = 0.3
+  dialogBox.y = display.contentCenterY - display.contentCenterY/1.8
+  dialogBox.x = character_one.x
 end
 
 -- show()
 function scene:show( event )
 
-	local sceneGroup = self.view
-	local phase = event.phase
+  local sceneGroup = self.view
+  local phase = event.phase
 
-	if ( phase == "will" ) then
-		-- Code here runs when the scene is still off screen (but is about to come on screen)
+  if ( phase == "will" ) then
+    -- Code here runs when the scene is still off screen (but is about to come on screen)
 
-	elseif ( phase == "did" ) then
-		-- Code here runs when the scene is entirely on screen
+  elseif ( phase == "did" ) then
+    -- Code here runs when the scene is entirely on screen
 
-		-- In two seconds return to the menu
-		--timer.performWithDelay( 2000, returnToMenu )
-	end
+    -- In two seconds return to the menu
+    --timer.performWithDelay( 2000, returnToMenu )
+  end
 end
-
 
 -- hide()
 function scene:hide( event )
 
-	local sceneGroup = self.view
-	local phase = event.phase
+  local sceneGroup = self.view
+  local phase = event.phase
 
-	if ( phase == "will" ) then
-		-- Code here runs when the scene is on screen (but is about to go off screen)
+  if ( phase == "will" ) then
+    -- Code here runs when the scene is on screen (but is about to go off screen)
 
-	elseif ( phase == "did" ) then
-		-- Code here runs immediately after the scene goes entirely off screen
+  elseif ( phase == "did" ) then
+    -- Code here runs immediately after the scene goes entirely off screen
 
-	end
+  end
 end
-
 
 -- destroy()
 function scene:destroy( event )
 
-	local sceneGroup = self.view
-	-- Code here runs prior to the removal of scene's view
+  local sceneGroup = self.view
+  -- Code here runs prior to the removal of scene's view
 
 end
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
