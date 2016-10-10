@@ -278,11 +278,12 @@ function scene:create( event )
 	animal3.y = currentHeight - (animal3.height * 0.28)
 	animal3:setSequence("idle")
 	animal3:play()
+	
 	-- place holder for trophy
 	local trophy = display.newImageRect(sceneGroup, sceneBuild[5], 46*1.5, 47*1.5)
 	trophy.x = road.x
 	trophy.y = 140
-
+	
 	-- need to work on resolution for left.width + left.x
 	local leftRoad = display.newImageRect(sceneGroup, sceneBuild[17], 120, currentHeight)
 	leftRoad.x = 743
