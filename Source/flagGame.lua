@@ -67,6 +67,7 @@ local sceneBuild ={
 	"Assets/Images/Scene/14.png",
 	"Assets/Images/Scene/15.png",
 	"Assets/Images/Scene/16.png",
+	"Assets/Images/Scene/17.png",
 };
 
 local audioFiles = {
@@ -270,11 +271,20 @@ function scene:create( event )
 	road.y = currentHeight/2
 	
 	local animal3 = display.newSprite(sceneGroup,mySheetDog,sequenceDataDog)
-	animal3:scale(0.15,0.15)
+	animal3:scale(0.18,0.18)
 	animal3.x = road.x
 	animal3.y = currentHeight - (animal3.height * 0.28)
 	animal3:setSequence("idle")
 	animal3:play()
+
+	-- need to work on resolution for left.width + left.x
+	local leftRoad = display.newImageRect(sceneGroup, sceneBuild[17],120, currentHeight)
+	leftRoad.x = 743
+	leftRoad.y = display.contentCenterY
+	-- need to work on resolution for right.width + right.x
+	local rightRoad = display.newImageRect(sceneGroup, sceneBuild[17],120, currentHeight)
+	rightRoad.x = road.x + road.width + 10
+	rightRoad.y = display.contentCenterY
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
 	
@@ -412,8 +422,8 @@ function scene:create( event )
 				local sound1 = audio.play(ding_fx)
 				animal1:setSequence("happy")
 				animal1:play()
-				animal2:setSequence("sad")
-				animal2:play()
+				--animal2:setSequence("sad")
+				--animal2:play()
 				moveUpDown(animal3,count)
 			else
 				textTap(textBox1,"Wrong!")
@@ -422,8 +432,8 @@ function scene:create( event )
 				local sound2 = audio.play(lose_fx)
 				animal1:setSequence("sad")
 				animal1:play()
-				animal2:setSequence("happy")
-				animal2:play()
+				--animal2:setSequence("happy")
+				--animal2:play()
 				moveUpDown(animal3,count)
 			end
 			-- prepare for memory dump
@@ -440,8 +450,8 @@ function scene:create( event )
 				local sound1 = audio.play(ding_fx)
 				animal2:setSequence("happy")
 				animal2:play()
-				animal1:setSequence("sad")
-				animal1:play()
+				--animal1:setSequence("sad")
+				--animal1:play()
 				moveUpDown(animal3,count)
 			else
 				textTap(textBox2,"Wrong!")
@@ -450,8 +460,8 @@ function scene:create( event )
 				local sound2 = audio.play(lose_fx)
 				animal2:setSequence("sad")
 				animal2:play()
-				animal1:setSequence("happy")
-				animal1:play()
+				--animal1:setSequence("happy")
+				--animal1:play()
 				moveUpDown(animal3,count)
 			end
 			-- prepare for memory dump
@@ -490,8 +500,8 @@ function scene:create( event )
 		if count ~= level1+1 then
 			startRound()
 		else
-			animal1:setSequence("idle")
-			animal2:setSequence("idle")
+			animal1:setSequence("happy")
+			animal2:setSequence("happy")
 			animal1:play()
 			animal2:play()
 			local win_fx = audio.loadSound(audioFiles[2])
