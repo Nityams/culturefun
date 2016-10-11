@@ -214,7 +214,7 @@ function scene:create( event )
 	end
 	local function replayTap()
 		-- this will stop the animations
-		--transition.cancel()
+		transition.cancel()
 		returnToMenu()
 	end
 	pauseButton:addEventListener("tap", function()
@@ -320,7 +320,7 @@ function scene:create( event )
 	-- monuments place holder
 	-- 80 -> 6 monuments -> 6 rounds
 	local size = 80
-	for i = 0, 6 do 
+	for i = 1, level1 do 
 		local placeHolder = display.newImageRect(sceneGroup, sceneBuild[18], size, size)
 		if i % 2 == 0 then 
 			placeHolder.x = leftRoad.x
@@ -420,23 +420,20 @@ function scene:create( event )
 										  box1,
 										  optionBox1.x, 
 										  optionBox1.y, 
-										  native.systemFont, 35 
+										  native.systemFont, 33 
 										)
 
 		textBox2 = display.newText( sceneGroup, 
 										  box2, 
 										  optionBox2.x, 
 										  optionBox2.y, 
-										  native.systemFont, 35
+										  native.systemFont, 33
 										)
 
 		-- color for the text 
 		textBox1:setFillColor( 0, 0, 0 )
 		textBox2:setFillColor( 0, 0, 0 )
 		
-		--test
-		local function handler() Runtime:removeEventListener("tap",handler) end
-
 		-- Event for textboxes --	
 		local function textTap( obj, value )
 			obj:removeSelf()
@@ -493,8 +490,8 @@ function scene:create( event )
 				local sound1 = audio.play(ding_fx)
 				animal2:setSequence("happy")
 				animal2:play()
-				--animal1:setSequence("sad")
-				--animal1:play()
+				animal1:setSequence("sad")
+				animal1:play()
 				moveUpDown(animal3,count)
 			else
 				textTap(textBox2,"Wrong!")
@@ -503,8 +500,8 @@ function scene:create( event )
 				local sound2 = audio.play(lose_fx)
 				animal2:setSequence("sad")
 				animal2:play()
-				--animal1:setSequence("happy")
-				--animal1:play()
+				animal1:setSequence("happy")
+				animal1:play()
 				moveUpDown(animal3,count)
 			end
 			-- prepare for memory dump
@@ -538,7 +535,6 @@ function scene:create( event )
 		end 
 		-- check to start new round
 		if count ~= level1 then
-			print(pole)
 			startRound()
 		else
 			animal1:setSequence("happy")
@@ -585,7 +581,7 @@ function scene:hide( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		-- this remove the scene completely ?
-		-- composer.removeScene("Source.flagGame")
+		composer.removeScene("Source.flagGame")
 	end
 end
 
