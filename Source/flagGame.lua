@@ -213,7 +213,7 @@ function scene:create( event )
 		end
 	end
 	local function replayTap()
-		transition.cancel()
+		--transition.cancel()
 		returnToMenu()
 	end
 	pauseButton:addEventListener("tap", function()
@@ -537,6 +537,7 @@ function scene:create( event )
 		end 
 		-- check to start new round
 		if count ~= level1 then
+			print(pole)
 			startRound()
 		else
 			animal1:setSequence("happy")
@@ -582,7 +583,8 @@ function scene:hide( event )
 		-- Code here runs when the scene is on screen (but is about to go off screen)
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		composer.removeScene("Source.flagGame")
+		-- this remove the scene completely ?
+		-- composer.removeScene("Source.flagGame")
 	end
 end
 
