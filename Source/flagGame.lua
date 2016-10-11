@@ -95,6 +95,11 @@ function scene:create( event )
 	local currentWidth = display.contentWidth
 	local currentHeight = display.contentHeight
 	local backgroundMusic = audio.loadStream(audioFiles[1])
+	local count = 0
+	local level1 = 6  -- 6 rounds
+	local speed1 = 1000
+	local speed2 = 1000
+	local flag
 	--background music, loop infinite, fadein in 5s
     -- local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
 	-- animal sprite --
@@ -159,6 +164,7 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
+	-- background placeholder
 	local background = display.newImageRect( sceneGroup,
 											 sceneBuild[1],
 											 currentWidth, 
@@ -167,6 +173,7 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY 
 
+    -- screen split placeholder
 	local collumn = display.newImageRect( sceneGroup,
 										  sceneBuild[13],
 										  currentWidth/8,
@@ -174,6 +181,7 @@ function scene:create( event )
 	collumn.x = currentWidth * 2 / 3 
 	collumn.y = currentHeight / 2
 
+	-- pause button placeholder
 	local pauseButton = display.newImageRect( sceneGroup,
 										      sceneBuild[10],
 										      currentWidth/20, 
@@ -182,6 +190,7 @@ function scene:create( event )
 	pauseButton.x = currentWidth / 20 --50
 	pauseButton.y = currentHeight / 5 --150
 
+	-- replay button placeholder
 	local replayButton = display.newImageRect( sceneGroup, 
 											   sceneBuild[11], 
 											   currentWidth/20, 
@@ -190,14 +199,22 @@ function scene:create( event )
 	replayButton.x = pauseButton.x + currentWidth / 16
 	replayButton.y = pauseButton.y
 
-	-- Event for Pause/Replay -- NEED IMPLEMENTATION
+	-- pause/play event 
+	-- temp2 store the values to decide play/pause
+	-- need to implement overlay when pause to stop all interactions with gameplay
+	local temp2 = 0
 	local function pauseTap()
-		-- do something
-		local temp = nil
+		if temp2 == 0 then
+			transition.pause(flag)
+			temp2 = 1
+		else
+			transition.resume(flag)
+			temp2 = 0
+		end
 	end
 	local function replayTap()
-		-- do something
-		local temp = nil
+		transition.cancel()
+		returnToMenu()
 	end
 	pauseButton:addEventListener("tap", function()
 		pauseTap()
@@ -208,6 +225,7 @@ function scene:create( event )
 	)
 	-- End event Pause/Replay --
 
+	-- flag pole placeholder
 	local pole = display.newImageRect( sceneGroup,
 									   sceneBuild[2],
 									   currentWidth/10,
@@ -216,13 +234,15 @@ function scene:create( event )
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 60
 
+	-- animal 1 placeholder
 	local animal1 = display.newSprite(sceneGroup,mySheetCat,sequenceDataCat)
 	animal1:scale(0.5,0.5)
 	animal1.x = pole.x / 2
 	animal1.y = currentHeight - (animal1.height * 0.74)
 	animal1:setSequence("idle")
 	animal1:play()
-	
+
+	-- animal 2 placeholder
 	local animal2 = display.newSprite(sceneGroup,mySheetCat,sequenceDataCat)
 	animal2:scale(-0.5,0.5)
 	animal2.x = pole.x + pole.x / 2
@@ -315,8 +335,6 @@ function scene:create( event )
 	-- back-end -- Left side of screen --
 	-------------------------------------------------------------------------------------------------------
 	local usedFlag = {}
-    local count = 0
-	local level1 = 5  -- 5 rounds
 	local textBox1 -- text box for option 1
 	local textBox2 -- text box for option 2
 	local textBox3 -- text box for answer
@@ -349,7 +367,7 @@ function scene:create( event )
 	local function animationEnd( obj )
 		transition.to(obj ,
 		{
-			time = 1000,
+			time = speed1,
 		    y = pole.y * 1.3,
 		    onComplete = cleanUP
 		})
@@ -357,18 +375,18 @@ function scene:create( event )
 	local function animationStart( obj )
 		transition.to(obj,
 		{
-			time = 1000, 
+			time = speed2, 
 			y = pole.y * 0.7,
 			onComplete = animationEnd
 		})
-	end	
+	end
 	-- random to choose the box 
 	local function startRound ()
 		local randomFlag = math.random(1,12)
 		for i,key in ipairs(usedFlag) do
 			if countryNames[randomFlag] == key then randomFlag = math.random(1,12) end
 		end
-		local flag = display.newImageRect( sceneGroup, 
+		flag = display.newImageRect( sceneGroup, 
 										   countryFiles[randomFlag],
 										   currentWidth/7,
 										   currentHeight/7
@@ -516,12 +534,9 @@ function scene:create( event )
 		end
 		if textBox3 ~= nil then
 			textBox3:removeSelf()
-		end
-		if textBox4 ~= nil then
-			textBox4:removeSelf()
-		end
+		end 
 		-- check to start new round
-		if count ~= level1+1 then
+		if count ~= level1 then
 			startRound()
 		else
 			animal1:setSequence("happy")
@@ -532,16 +547,10 @@ function scene:create( event )
 			local sound1 = audio.play(win_fx)
 			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,native.systemFont,44)
 		end
-		textBox4 = display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,native.systemFont,44)
+		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,native.systemFont,44)
 	end
-	
-	startGame()
 	-- end back-end -- left side
 	-------------------------------------------------------------------------------------------------------
-
-	-- check the resolution here 
-	--display.newText( sceneGroup, "Width: "..currentWidth, display.contentCenterX, display.contentCenterY, native.systemFont, 44 )
-	--display.newText( sceneGroup, "Height: "..currentHeight, display.contentCenterX, display.contentCenterY+100, native.systemFont, 44 )
 end
 
 
@@ -556,9 +565,9 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-
 		-- In two seconds return to the menu
 		--timer.performWithDelay( 2000, returnToMenu )
+		startGame()
 	end
 end
 
@@ -571,10 +580,9 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-
+		composer.removeScene("Source.flagGame")
 	end
 end
 
@@ -584,7 +592,6 @@ function scene:destroy( event )
 
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
-
 end
 
 
@@ -596,5 +603,4 @@ scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
 -- -----------------------------------------------------------------------------------
-
 return scene
