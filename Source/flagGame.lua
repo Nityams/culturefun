@@ -213,6 +213,7 @@ function scene:create( event )
 		end
 	end
 	local function replayTap()
+		-- this will stop the animations
 		--transition.cancel()
 		returnToMenu()
 	end
