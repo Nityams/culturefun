@@ -121,7 +121,8 @@ function scene:create( event )
 		},
 		{
 			name = "sad",
-			frames = {1,2,3,4,8,9,10,15,16,17},
+			--frames = {1,2,3,4,8,9,10,15,16,17},
+			frames = {2,3,2,3,2,3,2,3,2,3},
 			time = 1000,
 			loopCount = 0
 		},
@@ -238,7 +239,7 @@ function scene:create( event )
 	-- animal 1 placeholder
 	local animal1 = display.newSprite(sceneGroup,mySheetCat,sequenceDataCat)
 	animal1:scale(0.5,0.5)
-	animal1.x = pole.x / 2
+	animal1.x = pole.x / 2 - 25
 	animal1.y = currentHeight - (animal1.height * 0.74)
 	animal1:setSequence("idle")
 	animal1:play()
@@ -246,7 +247,7 @@ function scene:create( event )
 	-- animal 2 placeholder
 	local animal2 = display.newSprite(sceneGroup,mySheetCat,sequenceDataCat)
 	animal2:scale(-0.5,0.5)
-	animal2.x = pole.x + pole.x / 2
+	animal2.x = pole.x + pole.x / 2 + 25
 	animal2.y = currentHeight - (animal1.height * 0.74)
 	animal2:setSequence("idle")
 	animal2:play()
@@ -389,8 +390,8 @@ function scene:create( event )
 		end
 		flag = display.newImageRect( sceneGroup, 
 										   countryFiles[randomFlag],
-										   currentWidth/7,
-										   currentHeight/7
+										   currentWidth/7+35,
+										   currentHeight/7+35
 										 )
 		flag.x = pole.x
 		flag.y = pole.y * 1.2
