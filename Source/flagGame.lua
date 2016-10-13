@@ -1,5 +1,6 @@
 
 local composer = require( "composer" )
+local physics = require ( "physics")
 
 local scene = composer.newScene()
 
@@ -178,8 +179,8 @@ function scene:create( event )
 	local sequenceDataTree1 = {
 		{
 			name = "normal1",
-			frames = {1,2,3,4,5,3,4,2,2,5,2,4,3,1,2,3,4,5,3,4,2,2,5,2,4,3},
-			time = 15000,
+			frames = {1,2,2,2,3,3,3,4,4,4,4,5,5,5,3,3,3,3,3,3,3,3,5,5,2,2,2,2,2,2,2,4,4,4,4,4,4},
+			time = 4000,
 			loopCount = 0
 		}
 	};
@@ -214,7 +215,6 @@ function scene:create( event )
 	platform1.x = display.contentCenterX
 	platform1.y = display.contentCenterY*2 - platform1.height*2 - 3
 	--platform1:setFillColor(0,0,0)
-	print(platform1.height)
 
     -- screen split placeholder
 	local collumn = display.newImageRect( sceneGroup,
@@ -239,8 +239,8 @@ function scene:create( event )
 											   currentWidth/20, 
 											   currentHeight/14
 											 )
-	replayButton.x = pauseButton.x + currentWidth / 16
-	replayButton.y = pauseButton.y
+	replayButton.x = pauseButton.x
+	replayButton.y = pauseButton.y + currentWidth / 16
 
 	-- pause/play event 
 	-- temp2 store the values to decide play/pause
@@ -293,6 +293,22 @@ function scene:create( event )
 	animal2.y = pole.y + pole.height - animal1.height - 25
 	animal2:setSequence("idle")
 	animal2:play()
+
+	-- physics testing
+	physics.start()
+	physics.addBody(platform1,"static")
+	physics.addBody(animal1,"dynamic", {radius = 50, bounce = 0.1})
+	physics.addBody(animal2,"dynamic", {radius = 50, bounce = 0.1})
+
+	local function pushCat1()
+		animal1:applyLinearImpulse(0,-0.75,animal1.x,animal1.y)
+	end
+	local function pushCat2()
+		animal2:applyLinearImpulse(0,-0.75,animal2.x,animal2.y)
+	end
+	animal1:addEventListener("tap",pushCat1)
+	animal2:addEventListener("tap",pushCat2)
+	-- end physics test
 		
 	-- place holders for answer text 
 	local optionBox1 = display.newImageRect( sceneGroup, 
