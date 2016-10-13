@@ -70,6 +70,7 @@ local sceneBuild ={
 	"Assets/Images/Scene/17.png",
 	"Assets/Images/Scene/18.BMP",
 	"Assets/Images/Scene/19.png",
+	"Assets/Images/Scene/20.png",
 };
 
 local audioFiles = {
@@ -164,6 +165,25 @@ function scene:create( event )
 	local mySheetDog = graphics.newImageSheet("Assets/Images/Sprite/3.png", sheetDataDog)
 	-- end animal sprite -- 
 	-------------------------------------------------------------------------------------------------------
+	-- background animation --
+	local sheetDataTree1 =
+	{
+		width = 1463,
+		height = 821,
+		numFrames = 5,
+		sheetContentWidth = 1463,
+		sheetContentHeight = 4285
+	};
+
+	local sequenceDataTree1 = {
+		{
+			name = "normal1",
+			frames = {1,2,3,4,5,3,4,2,2,5,2,4,3,1,2,3,4,5,3,4,2,2,5,2,4,3},
+			time = 15000,
+			loopCount = 0
+		}
+	};
+	--end background animation --
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
 	-- background placeholder
@@ -174,6 +194,27 @@ function scene:create( event )
 										   )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
+
+	-- trees for background
+	local mySheetTree1 = graphics.newImageSheet("Assets/Images/Sprite/4.png", sheetDataTree1)
+	local tree1 = display.newSprite(sceneGroup,mySheetTree1,sequenceDataTree1)
+	tree1:scale(0.55,0.55)
+	--tree1:setFillColor(0,0,0,0.8)
+	tree1.x = display.contentCenterX-110
+	tree1.y = display.contentCenterY+60
+	tree1:setSequence("normal")
+	tree1:play()
+
+	-- platform placeholder
+	local platform1 = display.newImageRect( sceneGroup,
+											 sceneBuild[20],
+											 currentWidth, 
+											 currentHeight/15
+										   )
+	platform1.x = display.contentCenterX
+	platform1.y = display.contentCenterY*2 - platform1.height*2 - 3
+	--platform1:setFillColor(0,0,0)
+	print(platform1.height)
 
     -- screen split placeholder
 	local collumn = display.newImageRect( sceneGroup,
@@ -257,17 +298,17 @@ function scene:create( event )
 	local optionBox1 = display.newImageRect( sceneGroup, 
 											 sceneBuild[14],
 											 currentWidth/5, 
-											 currentHeight/16
+											 currentHeight/14
 										   )
 	optionBox1.x = animal1.x
-	optionBox1.y = animal1.y - currentHeight/8
+	optionBox1.y = animal1.y - currentHeight/5
 	local optionBox2 = display.newImageRect( sceneGroup,
 										     sceneBuild[14],
 										     currentWidth/5, 
-										     currentHeight/16
+										     currentHeight/14
 										   )
 	optionBox2.x = animal2.x
-	optionBox2.y = animal2.y - currentHeight/8
+	optionBox2.y = animal2.y - currentHeight/5
 	-------------------------------------------------------------------------------------------------------
 	-- end front-end --
 	-------------------------------------------------------------------------------------------------------
