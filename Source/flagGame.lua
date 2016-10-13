@@ -69,6 +69,7 @@ local sceneBuild ={
 	"Assets/Images/Scene/16.png",
 	"Assets/Images/Scene/17.png",
 	"Assets/Images/Scene/18.BMP",
+	"Assets/Images/Scene/19.png",
 };
 
 local audioFiles = {
@@ -97,11 +98,11 @@ function scene:create( event )
 	local backgroundMusic = audio.loadStream(audioFiles[1])
 	local count = 0
 	local level1 = 6  -- 6 rounds
-	local speed1 = 1000
+	local speed1 = 5000
 	local speed2 = 1000
 	local flag
 	--background music, loop infinite, fadein in 5s
-    -- local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
+    local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
 	-- animal sprite --
 	local sheetDataCat =
 	{
@@ -167,12 +168,12 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	-- background placeholder
 	local background = display.newImageRect( sceneGroup,
-											 sceneBuild[1],
+											 sceneBuild[19],
 											 currentWidth, 
-											 currentHeight * 1
+											 currentHeight-190
 										   )
 	background.x = display.contentCenterX
-	background.y = display.contentCenterY 
+	background.y = display.contentCenterY
 
     -- screen split placeholder
 	local collumn = display.newImageRect( sceneGroup,
@@ -234,13 +235,13 @@ function scene:create( event )
 									   currentHeight/1.8
 									 )
 	pole.x = currentWidth * 1 / 3
-	pole.y = currentHeight - pole.height + 60
+	pole.y = currentHeight - pole.height + 80
 
 	-- animal 1 placeholder
 	local animal1 = display.newSprite(sceneGroup,mySheetCat,sequenceDataCat)
 	animal1:scale(0.5,0.5)
 	animal1.x = pole.x / 2 - 25
-	animal1.y = currentHeight - (animal1.height * 0.74)
+	animal1.y = pole.y + pole.height - animal1.height - 25
 	animal1:setSequence("idle")
 	animal1:play()
 
@@ -248,7 +249,7 @@ function scene:create( event )
 	local animal2 = display.newSprite(sceneGroup,mySheetCat,sequenceDataCat)
 	animal2:scale(-0.5,0.5)
 	animal2.x = pole.x + pole.x / 2 + 25
-	animal2.y = currentHeight - (animal1.height * 0.74)
+	animal2.y = pole.y + pole.height - animal1.height - 25
 	animal2:setSequence("idle")
 	animal2:play()
 		
@@ -256,14 +257,14 @@ function scene:create( event )
 	local optionBox1 = display.newImageRect( sceneGroup, 
 											 sceneBuild[14],
 											 currentWidth/5, 
-											 currentHeight/12
+											 currentHeight/16
 										   )
 	optionBox1.x = animal1.x
 	optionBox1.y = animal1.y - currentHeight/8
 	local optionBox2 = display.newImageRect( sceneGroup,
 										     sceneBuild[14],
 										     currentWidth/5, 
-										     currentHeight/12
+										     currentHeight/16
 										   )
 	optionBox2.x = animal2.x
 	optionBox2.y = animal2.y - currentHeight/8
@@ -284,11 +285,6 @@ function scene:create( event )
 		obj:play()
 	end
 	-------------------------------------------------------------------------------------------------------
-	-- temp = placeholder for all right side 
-	local temp = display.newImageRect(sceneGroup, sceneBuild[16],currentWidth * 1 / 3, currentHeight)
-	temp.x = collumn.x + collumn.x / 4
-	temp.y = display.contentCenterY
-	temp:setFillColor(0,0,0)
 	-- placeholder for road
 	local road = display.newImageRect(sceneGroup,sceneBuild[15],100,currentHeight)
 	road.x = collumn.x + collumn.x /4
@@ -331,6 +327,12 @@ function scene:create( event )
 		placeHolder.y = 150 + i * size
 		placeHolder:setFillColor(255,255,255,0.9)
 	end
+
+		-- temp = placeholder for all right side 
+	local temp = display.newImageRect(sceneGroup, sceneBuild[16],currentWidth * 1 / 3, currentHeight)
+	temp.x = collumn.x + collumn.x / 4
+	temp.y = display.contentCenterY
+	temp:setFillColor(0,0,0,0)
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
 	
@@ -491,8 +493,6 @@ function scene:create( event )
 				local sound1 = audio.play(ding_fx)
 				animal2:setSequence("happy")
 				animal2:play()
-				animal1:setSequence("sad")
-				animal1:play()
 				moveUpDown(animal3,count)
 			else
 				textTap(textBox2,"Wrong!")
@@ -501,8 +501,6 @@ function scene:create( event )
 				local sound2 = audio.play(lose_fx)
 				animal2:setSequence("sad")
 				animal2:play()
-				animal1:setSequence("happy")
-				animal1:play()
 				moveUpDown(animal3,count)
 			end
 			-- prepare for memory dump
