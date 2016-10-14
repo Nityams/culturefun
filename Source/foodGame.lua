@@ -9,6 +9,8 @@ local scene = composer.newScene()
 
 local function returnToMenu()
   composer.gotoScene( "Source.menu" )
+  composer.removeScene( "foodGame" )
+  audio.stop(1)
 end
 
 -- -----------------------------------------------------------------------------------
@@ -28,12 +30,21 @@ local sceneGroup
 local character_one
 local randomCountryNumber
 
+-- local closeScene  -- testing
+
 --creating main table
 local Countries = require "Countries"
 -- other scenes from the game:
 
 -- create()
 function scene:create( event )
+
+  -- Music test
+  local backgroundMusicChannel = audio.play(
+    audio.loadStream("Assets/Sounds/Whimsical-Popsicle.mp3"),
+    { channel1 = 1, loops =- 1, fadein = 5000 }
+  )
+
   sceneGroup = self.view
   currentWidth = display.contentWidth
   currentHeight = display.contentHeight
@@ -247,7 +258,6 @@ function scene:destroy( event )
 
   local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
-
 end
 
 -- -----------------------------------------------------------------------------------
