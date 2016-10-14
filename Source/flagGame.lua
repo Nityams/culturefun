@@ -220,9 +220,9 @@ function scene:create( event )
 	local collumn = display.newImageRect( sceneGroup,
 										  sceneBuild[13],
 										  currentWidth/8,
-										  currentHeight )
+										  currentHeight -175)
 	collumn.x = currentWidth * 2 / 3 
-	collumn.y = currentHeight / 2
+	collumn.y = display.contentCenterY+8
 
 	-- pause button placeholder
 	local pauseButton = display.newImageRect( sceneGroup,
@@ -376,7 +376,7 @@ function scene:create( event )
 			placeHolder.x = road.x + road.width + 10
 		end
 		placeHolder.y = 150 + i * size - 20
-		--placeHolder:setFillColor(255,255,255,0.9)
+		placeHolder:setFillColor(1,1,1,1)
 	end
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
