@@ -69,7 +69,7 @@ local sceneBuild ={
 	"Assets/Images/Scene/15.png",
 	"Assets/Images/Scene/16.png",
 	"Assets/Images/Scene/17.png",
-	"Assets/Images/Scene/18.BMP",
+	"Assets/Images/Scene/18.png",
 	"Assets/Images/Scene/19.png",
 	"Assets/Images/Scene/20.png",
 };
@@ -342,15 +342,21 @@ function scene:create( event )
 		obj:play()
 	end
 	-------------------------------------------------------------------------------------------------------
+		-- temp = placeholder for all right side 
+	local temp = display.newImageRect(sceneGroup, sceneBuild[1],currentWidth * 1 / 3, background.height+15)
+	temp.x = collumn.x + collumn.x / 4
+	temp.y = display.contentCenterY+8
+	--temp:setFillColor(0,0,0,0)
+
 	-- placeholder for road
-	local road = display.newImageRect(sceneGroup,sceneBuild[15],100,currentHeight)
+	local road = display.newImageRect(sceneGroup,sceneBuild[15],100,temp.height)
 	road.x = collumn.x + collumn.x /4
-	road.y = currentHeight/2
+	road.y = temp.y
 	-- placeholder for animal on the road
 	local animal3 = display.newSprite(sceneGroup,mySheetDog,sequenceDataDog)
 	animal3:scale(0.18,0.18)
 	animal3.x = road.x
-	animal3.y = currentHeight - (animal3.height * 0.28)
+	animal3.y = currentHeight - (animal3.height * 0.28) 
 	animal3:setSequence("idle")
 	animal3:play()
 	
@@ -359,37 +365,19 @@ function scene:create( event )
 	trophy.x = road.x
 	trophy.y = 140
 	
-	-- need to work on resolution for left.width + left.x
-	local leftRoad = display.newImageRect(sceneGroup, sceneBuild[17], 120, currentHeight)
-	leftRoad.x = 743
-	leftRoad.y = display.contentCenterY
-	leftRoad:setFillColor(255,255,255,1.0)
-	
-	-- need to work on resolution for right.width + right.x
-	local rightRoad = display.newImageRect(sceneGroup, sceneBuild[17],120, currentHeight)
-	rightRoad.x = road.x + road.width + 10
-	rightRoad.y = display.contentCenterY
-	rightRoad:setFillColor(255,255,255,1.0)
-	
 	-- monuments place holder
 	-- 80 -> 6 monuments -> 6 rounds
-	local size = 80
-	for i = 1, level1 do 
-		local placeHolder = display.newImageRect(sceneGroup, sceneBuild[18], size, size)
+	local size = 100
+	for i = 1, 5 do 
+		local placeHolder = display.newImageRect(sceneGroup, sceneBuild[18], size+10, size+10)
 		if i % 2 == 0 then 
-			placeHolder.x = leftRoad.x
+			placeHolder.x = road.x - road.width - 10
 		else
-			placeHolder.x = rightRoad.x
+			placeHolder.x = road.x + road.width + 10
 		end
-		placeHolder.y = 150 + i * size
-		placeHolder:setFillColor(255,255,255,0.9)
+		placeHolder.y = 150 + i * size - 20
+		--placeHolder:setFillColor(255,255,255,0.9)
 	end
-
-		-- temp = placeholder for all right side 
-	local temp = display.newImageRect(sceneGroup, sceneBuild[16],currentWidth * 1 / 3, currentHeight)
-	temp.x = collumn.x + collumn.x / 4
-	temp.y = display.contentCenterY
-	temp:setFillColor(0,0,0,0)
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
 	
