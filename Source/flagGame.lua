@@ -441,6 +441,7 @@ function scene:create( event )
 		-- if flag reaches bottom, count--
 		if obj.y >= pole.y+120 then
 			minusCount() 
+			monuments_placer(2)
 			moveUpDown(animal3,count)
 		end 
 		obj:removeSelf()
@@ -526,7 +527,7 @@ function scene:create( event )
 
 		-- fucntion for placing monument
 		-- need t implement used monument, array created: local usedMonument
-		local function monuments_placer(num)
+		function monuments_placer(num)
 			local randMonument = math.random(1,14)
 			for i,item in ipairs(mon_placeholders) do
 				if(num == 1 and 5-count == i) then
