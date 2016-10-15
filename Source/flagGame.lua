@@ -74,6 +74,23 @@ local sceneBuild ={
 	"Assets/Images/Scene/20.png",
 };
 
+local monumentAssets = {
+	"Assets/Images/Monument/Australian.png",
+	"Assets/Images/Monument/Brazil.png",
+	"Assets/Images/Monument/Chile.png",
+	"Assets/Images/Monument/China.png",
+	"Assets/Images/Monument/Egypt_Cairo.png",
+	"Assets/Images/Monument/France_Eiffel.png",
+	"Assets/Images/Monument/Germany_Berlin.png",
+	"Assets/Images/Monument/Italy_Pissa.png",
+	"Assets/Images/Monument/Japan.png",
+	"Assets/Images/Monument/Mexico.png",
+	"Assets/Images/Monument/Netherland.png",
+	"Assets/Images/Monument/Spain_Barcelona.png",
+	"Assets/Images/Monument/UK_BigBen.png",
+	"Assets/Images/Monument/USA_NY.png",
+};
+
 local audioFiles = {
 	"Assets/Sounds/Whimsical-Popsicle.mp3"	,
 	"Assets/Sounds/YAY_FX.mp3",
@@ -83,6 +100,7 @@ local audioFiles = {
 
 local function returnToMenu()
 	composer.gotoScene( "Source.menu" )
+	-- composer.removeScene( "flagGame" )
 end
 
 
@@ -220,7 +238,7 @@ function scene:create( event )
 	local collumn = display.newImageRect( sceneGroup,
 										  sceneBuild[13],
 										  currentWidth/8,
-										  currentHeight -175)
+										  currentHeight -173)
 	collumn.x = currentWidth * 2 / 3 
 	collumn.y = display.contentCenterY+8
 
@@ -343,7 +361,7 @@ function scene:create( event )
 	end
 	-------------------------------------------------------------------------------------------------------
 		-- temp = placeholder for all right side 
-	local temp = display.newImageRect(sceneGroup, sceneBuild[1],currentWidth * 1 / 3, background.height+15)
+	local temp = display.newImageRect(sceneGroup, sceneBuild[1],currentWidth * 1 / 3, background.height+16)
 	temp.x = collumn.x + collumn.x / 4
 	temp.y = display.contentCenterY+8
 	--temp:setFillColor(0,0,0,0)
@@ -367,6 +385,7 @@ function scene:create( event )
 	
 	-- monuments place holder
 	-- 80 -> 6 monuments -> 6 rounds
+	local mon_placeholders = {}
 	local size = 100
 	for i = 1, 5 do 
 		local placeHolder = display.newImageRect(sceneGroup, sceneBuild[18], size+10, size+10)
@@ -377,6 +396,7 @@ function scene:create( event )
 		end
 		placeHolder.y = 150 + i * size - 20
 		placeHolder:setFillColor(1,1,1,1)
+		table.insert(mon_placeholders,placeHolder)
 	end
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
@@ -501,7 +521,7 @@ function scene:create( event )
 		local ding_fx = audio.loadSound(audioFiles[3])
 		local lose_fx = audio.loadSound(audioFiles[4])
 		-- Event listener for text box 1
-		textBox1:addEventListener("tap", function()
+		optionBox1:addEventListener("tap", function()
 			if randomBox == 1 then
 				textTap(textBox1,"Correct!")
 				count = count + 1;
@@ -635,6 +655,8 @@ function scene:destroy( event )
 
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
+	-- composer.removeScene(sceneGroup)
+	audio.stop(1)
 end
 
 
