@@ -72,10 +72,11 @@ local sceneBuild ={
 	"Assets/Images/Scene/18.png",
 	"Assets/Images/Scene/19.png",
 	"Assets/Images/Scene/20.png",
+	"Assets/Images/Scene/21.png",
 };
 
 local monumentAssets = {
-	"Assets/Images/Monument/Australian.png",
+	"Assets/Images/Monument/Australia.png",
 	"Assets/Images/Monument/Brazil.png",
 	"Assets/Images/Monument/Chile.png",
 	"Assets/Images/Monument/China.png",
@@ -205,6 +206,16 @@ function scene:create( event )
 	--end background animation --
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
+	-- top border
+	local topBorder = display.newImageRect ( sceneGroup,
+											sceneBuild[21],
+											currentWidth,
+											300
+											)
+	topBorder.x = currentWidth/2;
+	topBorder.y = 0;
+	topBorder:setFillColor(1,1,1,0.7)
+
 	-- background placeholder
 	local background = display.newImageRect( sceneGroup,
 											 sceneBuild[19],
@@ -213,6 +224,16 @@ function scene:create( event )
 										   )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
+
+	-- top border
+	local botBorder = display.newImageRect ( sceneGroup,
+											sceneBuild[21],
+											currentWidth,
+											300
+											)
+	botBorder.x = currentWidth/2;
+	botBorder.y = background.height+255;
+	botBorder:setFillColor(1,1,1,0.7)
 
 	-- trees for background
 	local mySheetTree1 = graphics.newImageSheet("Assets/Images/Sprite/4.png", sheetDataTree1)
@@ -238,7 +259,7 @@ function scene:create( event )
 	local collumn = display.newImageRect( sceneGroup,
 										  sceneBuild[13],
 										  currentWidth/8,
-										  currentHeight -173)
+										  currentHeight-175)
 	collumn.x = currentWidth * 2 / 3 
 	collumn.y = display.contentCenterY+8
 
@@ -404,6 +425,7 @@ function scene:create( event )
 	-- back-end -- Left side of screen --
 	-------------------------------------------------------------------------------------------------------
 	local usedFlag = {}
+	local usedMonument = {}
 	local textBox1 -- text box for option 1
 	local textBox2 -- text box for option 2
 	local textBox3 -- text box for answer
@@ -501,6 +523,29 @@ function scene:create( event )
 		-- color for the text 
 		textBox1:setFillColor( 0, 0, 0 )
 		textBox2:setFillColor( 0, 0, 0 )
+
+		-- fucntion for placing monument
+		-- need t implement used monument, array created: local usedMonument
+		local function monuments_placer(num)
+			local randMonument = math.random(1,14)
+			for i,item in ipairs(mon_placeholders) do
+				if(num == 1 and 5-count == i) then
+					img = display.newImageRect( sceneGroup, 
+										   monumentAssets[randMonument],
+										   currentWidth/7+35,
+										   currentHeight/7+150
+										 )
+					img.x = item.x
+					img.y = item.y-40
+				elseif(num == 2 and 5-count == i) then
+					if img ~= nil then
+						img:removeSelf()
+						img = nil
+					end
+				end
+			end
+		end
+		-- end function for placing monument
 		
 		-- Event for textboxes --	
 		local function textTap( obj, value )
@@ -521,27 +566,25 @@ function scene:create( event )
 		local ding_fx = audio.loadSound(audioFiles[3])
 		local lose_fx = audio.loadSound(audioFiles[4])
 		-- Event listener for text box 1
-		optionBox1:addEventListener("tap", function()
+		textBox1:addEventListener("tap", function()
 			if randomBox == 1 then
 				textTap(textBox1,"Correct!")
+				monuments_placer(1)
 				count = count + 1;
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
 				local sound1 = audio.play(ding_fx)
 				animal1:setSequence("happy")
 				animal1:play()
-				--animal2:setSequence("sad")
-				--animal2:play()
 				moveUpDown(animal3,count)
 			else
 				textTap(textBox1,"Wrong!")
+				monuments_placer(2)
 				animationStop(flag)
 				minusCount()
 				local sound2 = audio.play(lose_fx)
 				animal1:setSequence("sad")
 				animal1:play()
-				--animal2:setSequence("happy")
-				--animal2:play()
 				moveUpDown(animal3,count)
 			end
 			-- prepare for memory dump
@@ -552,6 +595,7 @@ function scene:create( event )
 		textBox2:addEventListener("tap", function()
 			if randomBox ~= 1 then
 				textTap(textBox2,"Correct!")
+				monuments_placer(1)
 				count = count + 1;
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
@@ -561,6 +605,7 @@ function scene:create( event )
 				moveUpDown(animal3,count)
 			else
 				textTap(textBox2,"Wrong!")
+				monuments_placer(2)
 				animationStop(flag)
 				minusCount()
 				local sound2 = audio.play(lose_fx)
