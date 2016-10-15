@@ -119,9 +119,10 @@ function scene:create( event )
 	local backgroundMusic = audio.loadStream(audioFiles[1])
 	local count = 0
 	local level1 = 6  -- 6 rounds
-	local speed1 = 5000
+	local speed1 = 8000
 	local speed2 = 1000
 	local flag
+	local mon_placeholders = {}
 	--background music, loop infinite, fadein in 5s
     local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
 	-- animal sprite --
@@ -403,22 +404,6 @@ function scene:create( event )
 	local trophy = display.newImageRect(sceneGroup, sceneBuild[5], 46*1.5, 47*1.5)
 	trophy.x = road.x
 	trophy.y = 140
-	
-	-- monuments place holder
-	-- 80 -> 6 monuments -> 6 rounds
-	local mon_placeholders = {}
-	local size = 100
-	for i = 1, 5 do 
-		local placeHolder = display.newImageRect(sceneGroup, sceneBuild[18], size+10, size+10)
-		if i % 2 == 0 then 
-			placeHolder.x = road.x - road.width - 10
-		else
-			placeHolder.x = road.x + road.width + 10
-		end
-		placeHolder.y = 150 + i * size - 20
-		placeHolder:setFillColor(1,1,1,1)
-		table.insert(mon_placeholders,placeHolder)
-	end
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
 	
@@ -441,7 +426,7 @@ function scene:create( event )
 		-- if flag reaches bottom, count--
 		if obj.y >= pole.y+120 then
 			minusCount() 
-			monuments_placer(2)
+			monuments_placer(2,count)
 			moveUpDown(animal3,count)
 		end 
 		obj:removeSelf()
@@ -471,6 +456,20 @@ function scene:create( event )
 			y = pole.y * 0.7,
 			onComplete = animationEnd
 		})
+	end
+	-- monuments place holder
+	-- 80 -> 6 monuments -> 6 rounds
+	local size = 100
+	for i = 1, 5 do 
+		local placeHolder = display.newImageRect(sceneGroup, sceneBuild[18], size+10, size+10)
+		if i % 2 == 0 then 
+			placeHolder.x = road.x - road.width - 10
+		else
+			placeHolder.x = road.x + road.width + 10
+		end
+		placeHolder.y = 150 + i * size - 20
+		placeHolder:setFillColor(1,1,1,1)
+		table.insert(mon_placeholders,placeHolder)
 	end
 	-- random to choose the box 
 	local function startRound ()
@@ -524,13 +523,17 @@ function scene:create( event )
 		-- color for the text 
 		textBox1:setFillColor( 0, 0, 0 )
 		textBox2:setFillColor( 0, 0, 0 )
-
 		-- fucntion for placing monument
 		-- need t implement used monument, array created: local usedMonument
-		function monuments_placer(num)
+		function monuments_placer(num,num2)
 			local randMonument = math.random(1,14)
+			for i,item in ipairs(usedMonument) do
+				if randMonument == item then randMonument = math.random(1,14) end
+			end
+			--local img
 			for i,item in ipairs(mon_placeholders) do
-				if(num == 1 and 5-count == i) then
+				if(num == 1 and 6-num2 == i) then
+					print("INSERTING")
 					img = display.newImageRect( sceneGroup, 
 										   monumentAssets[randMonument],
 										   currentWidth/7+35,
@@ -538,10 +541,16 @@ function scene:create( event )
 										 )
 					img.x = item.x
 					img.y = item.y-40
-				elseif(num == 2 and 5-count == i) then
-					if img ~= nil then
+					print("INSERTED TO", i)
+					table.insert(usedMonument,randMonument)
+				elseif(num == 2 and 6-(num2+1) == i) then
+					print("REMOVING")
+					print("HERE1:",5-num2)
+					print("HERE2:",i)
+					if(img ~= nil)then
 						img:removeSelf()
 						img = nil
+						print("REMOVED")
 					end
 				end
 			end
@@ -570,8 +579,8 @@ function scene:create( event )
 		textBox1:addEventListener("tap", function()
 			if randomBox == 1 then
 				textTap(textBox1,"Correct!")
-				monuments_placer(1)
 				count = count + 1;
+				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
 				local sound1 = audio.play(ding_fx)
@@ -580,9 +589,9 @@ function scene:create( event )
 				moveUpDown(animal3,count)
 			else
 				textTap(textBox1,"Wrong!")
-				monuments_placer(2)
 				animationStop(flag)
 				minusCount()
+				monuments_placer(2,count)
 				local sound2 = audio.play(lose_fx)
 				animal1:setSequence("sad")
 				animal1:play()
@@ -596,8 +605,8 @@ function scene:create( event )
 		textBox2:addEventListener("tap", function()
 			if randomBox ~= 1 then
 				textTap(textBox2,"Correct!")
-				monuments_placer(1)
 				count = count + 1;
+				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
 				local sound1 = audio.play(ding_fx)
@@ -606,9 +615,9 @@ function scene:create( event )
 				moveUpDown(animal3,count)
 			else
 				textTap(textBox2,"Wrong!")
-				monuments_placer(2)
 				animationStop(flag)
 				minusCount()
+				monuments_placer(2,count)
 				local sound2 = audio.play(lose_fx)
 				animal2:setSequence("sad")
 				animal2:play()
