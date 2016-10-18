@@ -9,16 +9,15 @@ local scene = composer.newScene()
 
 local function returnToMenu()
   composer.gotoScene( "Source.menu" )
-  composer.removeScene( "foodGame" )
-  audio.stop(1)
+  composer.removeScene( "Source.foodGame" )
 end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
-local setbackground
+local setBackground
 local callCharacters
-local setfoods
+local setFoods
 local callGreetings
 local flagAnimation
 local startGame
@@ -39,7 +38,7 @@ local Countries = require "Countries"
 -- create()
 function scene:create( event )
 
-  -- Music test
+  -- Temporary Music
   local backgroundMusicChannel = audio.play(
     audio.loadStream("Assets/Sounds/Whimsical-Popsicle.mp3"),
     { channel1 = 1, loops =- 1, fadein = 5000 }
@@ -54,60 +53,56 @@ function scene:create( event )
   startGame()
 end
 
-local function killAll()
+local function resetGame()
   randomCountryNumber = 0
   secondRandom = 0
   path = nil
 end
 
 function startGame()
-  killAll()
+  resetGame()
   randomCountryNumber = math.random(1,10) -- selecting random country from Countries module /table
-  setbackground()
-  setfoods()
+  setBackground()
+  setFoods()
   callCharacters()
 end
 
-function setbackground()
-  local background = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/Background.png",currentWidth, currentHeight )
+function setBackground()
+  local background = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/Background2.jpg",currentWidth, currentHeight )
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  local replayButton = display.newImageRect( sceneGroup,
-    "Assets/Images/Scene/11.png",
-    currentWidth/20,
-    currentHeight/14
-  )
+  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/11.png", 50, 50 )
   replayButton.y = display.contentCenterY - display.contentCenterY/1.6
-  replayButton.x = display.contentCenterX + display.contentCenterX / 2
+  replayButton.x = display.contentCenterX + display.contentCenterX / 2 - 50
 
-  replayButton:addEventListener("tap",returnToMenu)
+  replayButton:addEventListener("tap", returnToMenu)
 end
 
-function setfoods()
+function setFoods()
   -- local randomCountryNumber = math.random(1,10) -- selecting random country from Countries module /table
   randomFood = math.random(1, 4) -- selecting random( out of 4) place in the food selection grid
   print("****** random grid :", randomFood)
   -- Setting random countries i.e, not the correct one on the food grid
 
-  secondRandom = (randomCountryNumber) % 10 +1 -- random country for food1
+  secondRandom = (randomCountryNumber) % 10 + 1 -- random country for food1
   path = Countries[secondRandom].flag
-  food1 = display.newImageRect(sceneGroup, path, currentWidth/5, currentHeight/5)
+  food1 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
   food1_name = Countries[secondRandom].name
 
-  secondRandom = (secondRandom) % 10 +1 -- random country for food 2
+  secondRandom = (secondRandom) % 10 + 1 -- random country for food 2
   path = Countries[secondRandom].flag
-  food2 = display.newImageRect(sceneGroup, path, currentWidth/5, currentHeight/5)
+  food2 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
   food2_name = Countries[secondRandom].name
 
-  secondRandom = (secondRandom ) % 10 +1 -- random country for food 3
+  secondRandom = (secondRandom ) % 10 + 1 -- random country for food 3
   path = Countries[secondRandom].flag
-  food3 = display.newImageRect(sceneGroup, path, currentWidth/5, currentHeight/5)
+  food3 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
   food3_name = Countries[secondRandom].name
 
-  secondRandom = (secondRandom ) % 10 +1 -- random country for food 4
+  secondRandom = (secondRandom ) % 10 + 1 -- random country for food 4
   path = Countries[secondRandom].flag
-  food4 = display.newImageRect(sceneGroup, path, currentWidth/5, currentHeight/5)
+  food4 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
   food4_name = Countries[secondRandom].name
 
   -- Setting the correct country on the random food grid
@@ -115,16 +110,16 @@ function setfoods()
   local correctPath = Countries[randomCountryNumber].flag
   print("******* correctPath: ", Countries[randomCountryNumber].name)
   if randomFood == 1 then
-    food1 = display.newImageRect(sceneGroup, correctPath, currentWidth/5, currentHeight/5)
+    food1 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food1_name = Countries[randomCountryNumber].name
   elseif randomFood == 2 then
-    food2 = display.newImageRect(sceneGroup, correctPath, currentWidth/5, currentHeight/5)
+    food2 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food2_name = Countries[randomCountryNumber].name
   elseif randomFood == 3 then
-    food3 = display.newImageRect(sceneGroup, correctPath, currentWidth/5, currentHeight/5)
+    food3 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food3_name = Countries[randomCountryNumber].name
   else
-    food4 = display.newImageRect(sceneGroup, correctPath, currentWidth/5, currentHeight/5)
+    food4 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food4_name = Countries[randomCountryNumber].name
   end
 
@@ -132,22 +127,22 @@ function setfoods()
 
   food1.alpha = 0; food2.alpha = 0; food3.alpha = 0; food4.alpha = 0;
   food1:scale(0,0); food2:scale(0,0); food3:scale(0,0); food4:scale(0,0);
-  food1.x = display.contentCenterX+ 50 ; food1.y = display.contentCenterY - display.contentCenterY/8
+  food1.x = display.contentCenterX + 50 ; food1.y = display.contentCenterY - display.contentCenterY / 8
   food2.x = food1.x + food1.width + 100; food2.y = food1.y
   food3.x = food1.x; food3.y = food1.y + food1.width
   food4.x = food2.x ; food4.y = food3.y
 
   -- setting the animation (pop up) for all the food in the grid
   local function food3Animation()
-    transition.to(food3, {time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food3Animation})
+    transition.to(food3, { time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food3Animation })
   end
   local function food4Animation()
-    transition.to(food4, {time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food3Animation})
+    transition.to(food4, { time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food3Animation })
   end
   local function food2Animation()
-    transition.to(food2, {time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food4Animation})
+    transition.to(food2, { time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food4Animation })
   end
-  transition.to(food1, {time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food2Animation})
+  transition.to(food1, { time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food2Animation })
 
   -- tap acrion listener and answer checker for all the foods in the grid
 
@@ -156,8 +151,6 @@ function setfoods()
       if food1_name == Countries[randomCountryNumber].name then
         print("yay yay yay - 1")
         eventRemover()
-        startGame()
-
       else
         print("nay nay nay - 1")
       end
@@ -167,8 +160,6 @@ function setfoods()
       if food2_name == Countries[randomCountryNumber].name then
         print("yay yay yay -2")
         eventRemover()
-        startGame()
-
       else
         print("nay nay nay - 2")
       end
@@ -178,8 +169,6 @@ function setfoods()
       if food3_name == Countries[randomCountryNumber].name then
         print("yay yay yay - 3" )
         eventRemover()
-        startGame()
-
       else
         print("nay nay nay - 3")
       end
@@ -189,7 +178,6 @@ function setfoods()
       if food4_name == Countries[randomCountryNumber].name then
         print("yay yay yay -4")
         eventRemover()
-        startGame()
       else
         print("nay nay nay - 4")
       end
@@ -201,6 +189,23 @@ function eventRemover()
   display.remove( food2 )
   display.remove( food3 )
   display.remove( food4 )
+  leaveCharacters()
+end
+
+function leaveCharacters()
+  -- character_one = display.newImage(sceneGroup,"Assets/Images/foodGame/boy.png")
+  display.remove( dialogBox )
+  transition.to(character_one, {
+    x = currentWidth/10 * -1,
+    time = 500,
+    alpha = 0,
+    transition = easing.outQuad,
+    onComplete = startGame
+  })
+end
+
+function test()
+  print("leave")
 end
 
 function callCharacters()
@@ -258,6 +263,8 @@ function scene:destroy( event )
 
   local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
+  audio.stop(1)
+
 end
 
 -- -----------------------------------------------------------------------------------
