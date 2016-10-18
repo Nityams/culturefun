@@ -193,7 +193,7 @@ function eventRemover()
 end
 
 function leaveCharacters()
-  -- character_one = display.newImage(sceneGroup,"Assets/Images/foodGame/boy.png")
+  -- character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/boy.png")
   display.remove( dialogBox )
   transition.to(character_one, {
     x = currentWidth/10 * -1,
@@ -209,7 +209,7 @@ function test()
 end
 
 function callCharacters()
-  character_one = display.newImage(sceneGroup,"Assets/Images/foodGame/boy.png")
+  character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/boy.png")
   character_one.y = display.contentCenterY
   character_one.x = 0
   transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
