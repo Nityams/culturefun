@@ -122,6 +122,9 @@ function scene:create( event )
 	local speed1 = 8000
 	local speed2 = 1000
 	local flag
+	local flagFlipping = false
+	local flipNearDone = false
+	local wantAnotherFlip = false
 	local mon_placeholders = {}
 	--background music, loop infinite, fadein in 5s
     local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
@@ -157,7 +160,7 @@ function scene:create( event )
 		}
 	};
 	local mySheetCat = graphics.newImageSheet("Assets/Images/Sprite/2.png", sheetDataCat)
-	
+
 	local sheetDataDog =
 	{
 		width = 547,
@@ -184,7 +187,7 @@ function scene:create( event )
 		},
 	};
 	local mySheetDog = graphics.newImageSheet("Assets/Images/Sprite/3.png", sheetDataDog)
-	-- end animal sprite -- 
+	-- end animal sprite --
 	-------------------------------------------------------------------------------------------------------
 	-- background animation --
 	local sheetDataTree1 =
@@ -220,7 +223,7 @@ function scene:create( event )
 	-- background placeholder
 	local background = display.newImageRect( sceneGroup,
 											 sceneBuild[19],
-											 currentWidth, 
+											 currentWidth,
 											 currentHeight-190
 										   )
 	background.x = display.contentCenterX
@@ -249,7 +252,7 @@ function scene:create( event )
 	-- platform placeholder
 	local platform1 = display.newImageRect( sceneGroup,
 											 sceneBuild[20],
-											 currentWidth, 
+											 currentWidth,
 											 currentHeight/15
 										   )
 	platform1.x = display.contentCenterX
@@ -261,28 +264,28 @@ function scene:create( event )
 										  sceneBuild[13],
 										  currentWidth/8,
 										  currentHeight-175)
-	collumn.x = currentWidth * 2 / 3 
+	collumn.x = currentWidth * 2 / 3
 	collumn.y = display.contentCenterY+8
 
 	-- pause button placeholder
 	local pauseButton = display.newImageRect( sceneGroup,
 										      sceneBuild[10],
-										      currentWidth/20, 
+										      currentWidth/20,
 										      currentHeight/14
 										    )
 	pauseButton.x = currentWidth / 20 --50
 	pauseButton.y = currentHeight / 5 --150
 
 	-- replay button placeholder
-	local replayButton = display.newImageRect( sceneGroup, 
-											   sceneBuild[11], 
-											   currentWidth/20, 
+	local replayButton = display.newImageRect( sceneGroup,
+											   sceneBuild[11],
+											   currentWidth/20,
 											   currentHeight/14
 											 )
 	replayButton.x = pauseButton.x
 	replayButton.y = pauseButton.y + currentWidth / 16
 
-	-- pause/play event 
+	-- pause/play event
 	-- temp2 store the values to decide play/pause
 	-- need to implement overlay when pause to stop all interactions with gameplay
 	local temp2 = 0
@@ -349,18 +352,18 @@ function scene:create( event )
 	animal1:addEventListener("tap",pushCat1)
 	animal2:addEventListener("tap",pushCat2)
 	-- end physics test
-		
-	-- place holders for answer text 
-	local optionBox1 = display.newImageRect( sceneGroup, 
+
+	-- place holders for answer text
+	local optionBox1 = display.newImageRect( sceneGroup,
 											 sceneBuild[14],
-											 currentWidth/5, 
+											 currentWidth/5,
 											 currentHeight/14
 										   )
 	optionBox1.x = animal1.x
 	optionBox1.y = animal1.y - currentHeight/5
 	local optionBox2 = display.newImageRect( sceneGroup,
 										     sceneBuild[14],
-										     currentWidth/5, 
+										     currentWidth/5,
 										     currentHeight/14
 										   )
 	optionBox2.x = animal2.x
@@ -368,7 +371,7 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	-- end front-end --
 	-------------------------------------------------------------------------------------------------------
-	
+
 	-- right side of screen --
 	-------------------------------------------------------------------------------------------------------
 	local function moveUpDown(obj,num)
@@ -382,7 +385,7 @@ function scene:create( event )
 		obj:play()
 	end
 	-------------------------------------------------------------------------------------------------------
-		-- temp = placeholder for all right side 
+		-- temp = placeholder for all right side
 	local temp = display.newImageRect(sceneGroup, sceneBuild[1],currentWidth * 1 / 3, background.height+16)
 	temp.x = collumn.x + collumn.x / 4
 	temp.y = display.contentCenterY+8
@@ -396,17 +399,17 @@ function scene:create( event )
 	local animal3 = display.newSprite(sceneGroup,mySheetDog,sequenceDataDog)
 	animal3:scale(0.18,0.18)
 	animal3.x = road.x
-	animal3.y = currentHeight - (animal3.height * 0.28) 
+	animal3.y = currentHeight - (animal3.height * 0.28)
 	animal3:setSequence("idle")
 	animal3:play()
-	
+
 	-- place holder for trophy
 	local trophy = display.newImageRect(sceneGroup, sceneBuild[5], 46*1.5, 47*1.5)
 	trophy.x = road.x
 	trophy.y = 140
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
-	
+
 	-- back-end -- Left side of screen --
 	-------------------------------------------------------------------------------------------------------
 	local usedFlag = {}
@@ -414,21 +417,21 @@ function scene:create( event )
 	local textBox1 -- text box for option 1
 	local textBox2 -- text box for option 2
 	local textBox3 -- text box for answer
-	
+
 	-- function to decrease the Count
 	local function minusCount()
 		if count > 0 then
 			count = count - 1
 		end
 	end
-	-- function for flags transition + round control	
+	-- function for flags transition + round control
 	local function cleanUP( obj )
 		-- if flag reaches bottom, count--
 		if obj.y >= pole.y+120 then
-			minusCount() 
+			minusCount()
 			monuments_placer(2,count)
 			moveUpDown(animal3,count)
-		end 
+		end
 		obj:removeSelf()
 	    onComplete = startGame()
 	end
@@ -452,7 +455,7 @@ function scene:create( event )
 	local function animationStart( obj )
 		transition.to(obj,
 		{
-			time = speed2, 
+			time = speed2,
 			y = pole.y * 0.7,
 			onComplete = animationEnd
 		})
@@ -460,9 +463,9 @@ function scene:create( event )
 	-- monuments place holder
 	-- 80 -> 6 monuments -> 6 rounds
 	local size = 100
-	for i = 1, 5 do 
+	for i = 1, 5 do
 		local placeHolder = display.newImageRect(sceneGroup, sceneBuild[18], size+10, size+10)
-		if i % 2 == 0 then 
+		if i % 2 == 0 then
 			placeHolder.x = road.x - road.width - 10
 		else
 			placeHolder.x = road.x + road.width + 10
@@ -471,13 +474,50 @@ function scene:create( event )
 		placeHolder:setFillColor(1,1,1,1)
 		table.insert(mon_placeholders,placeHolder)
 	end
-	-- random to choose the box 
+	local runFlipAnimation
+	local function finishFlipAnimation( obj )
+		transition.resume(obj)
+		flagFlipping = false
+		flipNearDone = false
+		if wantAnotherFlip then
+			runFlipAnimation(obj)
+		end
+		wantAnotherFlip = false
+	end
+	local function runReverseFlipAnimation( obj )
+		flipNearDone = true
+		transition.scaleTo(obj,
+		{
+			time = 250,
+			xScale = 1,
+			onComplete = function() finishFlipAnimation(obj) end,
+			transition = easing.outCirc
+		})
+	end
+	runFlipAnimation = function( obj )
+		if flagFlipping then
+			if flipNearDone then
+				wantAnotherFlip = true
+			end
+			return
+		end
+		flagFlipping = true
+		transition.pause(obj)
+		transition.scaleTo(obj,
+		{
+			time = 250,
+			xScale = 0.01,
+			onComplete = function() runReverseFlipAnimation(obj) end,
+			transition = easing.inCirc
+		})
+	end
+	-- random to choose the box
 	local function startRound ()
 		local randomFlag = math.random(1,12)
 		for i,key in ipairs(usedFlag) do
 			if countryNames[randomFlag] == key then randomFlag = math.random(1,12) end
 		end
-		flag = display.newImageRect( sceneGroup, 
+		flag = display.newImageRect( sceneGroup,
 										   countryFiles[randomFlag],
 										   currentWidth/7+35,
 										   currentHeight/7+35
@@ -498,7 +538,7 @@ function scene:create( event )
 			end
 		end
 		-- random placer
-		if randomBox == 1 then 
+		if randomBox == 1 then
 			box1 = rightAnswer
 			box2 = wrongAnswer
 		else
@@ -506,21 +546,21 @@ function scene:create( event )
 			box2 = rightAnswer
 		end
 		-- text box to hold the answer texts
-		textBox1 = display.newText( sceneGroup, 
+		textBox1 = display.newText( sceneGroup,
 										  box1,
-										  optionBox1.x, 
-										  optionBox1.y, 
-										  native.systemFont, 33 
-										)
-
-		textBox2 = display.newText( sceneGroup, 
-										  box2, 
-										  optionBox2.x, 
-										  optionBox2.y, 
+										  optionBox1.x,
+										  optionBox1.y,
 										  native.systemFont, 33
 										)
 
-		-- color for the text 
+		textBox2 = display.newText( sceneGroup,
+										  box2,
+										  optionBox2.x,
+										  optionBox2.y,
+										  native.systemFont, 33
+										)
+
+		-- color for the text
 		textBox1:setFillColor( 0, 0, 0 )
 		textBox2:setFillColor( 0, 0, 0 )
 		-- fucntion for placing monument
@@ -534,7 +574,7 @@ function scene:create( event )
 			for i,item in ipairs(mon_placeholders) do
 				if(num == 1 and 6-num2 == i) then
 					print("INSERTING")
-					img = display.newImageRect( sceneGroup, 
+					img = display.newImageRect( sceneGroup,
 										   monumentAssets[randMonument],
 										   currentWidth/7+35,
 										   currentHeight/7+150
@@ -556,14 +596,14 @@ function scene:create( event )
 			end
 		end
 		-- end function for placing monument
-		
-		-- Event for textboxes --	
+
+		-- Event for textboxes --
 		local function textTap( obj, value )
 			obj:removeSelf()
-			textBox3 = display.newText( sceneGroup, 
-								   value, 
-							  	   obj.x, 
-								   obj.y, 
+			textBox3 = display.newText( sceneGroup,
+								   value,
+							  	   obj.x,
+								   obj.y,
 								   native.systemFont, 44
 								 )
 			if obj == textBox1 then
@@ -572,7 +612,7 @@ function scene:create( event )
 				textBox1:removeSelf()
 			end
 		end
-		-- load sound fx 
+		-- load sound fx
 		local ding_fx = audio.loadSound(audioFiles[3])
 		local lose_fx = audio.loadSound(audioFiles[4])
 		-- Event listener for text box 1
@@ -627,10 +667,13 @@ function scene:create( event )
 			textBox1 = nil
 			textBox2 = nil
 		end)
+		flag:addEventListener("tap", function()
+			runFlipAnimation(flag)
+		end)
 		-- prepare for memory dump
 		textBox3 = nil
 		animationStart(flag)
-	end 
+	end
 	-------------------------------------------------------------------------------------------------------
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
@@ -651,7 +694,7 @@ function scene:create( event )
 		end
 		if textBox3 ~= nil then
 			textBox3:removeSelf()
-		end 
+		end
 		-- check to start new round
 		if count ~= level1 then
 			startRound()
