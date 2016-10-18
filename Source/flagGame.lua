@@ -711,7 +711,7 @@ function scene:destroy( event )
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
 	-- composer.removeScene(sceneGroup)
-	audio.stop(1)
+	-- audio.stop(1)
 end
 
 
