@@ -513,6 +513,7 @@ function scene:create( event )
 	end
 	-- random to choose the box
 	local function startRound ()
+		math.randomseed(os.time())
 		local randomFlag = math.random(1,12)
 		for i,key in ipairs(usedFlag) do
 			if countryNames[randomFlag] == key then randomFlag = math.random(1,12) end
