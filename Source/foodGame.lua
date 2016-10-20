@@ -110,15 +110,19 @@ function setFoods()
   local correctPath = Countries[randomCountryNumber].flag
   print("******* correctPath: ", Countries[randomCountryNumber].name)
   if randomFood == 1 then
+    food1:removeSelf()
     food1 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food1_name = Countries[randomCountryNumber].name
   elseif randomFood == 2 then
+    food2:removeSelf()
     food2 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food2_name = Countries[randomCountryNumber].name
   elseif randomFood == 3 then
+    food3:removeSelf()
     food3 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food3_name = Countries[randomCountryNumber].name
   else
+    food4:removeSelf()
     food4 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food4_name = Countries[randomCountryNumber].name
   end
