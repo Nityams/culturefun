@@ -126,8 +126,6 @@ function scene:create( event )
 	local flipNearDone = false
 	local wantAnotherFlip = false
 	local mon_placeholders = {}
-	--background music, loop infinite, fadein in 5s
-    local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
 	-- animal sprite --
 	local sheetDataCat =
 	{
@@ -673,6 +671,9 @@ function scene:create( event )
 		-- prepare for memory dump
 		textBox3 = nil
 		animationStart(flag)
+
+		--background music, loop infinite, fadein in 5s
+	    local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
 	end
 	-------------------------------------------------------------------------------------------------------
 	-- End event for textboxes --
