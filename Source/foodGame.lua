@@ -8,6 +8,7 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 
 local function returnToMenu()
+
   composer.gotoScene( "Source.menu" )
   composer.removeScene( "Source.foodGame" )
 end
@@ -267,7 +268,7 @@ function scene:destroy( event )
 
   local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
-  audio.stop(1)
+  audio.stop()
 
 end
 

@@ -1,6 +1,9 @@
 
 local composer = require( "composer" )
 
+
+local Countries = require "Countries"
+
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -8,13 +11,19 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local function gotoMinigame( name )
-	local minigameSourceFile = "Source." .. name
-	composer.removeScene( minigameSourceFile )
-	composer.gotoScene( minigameSourceFile )
+local function returnToMenu()
+	composer.gotoScene( "Source.menu" )
 end
 
-
+local function gotoGame()
+	composer.gotoScene("Source.foodGame")
+	composer.removeScene( "Source.foodIntro")
+end
+--local bellSound = audio.loadStream("Assets/Sounds/door_bell.wav")
+local function bellsound()
+	audio.play(audio.loadStream("Assets/Sounds/door_bell.wav"),
+	{ channel1 = 2, loops =0, fadein =500  })
+end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -24,35 +33,14 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
+	local background = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/Intro.png", display.contentWidth, display.contentHeight )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
+	background.alpha = 0
 
-	local background = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
-	background:setFillColor( 1, 1, 1 )
+	transition.to( background, { time=800, alpha=1,  y=centerY, x=centerX, onComplete =bellsound})
 
-	local logo = display.newImageRect( sceneGroup, "Assets/Images/How_In_The_World.png", 323, 319 )
-	logo.x = display.contentCenterX
-	logo.y = display.contentCenterY
 
-	local flagButton = display.newText( sceneGroup, "Play Flag Game", display.contentCenterX, 150, native.systemFont, 44 )
-	flagButton:setFillColor( 0.4, 0.4, 0.4 )
-	local foodButton = display.newText( sceneGroup, "Play Food Game", display.contentCenterX, display.contentHeight - 150, native.systemFont, 44 )
-	foodButton:setFillColor( 0.4, 0.4, 0.4 )
-	local game3Button = display.newText( sceneGroup, "Play Game 3", 200, display.contentCenterY, native.systemFont, 44 )
-	game3Button:setFillColor( 0.4, 0.4, 0.4 )
-	local game4Button = display.newText( sceneGroup, "Play Game 4", display.contentWidth - 200, display.contentCenterY, native.systemFont, 44 )
-	game4Button:setFillColor( 0.4, 0.4, 0.4 )
-
-	flagButton:addEventListener( "tap", function()
-		gotoMinigame( "flagGame" )
-	end)
-	foodButton:addEventListener( "tap", function()
-		gotoMinigame( "foodIntro" )
-	end)
-	game3Button:addEventListener( "tap", function()
-		gotoMinigame( "game3" )
-	end)
-	game4Button:addEventListener( "tap", function()
-		gotoMinigame( "game4" )
-	end)
 end
 
 
@@ -68,6 +56,8 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
+		-- In two seconds return to the menu
+		timer.performWithDelay( 2000, gotoGame )
 	end
 end
 
@@ -93,6 +83,7 @@ function scene:destroy( event )
 
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
+
 
 end
 
