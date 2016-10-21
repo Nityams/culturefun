@@ -16,7 +16,7 @@ local minigames = {
 };
 
 local function removeMinigames()
-	for i,game in ipairs(minigames)
+	for i,game in ipairs(minigames) do
 		composer.removeScene( game )
 	end
 end
