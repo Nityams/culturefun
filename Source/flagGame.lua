@@ -104,6 +104,8 @@ local function returnToMenu()
 	-- composer.removeScene( "flagGame" )
 end
 
+local backgroundMusic
+local backgroundMusicChannel
 
 
 -- -----------------------------------------------------------------------------------
@@ -116,7 +118,7 @@ function scene:create( event )
 	local sceneGroup = self.view
 	local currentWidth = display.contentWidth
 	local currentHeight = display.contentHeight
-	local backgroundMusic = audio.loadStream(audioFiles[1])
+	backgroundMusic = audio.loadStream(audioFiles[1])
 	local count = 0
 	local level1 = 6  -- 6 rounds
 	local speed1 = 8000
@@ -671,9 +673,6 @@ function scene:create( event )
 		-- prepare for memory dump
 		textBox3 = nil
 		animationStart(flag)
-
-		--background music, loop infinite, fadein in 5s
-	    local backgroundMusicChannel = audio.play(backgroundMusic,{channel1=1,loops=-1,fadein=5000})
 	end
 	-------------------------------------------------------------------------------------------------------
 	-- End event for textboxes --
@@ -724,6 +723,9 @@ function scene:show( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
+		--background music, loop infinite, fadein in 5s
+	    backgroundMusicChannel = audio.play(backgroundMusic,{loops=-1,fadein=5000})
+
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 		-- In two seconds return to the menu
@@ -741,6 +743,9 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
+
+		audio.stop( backgroundMusicChannel )
+
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		-- this remove the scene completely ?
