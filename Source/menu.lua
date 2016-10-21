@@ -8,9 +8,21 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
+local minigames = {
+	"Source.flagGame",
+	"Source.foodGame",
+	"Source.game3",
+	"Source.game4"
+};
+
+local function removeMinigames()
+	for i,game in ipairs(minigames) do
+		composer.removeScene( game )
+	end
+end
+
 local function gotoMinigame( name )
 	local minigameSourceFile = "Source." .. name
-	composer.removeScene( minigameSourceFile )
 	composer.gotoScene( minigameSourceFile )
 end
 
@@ -68,6 +80,7 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
+		removeMinigames()
 	end
 end
 
