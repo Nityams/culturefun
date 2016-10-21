@@ -22,7 +22,7 @@ end
 --local bellSound = audio.loadStream("Assets/Sounds/door_bell.wav")
 local function bellsound()
 	audio.play(audio.loadStream("Assets/Sounds/door_bell.wav"),
-	{ channel1 = 1, loops =0, fadein =500  })
+	{ channel1 = 2, loops =0, fadein =500  })
 end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -83,6 +83,7 @@ function scene:destroy( event )
 
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
+
 
 end
 
