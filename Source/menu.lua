@@ -8,9 +8,21 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
+local minigames = {
+	"Source.flagGame",
+	"Source.foodGame",
+	"Source.game3",
+	"Source.game4"
+};
+
+local function removeMinigames()
+	for i,game in ipairs(minigames)
+		composer.removeScene( game )
+	end
+end
+
 local function gotoMinigame( name )
 	local minigameSourceFile = "Source." .. name
-	composer.removeScene( minigameSourceFile )
 	composer.gotoScene( minigameSourceFile )
 end
 
@@ -24,7 +36,7 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
-	
+
 	local background = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor( 1, 1, 1 )
 
@@ -68,6 +80,7 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
+		removeMinigames()
 	end
 end
 
