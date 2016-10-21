@@ -315,7 +315,7 @@ function scene:create( event )
 	-- flag pole placeholder
 	local pole = display.newImageRect( sceneGroup,
 									   sceneBuild[2],
-									   currentWidth/10,
+									   currentWidth/17,
 									   currentHeight/1.8
 									 )
 	pole.x = currentWidth * 1 / 3
@@ -448,7 +448,7 @@ function scene:create( event )
 		transition.to(obj ,
 		{
 			time = speed1,
-		    y = pole.y * 1.3,
+		    y = pole.y * 1.32,
 		    onComplete = cleanUP
 		})
 	end
