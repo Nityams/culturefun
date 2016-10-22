@@ -23,12 +23,42 @@ local callGreetings
 local flagAnimation
 local startGame
 local eventRemover
+local showScore
 
 local currentWidth
 local currentHeight
 local sceneGroup
 local character_one
 local randomCountryNumber
+local score = 0
+
+
+--
+-- local sheetTimer = {
+--   width = 276,
+--   height = 276,
+--   numFrames = 4,
+--   sheetContentWidth = 1345,
+--   sheetContentHeight = 1010
+-- };
+-- local sequenceTimer = {
+--   {
+--     name = "1",
+--     frame ={1},
+--     loopCount = 0
+--   },
+--   {
+--     name = "2",
+--     frame ={4},
+--     loopCount = 0
+--   },
+--   {
+--     name = "1",
+--     frame ={1},
+--     loopCount = 0
+--   },
+-- };
+-- local mySheetTimer = graphics.newImageSheet("Assets/Images/FoodGame/timer/timer.png", sheetTimer)
 
 -- local closeScene  -- testing
 
@@ -66,6 +96,28 @@ function startGame()
   setBackground()
   setFoods()
   callCharacters()
+  showScore()
+  --
+  -- local time1 = display.newSprite(sceneGroup,mySheetTimer,sequenceTimer)
+  -- time1.x = display.contentCenterX + display.contentCenterX /2
+  -- time1.y = display.contentCenterY - display.contentCenterY /2
+  -- time1:setSequence("1")
+  -- time1:play()
+end
+
+function showScore()
+    --local scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png",  currentWidth/20,currentHeight/20)
+    if score ==1 then
+        scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/1.png",currentWidth/2, currentHeight/2)
+    elseif score >= 2 then
+        scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/2.png",currentWidth/2, currentHeight/2)
+    else
+        scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png",currentWidth/2, currentHeight/2)
+    end                                                                          -- end
+    scoreCounter.x = display.contentCenterX - display.contentCenterX /2
+    scoreCounter.y = display.contentCenterY + display.contentCenterY /2
+    scoreCounter:scale(0.1,0.1)
+
 end
 
 function setBackground()
@@ -78,6 +130,11 @@ function setBackground()
   replayButton.x = display.contentCenterX + display.contentCenterX / 2 - 50
 
   replayButton:addEventListener("tap", returnToMenu)
+
+  local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/10.png", 50 , 50 )
+  pauseButton.y = display.contentCenterY - display.contentCenterY/1.6
+  pauseButton.x = display.contentCenterX + display.contentCenterX / 2 - 150
+
 end
 
 function setFoods()
@@ -154,6 +211,7 @@ function setFoods()
   food1:addEventListener("tap", function ()
       print("*** food1 pressed, food1 is ", food1_name, " and the answer is ", Countries[randomCountryNumber].name)
       if food1_name == Countries[randomCountryNumber].name then
+        score  = score + 1
         print("yay yay yay - 1")
         eventRemover()
       else
@@ -163,6 +221,7 @@ function setFoods()
   food2:addEventListener("tap", function ()
       print("*** food2 pressed, food2 is ", food2_name, " and the answer is ", Countries[randomCountryNumber].name)
       if food2_name == Countries[randomCountryNumber].name then
+        score  = score + 1
         print("yay yay yay -2")
         eventRemover()
       else
@@ -172,6 +231,7 @@ function setFoods()
   food3:addEventListener("tap", function ()
       print("*** food3 pressed, food3 is ", food3_name, " and the answer is ", Countries[randomCountryNumber].name)
       if food3_name == Countries[randomCountryNumber].name then
+        score  = score + 1
         print("yay yay yay - 3" )
         eventRemover()
       else
@@ -181,6 +241,7 @@ function setFoods()
   food4:addEventListener("tap", function ()
       print("*** food4 pressed, food4 is ", food4_name, " and the answer is ", Countries[randomCountryNumber].name)
       if food4_name == Countries[randomCountryNumber].name then
+        score  = score + 1
         print("yay yay yay -4")
         eventRemover()
       else
