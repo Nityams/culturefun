@@ -7,12 +7,6 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local function returnToMenu()
-
-  composer.gotoScene( "Source.menu" )
-  composer.removeScene( "Source.foodGame" )
-end
-
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -23,7 +17,11 @@ local callGreetings
 local flagAnimation
 local startGame
 local eventRemover
-local showScore
+local checkScore
+local checkStar
+local correctAnswer
+
+local foodGroup
 
 local currentWidth
 local currentHeight
@@ -31,36 +29,45 @@ local sceneGroup
 local character_one
 local randomCountryNumber
 local score = 0
+local star1
+local star2
+local star3
 
+local function returnToMenu()
+
+  composer.gotoScene( "Source.menu" )
+  composer.removeScene( "Source.foodGame" )
+  foodGroup:removeSelf()
+end
 
 --
 -- local sheetTimer = {
---   width = 276,
---   height = 276,
---   numFrames = 4,
---   sheetContentWidth = 1345,
---   sheetContentHeight = 1010
+-- width = 276,
+-- height = 276,
+-- numFrames = 4,
+-- sheetContentWidth = 1345,
+-- sheetContentHeight = 1010
 -- };
 -- local sequenceTimer = {
---   {
---     name = "1",
---     frame ={1},
---     loopCount = 0
---   },
---   {
---     name = "2",
---     frame ={4},
---     loopCount = 0
---   },
---   {
---     name = "1",
---     frame ={1},
---     loopCount = 0
---   },
+-- {
+-- name = "1",
+-- frame ={1},
+-- loopCount = 0
+-- },
+-- {
+-- name = "2",
+-- frame ={4},
+-- loopCount = 0
+-- },
+-- {
+-- name = "1",
+-- frame ={1},
+-- loopCount = 0
+-- },
 -- };
 -- local mySheetTimer = graphics.newImageSheet("Assets/Images/FoodGame/timer/timer.png", sheetTimer)
 
--- local closeScene  -- testing
+-- local closeScene -- testing
 
 --creating main table
 local Countries = require "Countries"
@@ -70,14 +77,15 @@ local Countries = require "Countries"
 function scene:create( event )
 
   -- Temporary Music
-  local backgroundMusicChannel = audio.play(
-    audio.loadStream("Assets/Sounds/Whimsical-Popsicle.mp3"),
-    { channel1 = 1, loops =- 1, fadein = 5000 }
-  )
+  -- local backgroundMusicChannel = audio.play(
+  -- audio.loadStream("Assets/Sounds/Whimsical-Popsicle.mp3"),
+  -- { channel1 = 1, loops =- 1, fadein = 5000 }
+  -- )
 
   sceneGroup = self.view
   currentWidth = display.contentWidth
   currentHeight = display.contentHeight
+  foodGroup = display.newGroup()
   -- `Code here runs when the scene is first created but has not yet appeared on screen
 
   --
@@ -96,7 +104,7 @@ function startGame()
   setBackground()
   setFoods()
   callCharacters()
-  showScore()
+
   --
   -- local time1 = display.newSprite(sceneGroup,mySheetTimer,sequenceTimer)
   -- time1.x = display.contentCenterX + display.contentCenterX /2
@@ -105,35 +113,126 @@ function startGame()
   -- time1:play()
 end
 
-function showScore()
-    --local scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png",  currentWidth/20,currentHeight/20)
-    if score ==1 then
-        scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/1.png",currentWidth/2, currentHeight/2)
-    elseif score >= 2 then
-        scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/2.png",currentWidth/2, currentHeight/2)
-    else
-        scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png",currentWidth/2, currentHeight/2)
-    end                                                                          -- end
-    scoreCounter.x = display.contentCenterX - display.contentCenterX /2
-    scoreCounter.y = display.contentCenterY + display.contentCenterY /2
-    scoreCounter:scale(0.1,0.1)
-
+local function newFoods()
+  resetGame()
+  randomCountryNumber = math.random(1,10)
+  setFoods()
+  callCharacters()
 end
 
 function setBackground()
-  local background = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/Background2.jpg",currentWidth, currentHeight )
+
+  local background = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/Background4.png",currentWidth, currentHeight )
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
   local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/11.png", 50, 50 )
-  replayButton.y = display.contentCenterY - display.contentCenterY/1.6
-  replayButton.x = display.contentCenterX + display.contentCenterX / 2 - 50
+  replayButton.y = display.contentCenterY - display.contentCenterY/1.5
+  replayButton.x = display.contentCenterX - display.contentCenterX / 2 - 50
 
   replayButton:addEventListener("tap", returnToMenu)
 
   local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/10.png", 50 , 50 )
-  pauseButton.y = display.contentCenterY - display.contentCenterY/1.6
-  pauseButton.x = display.contentCenterX + display.contentCenterX / 2 - 150
+  pauseButton.y = replayButton.y
+  pauseButton.x = replayButton.x - 100
+  -- pauseButton:addEventListener("tap", function()
+  -- audio.stop() end)
+
+  local oven = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/oven.png", currentWidth, currentHeight)
+  oven.x = display.contentCenterX - display.contentCenterX /2
+  oven.y = display.contentCenterY + display.contentCenterY /1.8
+  oven:scale(0.5,0.22)
+
+  local foodBack= display.newImageRect(sceneGroup, "Assets/Images/FoodGame/foodBack.png", currentWidth, currentHeight)
+  foodBack.x = display.contentCenterX + display.contentCenterX /2
+  foodBack.y = display.contentCenterY + replayButton.y/2
+  foodBack:scale(0.5,0.58)
+  checkScore()
+
+end
+
+function checkScore()
+  --local scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png", currentWidth/20,currentHeight/20)
+  scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png",currentWidth/2, currentHeight/2)
+  if score%12 == 1 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/1.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 2 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/2.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 3 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/3.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 4 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/4.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 5 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/5.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 6 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/6.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 7 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/7.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 8 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/8.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 9 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/9.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 10 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/10.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 11 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/11.png",currentWidth/2, currentHeight/2)
+  elseif score%12 == 0 and score >1 then
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/12.png",currentWidth/2, currentHeight/2)
+  else
+    scoreCounter:removeSelf()
+    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png",currentWidth/2, currentHeight/2)
+  end -- end
+  scoreCounter.x = display.contentCenterX - display.contentCenterX /2+6
+  scoreCounter.y = display.contentCenterY + display.contentCenterY /2
+  scoreCounter:scale(0.19,0.19)
+  checkStar()
+end
+
+function checkStar()
+  star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
+  star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
+  star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
+  if score > 36 then
+    display.remove( star1 )
+    isplay.remove( star2 )
+    isplay.remove( star3 )
+    star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
+    star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
+    star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
+  elseif score > 24 then
+    display.remove( star1 )
+    display.remove( star2 )
+    star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
+    star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
+  elseif score > 12 then
+    display.remove( star1 )
+    star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
+  else
+  end
+  star1.x = display.contentCenterX + display.contentCenterX /2 - 150
+  star1.y = display.contentCenterY - display.contentCenterY/1.5 + 15
+
+  star2.x = display.contentCenterX + display.contentCenterX /2
+  star2.y = display.contentCenterY - display.contentCenterY/1.5+ 15
+
+  star3.x = display.contentCenterX + display.contentCenterX /2 + 150
+  star3.y = display.contentCenterY - display.contentCenterY/1.5+ 15
+
+  star1:scale(0.5,0.5)
+  star2:scale(0.5,0.5)
+  star3:scale(0.5,0.5)
 
 end
 
@@ -145,22 +244,22 @@ function setFoods()
 
   secondRandom = (randomCountryNumber) % 10 + 1 -- random country for food1
   path = Countries[secondRandom].flag
-  food1 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
+  food1 = display.newImageRect(foodGroup, path, currentWidth / 5, currentHeight / 5)
   food1_name = Countries[secondRandom].name
 
   secondRandom = (secondRandom) % 10 + 1 -- random country for food 2
   path = Countries[secondRandom].flag
-  food2 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
+  food2 = display.newImageRect(foodGroup, path, currentWidth / 5, currentHeight / 5)
   food2_name = Countries[secondRandom].name
 
   secondRandom = (secondRandom ) % 10 + 1 -- random country for food 3
   path = Countries[secondRandom].flag
-  food3 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
+  food3 = display.newImageRect(foodGroup, path, currentWidth / 5, currentHeight / 5)
   food3_name = Countries[secondRandom].name
 
   secondRandom = (secondRandom ) % 10 + 1 -- random country for food 4
   path = Countries[secondRandom].flag
-  food4 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
+  food4 = display.newImageRect(foodGroup, path, currentWidth / 5, currentHeight / 5)
   food4_name = Countries[secondRandom].name
 
   -- Setting the correct country on the random food grid
@@ -169,19 +268,19 @@ function setFoods()
   print("******* correctPath: ", Countries[randomCountryNumber].name)
   if randomFood == 1 then
     food1:removeSelf()
-    food1 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
+    food1 = display.newImageRect(foodGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food1_name = Countries[randomCountryNumber].name
   elseif randomFood == 2 then
     food2:removeSelf()
-    food2 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
+    food2 = display.newImageRect(foodGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food2_name = Countries[randomCountryNumber].name
   elseif randomFood == 3 then
     food3:removeSelf()
-    food3 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
+    food3 = display.newImageRect(foodGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food3_name = Countries[randomCountryNumber].name
   else
     food4:removeSelf()
-    food4 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
+    food4 = display.newImageRect(foodGroup, correctPath, currentWidth / 5, currentHeight / 5)
     food4_name = Countries[randomCountryNumber].name
   end
 
@@ -189,8 +288,8 @@ function setFoods()
 
   food1.alpha = 0; food2.alpha = 0; food3.alpha = 0; food4.alpha = 0;
   food1:scale(0,0); food2:scale(0,0); food3:scale(0,0); food4:scale(0,0);
-  food1.x = display.contentCenterX + 50 ; food1.y = display.contentCenterY - display.contentCenterY / 8
-  food2.x = food1.x + food1.width + 100; food2.y = food1.y
+  food1.x = display.contentCenterX + 125 ; food1.y = display.contentCenterY - display.contentCenterY / 8
+  food2.x = food1.x + food1.width + 50; food2.y = food1.y
   food3.x = food1.x; food3.y = food1.y + food1.width
   food4.x = food2.x ; food4.y = food3.y
 
@@ -211,43 +310,33 @@ function setFoods()
   food1:addEventListener("tap", function ()
       print("*** food1 pressed, food1 is ", food1_name, " and the answer is ", Countries[randomCountryNumber].name)
       if food1_name == Countries[randomCountryNumber].name then
-        score  = score + 1
-        print("yay yay yay - 1")
-        eventRemover()
-      else
-        print("nay nay nay - 1")
+        correctAnswer()
       end
     end )
   food2:addEventListener("tap", function ()
       print("*** food2 pressed, food2 is ", food2_name, " and the answer is ", Countries[randomCountryNumber].name)
       if food2_name == Countries[randomCountryNumber].name then
-        score  = score + 1
-        print("yay yay yay -2")
-        eventRemover()
-      else
-        print("nay nay nay - 2")
+        correctAnswer()
       end
     end )
   food3:addEventListener("tap", function ()
       print("*** food3 pressed, food3 is ", food3_name, " and the answer is ", Countries[randomCountryNumber].name)
       if food3_name == Countries[randomCountryNumber].name then
-        score  = score + 1
-        print("yay yay yay - 3" )
-        eventRemover()
-      else
-        print("nay nay nay - 3")
+        correctAnswer()
       end
     end )
   food4:addEventListener("tap", function ()
       print("*** food4 pressed, food4 is ", food4_name, " and the answer is ", Countries[randomCountryNumber].name)
       if food4_name == Countries[randomCountryNumber].name then
-        score  = score + 1
-        print("yay yay yay -4")
-        eventRemover()
-      else
-        print("nay nay nay - 4")
+        correctAnswer()
       end
     end )
+end
+
+function correctAnswer()
+  score = score + 1
+  checkScore()
+  eventRemover()
 end
 
 function eventRemover()
@@ -262,12 +351,12 @@ function leaveCharacters()
   -- character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/boy.png")
   display.remove( dialogBox )
   transition.to(character_one, {
-    x = currentWidth/10 * -1,
-    time = 500,
-    alpha = 0,
-    transition = easing.outQuad,
-    onComplete = startGame
-  })
+      x = currentWidth/10 * -1,
+      time = 500,
+      alpha = 0,
+      transition = easing.outQuad,
+      onComplete = newFoods
+    })
 end
 
 function test()
@@ -278,6 +367,7 @@ function callCharacters()
   character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/boy.png")
   character_one.y = display.contentCenterY
   character_one.x = 0
+  character_one:scale(0.8,0.8)
   transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
 end
 
@@ -288,8 +378,8 @@ function callGreetings()
   dialogBox = display.newImage(sceneGroup,path)
   dialogBox.xScale = 0.5
   dialogBox.yScale = 0.5
-  dialogBox.y = display.contentCenterY - display.contentCenterY/1.9
-  dialogBox.x = character_one.x
+  dialogBox.y = display.contentCenterY - display.contentCenterY/2.5
+  dialogBox.x = character_one.x - 30
 end
 
 -- show()
@@ -329,7 +419,7 @@ function scene:destroy( event )
 
   local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
-  audio.stop()
+  --audio.stop()
 
 end
 
