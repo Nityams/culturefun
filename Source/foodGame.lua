@@ -77,10 +77,10 @@ local Countries = require "Countries"
 function scene:create( event )
 
   -- Temporary Music
-  -- local backgroundMusicChannel = audio.play(
-  -- audio.loadStream("Assets/Sounds/Whimsical-Popsicle.mp3"),
-  -- { channel1 = 1, loops =- 1, fadein = 5000 }
-  -- )
+  local backgroundMusicChannel = audio.play(
+  audio.loadStream("Assets/Sounds/Whimsical-Popsicle.mp3"),
+  { channel1 = 1, loops =- 1, fadein = 5000 }
+  )
 
   sceneGroup = self.view
   currentWidth = display.contentWidth
@@ -419,7 +419,7 @@ function scene:destroy( event )
 
   local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
-  --audio.stop()
+  audio.stop()
 
 end
 
