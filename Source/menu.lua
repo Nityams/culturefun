@@ -44,13 +44,15 @@ function scene:create( event )
 	logo.x = display.contentCenterX
 	logo.y = display.contentCenterY
 
-	local flagButton = display.newText( sceneGroup, "Play Flag Game", display.contentCenterX, 150, native.systemFont, 44 )
+	local font = native.newFont( "Assets/Fonts/neucha.otf" )
+
+	local flagButton = display.newText( sceneGroup, "Play Flag Game", display.contentCenterX, 150, font, 44 )
 	flagButton:setFillColor( 0.4, 0.4, 0.4 )
-	local foodButton = display.newText( sceneGroup, "Play Food Game", display.contentCenterX, display.contentHeight - 150, native.systemFont, 44 )
+	local foodButton = display.newText( sceneGroup, "Play Food Game", display.contentCenterX, display.contentHeight - 150, font, 44 )
 	foodButton:setFillColor( 0.4, 0.4, 0.4 )
-	local game3Button = display.newText( sceneGroup, "Play Game 3", 200, display.contentCenterY, native.systemFont, 44 )
+	local game3Button = display.newText( sceneGroup, "Play Game 3", 200, display.contentCenterY, font, 44 )
 	game3Button:setFillColor( 0.4, 0.4, 0.4 )
-	local game4Button = display.newText( sceneGroup, "Play Game 4", display.contentWidth - 200, display.contentCenterY, native.systemFont, 44 )
+	local game4Button = display.newText( sceneGroup, "Play Game 4", display.contentWidth - 200, display.contentCenterY, font, 44 )
 	game4Button:setFillColor( 0.4, 0.4, 0.4 )
 
 	flagButton:addEventListener( "tap", function()
@@ -65,6 +67,9 @@ function scene:create( event )
 	game4Button:addEventListener( "tap", function()
 		gotoMinigame( "game4" )
 	end)
+
+	local titleText = display.newText( sceneGroup, "Culture Fun", 200, 75, font, 72 )
+	titleText:setFillColor( 0.4, 0.4, 0.4 )
 end
 
 
