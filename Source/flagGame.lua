@@ -10,45 +10,67 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 
 local countryNames = {
+	"United States", -- 1
+	"United Kingdom",
+	"Canada",
+	"South Korea",
+	"Netherlands",
+	"Japan",
+	"Australia",
+	"Vietnam",
+	"Mexico",
+	"Russia", -- 10
+	"South Africa",
+	"Germany",
+	"Italy",
+	"Malaysia",
+	"Uruguay",
+	"Brazil",
+	"Thailand",
+	"Taiwan",
 	"Egypt",
-	"Honduras",
+	"Honduras", -- 20
 	"Hungary",
 	"Madagascar",
-	"Mexico",
 	"Mongolia",
 	"Morocco",
 	"New Zealand",
 	"Peru",
 	"Philippines",
-	"Russia",
-	"South Africa",
 	"Switzerland",
-	"Taiwan",
-	"Ukraine",
-	"United Kingdom",
-	"United States",
-	"Vietnam"
+	"Ukraine" -- 30
 };
 
 local countryFiles = {
-	"Assets/Images/Flags/Egypt_Flag.png",  -- a few of these images have a large white border that needs to be cropped; they came this way
+	"Assets/Images/Flags/United_States_Flag.png",
+	"Assets/Images/Flags/United_Kingdom_Flag.png",
+	"Assets/Images/Flags/Canada_Flag.png",
+	"Assets/Images/Flags/South_Korea_Flag.png",
+	"Assets/Images/Flags/Netherlands_Flag.png",
+	"Assets/Images/Flags/Japan_Flag.png",
+	"Assets/Images/Flags/Australia_Flag.png",
+	"Assets/Images/Flags/Vietnam_Flag.png",
+	"Assets/Images/Flags/Mexico_Flag.png",
+	"Assets/Images/Flags/Russia_Flag.png",
+	"Assets/Images/Flags/South_Africa_Flag.png",
+	"Assets/Images/Flags/Germany_Flag.png",
+	"Assets/Images/Flags/Italy_Flag.png",
+	"Assets/Images/Flags/Malaysia_Flag.png",
+	"Assets/Images/Flags/Uruguay_Flag.png",
+	"Assets/Images/Flags/Brazil_Flag.png",
+	"Assets/Images/Flags/Thailand_Flag.png",
+	"Assets/Images/Flags/Taiwan_Flag.png",
+	"Assets/Images/Flags/Egypt_Flag.png",
 	"Assets/Images/Flags/Honduras_Flag.png",
 	"Assets/Images/Flags/Hungary_Flag.png",
 	"Assets/Images/Flags/Madagascar_Flag.png",
-	"Assets/Images/Flags/Mexico_Flag.png",
 	"Assets/Images/Flags/Mongolia_Flag.png",
 	"Assets/Images/Flags/Morocco_Flag.png",
 	"Assets/Images/Flags/New_Zealand_Flag.png",
 	"Assets/Images/Flags/Peru_Flag.png",
 	"Assets/Images/Flags/Philippines_Flag.png",
-	"Assets/Images/Flags/Russia_Flag.png",
-	"Assets/Images/Flags/South_Africa_Flag.png",
 	"Assets/Images/Flags/Switzerland_Flag.png",
-	"Assets/Images/Flags/Taiwan_Flag.png",
 	"Assets/Images/Flags/Ukraine_Flag.png",
-	"Assets/Images/Flags/United_Kingdom_Flag.png",
-	"Assets/Images/Flags/United_States_Flag.png",
-	"Assets/Images/Flags/Vietnam_Flag.png",
 };
 
 local sceneBuild ={
@@ -207,7 +229,35 @@ function scene:create( event )
 			loopCount = 0
 		}
 	};
+	local mySheetTree1 = graphics.newImageSheet("Assets/Images/Sprite/4.png", sheetDataTree1)
 	--end background animation --
+	-------------------------------------------------------------------------------------------------------
+	-- monument placeholders animation --
+	local sheetDataMonu =
+	{
+		width = 248,
+		height = 242,
+		numFrames = 13,
+		sheetContentWidth = 3224,
+		sheetContentHeight = 242
+	};
+
+	local sequenceDataMonu = {
+		{
+			name = "normal1",
+			frames = {5,6,7,8,9,10,11,12,13,1,2,3,4},
+			time = 6000,
+			loopCount = 0
+		},
+		{
+			name = "idle",
+			frames = {5},
+			time = 1000,
+			loopCount = 1
+		}
+	};
+	local mySheetMonu = graphics.newImageSheet("Assets/Images/Sprite/5.png", sheetDataMonu)
+	--end monument placeholders animation --
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
 	-- top border
@@ -240,7 +290,6 @@ function scene:create( event )
 	botBorder:setFillColor(1,1,1,0.7)
 
 	-- trees for background
-	local mySheetTree1 = graphics.newImageSheet("Assets/Images/Sprite/4.png", sheetDataTree1)
 	local tree1 = display.newSprite(sceneGroup,mySheetTree1,sequenceDataTree1)
 	tree1:scale(0.55,0.55)
 	--tree1:setFillColor(0,0,0,0.8)
@@ -464,7 +513,8 @@ function scene:create( event )
 	-- 80 -> 6 monuments -> 6 rounds
 	local size = 100
 	for i = 1, 5 do
-		local placeHolder = display.newImageRect(sceneGroup, sceneBuild[18], size+10, size+10)
+		local placeHolder = display.newSprite(sceneGroup,mySheetMonu,sequenceDataMonu)
+		placeHolder:scale(0.5,0.5)
 		if i % 2 == 0 then
 			placeHolder.x = road.x - road.width - 10
 		else
@@ -472,6 +522,8 @@ function scene:create( event )
 		end
 		placeHolder.y = 150 + i * size - 20
 		placeHolder:setFillColor(1,1,1,1)
+		placeHolder:setSequence("normal1")
+		placeHolder:play()
 		table.insert(mon_placeholders,placeHolder)
 	end
 	local runFlipAnimation
@@ -514,9 +566,9 @@ function scene:create( event )
 	-- random to choose the box
 	local function startRound ()
 		math.randomseed(os.time())
-		local randomFlag = math.random(1,12)
+		local randomFlag = math.random(1,30)
 		for i,key in ipairs(usedFlag) do
-			if countryNames[randomFlag] == key then randomFlag = math.random(1,12) end
+			if countryNames[randomFlag] == key then randomFlag = math.random(1,30) end
 		end
 		flag = display.newImageRect( sceneGroup,
 										   countryFiles[randomFlag],
@@ -532,8 +584,8 @@ function scene:create( event )
 		local box1
 		local box2
 		-- loop to get wrong answer
-		for i=1,11 do
-			wrongAnswer = countryNames[math.random(1,13)]
+		for i=1,30 do
+			wrongAnswer = countryNames[math.random(1,30)]
 			if  wrongAnswer ~= countryNames[randomFlag] then
 				break
 			end
@@ -567,6 +619,7 @@ function scene:create( event )
 		-- fucntion for placing monument
 		-- need t implement used monument, array created: local usedMonument
 		function monuments_placer(num,num2)
+			math.randomseed(os.time())
 			local randMonument = math.random(1,14)
 			for i,item in ipairs(usedMonument) do
 				if randMonument == item then randMonument = math.random(1,14) end
@@ -582,6 +635,8 @@ function scene:create( event )
 										 )
 					img.x = item.x
 					img.y = item.y-40
+					item:setSequence("idle")
+					item:play()
 					print("INSERTED TO", i)
 					table.insert(usedMonument,randMonument)
 				elseif(num == 2 and 6-(num2+1) == i) then
