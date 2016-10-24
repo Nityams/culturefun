@@ -38,7 +38,8 @@ local countryNames = {
 	"Peru",
 	"Philippines",
 	"Switzerland",
-	"Ukraine" -- 30
+	"Ukraine",
+	"Croatia" -- 30
 };
 
 local countryFiles = {
@@ -71,6 +72,7 @@ local countryFiles = {
 	"Assets/Images/Flags/Philippines_Flag.png",
 	"Assets/Images/Flags/Switzerland_Flag.png",
 	"Assets/Images/Flags/Ukraine_Flag.png",
+	"Assets/Images/Flags/Croatia_Flag.png"
 };
 
 local sceneBuild ={
@@ -566,10 +568,11 @@ function scene:create( event )
 	-- random to choose the box
 	local function startRound ()
 		math.randomseed(os.time())
-		local randomFlag = math.random(1,30)
+		local randomFlag = math.random(1,29)
 		for i,key in ipairs(usedFlag) do
 			if countryNames[randomFlag] == key then randomFlag = math.random(1,30) end
 		end
+		print(randomFlag)
 		flag = display.newImageRect( sceneGroup,
 										   countryFiles[randomFlag],
 										   currentWidth/7+35,
@@ -584,7 +587,7 @@ function scene:create( event )
 		local box1
 		local box2
 		-- loop to get wrong answer
-		for i=1,30 do
+		for i=1,29 do
 			wrongAnswer = countryNames[math.random(1,30)]
 			if  wrongAnswer ~= countryNames[randomFlag] then
 				break
@@ -627,7 +630,6 @@ function scene:create( event )
 			--local img
 			for i,item in ipairs(mon_placeholders) do
 				if(num == 1 and 6-num2 == i) then
-					print("INSERTING")
 					img = display.newImageRect( sceneGroup,
 										   monumentAssets[randMonument],
 										   currentWidth/7+35,
@@ -637,16 +639,11 @@ function scene:create( event )
 					img.y = item.y-40
 					item:setSequence("idle")
 					item:play()
-					print("INSERTED TO", i)
 					table.insert(usedMonument,randMonument)
 				elseif(num == 2 and 6-(num2+1) == i) then
-					print("REMOVING")
-					print("HERE1:",5-num2)
-					print("HERE2:",i)
 					if(img ~= nil)then
 						img:removeSelf()
 						img = nil
-						print("REMOVED")
 					end
 				end
 			end
