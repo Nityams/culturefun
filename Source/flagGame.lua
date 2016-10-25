@@ -482,7 +482,7 @@ function scene:create( event )
 		if num == 0 then
 			transition.to(obj, {y = temp})
 		else
-			transition.to(obj, {y = temp - currentHeight/9 * num})
+			transition.to(obj, {y = temp - currentHeight/distance * num})
 		end
 		obj:setSequence("run")
 		obj:play()
