@@ -1,6 +1,7 @@
 local EventListener = require( "Source.eventListener" )
 
 local tapSound = audio.loadSound( "Assets/Sounds/Menu/Button Tap.wav" )
+local downSound = audio.loadSound( "Assets/Sounds/Menu/Button Down.wav" )
 local allowance = 30  -- pixels around the button that still trigger it
 
 local Button = {}
@@ -77,6 +78,9 @@ end
 
 function Button:onTouch( event )
 	if event.phase == "began" then
+		local channel = audio.play( downSound )
+		audio.setVolume( 1, { channel=channel } )
+
 		display.getCurrentStage():setFocus( event.target )
 		self:setDepressed( true )
 
