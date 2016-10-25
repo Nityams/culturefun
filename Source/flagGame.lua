@@ -568,7 +568,7 @@ function scene:create( event )
 	-- random to choose the box
 	local function startRound ()
 		math.randomseed(os.time())
-		local randomFlag = math.random(1,29)
+		local randomFlag = math.random(1,30)
 		for i,key in ipairs(usedFlag) do
 			if countryNames[randomFlag] == key then randomFlag = math.random(1,30) end
 		end
@@ -621,15 +621,16 @@ function scene:create( event )
 		textBox2:setFillColor( 0, 0, 0 )
 		-- fucntion for placing monument
 		-- need t implement used monument, array created: local usedMonument
-		function monuments_placer(num,num2)
+		function monuments_placer(num,score)
 			math.randomseed(os.time())
 			local randMonument = math.random(1,14)
 			for i,item in ipairs(usedMonument) do
 				if randMonument == item then randMonument = math.random(1,14) end
+				break
 			end
 			--local img
 			for i,item in ipairs(mon_placeholders) do
-				if(num == 1 and 6-num2 == i) then
+				if(num == 1 and 6-score == i) then
 					img = display.newImageRect( sceneGroup,
 										   monumentAssets[randMonument],
 										   currentWidth/7+35,
@@ -640,11 +641,9 @@ function scene:create( event )
 					item:setSequence("idle")
 					item:play()
 					table.insert(usedMonument,randMonument)
-				elseif(num == 2 and 6-(num2+1) == i) then
-					if(img ~= nil)then
-						img:removeSelf()
-						img = nil
-					end
+					-- insert to table start from 1
+				elseif(num == 2 and 6-(score+1) == i) then
+					print (i)
 				end
 			end
 		end
