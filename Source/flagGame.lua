@@ -134,6 +134,11 @@ end
 local backgroundMusic
 local backgroundMusicChannel
 
+local backgroundMusicVolume = 0.8
+local backgroundBirdsVolume = 0.8
+local backgroundWindVolume = 0.4
+local sfxVolume = 0.5
+local catFXVolume = 0.1
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -431,10 +436,12 @@ function scene:create( event )
 	local function pushCat1()
 		animal1:applyLinearImpulse(0,-0.75,animal1.x,animal1.y)
 		local sound = audio.play(cat_fx)
+		audio.setVolume( catFXVolume, { channel=sound } )
 	end
 	local function pushCat2()
 		animal2:applyLinearImpulse(0,-0.75,animal2.x,animal2.y)
 		local sound = audio.play(cat_fx)
+		audio.setVolume( catFXVolume, { channel=sound } )
 	end
 	animal1:addEventListener("tap",pushCat1)
 	animal2:addEventListener("tap",pushCat2)
@@ -731,6 +738,7 @@ function scene:create( event )
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
 				local sound1 = audio.play(ding_fx,{loops= 0})
+				audio.setVolume( sfxVolume, { channel=sound1 } )
 				animal1:setSequence("happy")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -740,6 +748,7 @@ function scene:create( event )
 				minusCount()
 				monuments_placer(2,count)
 				local sound2 = audio.play(lose_fx,{loops= 0})
+				audio.setVolume( sfxVolume, { channel=sound2 } )
 				animal1:setSequence("sad")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -757,6 +766,7 @@ function scene:create( event )
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
 				local sound1 = audio.play(ding_fx,{loops= 0})
+				audio.setVolume( sfxVolume, { channel=sound1 } )
 				animal2:setSequence("happy")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -766,6 +776,7 @@ function scene:create( event )
 				minusCount()
 				monuments_placer(2,count)
 				local sound2 = audio.play(lose_fx,{loops= 0})
+				audio.setVolume( sfxVolume, { channel=sound2 } )
 				animal2:setSequence("sad")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -812,6 +823,8 @@ function scene:create( event )
 			animal2:play()
 			local win_fx = audio.loadSound(audioFiles[2])
 			local sound1 = audio.play(win_fx)
+			audio.setVolume( sfxVolume, { channel=win_fx } )
+			audio.setVolume( sfxVolume, { channel=sound1 } )
 			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,native.systemFont,44)
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,native.systemFont,44)
@@ -834,6 +847,9 @@ function scene:show( event )
 	    backgroundMusicChannel = audio.play(backgroundMusic,{loops=-1,fadein=5000})
 		backgroundBirdsChannel = audio.play(backgroundBirds,{loops=-1,fadein=5000})
 		backgroundWindChannel = audio.play(backgroundWind,{loops=-1,fadein=5000})
+		audio.setVolume( backgroundMusicVolume, { channel=backgroundMusicChannel } )
+		audio.setVolume( backgroundBirdsVolume, { channel=backgroundBirdsChannel } )
+		audio.setVolume( backgroundWindVolume, { channel=backgroundWindChannel } )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 		-- In two seconds return to the menu
