@@ -78,7 +78,7 @@ function scene:create( event )
 
   -- Temporary Music
   local backgroundMusicChannel = audio.play(
-  audio.loadStream("Assets/Sounds/Whimsical-Popsicle.mp3"),
+  audio.loadStream("Assets/Sounds/Music/Whimsical-Popsicle.mp3"),
   { channel1 = 1, loops =- 1, fadein = 5000 }
   )
 

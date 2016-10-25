@@ -117,7 +117,7 @@ local monumentAssets = {
 };
 
 local audioFiles = {
-	"Assets/Sounds/FlagGame/Whimsical-Popsicle.mp3"	, --1
+	"Assets/Sounds/Music/Whimsical-Popsicle.mp3"	, --1
 	"Assets/Sounds/FlagGame/YAY_FX.mp3",
 	"Assets/Sounds/FlagGame/DING_FX.mp3",
 	"Assets/Sounds/FlagGame/WRONG_FX.mp3",
@@ -598,12 +598,12 @@ function scene:create( event )
 		local randomFlag = math.random(1,randomNum1)
 		local i = 1
 		while usedFlag[i] do
-			if usedFlag[i] == countryNames[randomFlag] then 
-				randomFlag = math.random(1,randomNum1) 
+			if usedFlag[i] == countryNames[randomFlag] then
+				randomFlag = math.random(1,randomNum1)
 				i = 1
 			else i = i + 1 end
 		end
-			
+
 		flag = display.newImageRect( sceneGroup,
 										   countryFiles[randomFlag],
 										   currentWidth/7+35,
@@ -653,10 +653,10 @@ function scene:create( event )
 		function monuments_placer(num,score)
 			math.randomseed(os.time())
 			local randMonument = math.random(1,14)
-			local i = 1 
+			local i = 1
 			while usedMonument[i] do
-				if randMonument == usedMonument[i].index then 
-					randMonument = math.random(1,14) 
+				if randMonument == usedMonument[i].index then
+					randMonument = math.random(1,14)
 					i = 1
 				else i = i + 1 end
 			end
@@ -676,7 +676,7 @@ function scene:create( event )
 						-- insert to table start from 1
 						local monument_item =  {index = randMonument, obj = img}
 						table.insert(usedMonument,monument_item)
-					elseif score == 0 and usedMonument[1] ~= nil then 
+					elseif score == 0 and usedMonument[1] ~= nil then
 						usedMonument[1].obj:removeSelf()
 						usedMonument[1] = nil
 						local item2 = mon_placeholders[5]
@@ -690,7 +690,7 @@ function scene:create( event )
 						item2:play()
 						break
 					end
-				end 
+				end
 			end
 		end
 		-- end function for placing monument
