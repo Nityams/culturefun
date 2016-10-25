@@ -156,16 +156,25 @@ function scene:create( event )
 	audio.setVolume(0.4,{channel = 3}) -- winds ambient
 	audio.setVolume(0.5,{channel = 4}) -- correct/wrong FX
 	audio.setVolume(0.1,{channel = 5}) -- cats FX
-	-- level declarations
-	-- the loops are still used level1, randomNum1 variable
-	-- when change level, need to change: level + randomNum
 	local count = 0
-	local level1 = 6        -- 6 rounds
-	local randomNum1 = 12   -- use the first 12 flags
-	local level2 = 12       -- 12 rounds
-	local randomNum2 = 24   -- use the first 24 flags
-	local level3 = 15 		-- 15 rounds
-	local randomNUm3 = 30   -- use the first 30 flags
+
+	-- level declarations
+	local level
+	local randomNum
+
+	local difficulty = composer.getVariable( "difficulty" )
+
+	if difficulty == 1 then
+		level = 6		-- 6 rounds
+		randomNum = 12  -- use the first 12 flags
+	elseif difficulty == 2 then
+		level = 12		-- 12 rounds
+		randomNum = 24	-- use the first 24 flags
+	else
+		level = 15		-- 15 rounds
+		randomNum = 30	-- use the first 30 flags
+	end
+
 	-- flag speed for level 1
 	local speed1 = 7000
 	local speed2 = 1000
@@ -595,11 +604,11 @@ function scene:create( event )
 	-- random to choose the box
 	local function startRound ()
 		math.randomseed(os.time())
-		local randomFlag = math.random(1,randomNum1)
+		local randomFlag = math.random(1,randomNum)
 		local i = 1
 		while usedFlag[i] do
 			if usedFlag[i] == countryNames[randomFlag] then
-				randomFlag = math.random(1,randomNum1)
+				randomFlag = math.random(1,randomNum)
 				i = 1
 			else i = i + 1 end
 		end
@@ -794,7 +803,7 @@ function scene:create( event )
 			textBox3:removeSelf()
 		end
 		-- check to start new round
-		if count ~= level1 then
+		if count ~= level then
 			startRound()
 		else
 			animal1:setSequence("happy")
