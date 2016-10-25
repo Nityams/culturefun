@@ -2,6 +2,8 @@
 local composer = require( "composer" )
 local physics = require ( "physics")
 
+local fonts = require( "Source.fonts" )
+
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -130,6 +132,8 @@ local function returnToMenu()
 	composer.gotoScene( "Source.menu" )
 	-- composer.removeScene( "flagGame" )
 end
+
+local font = fonts.neucha()
 
 local backgroundMusic
 local backgroundBirds
@@ -650,14 +654,14 @@ function scene:create( event )
 										  box1,
 										  optionBox1.x,
 										  optionBox1.y,
-										  native.systemFont, 33
+										  font, 33
 										)
 
 		textBox2 = display.newText( sceneGroup,
 										  box2,
 										  optionBox2.x,
 										  optionBox2.y,
-										  native.systemFont, 33
+										  font, 33
 										)
 
 		-- color for the text
@@ -716,7 +720,7 @@ function scene:create( event )
 								   value,
 							  	   obj.x,
 								   obj.y,
-								   native.systemFont, 44
+								   font, 44
 								 )
 			if obj == textBox1 then
 				textBox2:removeSelf()
@@ -823,9 +827,9 @@ function scene:create( event )
 			local sound1 = audio.play(win_fx)
 			audio.setVolume( sfxVolume, { channel=win_fx } )
 			audio.setVolume( sfxVolume, { channel=sound1 } )
-			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,native.systemFont,44)
+			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,font,44)
 		end
-		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,native.systemFont,44)
+		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
 	end
 	-- end back-end -- left side
 	-------------------------------------------------------------------------------------------------------
