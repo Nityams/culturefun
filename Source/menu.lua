@@ -1,5 +1,7 @@
 
 local composer = require( "composer" )
+local util = require( "Source.util" )
+local Button = require( "Source.button" )
 
 local scene = composer.newScene()
 
@@ -44,27 +46,35 @@ function scene:create( event )
 	logo.x = display.contentCenterX
 	logo.y = display.contentCenterY
 
-	local flagButton = display.newText( sceneGroup, "Play Flag Game", display.contentCenterX, 150, native.systemFont, 44 )
-	flagButton:setFillColor( 0.4, 0.4, 0.4 )
-	local foodButton = display.newText( sceneGroup, "Play Food Game", display.contentCenterX, display.contentHeight - 150, native.systemFont, 44 )
-	foodButton:setFillColor( 0.4, 0.4, 0.4 )
-	local game3Button = display.newText( sceneGroup, "Play Game 3", 200, display.contentCenterY, native.systemFont, 44 )
-	game3Button:setFillColor( 0.4, 0.4, 0.4 )
-	local game4Button = display.newText( sceneGroup, "Play Game 4", display.contentWidth - 200, display.contentCenterY, native.systemFont, 44 )
-	game4Button:setFillColor( 0.4, 0.4, 0.4 )
+	local font = native.newFont( "Assets/Fonts/neucha.otf" )
 
-	flagButton:addEventListener( "tap", function()
+	local flagButton = Button:new{
+		parentGroup=sceneGroup,
+		font=font, fontSize=44, fontColor={ 0.4 },
+		text="Play Flag Game",
+		x=200, y=display.contentCenterY,
+		paddingX=20, paddingY=5,
+		fillColor={ 0.97 }, borderWidth=3, borderColor={ 0.85 }
+	}
+	local foodButton = Button:new{
+		parentGroup=sceneGroup,
+		font=font, fontSize=44, fontColor={ 0.4 },
+		text="Play Food Game",
+		x=display.contentWidth - 200, y=display.contentCenterY,
+		paddingX=20, paddingY=5,
+		fillColor={ 0.97 }, borderWidth=3, borderColor={ 0.85 }
+	}
+
+	flagButton:addEventListener( "press", function()
 		gotoMinigame( "flagGame" )
 	end)
-	foodButton:addEventListener( "tap", function()
+	foodButton:addEventListener( "press", function()
 		gotoMinigame( "foodIntro" )
 	end)
-	game3Button:addEventListener( "tap", function()
-		gotoMinigame( "game3" )
-	end)
-	game4Button:addEventListener( "tap", function()
-		gotoMinigame( "game4" )
-	end)
+
+	local titleOffsetY = (util.aspectRatio() > 4/3 and 175 or 75)
+	titleText = display.newText( sceneGroup, "Culture Fun", 200, titleOffsetY, font, 72 )
+	titleText:setFillColor( 0.4, 0.4, 0.4 )
 end
 
 
