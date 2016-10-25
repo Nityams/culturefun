@@ -132,7 +132,11 @@ local function returnToMenu()
 end
 
 local backgroundMusic
+local backgroundBirds
+local backgroundWind
 local backgroundMusicChannel
+local backgroundBirdsChannel
+local backgroundWindChannel
 
 local backgroundMusicVolume = 0.8
 local backgroundBirdsVolume = 0.8
@@ -425,7 +429,7 @@ function scene:create( event )
 	physics.addBody(animal1,"dynamic", {radius = 50, bounce = 0.1})
 	physics.addBody(animal2,"dynamic", {radius = 50, bounce = 0.1})
 	-- soundFX for cat
-	local cat_fx = audio.loadStream(audioFiles[5])
+	local cat_fx = audio.loadSound(audioFiles[5])
 	-- end soundFX for cat
 	local function pushCat1()
 		animal1:applyLinearImpulse(0,-0.75,animal1.x,animal1.y)
@@ -721,8 +725,8 @@ function scene:create( event )
 			end
 		end
 		-- load sound fx
-		local ding_fx = audio.loadStream(audioFiles[3])
-		local lose_fx = audio.loadStream(audioFiles[4])
+		local ding_fx = audio.loadSound(audioFiles[3])
+		local lose_fx = audio.loadSound(audioFiles[4])
 		-- Event listener for text box 1
 		textBox1:addEventListener("tap", function()
 			if randomBox == 1 then
