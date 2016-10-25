@@ -21,8 +21,7 @@ local minigames = {
 
 local font = fonts.neucha()
 
-local backgroundMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
-local backgroundMusicChannel
+local menuMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
 
 
 local function removeMinigames()
@@ -97,11 +96,6 @@ function scene:create( event )
 end
 
 
-local function musicComplete()
-	audio.setVolume( 1, { channel=backgroundMusicChannel } )
-end
-
-
 -- show()
 function scene:show( event )
 
@@ -116,7 +110,9 @@ function scene:show( event )
 
 		removeMinigames()
 
-	    menuMusicChannel = audio.play(backgroundMusic, { loops=-1, fadein=5000, onComplete=musicComplete } )
+	    menuMusicChannel = audio.play(menuMusic, { loops=-1 } )
+		audio.setVolume( 0, { channel=menuMusicChannel } )
+		audio.fade( { channel=menuMusicChannel, time=5000, volume=0.7 } )
 		composer.setVariable( "menuMusicChannel", menuMusicChannel )  -- Turned off in difficultySelector.lua
 
 	end

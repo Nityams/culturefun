@@ -69,7 +69,7 @@ end
 
 function Button:onPress( event )
 	local channel = audio.play( tapSound )
-	audio.setVolume( 1, { channel=channel } )
+	audio.setVolume( 0.9, { channel=channel } )
 
 	self.listener:dispatchEvent( "press", nil )
 
