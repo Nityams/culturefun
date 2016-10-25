@@ -666,14 +666,14 @@ function scene:create( event )
 										  box1,
 										  optionBox1.x,
 										  optionBox1.y,
-										  font, 33
+										  font, 38
 										)
 
 		textBox2 = display.newText( sceneGroup,
 										  box2,
 										  optionBox2.x,
 										  optionBox2.y,
-										  font, 33
+										  font, 38
 										)
 
 		-- color for the text
