@@ -10,8 +10,8 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 
 local countryNames = {
-	"United States", -- 1
-	"United Kingdom",
+	"America", -- 1
+	"Britain",
 	"Canada",
 	"South Korea",
 	"Netherlands",
