@@ -28,14 +28,14 @@ function Button:new( options )
 	local textWidth = text.width
 	local textHeight = text.height
 
-	local touchPanel = display.newRect(
+	b.touchPanel = display.newRect(
 	 	fgGroup,
 		options.x,
 		options.y,
 		textWidth + 2*options.paddingX + 2*options.borderWidth + 2*allowance,
 		textHeight + 2*options.paddingY + 2*options.borderWidth + 2*allowance
 	)
-	touchPanel:setFillColor( 0, 0, 0, 0.01 )
+	b.touchPanel:setFillColor( 0, 0, 0, 0.01 )
 
 	local bgGroup = display.newGroup()
 	b.bg = display.newRect(
@@ -61,8 +61,8 @@ function Button:new( options )
 
 	b.listener = EventListener:new()
 
-	touchPanel:addEventListener( "tap", function( e ) return b:onTap( e ) end )
-	touchPanel:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
+	b.touchPanel:addEventListener( "tap", function( e ) return b:onTap( e ) end )
+	b.touchPanel:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
 
 	return b
 end
@@ -79,15 +79,34 @@ end
 function Button:onTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
-		self.bg:setFillColor( unpack( self.fillColorPressed ) )
+		self:setDepressed( true )
+
+	elseif event.phase == "moved" then
+		local panel = self.touchPanel
+		if (panel.x - panel.width/2 < event.x and
+		    event.x < panel.x + panel.width/2 and
+		    panel.y - panel.height/2 < event.y and
+			event.y < panel.y + panel.height/2) then
+		   self:setDepressed( true )
+	    else
+		   self:setDepressed( false )
+		end
 
 	elseif event.phase == "ended" or event.phase == "cancelled" then
 		display.getCurrentStage():setFocus( nil )
-		self.bg:setFillColor( unpack( self.fillColor ) )
+		self:setDepressed( false )
 
 	end
 
 	return true
+end
+
+function Button:setDepressed( yes )
+	if yes then
+		self.bg:setFillColor( unpack( self.fillColorPressed ) )
+	else
+		self.bg:setFillColor( unpack( self.fillColor ) )
+	end
 end
 
 function Button:addEventListener( eventName, handlerFn )
