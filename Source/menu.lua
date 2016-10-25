@@ -57,7 +57,8 @@ function scene:create( event )
 		text="Play Flag Game",
 		x=200, y=display.contentCenterY,
 		paddingX=20, paddingY=5,
-		fillColor={ 0.97 }, borderWidth=3, borderColor={ 0.85 }
+		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
+		borderWidth=3, borderColor={ 0.85 }
 	}
 	local foodButton = Button:new{
 		parentGroup=sceneGroup,
@@ -65,7 +66,8 @@ function scene:create( event )
 		text="Play Food Game",
 		x=display.contentWidth - 200, y=display.contentCenterY,
 		paddingX=20, paddingY=5,
-		fillColor={ 0.97 }, borderWidth=3, borderColor={ 0.85 }
+		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
+		borderWidth=3, borderColor={ 0.85 }
 	}
 
 	flagButton:addEventListener( "press", function()

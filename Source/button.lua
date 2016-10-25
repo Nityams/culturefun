@@ -3,7 +3,8 @@ local EventListener = require( "Source.eventListener" )
 local Button = {}
 
 -- Arguments: parentGroup, font, fontSize, fontColor, text, x, y,
---            paddingX, paddingY, fillColor, borderWidth, borderColor
+--            paddingX, paddingY, fillColor, fillColorPressed,
+--            borderWidth, borderColor
 function Button:new( options )
 	-- b inherits from Button
 	local b = {}
@@ -30,6 +31,9 @@ function Button:new( options )
 	b.bg:setStrokeColor( unpack( options.borderColor ) )
 	b.bg:setFillColor( unpack( options.fillColor ) )
 
+	b.fillColor = options.fillColor
+	b.fillColorPressed = options.fillColorPressed
+
 	b.group = display.newGroup()
 	b.group:insert( b.bgGroup )
 	b.group:insert( b.textGroup )
@@ -41,11 +45,26 @@ function Button:new( options )
 	b.text:addEventListener( "tap", function( e ) return b:onTap( e ) end )
 	b.bg:addEventListener( "tap", function( e ) return b:onTap( e ) end )
 
+	b.text:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
+	b.bg:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
+
 	return b
 end
 
 function Button:onTap( event )
 	self.listener:dispatchEvent( "press", nil )
+	return true
+end
+
+function Button:onTouch( event )
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+		self.bg:setFillColor( unpack( self.fillColorPressed ) )
+	elseif event.phase == "ended" or event.phase == "cancelled" then
+		display.getCurrentStage():setFocus( nil )
+		self.bg:setFillColor( unpack( self.fillColor ) )
+	end
+
 	return true
 end
 
