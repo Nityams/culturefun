@@ -6,7 +6,7 @@ local util = require( "Source.util" )
 local scene = composer.newScene()
 
 local font = fonts.neucha()
-local titleOffsetY = (util.aspectRatio() > 4/3 and 250 or 75)
+local titleOffsetY = (util.aspectRatio() > 4/3 and 250 or 175)
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
