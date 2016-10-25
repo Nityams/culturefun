@@ -155,12 +155,6 @@ function scene:create( event )
 	-- background ambient FX
 	backgroundBirds = audio.loadStream(audioFiles[6])
 	backgroundWind = audio.loadStream(audioFiles[7])
-	-- sound channels
-	audio.setVolume(0.8,{channel = 1}) -- background music
-	audio.setVolume(0.8,{channel = 2}) -- birds ambient
-	audio.setVolume(0.4,{channel = 3}) -- winds ambient
-	audio.setVolume(0.5,{channel = 4}) -- correct/wrong FX
-	audio.setVolume(0.1,{channel = 5}) -- cats FX
 	local count = 0
 
 	-- level declarations
