@@ -28,6 +28,7 @@ local currentHeight
 local sceneGroup
 local character_one
 local randomCountryNumber
+local DEBUG = true -- toggle verbose debugging
 local score = 0
 local star1
 local star2
@@ -71,6 +72,7 @@ end
 
 --creating main table
 local Countries = require "Countries"
+local foodChoices = {}
 -- other scenes from the game:
 
 -- create()
@@ -78,8 +80,8 @@ function scene:create( event )
 
   -- Temporary Music
   local backgroundMusicChannel = audio.play(
-  audio.loadStream("Assets/Sounds/Music/Whimsical-Popsicle.mp3"),
-  { channel1 = 1, loops =- 1, fadein = 5000 }
+    audio.loadStream("Assets/Sounds/Music/Whimsical-Popsicle.mp3"),
+    { channel1 = 1, loops =- 1, fadein = 5000 }
   )
 
   sceneGroup = self.view
@@ -88,7 +90,6 @@ function scene:create( event )
   foodGroup = display.newGroup()
   -- `Code here runs when the scene is first created but has not yet appeared on screen
 
-  --
   startGame()
 end
 
@@ -102,8 +103,24 @@ function startGame()
   resetGame()
   randomCountryNumber = math.random(1,10) -- selecting random country from Countries module /table
   setBackground()
+  -- Could replace these lines with newFoods()
   setFoods()
   callCharacters()
+
+  -- Initialize foodChoices
+  for i=1,4 do
+    if DEBUG then print("Populating choice ", i) end
+    
+    foodChoices[i] = Countries[i] -- placeholder country
+    -- foodChoices[i] = {}
+    -- for key,value in pairs(Countries[i]) do
+    --   table.insert(foodChoices[i], key, value)
+    --   if DEBUG then print("Added", key, value) end
+    -- end
+
+    if DEBUG then print("Added", foodChoices[i].name) end -- test if country can be retrieved
+    -- Might want to recreate table and add image for retrieving to delete
+  end
 
   --
   -- local time1 = display.newSprite(sceneGroup,mySheetTimer,sequenceTimer)
@@ -153,47 +170,29 @@ end
 
 function checkScore()
   --local scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png", currentWidth/20,currentHeight/20)
-  scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png",currentWidth/2, currentHeight/2)
-  if score%12 == 1 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/1.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 2 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/2.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 3 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/3.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 4 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/4.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 5 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/5.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 6 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/6.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 7 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/7.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 8 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/8.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 9 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/9.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 10 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/10.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 11 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/11.png",currentWidth/2, currentHeight/2)
-  elseif score%12 == 0 and score >1 then
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/12.png",currentWidth/2, currentHeight/2)
-  else
-    scoreCounter:removeSelf()
-    scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png",currentWidth/2, currentHeight/2)
-  end -- end
+
+  -- Shouldn't need these because dimensions are hard set at end
+  -- local width = currentWidth/2
+  -- local height = currentHeight/2
+
+  scoreCounter = display.newImage(sceneGroup, "Assets/Images/FoodGame/timer/0.png")
+
+  -- User score on timer
+  for timer=11,0,-1
+  do
+    if score % 12 == timer then
+      if DEBUG then print("Timer is set to: ", timer) end
+      -- Remove timer if drawn before
+      if score > 0 then
+        -- Redraw timer
+        scoreCounter:removeSelf()
+        scoreCounter = display.newImage(sceneGroup, string.format("Assets/Images/FoodGame/timer/%i.png", timer)
+        )
+      end
+    end
+  end
+
+  -- Manually set x, y for all counters
   scoreCounter.x = display.contentCenterX - display.contentCenterX /2+6
   scoreCounter.y = display.contentCenterY + display.contentCenterY /2
   scoreCounter:scale(0.19,0.19)
@@ -284,7 +283,7 @@ function setFoods()
     food4_name = Countries[randomCountryNumber].name
   end
 
-  -- Setting the positio of all four grid
+  -- Setting the position of all four grid
 
   food1.alpha = 0; food2.alpha = 0; food3.alpha = 0; food4.alpha = 0;
   food1:scale(0,0); food2:scale(0,0); food3:scale(0,0); food4:scale(0,0);
@@ -357,10 +356,6 @@ function leaveCharacters()
       transition = easing.outQuad,
       onComplete = newFoods
     })
-end
-
-function test()
-  print("leave")
 end
 
 function callCharacters()
