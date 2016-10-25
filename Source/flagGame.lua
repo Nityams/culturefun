@@ -117,10 +117,13 @@ local monumentAssets = {
 };
 
 local audioFiles = {
-	"Assets/Sounds/Whimsical-Popsicle.mp3"	,
-	"Assets/Sounds/YAY_FX.mp3",
-	"Assets/Sounds/DING_FX.mp3",
-	"Assets/Sounds/WRONG_FX.mp3",
+	"Assets/Sounds/FlagGame/Whimsical-Popsicle.mp3"	, --1
+	"Assets/Sounds/FlagGame/YAY_FX.mp3",
+	"Assets/Sounds/FlagGame/DING_FX.mp3",
+	"Assets/Sounds/FlagGame/WRONG_FX.mp3",
+	"Assets/Sounds/FlagGame/CAT_SOUND_FX.wav",
+	"Assets/Sounds/FlagGame/AMBIENT_BIRDS_FX.mp3",
+	"Assets/Sounds/FlagGame/WIND_FX.mp3",
 };
 
 local function returnToMenu()
@@ -144,6 +147,15 @@ function scene:create( event )
 	local currentHeight = display.contentHeight
 	-- background music
 	backgroundMusic = audio.loadStream(audioFiles[1])
+	-- background ambient FX
+	backgroundBirds = audio.loadStream(audioFiles[6])
+	backgroundWind = audio.loadStream(audioFiles[7])
+	-- sound channels
+	audio.setVolume(0.8,{channel = 1}) -- background music
+	audio.setVolume(0.8,{channel = 2}) -- birds ambient
+	audio.setVolume(0.4,{channel = 3}) -- winds ambient
+	audio.setVolume(0.5,{channel = 4}) -- correct/wrong FX
+	audio.setVolume(0.1,{channel = 5}) -- cats FX
 	-- level declarations
 	-- the loops are still used level1, randomNum1 variable
 	-- when change level, need to change: level + randomNum
@@ -404,12 +416,16 @@ function scene:create( event )
 	physics.addBody(platform1,"static")
 	physics.addBody(animal1,"dynamic", {radius = 50, bounce = 0.1})
 	physics.addBody(animal2,"dynamic", {radius = 50, bounce = 0.1})
-
+	-- soundFX for cat
+	local cat_fx = audio.loadStream(audioFiles[5])
+	-- end soundFX for cat
 	local function pushCat1()
 		animal1:applyLinearImpulse(0,-0.75,animal1.x,animal1.y)
+		local sound = audio.play(cat_fx, {channel = 5})
 	end
 	local function pushCat2()
 		animal2:applyLinearImpulse(0,-0.75,animal2.x,animal2.y)
+		local sound = audio.play(cat_fx,{channel = 5})
 	end
 	animal1:addEventListener("tap",pushCat1)
 	animal2:addEventListener("tap",pushCat2)
@@ -695,8 +711,8 @@ function scene:create( event )
 			end
 		end
 		-- load sound fx
-		local ding_fx = audio.loadSound(audioFiles[3])
-		local lose_fx = audio.loadSound(audioFiles[4])
+		local ding_fx = audio.loadStream(audioFiles[3])
+		local lose_fx = audio.loadStream(audioFiles[4])
 		-- Event listener for text box 1
 		textBox1:addEventListener("tap", function()
 			if randomBox == 1 then
@@ -705,7 +721,7 @@ function scene:create( event )
 				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
-				local sound1 = audio.play(ding_fx)
+				local sound1 = audio.play(ding_fx,{channel = 4, loops= 0})
 				animal1:setSequence("happy")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -714,7 +730,7 @@ function scene:create( event )
 				animationStop(flag)
 				minusCount()
 				monuments_placer(2,count)
-				local sound2 = audio.play(lose_fx)
+				local sound2 = audio.play(lose_fx,{channel = 4, loops= 0})
 				animal1:setSequence("sad")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -731,7 +747,7 @@ function scene:create( event )
 				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
-				local sound1 = audio.play(ding_fx)
+				local sound1 = audio.play(ding_fx,{channel = 4,loops= 0})
 				animal2:setSequence("happy")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -740,7 +756,7 @@ function scene:create( event )
 				animationStop(flag)
 				minusCount()
 				monuments_placer(2,count)
-				local sound2 = audio.play(lose_fx)
+				local sound2 = audio.play(lose_fx,{channel = 4,loops= 0})
 				animal2:setSequence("sad")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -806,8 +822,9 @@ function scene:show( event )
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
 		--background music, loop infinite, fadein in 5s
-	    backgroundMusicChannel = audio.play(backgroundMusic,{loops=-1,fadein=5000})
-
+	    backgroundMusicChannel = audio.play(backgroundMusic,{channel = 1, loops=-1,fadein=5000})
+		backgroundBirdsChannel = audio.play(backgroundBirds,{channel = 2, loops=-1,fadein=5000})
+		backgroundWindChannel = audio.play(backgroundWind,{channel = 3, loops=-1,fadein=5000})
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 		-- In two seconds return to the menu
@@ -827,7 +844,8 @@ function scene:hide( event )
 		-- Code here runs when the scene is on screen (but is about to go off screen)
 
 		audio.stop( backgroundMusicChannel )
-
+		audio.stop( backgroundBirdsChannel )
+		audio.stop( backgroundWindChannel )
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		-- this remove the scene completely ?
