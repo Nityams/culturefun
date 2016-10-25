@@ -116,7 +116,8 @@ function scene:show( event )
 
 		removeMinigames()
 
-	    backgroundMusicChannel = audio.play(backgroundMusic, { loops=-1, fadein=5000, onComplete=musicComplete } )
+	    menuMusicChannel = audio.play(backgroundMusic, { loops=-1, fadein=5000, onComplete=musicComplete } )
+		composer.setVariable( "menuMusicChannel", menuMusicChannel )  -- Turned off in difficultySelector.lua
 
 	end
 end
@@ -130,8 +131,6 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-
-		audio.fadeOut( { channel=backgroundMusicChannel, time=500 } )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen

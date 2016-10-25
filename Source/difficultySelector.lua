@@ -18,6 +18,9 @@ local function returnToMenu()
 end
 
 local function gotoGame( difficulty )
+	local menuMusicChannel = composer.getVariable( "menuMusicChannel" )
+	audio.fadeOut( { channel=menuMusicChannel, time=500 } )  -- Played from menu.lua
+
 	composer.setVariable( "difficulty", difficulty )
 	local minigameSourceFile = composer.getVariable( "minigameSourceFile" )
 	composer.gotoScene( minigameSourceFile )
