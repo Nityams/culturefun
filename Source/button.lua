@@ -1,6 +1,7 @@
 local EventListener = require( "Source.eventListener" )
 
 local tapSound = audio.loadSound( "Assets/Sounds/Menu/Button Tap.wav" )
+local allowance = 30  -- pixels around the button that still trigger it
 
 local Button = {}
 
@@ -13,23 +14,32 @@ function Button:new( options )
 	setmetatable( b, self )
 	self.__index = self
 
-	b.textGroup = display.newGroup()
-	b.text = display.newText(
-		b.textGroup,
+	local fgGroup = display.newGroup()
+	local text = display.newText(
+		fgGroup,
 		options.text,
 		options.x,
 		options.y,
 		options.font,
 		options.fontSize
 	)
-	b.text:setFillColor( unpack( options.fontColor ) )
+	text:setFillColor( unpack( options.fontColor ) )
 
-	textWidth = b.text.width
-	textHeight = b.text.height
+	local textWidth = text.width
+	local textHeight = text.height
 
-	b.bgGroup = display.newGroup()
+	local touchPanel = display.newRect(
+	 	fgGroup,
+		options.x,
+		options.y,
+		textWidth + 2*options.paddingX + 2*options.borderWidth + 2*allowance,
+		textHeight + 2*options.paddingY + 2*options.borderWidth + 2*allowance
+	)
+	touchPanel:setFillColor( 0, 0, 0, 0.01 )
+
+	local bgGroup = display.newGroup()
 	b.bg = display.newRect(
-	 	b.bgGroup,
+	 	bgGroup,
 		options.x,
 		options.y,
 		textWidth + 2*options.paddingX + 2*options.borderWidth,
@@ -44,18 +54,15 @@ function Button:new( options )
 	b.fillColorPressed = options.fillColorPressed
 
 	b.group = display.newGroup()
-	b.group:insert( b.bgGroup )
-	b.group:insert( b.textGroup )
+	b.group:insert( bgGroup )
+	b.group:insert( fgGroup )
 
 	options.parentGroup:insert( b.group )
 
 	b.listener = EventListener:new()
 
-	b.text:addEventListener( "tap", function( e ) return b:onTap( e ) end )
-	b.bg:addEventListener( "tap", function( e ) return b:onTap( e ) end )
-
-	b.text:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
-	b.bg:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
+	touchPanel:addEventListener( "tap", function( e ) return b:onTap( e ) end )
+	touchPanel:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
 
 	return b
 end
