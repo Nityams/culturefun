@@ -1,5 +1,7 @@
 
 local composer = require( "composer" )
+local util = require( "Source.util" )
+local Button = require( "Source.button" )
 
 local scene = composer.newScene()
 
@@ -46,19 +48,32 @@ function scene:create( event )
 
 	local font = native.newFont( "Assets/Fonts/neucha.otf" )
 
-	local flagButton = display.newText( sceneGroup, "Play Flag Game", 200, display.contentCenterY, font, 44 )
-	flagButton:setFillColor( 0.4, 0.4, 0.4 )
-	local foodButton = display.newText( sceneGroup, "Play Food Game", display.contentWidth - 200, display.contentCenterY, font, 44 )
-	foodButton:setFillColor( 0.4, 0.4, 0.4 )
+	local flagButton = Button:new{
+		parentGroup=sceneGroup,
+		font=font, fontSize=44, fontColor={ 0.4 },
+		text="Play Flag Game",
+		x=200, y=display.contentCenterY,
+		paddingX=20, paddingY=5,
+		fillColor={ 0.97 }, borderWidth=3, borderColor={ 0.85 }
+	}
+	local foodButton = Button:new{
+		parentGroup=sceneGroup,
+		font=font, fontSize=44, fontColor={ 0.4 },
+		text="Play Food Game",
+		x=display.contentWidth - 200, y=display.contentCenterY,
+		paddingX=20, paddingY=5,
+		fillColor={ 0.97 }, borderWidth=3, borderColor={ 0.85 }
+	}
 
-	flagButton:addEventListener( "tap", function()
+	flagButton:addEventListener( "press", function()
 		gotoMinigame( "flagGame" )
 	end)
-	foodButton:addEventListener( "tap", function()
+	foodButton:addEventListener( "press", function()
 		gotoMinigame( "foodIntro" )
 	end)
 
-	local titleText = display.newText( sceneGroup, "Culture Fun", 200, 75, font, 72 )
+	local titleOffsetY = (util.aspectRatio() > 4/3 and 175 or 75)
+	titleText = display.newText( sceneGroup, "Culture Fun", 200, titleOffsetY, font, 72 )
 	titleText:setFillColor( 0.4, 0.4, 0.4 )
 end
 
