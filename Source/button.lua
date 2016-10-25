@@ -61,13 +61,12 @@ function Button:new( options )
 
 	b.listener = EventListener:new()
 
-	b.touchPanel:addEventListener( "tap", function( e ) return b:onTap( e ) end )
 	b.touchPanel:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
 
 	return b
 end
 
-function Button:onTap( event )
+function Button:onPress( event )
 	local channel = audio.play( tapSound )
 	audio.setVolume( 1, { channel=channel } )
 
@@ -82,23 +81,27 @@ function Button:onTouch( event )
 		self:setDepressed( true )
 
 	elseif event.phase == "moved" then
-		local panel = self.touchPanel
-		if (panel.x - panel.width/2 < event.x and
-		    event.x < panel.x + panel.width/2 and
-		    panel.y - panel.height/2 < event.y and
-			event.y < panel.y + panel.height/2) then
-		   self:setDepressed( true )
-	    else
-		   self:setDepressed( false )
-		end
+	   self:setDepressed( self:contains( event.x, event.y ) )
 
 	elseif event.phase == "ended" or event.phase == "cancelled" then
 		display.getCurrentStage():setFocus( nil )
 		self:setDepressed( false )
 
+		if self:contains( event.x, event.y ) then
+			self:onPress()
+		end
+
 	end
 
 	return true
+end
+
+function Button:contains( x, y )
+	local panel = self.touchPanel
+	return (panel.x - panel.width/2 < x and
+	        x < panel.x + panel.width/2 and
+	        panel.y - panel.height/2 < y and
+		    y < panel.y + panel.height/2)
 end
 
 function Button:setDepressed( yes )
