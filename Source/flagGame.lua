@@ -171,18 +171,22 @@ function scene:create( event )
 	-- level declarations
 	local level
 	local randomNum
+	local distance 
 
 	local difficulty = composer.getVariable( "difficulty" )
 
 	if difficulty == 1 then
 		level = 6		-- 6 rounds
 		randomNum = 12  -- use the first 12 flags
+		distance = 9
 	elseif difficulty == 2 then
 		level = 12		-- 12 rounds
 		randomNum = 24	-- use the first 24 flags
+		distance = 18
 	else
 		level = 15		-- 15 rounds
 		randomNum = 30	-- use the first 30 flags
+		distance = 22
 	end
 
 	-- flag speed for level 1
@@ -709,12 +713,14 @@ function scene:create( event )
 						item2:setSequence("normal1")
 						item2:play()
 					elseif num == 2 and score ~= 0 then
-						usedMonument[score+1].obj:removeSelf()
-						usedMonument[score+1] = nil
-						local item2 = mon_placeholders[5-score]
-						item2:setSequence("normal1")
-						item2:play()
-						break
+						if usedMonument[score+1] ~= nil then
+							usedMonument[score+1].obj:removeSelf()
+							usedMonument[score+1] = nil
+							local item2 = mon_placeholders[5-score]
+							item2:setSequence("normal1")
+							item2:play()
+							break
+						end
 					end
 				end
 			end
