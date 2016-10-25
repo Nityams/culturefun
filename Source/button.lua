@@ -38,14 +38,15 @@ function Button:new( options )
 
 	b.listener = EventListener:new()
 
-	b.text:addEventListener( "tap", function() b:onTap() end )
-	b.bg:addEventListener( "tap", function() b:onTap() end )
+	b.text:addEventListener( "tap", function( e ) return b:onTap( e ) end )
+	b.bg:addEventListener( "tap", function( e ) return b:onTap( e ) end )
 
 	return b
 end
 
-function Button:onTap()
+function Button:onTap( event )
 	self.listener:dispatchEvent( "press", nil )
+	return true
 end
 
 function Button:addEventListener( eventName, handlerFn )
