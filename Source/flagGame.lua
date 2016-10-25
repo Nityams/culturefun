@@ -126,6 +126,7 @@ local audioFiles = {
 	"Assets/Sounds/FlagGame/CAT_SOUND_FX.wav",
 	"Assets/Sounds/FlagGame/AMBIENT_BIRDS_FX.mp3",
 	"Assets/Sounds/FlagGame/WIND_FX.mp3",
+	"Assets/Sounds/FlagGame/Flag Flapping.wav"
 };
 
 local function returnToMenu()
@@ -147,6 +148,8 @@ local backgroundBirdsVolume = 0.8
 local backgroundWindVolume = 0.4
 local sfxVolume = 0.5
 local catFXVolume = 0.1
+
+local flag_fx
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -600,7 +603,12 @@ function scene:create( event )
 			end
 			return
 		end
+
 		flagFlipping = true
+
+		local channel = audio.play( flag_fx )
+		audio.setVolume( 1, { channel=channel } )
+
 		transition.pause(obj)
 		transition.scaleTo(obj,
 		{
@@ -731,6 +739,7 @@ function scene:create( event )
 		-- load sound fx
 		local ding_fx = audio.loadSound(audioFiles[3])
 		local lose_fx = audio.loadSound(audioFiles[4])
+		flag_fx = audio.loadSound(audioFiles[8])
 		-- Event listener for text box 1
 		textBox1:addEventListener("tap", function()
 			if randomBox == 1 then
