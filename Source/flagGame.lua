@@ -13,7 +13,7 @@ local scene = composer.newScene()
 
 local countryNames = {
 	"United States", -- 1
-	"Britain",
+	"United Kingdom",
 	"Canada",
 	"South Korea",
 	"Netherlands",
@@ -666,14 +666,14 @@ function scene:create( event )
 										  box1,
 										  optionBox1.x,
 										  optionBox1.y,
-										  font, 38
+										  font, 36
 										)
 
 		textBox2 = display.newText( sceneGroup,
 										  box2,
 										  optionBox2.x,
 										  optionBox2.y,
-										  font, 38
+										  font, 36
 										)
 
 		-- color for the text
