@@ -634,7 +634,6 @@ function scene:create( event )
 		textBox1:setFillColor( 0, 0, 0 )
 		textBox2:setFillColor( 0, 0, 0 )
 		-- fucntion for placing monument
-		-- need t implement used monument, array created: local usedMonument
 		function monuments_placer(num,score)
 			math.randomseed(os.time())
 			local randMonument = math.random(1,14)
@@ -646,8 +645,8 @@ function scene:create( event )
 				else i = i + 1 end
 			end
 			--local img
-			if score < 0 and score < 7 then
-				for i,item in ipairs(mon_placeholders) do
+			for i,item in ipairs(mon_placeholders) do
+				if score >= 0 and score <= 6 then
 					if(num == 1 and 6-score == i) then
 						img = display.newImageRect( sceneGroup,
 											   monumentAssets[randMonument],
@@ -675,7 +674,7 @@ function scene:create( event )
 						item2:play()
 						break
 					end
-				end
+				end 
 			end
 		end
 		-- end function for placing monument
