@@ -1,6 +1,6 @@
 local EventListener = require( "Source.eventListener" )
 
-local tapSound
+local tapSound = audio.loadSound( "Assets/Sounds/Menu/Button Tap.wav" )
 
 local Button = {}
 
@@ -8,17 +8,20 @@ local Button = {}
 --            paddingX, paddingY, fillColor, fillColorPressed,
 --            borderWidth, borderColor
 function Button:new( options )
-	if tapSound == nil then
-		tapSound = audio.loadSound( "Assets/Sounds/Menu/Button Tap.wav" )
-	end
-
 	-- b inherits from Button
 	local b = {}
 	setmetatable( b, self )
 	self.__index = self
 
 	b.textGroup = display.newGroup()
-	b.text = display.newText( b.textGroup, options.text, options.x, options.y, options.font, options.fontSize )
+	b.text = display.newText(
+		b.textGroup,
+		options.text,
+		options.x,
+		options.y,
+		options.font,
+		options.fontSize
+	)
 	b.text:setFillColor( unpack( options.fontColor ) )
 
 	textWidth = b.text.width
@@ -60,7 +63,9 @@ end
 function Button:onTap( event )
 	local channel = audio.play( tapSound )
 	audio.setVolume( 1, { channel=channel } )
+
 	self.listener:dispatchEvent( "press", nil )
+
 	return true
 end
 
@@ -68,9 +73,11 @@ function Button:onTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 		self.bg:setFillColor( unpack( self.fillColorPressed ) )
+
 	elseif event.phase == "ended" or event.phase == "cancelled" then
 		display.getCurrentStage():setFocus( nil )
 		self.bg:setFillColor( unpack( self.fillColor ) )
+
 	end
 
 	return true
