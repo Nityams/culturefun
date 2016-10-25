@@ -10,8 +10,8 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
 
 local countryNames = {
-	"United States", -- 1
-	"United Kingdom",
+	"America", -- 1
+	"Britain",
 	"Canada",
 	"South Korea",
 	"Netherlands",
@@ -142,11 +142,22 @@ function scene:create( event )
 	local sceneGroup = self.view
 	local currentWidth = display.contentWidth
 	local currentHeight = display.contentHeight
+	-- background music
 	backgroundMusic = audio.loadStream(audioFiles[1])
+	-- level declarations
+	-- the loops are still used level1, randomNum1 variable
+	-- when change level, need to change: level + randomNum
 	local count = 0
-	local level1 = 6  -- 6 rounds
-	local speed1 = 8000
+	local level1 = 6        -- 6 rounds
+	local randomNum1 = 12   -- use the first 12 flags
+	local level2 = 12       -- 12 rounds
+	local randomNum2 = 24   -- use the first 24 flags
+	local level3 = 15 		-- 15 rounds
+	local randomNUm3 = 30   -- use the first 30 flags
+	-- flag speed for level 1
+	local speed1 = 7000
 	local speed2 = 1000
+	-- end level declarations
 	local flag
 	local flagFlipping = false
 	local flipNearDone = false
@@ -568,11 +579,15 @@ function scene:create( event )
 	-- random to choose the box
 	local function startRound ()
 		math.randomseed(os.time())
-		local randomFlag = math.random(1,30)
-		for i,key in ipairs(usedFlag) do
-			if countryNames[randomFlag] == key then randomFlag = math.random(1,30) end
+		local randomFlag = math.random(1,randomNum1)
+		local i = 1
+		while usedFlag[i] do
+			if usedFlag[i] == countryNames[randomFlag] then 
+				randomFlag = math.random(1,randomNum1) 
+				i = 1
+			else i = i + 1 end
 		end
-		print(randomFlag)
+			
 		flag = display.newImageRect( sceneGroup,
 										   countryFiles[randomFlag],
 										   currentWidth/7+35,
@@ -583,15 +598,14 @@ function scene:create( event )
 		-- random between 2 boxes
 		local randomBox = math.random(1,2) --countryNames[randomBox]
 		local rightAnswer = countryNames[randomFlag]
-		local wrongAnswer = nil
+		-- don't have to change the constant here, it's just wrong answer
+		local wrongAnswer = countryNames[math.random(1,30)]
 		local box1
 		local box2
 		-- loop to get wrong answer
-		for i=1,29 do
+		-- don't have to change the constant here, it's just wrong answer
+		while wrongAnswer == countryNames[randomFlag] do
 			wrongAnswer = countryNames[math.random(1,30)]
-			if  wrongAnswer ~= countryNames[randomFlag] then
-				break
-			end
 		end
 		-- random placer
 		if randomBox == 1 then
@@ -620,31 +634,47 @@ function scene:create( event )
 		textBox1:setFillColor( 0, 0, 0 )
 		textBox2:setFillColor( 0, 0, 0 )
 		-- fucntion for placing monument
-		-- need t implement used monument, array created: local usedMonument
 		function monuments_placer(num,score)
 			math.randomseed(os.time())
 			local randMonument = math.random(1,14)
-			for i,item in ipairs(usedMonument) do
-				if randMonument == item then randMonument = math.random(1,14) end
-				break
+			local i = 1 
+			while usedMonument[i] do
+				if randMonument == usedMonument[i].index then 
+					randMonument = math.random(1,14) 
+					i = 1
+				else i = i + 1 end
 			end
 			--local img
 			for i,item in ipairs(mon_placeholders) do
-				if(num == 1 and 6-score == i) then
-					img = display.newImageRect( sceneGroup,
-										   monumentAssets[randMonument],
-										   currentWidth/7+35,
-										   currentHeight/7+150
-										 )
-					img.x = item.x
-					img.y = item.y-40
-					item:setSequence("idle")
-					item:play()
-					table.insert(usedMonument,randMonument)
-					-- insert to table start from 1
-				elseif(num == 2 and 6-(score+1) == i) then
-					print (i)
-				end
+				if score >= 0 and score <= 6 then
+					if(num == 1 and 6-score == i) then
+						img = display.newImageRect( sceneGroup,
+											   monumentAssets[randMonument],
+											   currentWidth/7+35,
+											   currentHeight/7+150
+											 )
+						img.x = item.x
+						img.y = item.y-40
+						item:setSequence("idle")
+						item:play()
+						-- insert to table start from 1
+						local monument_item =  {index = randMonument, obj = img}
+						table.insert(usedMonument,monument_item)
+					elseif score == 0 and usedMonument[1] ~= nil then 
+						usedMonument[1].obj:removeSelf()
+						usedMonument[1] = nil
+						local item2 = mon_placeholders[5]
+						item2:setSequence("normal1")
+						item2:play()
+					elseif num == 2 and score ~= 0 then
+						usedMonument[score+1].obj:removeSelf()
+						usedMonument[score+1] = nil
+						local item2 = mon_placeholders[5-score]
+						item2:setSequence("normal1")
+						item2:play()
+						break
+					end
+				end 
 			end
 		end
 		-- end function for placing monument
