@@ -1,11 +1,17 @@
 local EventListener = require( "Source.eventListener" )
 
+local tapSound
+
 local Button = {}
 
 -- Arguments: parentGroup, font, fontSize, fontColor, text, x, y,
 --            paddingX, paddingY, fillColor, fillColorPressed,
 --            borderWidth, borderColor
 function Button:new( options )
+	if tapSound == nil then
+		tapSound = audio.loadSound( "Assets/Sounds/Menu/Button Tap.wav" )
+	end
+
 	-- b inherits from Button
 	local b = {}
 	setmetatable( b, self )
@@ -52,6 +58,8 @@ function Button:new( options )
 end
 
 function Button:onTap( event )
+	local channel = audio.play( tapSound )
+	audio.setVolume( 1, { channel=channel } )
 	self.listener:dispatchEvent( "press", nil )
 	return true
 end
