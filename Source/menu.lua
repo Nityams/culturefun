@@ -6,6 +6,9 @@ local fonts = require( "Source.fonts" )
 
 local scene = composer.newScene()
 
+local font = fonts.neucha()
+local titleOffsetY = (util.aspectRatio() > 4/3 and 175 or 125)
+
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -51,8 +54,6 @@ function scene:create( event )
 	logo.x = display.contentCenterX
 	logo.y = display.contentCenterY
 
-	local font = fonts.neucha()
-
 	local flagButton = Button:new{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
@@ -79,8 +80,7 @@ function scene:create( event )
 		gotoMinigame( "Food Game", "foodIntro" )
 	end)
 
-	local titleOffsetY = (util.aspectRatio() > 4/3 and 175 or 75)
-	titleText = display.newText( sceneGroup, "Culture Fun", 200, titleOffsetY, font, 72 )
+	titleText = display.newText( sceneGroup, "Culture Fun", display.contentCenterX, titleOffsetY, font, 96 )
 	titleText:setFillColor( 0.4, 0.4, 0.4 )
 
 	if backgroundMusic == nil then
