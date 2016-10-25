@@ -713,12 +713,14 @@ function scene:create( event )
 						item2:setSequence("normal1")
 						item2:play()
 					elseif num == 2 and score ~= 0 then
-						usedMonument[score+1].obj:removeSelf()
-						usedMonument[score+1] = nil
-						local item2 = mon_placeholders[5-score]
-						item2:setSequence("normal1")
-						item2:play()
-						break
+						if usedMonument[score+1] ~= nil then
+							usedMonument[score+1].obj:removeSelf()
+							usedMonument[score+1] = nil
+							local item2 = mon_placeholders[5-score]
+							item2:setSequence("normal1")
+							item2:play()
+							break
+						end
 					end
 				end
 			end
