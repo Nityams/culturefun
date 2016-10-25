@@ -17,6 +17,9 @@ local minigames = {
 	"Source.game4"
 };
 
+local backgroundMusic
+local backgroundMusicChannel
+
 local function removeMinigames()
 	for i,game in ipairs(minigames) do
 		composer.removeScene( game )
@@ -75,6 +78,16 @@ function scene:create( event )
 	local titleOffsetY = (util.aspectRatio() > 4/3 and 175 or 75)
 	titleText = display.newText( sceneGroup, "Culture Fun", 200, titleOffsetY, font, 72 )
 	titleText:setFillColor( 0.4, 0.4, 0.4 )
+
+	if backgroundMusic == nil then
+		backgroundMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
+	end
+
+end
+
+
+local function musicComplete()
+	audio.setVolume( 1, { channel=backgroundMusicChannel } )
 end
 
 
@@ -91,6 +104,9 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 
 		removeMinigames()
+
+	    backgroundMusicChannel = audio.play(backgroundMusic, { loops=-1, fadein=5000, onComplete=musicComplete } )
+
 	end
 end
 
@@ -103,6 +119,8 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
+
+		audio.fadeOut( { channel=backgroundMusicChannel, time=500 } )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
