@@ -6,8 +6,6 @@ local fonts = require( "Source.fonts" )
 
 local scene = composer.newScene()
 
-local font = fonts.neucha()
-local titleOffsetY = (util.aspectRatio() > 4/3 and 175 or 125)
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -21,8 +19,11 @@ local minigames = {
 	"Source.game4"
 };
 
-local backgroundMusic
+local font = fonts.neucha()
+
+local backgroundMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
 local backgroundMusicChannel
+
 
 local function removeMinigames()
 	for i,game in ipairs(minigames) do
@@ -52,13 +53,27 @@ function scene:create( event )
 
 	local logo = display.newImageRect( sceneGroup, "Assets/Images/How_In_The_World.png", 323, 319 )
 	logo.x = display.contentCenterX
-	logo.y = display.contentCenterY
+	logo.y = display.contentCenterY + 50
+
+
+	local titleOffsetY = (util.aspectRatio() > 4/3 and 200 or 150)
+	local titleFontSize = (util.aspectRatio() > 4/3 and 96 or 104)
+
+	titleText = display.newText(
+		sceneGroup,
+		"Culture Fun",
+		display.contentCenterX,
+		titleOffsetY,
+		font,
+		titleFontSize
+	)
+	titleText:setFillColor( 0.4, 0.4, 0.4 )
 
 	local flagButton = Button:new{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Flag Game",
-		x=200, y=display.contentCenterY,
+		x=200, y=display.contentCenterY + 50,
 		paddingX=20, paddingY=5,
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
@@ -67,7 +82,7 @@ function scene:create( event )
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Food Game",
-		x=display.contentWidth - 200, y=display.contentCenterY,
+		x=display.contentWidth - 200, y=display.contentCenterY + 50,
 		paddingX=20, paddingY=5,
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
@@ -79,14 +94,6 @@ function scene:create( event )
 	foodButton:addEventListener( "press", function()
 		gotoMinigame( "Food Game", "foodIntro" )
 	end)
-
-	titleText = display.newText( sceneGroup, "Culture Fun", display.contentCenterX, titleOffsetY, font, 96 )
-	titleText:setFillColor( 0.4, 0.4, 0.4 )
-
-	if backgroundMusic == nil then
-		backgroundMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
-	end
-
 end
 
 
