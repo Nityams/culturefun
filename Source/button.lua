@@ -67,6 +67,7 @@ function Button:new( options )
 	options.parentGroup:insert( b.group )
 
 	b.listener = EventListener:new()
+	b.depressed = false
 
 	b.touchPanel:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
 
@@ -88,7 +89,7 @@ function Button:onTouch( event )
 		self:setDepressed( true )
 
 	elseif event.phase == "moved" then
-	   self:setDepressed( self:contains( event.x, event.y ) )
+		self:setDepressed( self:contains( event.x, event.y ) )
 
 	elseif event.phase == "ended" or event.phase == "cancelled" then
 		display.getCurrentStage():setFocus( nil )
@@ -112,6 +113,12 @@ function Button:contains( x, y )
 end
 
 function Button:setDepressed( yes )
+    if self.depressed == false and yes == true then
+		sounds:play( "Button Down", 1 )
+	end
+
+	self.depressed = yes
+
 	if yes then
 		self.bg:setFillColor( unpack( self.fillColorPressed ) )
 	else
