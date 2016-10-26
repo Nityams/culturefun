@@ -1,20 +1,11 @@
 local EventListener = require( "Source.eventListener" )
+local sounds = require( "Source.sounds" )
 
-local tapSound
-local downSound
 local allowance = 30  -- pixels around the button that still trigger it
 
-local loaded = false
-
-local function loadResources()
-	if loaded then
-		return
-	end
-
-	loaded = true
-
-	tapSound = audio.loadSound( "Assets/Sounds/Menu/Button Tap.wav" )
-	downSound = audio.loadSound( "Assets/Sounds/Menu/Button Down.wav" )
+local function initSounds()
+	sounds:defineSound( "Button Tap", "Assets/Sounds/Menu/Button Tap.wav" )
+	sounds:defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav" )
 end
 
 local Button = {}
@@ -23,7 +14,7 @@ local Button = {}
 --            paddingX, paddingY, fillColor, fillColorPressed,
 --            borderWidth, borderColor
 function Button:new( options )
-	loadResources()
+	initSounds()
 
 	-- b inherits from Button
 	local b = {}
@@ -83,9 +74,7 @@ function Button:new( options )
 end
 
 function Button:onPress( event )
-	local channel = audio.play( tapSound )
-	audio.setVolume( 0.9, { channel=channel } )
-
+	sounds:play( "Button Tap", 0.9 )
 	self.listener:dispatchEvent( "press", nil )
 
 	return true
@@ -93,8 +82,7 @@ end
 
 function Button:onTouch( event )
 	if event.phase == "began" then
-		local channel = audio.play( downSound )
-		audio.setVolume( 1, { channel=channel } )
+		sounds:play( "Button Down", 1 )
 
 		display.getCurrentStage():setFocus( event.target )
 		self:setDepressed( true )
