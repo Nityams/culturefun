@@ -39,7 +39,8 @@ function Button:new( options )
 		textWidth + 2*options.paddingX + 2*options.borderWidth + 2*allowance,
 		textHeight + 2*options.paddingY + 2*options.borderWidth + 2*allowance
 	)
-	b.touchPanel:setFillColor( 0, 0, 0, 0.01 )
+	b.touchPanel.isVisible = false
+	b.touchPanel.isHitTestable = true
 
 	local bgGroup = display.newGroup()
 	b.bg = display.newRect(
