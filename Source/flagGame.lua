@@ -151,6 +151,34 @@ local backgroundWindVolume = 0.4
 local sfxVolume = 0.5
 local catFXVolume = 0.1
 
+local function playFadeIn( sound, volume, time, loops )
+    local channel = audio.play(sound, {loops=loops})
+	audio.setVolume( 0, { channel=channel } )
+	audio.fade( { channel=channel, time=time, volume=volume } )
+	return channel
+end
+
+local function startMusic()
+	-- background music
+	if backgroundMusic == nil then
+		backgroundMusic = audio.loadStream(audioFiles[1])
+	end
+
+	-- background ambient FX
+	if backgroundBirds == nil then
+		backgroundBirds = audio.loadStream(audioFiles[2])
+	end
+	if backgroundWind == nil then
+		backgroundWind = audio.loadStream(audioFiles[3])
+	end
+
+	--background music, loop infinite, fadein in 5s
+	backgroundMusicChannel = playFadeIn( backgroundMusic, backgroundMusicVolume, 5000, -1 )
+	backgroundBirdsChannel = playFadeIn( backgroundBirds, backgroundBirdsVolume, 5000, -1 )
+	backgroundWindChannel = playFadeIn( backgroundWind, backgroundWindVolume, 5000, -1 )
+end
+
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -161,11 +189,6 @@ function scene:create( event )
 	local sceneGroup = self.view
 	local currentWidth = display.contentWidth
 	local currentHeight = display.contentHeight
-	-- background music
-	backgroundMusic = audio.loadStream(audioFiles[1])
-	-- background ambient FX
-	backgroundBirds = audio.loadStream(audioFiles[2])
-	backgroundWind = audio.loadStream(audioFiles[3])
 	local count = 0
 
 	-- level declarations
@@ -843,18 +866,12 @@ function scene:show( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
-		--background music, loop infinite, fadein in 5s
-	    backgroundMusicChannel = audio.play(backgroundMusic,{loops=-1,fadein=5000})
-		backgroundBirdsChannel = audio.play(backgroundBirds,{loops=-1,fadein=5000})
-		backgroundWindChannel = audio.play(backgroundWind,{loops=-1,fadein=5000})
-		audio.setVolume( backgroundMusicVolume, { channel=backgroundMusicChannel } )
-		audio.setVolume( backgroundBirdsVolume, { channel=backgroundBirdsChannel } )
-		audio.setVolume( backgroundWindVolume, { channel=backgroundWindChannel } )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 		-- In two seconds return to the menu
 		--timer.performWithDelay( 2000, returnToMenu )
 		startGame()
+		timer.performWithDelay( 25, startMusic )
 	end
 end
 
