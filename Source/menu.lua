@@ -14,15 +14,10 @@ local scene = composer.newScene()
 
 local minigames = {
 	"Source.flagGame",
-	"Source.foodGame",
-	"Source.game3",
-	"Source.game4"
+	"Source.foodGame"
 };
 
-local font = fonts.neucha()
-
-local menuMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
-
+local menuMusic
 
 local function removeMinigames()
 	for i,game in ipairs(minigames) do
@@ -36,6 +31,16 @@ local function gotoMinigame( name, file )
 	composer.gotoScene( "Source.difficultySelector" )
 end
 
+local function startMusic()
+	if menuMusic == nil then
+		menuMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
+	end
+    local menuMusicChannel = audio.play(menuMusic, { loops=-1 } )
+	audio.setVolume( 0, { channel=menuMusicChannel } )
+	audio.fade( { channel=menuMusicChannel, time=5000, volume=0.7 } )
+	composer.setVariable( "menuMusicChannel", menuMusicChannel )  -- Turned off in difficultySelector.lua
+end
+
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -47,6 +52,7 @@ function scene:create( event )
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
+
 	local background = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor( 1, 1, 1 )
 
@@ -54,6 +60,8 @@ function scene:create( event )
 	logo.x = display.contentCenterX
 	logo.y = display.contentCenterY + 50
 
+
+	local font = fonts.neucha()
 
 	local titleOffsetY = (util.aspectRatio() > 4/3 and 200 or 150)
 	local titleFontSize = (util.aspectRatio() > 4/3 and 96 or 104)
@@ -108,13 +116,8 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		removeMinigames()
-
-	    menuMusicChannel = audio.play(menuMusic, { loops=-1 } )
-		audio.setVolume( 0, { channel=menuMusicChannel } )
-		audio.fade( { channel=menuMusicChannel, time=5000, volume=0.7 } )
-		composer.setVariable( "menuMusicChannel", menuMusicChannel )  -- Turned off in difficultySelector.lua
-
+		timer.performWithDelay( 0, startMusic )
+		timer.performWithDelay( 0, removeMinigames )
 	end
 end
 
