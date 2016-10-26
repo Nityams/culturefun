@@ -1,8 +1,21 @@
 local EventListener = require( "Source.eventListener" )
 
-local tapSound = audio.loadSound( "Assets/Sounds/Menu/Button Tap.wav" )
-local downSound = audio.loadSound( "Assets/Sounds/Menu/Button Down.wav" )
+local tapSound
+local downSound
 local allowance = 30  -- pixels around the button that still trigger it
+
+local loaded = false
+
+local function loadResources()
+	if loaded then
+		return
+	end
+
+	loaded = true
+
+	tapSound = audio.loadSound( "Assets/Sounds/Menu/Button Tap.wav" )
+	downSound = audio.loadSound( "Assets/Sounds/Menu/Button Down.wav" )
+end
 
 local Button = {}
 
@@ -10,6 +23,8 @@ local Button = {}
 --            paddingX, paddingY, fillColor, fillColorPressed,
 --            borderWidth, borderColor
 function Button:new( options )
+	loadResources()
+
 	-- b inherits from Button
 	local b = {}
 	setmetatable( b, self )
