@@ -47,10 +47,14 @@ function scene:create( event )
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
-	local background = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
-	background:setFillColor( 1, 1, 1 )
+	--local background = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
+	
+	local background = display.newImageRect( sceneGroup, "Assets/Images/MenuBackground.jpg", display.contentWidth, display.contentHeight )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
+	
+	local logo = display.newImageRect( sceneGroup, "Assets/Images/MenuLogoV1Edit.jpg", 323, 319 )
 
-	local logo = display.newImageRect( sceneGroup, "Assets/Images/How_In_The_World.png", 323, 319 )
 	logo.x = display.contentCenterX
 	logo.y = display.contentCenterY + 50
 
@@ -87,6 +91,12 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
+	local function spinLogo(event)
+		transition.to(logo, { rotation=-360, time=20000, onComplete=spinLogo} )
+	end
+	spinLogo()
+
+	--Listners
 	flagButton:addEventListener( "press", function()
 		gotoMinigame( "Flag Game", "flagGame" )
 	end)
