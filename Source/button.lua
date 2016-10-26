@@ -25,10 +25,8 @@ function Button:new( options )
 	local text = display.newText(
 		fgGroup,
 		options.text,
-		options.x,
-		options.y,
-		options.font,
-		options.fontSize
+		options.x, options.y,
+		options.font, options.fontSize
 	)
 	text:setFillColor( unpack( options.fontColor ) )
 
@@ -37,8 +35,7 @@ function Button:new( options )
 
 	b.touchPanel = display.newRect(
 	 	fgGroup,
-		options.x,
-		options.y,
+		options.x, options.y,
 		textWidth + 2*options.paddingX + 2*options.borderWidth + 2*allowance,
 		textHeight + 2*options.paddingY + 2*options.borderWidth + 2*allowance
 	)
@@ -47,8 +44,7 @@ function Button:new( options )
 	local bgGroup = display.newGroup()
 	b.bg = display.newRect(
 	 	bgGroup,
-		options.x,
-		options.y,
+		options.x, options.y,
 		textWidth + 2*options.paddingX + 2*options.borderWidth,
 		textHeight + 2*options.paddingY + 2*options.borderWidth
 	)
