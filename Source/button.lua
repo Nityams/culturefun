@@ -4,7 +4,7 @@ local sounds = require( "Source.sounds" )
 local allowance = 30  -- pixels around the button that still trigger it
 
 local function initSounds()
-	sounds:defineSound( "Button Tap", "Assets/Sounds/Menu/Button Tap.wav" )
+	sounds:defineSound( "Button Up", "Assets/Sounds/Menu/Button Up.wav" )
 	sounds:defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav" )
 end
 
@@ -74,7 +74,7 @@ function Button:new( options )
 end
 
 function Button:onPress( event )
-	sounds:play( "Button Tap", 0.9 )
+	sounds:play( "Button Up", 0.9 )
 	self.listener:dispatchEvent( "press", nil )
 
 	return true
