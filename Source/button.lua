@@ -104,8 +104,8 @@ end
 function Button:contains( x, y )
 	local panel = self.touchPanel
 	return (panel.x - panel.width/2 < x and
-	        x < panel.x + panel.width/2 and
 	        panel.y - panel.height/2 < y and
+	        x < panel.x + panel.width/2 and
 		    y < panel.y + panel.height/2)
 end
 
