@@ -92,11 +92,14 @@ function scene:create( event )
 	}
 
 	local function spinLogo(event)
-		transition.to(logo, { rotation=-360, time=20000, onComplete=spinLogo} )
+		transition.to(logo, { rotation=-360, time=2000, onComplete=spinLogo} )
 	end
-	spinLogo()
+	--spinLogo()
 
 	--Listners
+
+	logo:addEventListener( "touch", spinLogo)
+
 	flagButton:addEventListener( "press", function()
 		gotoMinigame( "Flag Game", "flagGame" )
 	end)
