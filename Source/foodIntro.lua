@@ -18,7 +18,6 @@ end
 
 local function gotoGame()
 	composer.gotoScene("Source.foodGame")
-	composer.removeScene( "Source.foodIntro")
 end
 
 local function bellsound()
