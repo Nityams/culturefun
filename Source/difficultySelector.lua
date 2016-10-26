@@ -36,10 +36,19 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	local background = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
+	local background = display.newRect(
+		sceneGroup,
+		display.contentCenterX, display.contentCenterY,
+		display.contentWidth, display.contentHeight
+	)
 	background:setFillColor( 1, 1, 1 )
 
-	local chooseText = display.newText( sceneGroup, "Choose game difficulty", display.contentCenterX, titleOffsetY + 115, font, 64 )
+	local chooseText = display.newText(
+		sceneGroup,
+		"Choose game difficulty",
+		display.contentCenterX, titleOffsetY + 115,
+		font, 64
+	)
 	chooseText:setFillColor( 0.4, 0.4, 0.4 )
 
 	local easyButton = Button:new{
