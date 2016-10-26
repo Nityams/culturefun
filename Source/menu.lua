@@ -31,6 +31,14 @@ local function gotoMinigame( name, file )
 	composer.gotoScene( "Source.difficultySelector" )
 end
 
+local function gotoFlagMinigame()
+	gotoMinigame( "Flag Game", "flagGame" )
+end
+
+local function gotoFoodMinigame()
+	gotoMinigame( "Food Game", "foodIntro" )
+end
+
 local function startMusic()
 	if menuMusic == nil then
 		menuMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
@@ -102,12 +110,8 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	flagButton:addEventListener( "press", function()
-		gotoMinigame( "Flag Game", "flagGame" )
-	end)
-	foodButton:addEventListener( "press", function()
-		gotoMinigame( "Food Game", "foodIntro" )
-	end)
+	flagButton:addEventListener( "press", gotoFlagMinigame )
+	foodButton:addEventListener( "press", gotoFoodMinigame )
 end
 
 
