@@ -3,6 +3,7 @@ local composer = require( "composer" )
 
 
 local Countries = require "Countries"
+local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
 
@@ -19,10 +20,10 @@ local function gotoGame()
 	composer.gotoScene("Source.foodGame")
 	composer.removeScene( "Source.foodIntro")
 end
---local bellSound = audio.loadStream("Assets/Sounds/door_bell.wav")
+
 local function bellsound()
-	audio.play(audio.loadStream("Assets/Sounds/door_bell.wav"),
-	{ channel1 = 2, loops =0, fadein =500  })
+	sounds:defineSound( "Door Bell", "Assets/Sounds/door_bell.wav" )
+	sounds:play( "Door Bell", 0.6 )
 end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
