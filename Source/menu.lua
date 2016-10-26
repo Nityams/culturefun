@@ -53,10 +53,17 @@ function scene:create( event )
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
 
-	local background = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
+	local background = display.newRect(
+		sceneGroup,
+		display.contentCenterX, display.contentCenterY,
+		display.contentWidth, display.contentHeight
+	)
 	background:setFillColor( 1, 1, 1 )
 
-	local logo = display.newImageRect( sceneGroup, "Assets/Images/How_In_The_World.png", 323, 319 )
+	local logo = display.newImageRect(
+		sceneGroup,
+		"Assets/Images/How_In_The_World.png", 323, 319
+	)
 	logo.x = display.contentCenterX
 	logo.y = display.contentCenterY + 50
 
