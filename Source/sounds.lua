@@ -19,7 +19,7 @@ function sounds:play( name, volume )
     local path = self.paths[name]
     local sound = self:getSound( path )
 	local channel = audio.play( sound )
-	audio.setVolume( 1, { channel=channel } )
+	audio.setVolume( volume, { channel=channel } )
 end
 
 return sounds
