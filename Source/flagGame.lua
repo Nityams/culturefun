@@ -3,6 +3,7 @@ local composer = require( "composer" )
 local physics = require ( "physics")
 
 local fonts = require( "Source.fonts" )
+local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
 
@@ -118,15 +119,16 @@ local monumentAssets = {
 	"Assets/Images/Monument/USA_NY.png",
 };
 
+sounds:defineSound( "YAY_FX", "Assets/Sounds/FlagGame/YAY_FX.mp3" )
+sounds:defineSound( "DING_FX", "Assets/Sounds/FlagGame/DING_FX.mp3" )
+sounds:defineSound( "WRONG_FX", "Assets/Sounds/FlagGame/WRONG_FX.mp3" )
+sounds:defineSound( "CAT_SOUND_FX", "Assets/Sounds/FlagGame/CAT_SOUND_FX.wav" )
+sounds:defineSound( "Flag Flapping", "Assets/Sounds/FlagGame/Flag Flapping.wav" )
+
 local audioFiles = {
-	"Assets/Sounds/Music/Whimsical-Popsicle.mp3"	, --1
-	"Assets/Sounds/FlagGame/YAY_FX.mp3",
-	"Assets/Sounds/FlagGame/DING_FX.mp3",
-	"Assets/Sounds/FlagGame/WRONG_FX.mp3",
-	"Assets/Sounds/FlagGame/CAT_SOUND_FX.wav",
+	"Assets/Sounds/Music/Whimsical-Popsicle.mp3",  -- 1
 	"Assets/Sounds/FlagGame/AMBIENT_BIRDS_FX.mp3",
-	"Assets/Sounds/FlagGame/WIND_FX.mp3",
-	"Assets/Sounds/FlagGame/Flag Flapping.wav"
+	"Assets/Sounds/FlagGame/WIND_FX.mp3"
 };
 
 local function returnToMenu()
@@ -149,8 +151,6 @@ local backgroundWindVolume = 0.4
 local sfxVolume = 0.5
 local catFXVolume = 0.1
 
-local flag_fx
-
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -164,14 +164,14 @@ function scene:create( event )
 	-- background music
 	backgroundMusic = audio.loadStream(audioFiles[1])
 	-- background ambient FX
-	backgroundBirds = audio.loadStream(audioFiles[6])
-	backgroundWind = audio.loadStream(audioFiles[7])
+	backgroundBirds = audio.loadStream(audioFiles[2])
+	backgroundWind = audio.loadStream(audioFiles[3])
 	local count = 0
 
 	-- level declarations
 	local level
 	local randomNum
-	local distance 
+	local distance
 
 	local difficulty = composer.getVariable( "difficulty" )
 
@@ -439,18 +439,13 @@ function scene:create( event )
 	physics.addBody(platform1,"static")
 	physics.addBody(animal1,"dynamic", {radius = 50, bounce = 0.1})
 	physics.addBody(animal2,"dynamic", {radius = 50, bounce = 0.1})
-	-- soundFX for cat
-	local cat_fx = audio.loadSound(audioFiles[5])
-	-- end soundFX for cat
 	local function pushCat1()
 		animal1:applyLinearImpulse(0,-0.75,animal1.x,animal1.y)
-		local sound = audio.play(cat_fx)
-		audio.setVolume( catFXVolume, { channel=sound } )
+		sounds:play( "CAT_SOUND_FX", catFXVolume )
 	end
 	local function pushCat2()
 		animal2:applyLinearImpulse(0,-0.75,animal2.x,animal2.y)
-		local sound = audio.play(cat_fx)
-		audio.setVolume( catFXVolume, { channel=sound } )
+		sounds:play( "CAT_SOUND_FX", catFXVolume )
 	end
 	animal1:addEventListener("tap",pushCat1)
 	animal2:addEventListener("tap",pushCat2)
@@ -610,8 +605,7 @@ function scene:create( event )
 
 		flagFlipping = true
 
-		local channel = audio.play( flag_fx )
-		audio.setVolume( 1, { channel=channel } )
+		sounds:play( "Flag Flapping", 1 )
 
 		transition.pause(obj)
 		transition.scaleTo(obj,
@@ -742,10 +736,6 @@ function scene:create( event )
 				textBox1:removeSelf()
 			end
 		end
-		-- load sound fx
-		local ding_fx = audio.loadSound(audioFiles[3])
-		local lose_fx = audio.loadSound(audioFiles[4])
-		flag_fx = audio.loadSound(audioFiles[8])
 		-- Event listener for text box 1
 		textBox1:addEventListener("tap", function()
 			if randomBox == 1 then
@@ -754,8 +744,7 @@ function scene:create( event )
 				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
-				local sound1 = audio.play(ding_fx,{loops= 0})
-				audio.setVolume( sfxVolume, { channel=sound1 } )
+				sounds:play( "DING_FX", sfxVolume )
 				animal1:setSequence("happy")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -764,8 +753,7 @@ function scene:create( event )
 				animationStop(flag)
 				minusCount()
 				monuments_placer(2,count)
-				local sound2 = audio.play(lose_fx,{loops= 0})
-				audio.setVolume( sfxVolume, { channel=sound2 } )
+				sounds:play( "WRONG_FX", sfxVolume )
 				animal1:setSequence("sad")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -782,8 +770,7 @@ function scene:create( event )
 				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
-				local sound1 = audio.play(ding_fx,{loops= 0})
-				audio.setVolume( sfxVolume, { channel=sound1 } )
+				sounds:play( "DING_FX", sfxVolume )
 				animal2:setSequence("happy")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -792,8 +779,7 @@ function scene:create( event )
 				animationStop(flag)
 				minusCount()
 				monuments_placer(2,count)
-				local sound2 = audio.play(lose_fx,{loops= 0})
-				audio.setVolume( sfxVolume, { channel=sound2 } )
+				sounds:play( "WRONG_FX", sfxVolume )
 				animal2:setSequence("sad")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -838,10 +824,7 @@ function scene:create( event )
 			animal2:setSequence("happy")
 			animal1:play()
 			animal2:play()
-			local win_fx = audio.loadSound(audioFiles[2])
-			local sound1 = audio.play(win_fx)
-			audio.setVolume( sfxVolume, { channel=win_fx } )
-			audio.setVolume( sfxVolume, { channel=sound1 } )
+			sound:play( "YAY_FX")
 			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,font,44)
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
