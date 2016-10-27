@@ -4,6 +4,7 @@ local composer = require( "composer" )
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
 local musics = require( "Source.musics" )
+local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
 
 local foodIntro = require( "Source.foodIntro" )
@@ -56,6 +57,7 @@ local function startMusic()
 	menuMusicChannel = musics:play( "Menu Theme" )
 end
 
+sounds:defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
 musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
 
@@ -181,11 +183,13 @@ function scene:logoTapped( event )
 end
 
 function scene:spinLogo()
+	timer.performWithDelay( 0, function() sounds:play( "Charm" ) end )
+
 	self.spinning = true
 	self.wantSpin = false
 	self.canWantSpin = false
 
-	timer.performWithDelay(2000, function()
+	timer.performWithDelay(1000, function()
 		self.canWantSpin = true
 	end)
 
@@ -193,7 +197,7 @@ function scene:spinLogo()
 	--logo.x = display.contentCenterX
 	--logo.y = display.contentCenterY + 50
 	--transition.to(logo, { rotation=-360, time=3000, onComplete=spinLogo} )
-	transition.to(self.logo, {rotation=-360, time=3000, onComplete=function()
+	transition.to(self.logo, {rotation=-360, time=2000, onComplete=function()
 		self.logo.rotation = 0
 		self.spinning = false
 		self.canWantSpin = false
