@@ -1,5 +1,5 @@
 local sounds = {
-    paths = {},
+    params = {},
     sounds = {}
 }
 
@@ -11,12 +11,13 @@ function sounds:getSound( path )
     return self.sounds[path]
 end
 
-function sounds:defineSound( name, path )
-    self.paths[name] = path
+function sounds:defineSound( name, path, volume )
+    self.params[name] = { path=path, volume=volume }
 end
 
-function sounds:play( name, volume )
-    local path = self.paths[name]
+function sounds:play( name )
+    local path = self.params[name].path
+    local volume = self.params[name].volume
     local sound = self:getSound( path )
 	local channel = audio.play( sound )
 	audio.setVolume( volume, { channel=channel } )

@@ -138,14 +138,14 @@ images:define( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 
 images:define( "Road", sceneBuild[15], 100, currentHeight-174 )
 images:define( "Trophy", sceneBuild[5], 46*1.5, 47*1.5 )
 
-sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.wav" )
-sounds:defineSound( "Celebrate FX", "Assets/Sounds/FlagGame/CROWD.wav" )
-sounds:defineSound( "Ding FX", "Assets/Sounds/FlagGame/DING_FX.mp3" )
-sounds:defineSound( "Lose FX", "Assets/Sounds/FlagGame/WRONG_FX.mp3" )
-sounds:defineSound( "CAT_SOUND_FX", "Assets/Sounds/FlagGame/CAT_SOUND_FX.wav" )
-sounds:defineSound( "Flag Flapping", "Assets/Sounds/FlagGame/Flag Flapping.wav" )
-sounds:defineSound( "Port In", "Assets/Sounds/FlagGame/PowerUp18.mp3" )
-sounds:defineSound( "Port Out", "Assets/Sounds/FlagGame/PowerUp18_reversed.mp3" )
+sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.wav", 0.5 )
+sounds:defineSound( "Celebrate FX", "Assets/Sounds/FlagGame/CROWD.wav", 0.5 )
+sounds:defineSound( "Ding FX", "Assets/Sounds/FlagGame/DING_FX.mp3", 0.5 )
+sounds:defineSound( "Lose FX", "Assets/Sounds/FlagGame/WRONG_FX.mp3", 0.5 )
+sounds:defineSound( "CAT_SOUND_FX", "Assets/Sounds/FlagGame/CAT_SOUND_FX.wav", 0.1 )
+sounds:defineSound( "Flag Flapping", "Assets/Sounds/FlagGame/Flag Flapping.wav", 1 )
+sounds:defineSound( "Port In", "Assets/Sounds/FlagGame/PowerUp18.mp3", 0.3 )
+sounds:defineSound( "Port Out", "Assets/Sounds/FlagGame/PowerUp18_reversed.mp3", 0.3 )
 
 musics:defineMusic( "Flag Theme", "Assets/Sounds/Music/Whimsical-Popsicle.mp3", 0.8, 5000 )
 musics:defineMusic( "Birds", "Assets/Sounds/FlagGame/AMBIENT_BIRDS_FX.mp3", 0.8, 5000 )
@@ -162,10 +162,6 @@ local function returnToMenu()
 end
 
 local font = fonts.neucha()
-
-local sfx_level1_Volume = 0.5
-local sfx_level2_Volume = 0.3
-local catFXVolume = 0.1
 
 
 -- -----------------------------------------------------------------------------------
@@ -449,11 +445,11 @@ function scene:create( event )
 	physics.addBody(animal2,"dynamic", {radius = 50, bounce = 0.1})
 	local function pushCat1()
 		animal1:applyLinearImpulse(0,-0.75,animal1.x,animal1.y)
-		sounds:play( "CAT_SOUND_FX", catFXVolume )
+		sounds:play( "CAT_SOUND_FX" )
 	end
 	local function pushCat2()
 		animal2:applyLinearImpulse(0,-0.75,animal2.x,animal2.y)
-		sounds:play( "CAT_SOUND_FX", catFXVolume )
+		sounds:play( "CAT_SOUND_FX" )
 	end
 	animal1:addEventListener("tap",pushCat1)
 	animal2:addEventListener("tap",pushCat2)
@@ -705,17 +701,17 @@ function scene:create( event )
 				if difficulty == 1 and score ~= 6 then
 					mon_placeholders[6-score]:setSequence("port_in")
 					mon_placeholders[6-score]:play()
-					sounds:play( "Port In", sfx_level2_Volume )
+					sounds:play( "Port In" )
 					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score],randMonument) return true end, 1)
 				elseif difficulty == 2 and score % 2 == 0 and score ~= 12 then
 					mon_placeholders[6-score/2]:setSequence("port_in")
 					mon_placeholders[6-score/2]:play()
-					sounds:play( "Port In", sfx_level2_Volume )
+					sounds:play( "Port In" )
 					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score/2],randMonument) return true end, 1)
 				elseif difficulty == 3 and score % 3 == 0 and score ~= 15 then
 					mon_placeholders[6-score/3]:setSequence("port_in")
 					mon_placeholders[6-score/3]:play()
-					sounds:play( "Port In", sfx_level2_Volume )
+					sounds:play( "Port In" )
 					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score/3],randMonument) return true end, 1)
 				end
 			elseif num == 2 and score == 0 and usedMonument[1] ~= nil then
@@ -724,7 +720,7 @@ function scene:create( event )
 				local item2 = mon_placeholders[5]
 				item2:setSequence("port_out")
 				item2:play()
-				sounds:play( "Port Out", sfx_level2_Volume )
+				sounds:play( "Port Out" )
 				timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
 			elseif num == 2 and score ~= 0 then
 				if usedMonument[score+1] ~= nil then
@@ -733,7 +729,7 @@ function scene:create( event )
 					local item2 = mon_placeholders[5-score]
 					item2:setSequence("port_out")
 					item2:play()
-					sounds:play( "Port Out", sfx_level2_Volume )
+					sounds:play( "Port Out" )
 					timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
 				end
 			end
@@ -763,7 +759,7 @@ function scene:create( event )
 				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
-				sounds:play( "Ding FX", sfx_level1_Volume )
+				sounds:play( "Ding FX" )
 				animal1:setSequence("happy")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -772,7 +768,7 @@ function scene:create( event )
 				animationStop(flag)
 				minusCount()
 				monuments_placer(2,count)
-				sounds:play( "Lose FX", sfx_level1_Volume )
+				sounds:play( "Lose FX" )
 				animal1:setSequence("sad")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -789,7 +785,7 @@ function scene:create( event )
 				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
-				sounds:play( "Ding FX", sfx_level1_Volume )
+				sounds:play( "Ding FX" )
 				animal2:setSequence("happy")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -798,7 +794,7 @@ function scene:create( event )
 				animationStop(flag)
 				minusCount()
 				monuments_placer(2,count)
-				sounds:play( "Lose FX", sfx_level1_Volume )
+				sounds:play( "Lose FX" )
 				animal2:setSequence("sad")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -843,8 +839,8 @@ function scene:create( event )
 			animal2:setSequence("happy")
 			animal1:play()
 			animal2:play()
-			sounds:play( "Win FX", sfx_level1_Volume )
-			sounds:play( "Celebrate FX", sfx_level1_Volume )
+			sounds:play( "Win FX" )
+			sounds:play( "Celebrate FX" )
 			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,font,44)
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)

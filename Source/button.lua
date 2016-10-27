@@ -3,10 +3,8 @@ local sounds = require( "Source.sounds" )
 
 local allowance = 30  -- pixels around the button that still trigger it
 
-local function initSounds()
-	sounds:defineSound( "Button Up", "Assets/Sounds/Menu/Button Up.wav" )
-	sounds:defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav" )
-end
+sounds:defineSound( "Button Up", "Assets/Sounds/Menu/Button Up.wav", 0.9 )
+sounds:defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav", 1 )
 
 local Button = {}
 
@@ -14,8 +12,6 @@ local Button = {}
 --            paddingX, paddingY, fillColor, fillColorPressed,
 --            borderWidth, borderColor
 function Button:new( options )
-	initSounds()
-
 	-- b inherits from Button
 	local b = {}
 	setmetatable( b, self )
@@ -74,7 +70,7 @@ function Button:new( options )
 end
 
 function Button:onPress( event )
-	sounds:play( "Button Up", 0.9 )
+	sounds:play( "Button Up" )
 	timer.performWithDelay( 50, function()
 		self.listener:dispatchEvent( "press", nil )
 	end)
@@ -88,8 +84,6 @@ function Button:onTouch( event )
 	end
 
 	if event.phase == "began" then
-		sounds:play( "Button Down", 1 )
-
 		self:setDepressed( true )
 
 		display.getCurrentStage():setFocus( event.target )
@@ -131,7 +125,7 @@ end
 
 function Button:setDepressed( yes )
     if self.depressed == false and yes == true then
-		sounds:play( "Button Down", 1 )
+		sounds:play( "Button Down" )
 	end
 
 	self.depressed = yes
