@@ -90,25 +90,21 @@ function scene:create( event )
 	-- Background --
 	----------------
 
-	local fill = display.newRect(
+	local bgWhiteFill = display.newRect(
 		sceneGroup,
 		display.contentCenterX, display.contentCenterY,
 		display.contentWidth, display.contentHeight
 	)
-	fill:setFillColor( 1, 1, 1 )
+	bgWhiteFill:setFillColor( 1, 1, 1 )
 
-	local background = display.newImageRect(
+	local bgWorldMap = display.newImageRect(
 		sceneGroup,
 		"Assets/Images/MenuBackgroundV1Edit.png",
 		display.contentWidth, display.contentHeight*1.4
 	)
-	background.x = display.contentCenterX
-	background.y = display.contentCenterY
-
-	-- To de-emphasize the background, reduce its opacity. Once the background
-	-- image has been edited in Photoshop to make it less eye-catching, try
-	-- removing this line and seeing if that works.
-	background.alpha = 0.75
+	bgWorldMap.x = display.contentCenterX
+	bgWorldMap.y = display.contentCenterY
+	bgWorldMap.alpha = 0.75
 
 	self.logo = display.newImageRect(
 		sceneGroup,

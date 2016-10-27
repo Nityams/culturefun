@@ -26,12 +26,21 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	local background = display.newRect(
+	local bgWhiteFill = display.newRect(
 		sceneGroup,
 		display.contentCenterX, display.contentCenterY,
 		display.contentWidth, display.contentHeight
 	)
-	background:setFillColor( 1, 1, 1 )
+	bgWhiteFill:setFillColor( 1, 1, 1 )
+
+	local bgWorldMap = display.newImageRect(
+		sceneGroup,
+		"Assets/Images/MenuBackgroundV1Edit_Blurred.png",
+		display.contentWidth, display.contentHeight*1.4
+	)
+	bgWorldMap.x = display.contentCenterX
+	bgWorldMap.y = display.contentCenterY
+	bgWorldMap.alpha = 0.75
 
 	local chooseText = display.newText(
 		sceneGroup,
