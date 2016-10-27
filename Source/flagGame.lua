@@ -725,8 +725,8 @@ function scene:create( event )
 			end
 			local portIn_fx = audio.loadSound(audioFiles[9])
 			local portOut_fx = audio.loadSound(audioFiles[10])
-			if num == 1 then
-				if difficulty == 1 then
+			if num == 1  then
+				if difficulty == 1 and score ~= 6 then
 					mon_placeholders[6-score]:setSequence("port_in")
 					mon_placeholders[6-score]:play()
 					local sound = audio.play(portIn_fx,{loops= 0})
