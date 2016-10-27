@@ -64,6 +64,7 @@ function Button:new( options )
 	options.parentGroup:insert( b.group )
 
 	b.listener = EventListener:new()
+	b.focused = false
 	b.depressed = false
 
 	b.touchPanel:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
@@ -73,7 +74,9 @@ end
 
 function Button:onPress( event )
 	sounds:play( "Button Up", 0.9 )
-	self.listener:dispatchEvent( "press", nil )
+	timer.performWithDelay( 50, function()
+		self.listener:dispatchEvent( "press", nil )
+	end)
 
 	return true
 end
@@ -82,19 +85,31 @@ function Button:onTouch( event )
 	if event.phase == "began" then
 		sounds:play( "Button Down", 1 )
 
-		display.getCurrentStage():setFocus( event.target )
 		self:setDepressed( true )
 
+		display.getCurrentStage():setFocus( event.target )
+		self.focused = true
+
 	elseif event.phase == "moved" then
-		self:setDepressed( self:contains( event.x, event.y ) )
+		if self.focused then
+			self:setDepressed( self:contains( event.x, event.y ) )
+		end
 
 	elseif event.phase == "ended" or event.phase == "cancelled" then
 		display.getCurrentStage():setFocus( nil )
 		self:setDepressed( false )
 
-		if self:contains( event.x, event.y ) then
+		if self.focused and self:contains( event.x, event.y ) then
 			self:onPress()
 		end
+
+		self.focused = false
+
+	elseif event.phase == "ended" or event.phase == "cancelled" then
+		display.getCurrentStage():setFocus( nil )
+		self:setDepressed( false )
+
+		self.focused = false
 
 	end
 
