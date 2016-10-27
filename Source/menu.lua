@@ -30,7 +30,12 @@ local function gotoMinigame( name, file, menu )
 		minigame = {
 			name = name,
 			sourcePath = sourcePath,
-			preloader = function() require( sourcePath ):preload() end
+			preloader = function()
+				local nextScene = require( sourcePath )
+				if nextScene.preload then
+					nextScene:preload()
+				end
+			end
 		},
 		menuMusicChannel = menuMusicChannel
 	}
