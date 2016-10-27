@@ -138,11 +138,14 @@ images:define( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 
 images:define( "Road", sceneBuild[15], 100, currentHeight-174 )
 images:define( "Trophy", sceneBuild[5], 46*1.5, 47*1.5 )
 
-sounds:defineSound( "YAY_FX", "Assets/Sounds/FlagGame/YAY_FX.mp3" )
-sounds:defineSound( "DING_FX", "Assets/Sounds/FlagGame/DING_FX.mp3" )
-sounds:defineSound( "WRONG_FX", "Assets/Sounds/FlagGame/WRONG_FX.mp3" )
+sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.wav" )
+sounds:defineSound( "Celebrate FX", "Assets/Sounds/FlagGame/CROWD.wav" )
+sounds:defineSound( "Ding FX", "Assets/Sounds/FlagGame/DING_FX.mp3" )
+sounds:defineSound( "Lose FX", "Assets/Sounds/FlagGame/WRONG_FX.mp3" )
 sounds:defineSound( "CAT_SOUND_FX", "Assets/Sounds/FlagGame/CAT_SOUND_FX.wav" )
 sounds:defineSound( "Flag Flapping", "Assets/Sounds/FlagGame/Flag Flapping.wav" )
+sounds:defineSound( "Port In", "Assets/Sounds/FlagGame/PowerUp18.mp3" )
+sounds:defineSound( "Port Out", "Assets/Sounds/FlagGame/PowerUp18_reversed.mp3" )
 
 musics:defineMusic( "Flag Theme", "Assets/Sounds/Music/Whimsical-Popsicle.mp3", 0.8, 5000 )
 musics:defineMusic( "Birds", "Assets/Sounds/FlagGame/AMBIENT_BIRDS_FX.mp3", 0.8, 5000 )
@@ -151,7 +154,7 @@ musics:defineMusic( "Wind", "Assets/Sounds/FlagGame/WIND_FX.mp3", 0.4, 5000 )
 local function startMusic()
 	musics:play( "Flag Theme" )
 	musics:play( "Birds" )
-	musics:play( "Wind" )
+	--musics:play( "Wind" )
 end
 
 local function returnToMenu()
@@ -160,7 +163,8 @@ end
 
 local font = fonts.neucha()
 
-local sfxVolume = 0.5
+local sfx_level1_Volume = 0.5
+local sfx_level2_Volume = 0.3
 local catFXVolume = 0.1
 
 
@@ -308,24 +312,36 @@ function scene:create( event )
 	{
 		width = 248,
 		height = 242,
-		numFrames = 13,
-		sheetContentWidth = 3224,
+		numFrames = 19,
+		sheetContentWidth = 4892,
 		sheetContentHeight = 242
 	};
 
 	local sequenceDataMonu = {
 		{
 			name = "normal1",
-			frames = {5,6,7,8,9,10,11,12,13,1,2,3,4},
+			frames = {9,10,11,12,13,14,15,16,17,5,6,7,8},
 			time = 6000,
 			loopCount = 0
 		},
 		{
 			name = "idle",
-			frames = {5},
+			frames = {9},
 			time = 1000,
 			loopCount = 1
-		}
+		},
+		{
+			name = "port_in",
+			frames = {9,10,11,12,13,14,15,16,17,5,6,7,8,1,2,3,4,18,19,9},
+			time = 700,
+			loopCount = 1
+		},
+		{
+			name = "port_out",
+			frames = {19,18,4,3,2,1,8,7,6,5,17,16,15,14,13,12,11,10,9},
+			time = 1000,
+			loopCount = 1
+		},
 	};
 	local mySheetMonu = graphics.newImageSheet("Assets/Images/Sprite/5.png", sheetDataMonu)
 	--end monument placeholders animation --
@@ -669,37 +685,56 @@ function scene:create( event )
 				else i = i + 1 end
 			end
 			--local img
-			for i,item in ipairs(mon_placeholders) do
-				if score >= 0 and score <= 6 then
-					if(num == 1 and 6-score == i) then
-						img = display.newImageRect( sceneGroup,
+			local function place_img(item,randMonument)
+				local img = display.newImageRect( sceneGroup,
 											   monumentAssets[randMonument],
-											   currentWidth/7+35,
-											   currentHeight/7+150
+											   currentWidth/18+35,
+											   currentHeight/27+150
 											 )
-						img.x = item.x
-						img.y = item.y-40
-						item:setSequence("idle")
-						item:play()
-						-- insert to table start from 1
-						local monument_item =  {index = randMonument, obj = img}
-						table.insert(usedMonument,monument_item)
-					elseif score == 0 and usedMonument[1] ~= nil then
-						usedMonument[1].obj:removeSelf()
-						usedMonument[1] = nil
-						local item2 = mon_placeholders[5]
-						item2:setSequence("normal1")
-						item2:play()
-					elseif num == 2 and score ~= 0 then
-						if usedMonument[score+1] ~= nil then
-							usedMonument[score+1].obj:removeSelf()
-							usedMonument[score+1] = nil
-							local item2 = mon_placeholders[5-score]
-							item2:setSequence("normal1")
-							item2:play()
-							break
-						end
-					end
+				img.x = item.x
+				img.y = item.y-75
+				-- insert to table start from 1
+				local monument_item =  {index = randMonument, obj = img}
+				table.insert(usedMonument,monument_item)
+			end
+			local function resume_animation(obj)
+				obj:setSequence("normal1")
+				obj:play()
+			end
+			if num == 1  then
+				if difficulty == 1 and score ~= 6 then
+					mon_placeholders[6-score]:setSequence("port_in")
+					mon_placeholders[6-score]:play()
+					sounds:play( "Port In", sfx_level2_Volume )
+					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score],randMonument) return true end, 1)
+				elseif difficulty == 2 and score % 2 == 0 and score ~= 12 then
+					mon_placeholders[6-score/2]:setSequence("port_in")
+					mon_placeholders[6-score/2]:play()
+					sounds:play( "Port In", sfx_level2_Volume )
+					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score/2],randMonument) return true end, 1)
+				elseif difficulty == 3 and score % 3 == 0 and score ~= 15 then
+					mon_placeholders[6-score/3]:setSequence("port_in")
+					mon_placeholders[6-score/3]:play()
+					sounds:play( "Port In", sfx_level2_Volume )
+					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score/3],randMonument) return true end, 1)
+				end
+			elseif num == 2 and score == 0 and usedMonument[1] ~= nil then
+				usedMonument[1].obj:removeSelf()
+				usedMonument[1] = nil
+				local item2 = mon_placeholders[5]
+				item2:setSequence("port_out")
+				item2:play()
+				sounds:play( "Port Out", sfx_level2_Volume )
+				timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
+			elseif num == 2 and score ~= 0 then
+				if usedMonument[score+1] ~= nil then
+					usedMonument[score+1].obj:removeSelf()
+					usedMonument[score+1] = nil
+					local item2 = mon_placeholders[5-score]
+					item2:setSequence("port_out")
+					item2:play()
+					sounds:play( "Port Out", sfx_level2_Volume )
+					timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
 				end
 			end
 		end
@@ -728,7 +763,7 @@ function scene:create( event )
 				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
-				sounds:play( "DING_FX", sfxVolume )
+				sounds:play( "Ding FX", sfx_level1_Volume )
 				animal1:setSequence("happy")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -737,7 +772,7 @@ function scene:create( event )
 				animationStop(flag)
 				minusCount()
 				monuments_placer(2,count)
-				sounds:play( "WRONG_FX", sfxVolume )
+				sounds:play( "Lose FX", sfx_level1_Volume )
 				animal1:setSequence("sad")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -754,7 +789,7 @@ function scene:create( event )
 				monuments_placer(1,count)
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
-				sounds:play( "DING_FX", sfxVolume )
+				sounds:play( "Ding FX", sfx_level1_Volume )
 				animal2:setSequence("happy")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -763,7 +798,7 @@ function scene:create( event )
 				animationStop(flag)
 				minusCount()
 				monuments_placer(2,count)
-				sounds:play( "WRONG_FX", sfxVolume )
+				sounds:play( "Lose FX", sfx_level1_Volume )
 				animal2:setSequence("sad")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -808,7 +843,8 @@ function scene:create( event )
 			animal2:setSequence("happy")
 			animal1:play()
 			animal2:play()
-			sounds:play( "YAY_FX")
+			sounds:play( "Win FX", sfx_level1_Volume )
+			sounds:play( "Celebrate FX", sfx_level1_Volume )
 			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,font,44)
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)

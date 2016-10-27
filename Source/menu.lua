@@ -56,7 +56,7 @@ local function startMusic()
 	menuMusicChannel = musics:play( "Menu Theme" )
 end
 
-musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/Monkey-Drama.mp3", 0.7, 5000 )
+musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
 
 -- -----------------------------------------------------------------------------------
