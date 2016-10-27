@@ -60,8 +60,8 @@ function scene:create( event )
 
 
 	local titleOffsetY = (util.aspectRatio() > 4/3 and 200 or 150)
-	local titleFontSize = (util.aspectRatio() > 4/3 and 96 or 104)
-
+	--local titleFontSize = (util.aspectRatio() > 4/3 and 96 or 104)
+	local titleFontSize = (util.aspectRatio() > 4/3 and 110 or 140)
 	titleText = display.newText(
 		sceneGroup,
 		"Culture Fun",
@@ -92,7 +92,12 @@ function scene:create( event )
 	}
 
 	local function spinLogo(event)
-		transition.to(logo, { rotation=-360, time=2000, onComplete=spinLogo} )
+
+		--logo = display.newImageRect( sceneGroup, "Assets/Images/MenuLogoV1Edit.jpg", 400, 400)
+		--logo.x = display.contentCenterX
+		--logo.y = display.contentCenterY + 50
+		--transition.to(logo, { rotation=-360, time=3000, onComplete=spinLogo} )
+		transition.to(logo, {rotation=-360, time=3000} )
 	end
 	--spinLogo()
 
