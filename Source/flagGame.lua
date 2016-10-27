@@ -156,7 +156,7 @@ images:defineSheet( "Tree", "Sprite/4.png", {
 	height = 821,
 	numFrames = 5,
 	sheetContentWidth = 1463,
-	sheetContentHeight = 4285
+	sheetContentHeight = 4105
 })
 images:defineSheet( "Monu", "Sprite/5.png", {
 	width = 248,
