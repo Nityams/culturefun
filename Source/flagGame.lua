@@ -3,10 +3,15 @@ local composer = require( "composer" )
 local physics = require ( "physics")
 
 local fonts = require( "Source.fonts" )
+local images = require( "Source.images" )
 local musics = require( "Source.musics" )
 local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
+
+local currentWidth = display.contentWidth
+local currentHeight = display.contentHeight
+
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -80,27 +85,27 @@ local countryFiles = {
 };
 
 local sceneBuild ={
-	"Assets/Images/Scene/1.png",
-	"Assets/Images/Scene/2.png",
-	"Assets/Images/Scene/3.png",
-	"Assets/Images/Scene/4.png",
-	"Assets/Images/Scene/5.png",
-	"Assets/Images/Scene/6.png",
-	"Assets/Images/Scene/7.png",
-	"Assets/Images/Scene/8.png",
-	"Assets/Images/Scene/9.png",
-	"Assets/Images/Scene/10.png",
-	"Assets/Images/Scene/11.png",
-	"Assets/Images/Scene/12.png",
-	"Assets/Images/Scene/13.png", -- 13
-	"Assets/Images/Scene/14.png",
-	"Assets/Images/Scene/15.png",
-	"Assets/Images/Scene/16.png",
-	"Assets/Images/Scene/17.png",
-	"Assets/Images/Scene/18.png",
-	"Assets/Images/Scene/19.png",
-	"Assets/Images/Scene/20.png",
-	"Assets/Images/Scene/21.png",
+	"Scene/1.png",
+	"Scene/2.png",
+	"Scene/3.png",
+	"Scene/4.png",
+	"Scene/5.png",
+	"Scene/6.png",
+	"Scene/7.png",
+	"Scene/8.png",
+	"Scene/9.png",
+	"Scene/10.png",
+	"Scene/11.png",
+	"Scene/12.png",
+	"Scene/13.png", -- 13
+	"Scene/14.png",
+	"Scene/15.png",
+	"Scene/16.png",
+	"Scene/17.png",
+	"Scene/18.png",
+	"Scene/19.png",
+	"Scene/20.png",
+	"Scene/21.png",
 };
 
 local monumentAssets = {
@@ -119,6 +124,19 @@ local monumentAssets = {
 	"Assets/Images/Monument/UK_BigBen.png",
 	"Assets/Images/Monument/USA_NY.png",
 };
+
+images:define( "Top Border", sceneBuild[21], currentWidth, 300 )
+images:define( "Background", sceneBuild[19], currentWidth, currentHeight - 190 )
+images:define( "Bottom Border", sceneBuild[21], currentWidth, 300 )
+images:define( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
+images:define( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
+images:define( "Pause Button", sceneBuild[10], currentWidth/20, currentHeight/14 )
+images:define( "Replay Button", sceneBuild[11], currentWidth/20, currentHeight/14 )
+images:define( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
+images:define( "Option Box", sceneBuild[14], currentWidth/5, currentHeight/14 )
+images:define( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
+images:define( "Road", sceneBuild[15], 100, currentHeight-174 )
+images:define( "Trophy", sceneBuild[5], 46*1.5, 47*1.5 )
 
 sounds:defineSound( "YAY_FX", "Assets/Sounds/FlagGame/YAY_FX.mp3" )
 sounds:defineSound( "DING_FX", "Assets/Sounds/FlagGame/DING_FX.mp3" )
@@ -150,12 +168,25 @@ local catFXVolume = 0.1
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 
+function scene:preload()
+	images:preload( "Top Border" )
+	images:preload( "Background" )
+	images:preload( "Bottom Border" )
+	images:preload( "Platform 1" )
+	images:preload( "Column" )
+	images:preload( "Pause Button" )
+	images:preload( "Replay Button" )
+	images:preload( "Pole" )
+	images:preload( "Option Box", 2 )
+	images:preload( "Right Side" )
+	images:preload( "Road" )
+	images:preload( "Trophy" )
+end
+
 -- create()
 function scene:create( event )
 	-- !! need to work on the ratio for the resolutions
 	local sceneGroup = self.view
-	local currentWidth = display.contentWidth
-	local currentHeight = display.contentHeight
 	local count = 0
 
 	-- level declarations
@@ -299,32 +330,20 @@ function scene:create( event )
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
 	-- top border
-	local topBorder = display.newImageRect ( sceneGroup,
-											sceneBuild[21],
-											currentWidth,
-											300
-											)
-	topBorder.x = currentWidth/2;
-	topBorder.y = 0;
+	local topBorder = images:get( sceneGroup, "Top Border" )
+	topBorder.x = currentWidth/2
+	topBorder.y = 0
 	topBorder:setFillColor(1,1,1,0.7)
 
 	-- background placeholder
-	local background = display.newImageRect( sceneGroup,
-											 sceneBuild[19],
-											 currentWidth,
-											 currentHeight-190
-										   )
+	local background = images:get( sceneGroup, "Background" )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	-- top border
-	local botBorder = display.newImageRect ( sceneGroup,
-											sceneBuild[21],
-											currentWidth,
-											300
-											)
-	botBorder.x = currentWidth/2;
-	botBorder.y = background.height+255;
+	-- bottom border
+	local botBorder = images:get( sceneGroup, "Bottom Border" )
+	botBorder.x = currentWidth/2
+	botBorder.y = background.height+255
 	botBorder:setFillColor(1,1,1,0.7)
 
 	-- trees for background
@@ -337,38 +356,23 @@ function scene:create( event )
 	tree1:play()
 
 	-- platform placeholder
-	local platform1 = display.newImageRect( sceneGroup,
-											 sceneBuild[20],
-											 currentWidth,
-											 currentHeight/15
-										   )
+	local platform1 = images:get( sceneGroup, "Platform 1" )
 	platform1.x = display.contentCenterX
 	platform1.y = display.contentCenterY*2 - platform1.height*2 - 3
 	--platform1:setFillColor(0,0,0)
 
     -- screen split placeholder
-	local collumn = display.newImageRect( sceneGroup,
-										  sceneBuild[13],
-										  currentWidth/8,
-										  currentHeight-175)
+	local collumn = images:get( sceneGroup, "Column" )
 	collumn.x = currentWidth * 2 / 3
 	collumn.y = display.contentCenterY+8
 
 	-- pause button placeholder
-	local pauseButton = display.newImageRect( sceneGroup,
-										      sceneBuild[10],
-										      currentWidth/20,
-										      currentHeight/14
-										    )
+	local pauseButton = images:get( sceneGroup, "Pause Button" )
 	pauseButton.x = currentWidth / 20 --50
 	pauseButton.y = currentHeight / 5 --150
 
 	-- replay button placeholder
-	local replayButton = display.newImageRect( sceneGroup,
-											   sceneBuild[11],
-											   currentWidth/20,
-											   currentHeight/14
-											 )
+	local replayButton = images:get( sceneGroup, "Replay Button" )
 	replayButton.x = pauseButton.x
 	replayButton.y = pauseButton.y + currentWidth / 16
 
@@ -400,11 +404,7 @@ function scene:create( event )
 	-- End event Pause/Replay --
 
 	-- flag pole placeholder
-	local pole = display.newImageRect( sceneGroup,
-									   sceneBuild[2],
-									   currentWidth/17,
-									   currentHeight/1.8
-									 )
+	local pole = images:get( sceneGroup, "Pole" )
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 80
 
@@ -442,18 +442,10 @@ function scene:create( event )
 	-- end physics test
 
 	-- place holders for answer text
-	local optionBox1 = display.newImageRect( sceneGroup,
-											 sceneBuild[14],
-											 currentWidth/5,
-											 currentHeight/14
-										   )
+	local optionBox1 = images:get( sceneGroup, "Option Box" )
 	optionBox1.x = animal1.x
 	optionBox1.y = animal1.y - currentHeight/5
-	local optionBox2 = display.newImageRect( sceneGroup,
-										     sceneBuild[14],
-										     currentWidth/5,
-										     currentHeight/14
-										   )
+	local optionBox2 = images:get( sceneGroup, "Option Box" )
 	optionBox2.x = animal2.x
 	optionBox2.y = animal2.y - currentHeight/5
 	-------------------------------------------------------------------------------------------------------
@@ -474,13 +466,13 @@ function scene:create( event )
 	end
 	-------------------------------------------------------------------------------------------------------
 		-- temp = placeholder for all right side
-	local temp = display.newImageRect(sceneGroup, sceneBuild[1],currentWidth * 1 / 3, background.height+16)
+	local temp = images:get( sceneGroup, "Right Side" )
 	temp.x = collumn.x + collumn.x / 4
 	temp.y = display.contentCenterY+8
 	--temp:setFillColor(0,0,0,0)
 
 	-- placeholder for road
-	local road = display.newImageRect(sceneGroup,sceneBuild[15],100,temp.height)
+	local road = images:get( sceneGroup, "Road" )
 	road.x = collumn.x + collumn.x /4
 	road.y = temp.y
 	-- placeholder for animal on the road
@@ -492,7 +484,7 @@ function scene:create( event )
 	animal3:play()
 
 	-- place holder for trophy
-	local trophy = display.newImageRect(sceneGroup, sceneBuild[5], 46*1.5, 47*1.5)
+	local trophy = images:get( sceneGroup, "Trophy" )
 	trophy.x = road.x
 	trophy.y = 140
 	-- end right side of screen --
