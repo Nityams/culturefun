@@ -863,7 +863,7 @@ function scene:show( event )
 		--background music, loop infinite, fadein in 5s
 	    backgroundMusicChannel = audio.play(backgroundMusic,{loops=-1,fadein=5000})
 		backgroundBirdsChannel = audio.play(backgroundBirds,{loops=-1,fadein=5000})
-		backgroundWindChannel = audio.play(backgroundWind,{loops=-1,fadein=5000})
+		--backgroundWindChannel = audio.play(backgroundWind,{loops=-1,fadein=5000})
 		audio.setVolume( backgroundMusicVolume, { channel=backgroundMusicChannel } )
 		audio.setVolume( backgroundBirdsVolume, { channel=backgroundBirdsChannel } )
 		audio.setVolume( backgroundWindVolume, { channel=backgroundWindChannel } )

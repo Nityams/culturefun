@@ -41,7 +41,7 @@ end
 
 local function startMusic()
 	if menuMusic == nil then
-		menuMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
+		menuMusic = audio.loadStream( "Assets/Sounds/Music/bensound-littleidea.mp3" )
 	end
     local menuMusicChannel = audio.play(menuMusic, { loops=-1 } )
 	audio.setVolume( 0, { channel=menuMusicChannel } )
