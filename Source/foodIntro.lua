@@ -28,7 +28,9 @@ end
 -- -----------------------------------------------------------------------------------
 
 function scene:preload()
-	images:preload( "Neighborhood" )
+	return coroutine.create(function()
+		images:preload( "Neighborhood" ); coroutine.yield()
+	end)
 end
 
 -- create()

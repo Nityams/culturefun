@@ -103,8 +103,17 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 
 		if minigame.preloader then
-			timer.performWithDelay( 25, minigame.preloader )
+			self.preloadCoroutine = minigame.preloader()
+			timer.performWithDelay( 25, function() self:preload() end )
 		end
+	end
+end
+
+
+function scene:preload()
+	if self.preloadCoroutine and coroutine.status( self.preloadCoroutine ) == "suspended" then
+		coroutine.resume( self.preloadCoroutine )
+		timer.performWithDelay( 25, function() self:preload() end )
 	end
 end
 
@@ -117,6 +126,8 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
+
+		self.preloadCoroutine = nil
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen

@@ -15,6 +15,8 @@ function images:preload( name, count )
 
     local path = self.params[name].path
 
+    print( "Preloading ImageRect for " .. path )
+
     if self.preloadedImages[path] == nil then
         self.preloadedImages[path] = {}
     end
@@ -46,12 +48,12 @@ function images:get( group, name )
 
     -- Do we have one already?
     if self:hasReady(path) then
-        print( "Using preloaded image" )
+        print( "Using preloaded ImageRect for " .. path )
         imageRect = util.pop( self.preloadedImages[path] )
         imageRect.isVisible = true
         group:insert( imageRect )
     else
-        print( "Making new image" )
+        print( "Making new ImageRect for " .. path )
         imageRect = self:make( group, name )
     end
 

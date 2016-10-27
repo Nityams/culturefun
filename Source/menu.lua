@@ -33,7 +33,7 @@ local function gotoMinigame( name, file, menu )
 			preloader = function()
 				local nextScene = require( sourcePath )
 				if nextScene.preload then
-					nextScene:preload()
+					return nextScene:preload()
 				end
 			end
 		},
