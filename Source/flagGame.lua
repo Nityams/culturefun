@@ -814,7 +814,7 @@ function scene:create( event )
 			animal2:setSequence("happy")
 			animal1:play()
 			animal2:play()
-			sound:play( "YAY_FX")
+			sounds:play( "YAY_FX")
 			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,font,44)
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
