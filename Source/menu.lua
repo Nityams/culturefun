@@ -99,8 +99,8 @@ function scene:create( event )
 
 	local background = display.newImageRect(
 		sceneGroup,
-		"Assets/Images/MenuBackgroundV1Edit.jpg",
-		display.contentWidth, display.contentHeight
+		"Assets/Images/MenuBackgroundV1Edit.png",
+		display.contentWidth, display.contentHeight*1.4
 	)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
