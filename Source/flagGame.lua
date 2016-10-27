@@ -125,18 +125,46 @@ local monumentAssets = {
 	"Assets/Images/Monument/USA_NY.png",
 };
 
-images:define( "Top Border", sceneBuild[21], currentWidth, 300 )
-images:define( "Background", sceneBuild[19], currentWidth, currentHeight - 190 )
-images:define( "Bottom Border", sceneBuild[21], currentWidth, 300 )
-images:define( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
-images:define( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
-images:define( "Pause Button", sceneBuild[10], currentWidth/20, currentHeight/14 )
-images:define( "Replay Button", sceneBuild[11], currentWidth/20, currentHeight/14 )
-images:define( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
-images:define( "Option Box", sceneBuild[14], currentWidth/5, currentHeight/14 )
-images:define( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
-images:define( "Road", sceneBuild[15], 100, currentHeight-174 )
-images:define( "Trophy", sceneBuild[5], 46*1.5, 47*1.5 )
+images:defineImage( "Top Border", sceneBuild[21], currentWidth, 300 )
+images:defineImage( "Background", sceneBuild[19], currentWidth, currentHeight - 190 )
+images:defineImage( "Bottom Border", sceneBuild[21], currentWidth, 300 )
+images:defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
+images:defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
+images:defineImage( "Pause Button", sceneBuild[10], currentWidth/20, currentHeight/14 )
+images:defineImage( "Replay Button", sceneBuild[11], currentWidth/20, currentHeight/14 )
+images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
+images:defineImage( "Option Box", sceneBuild[14], currentWidth/5, currentHeight/14 )
+images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
+images:defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
+images:defineImage( "Trophy", sceneBuild[5], 46*1.5, 47*1.5 )
+images:defineSheet( "Cat", "Sprite/2.png", {
+	width = 276.29,
+	height = 238.29,
+	numFrames = 49,
+	sheetContentWidth = 1934,
+	sheetContentHeight = 1668
+})
+images:defineSheet( "Dog", "Sprite/3.png", {
+	width = 547,
+	height = 481,
+	numFrames = 18,
+	sheetContentWidth = 9846,
+	sheetContentHeight = 481
+})
+images:defineSheet( "Tree", "Sprite/4.png", {
+	width = 1463,
+	height = 821,
+	numFrames = 5,
+	sheetContentWidth = 1463,
+	sheetContentHeight = 4285
+})
+images:defineSheet( "Monu", "Sprite/5.png", {
+	width = 248,
+	height = 242,
+	numFrames = 19,
+	sheetContentWidth = 4892,
+	sheetContentHeight = 242
+})
 
 sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.wav", 0.5 )
 sounds:defineSound( "Celebrate FX", "Assets/Sounds/FlagGame/CROWD.wav", 0.5 )
@@ -182,6 +210,10 @@ function scene:preload()
 		images:preload( "Right Side" ); coroutine.yield()
 		images:preload( "Road" ); coroutine.yield()
 		images:preload( "Trophy" ); coroutine.yield()
+		images:preloadSheet( "Cat" ); coroutine.yield()
+		images:preloadSheet( "Dog" ); coroutine.yield()
+		images:preloadSheet( "Tree" ); coroutine.yield()
+		images:preloadSheet( "Monu" ); coroutine.yield()
 	end)
 end
 
@@ -216,21 +248,14 @@ function scene:create( event )
 	local speed1 = 7000
 	local speed2 = 1000
 	-- end level declarations
+
 	local flag
 	local flagFlipping = false
 	local flipNearDone = false
 	local wantAnotherFlip = false
 	local mon_placeholders = {}
-	-- animal sprite --
-	local sheetDataCat =
-	{
-		width = 276.29,
-		height = 238.29,
-		numFrames = 49,
-		sheetContentWidth = 1934,
-		sheetContentHeight = 1668
-	};
 
+	-- animal sprite --
 	local sequenceDataCat = {
 		{
 			name = "idle",
@@ -252,16 +277,7 @@ function scene:create( event )
 			loopCount = 0
 		}
 	};
-	local mySheetCat = graphics.newImageSheet("Assets/Images/Sprite/2.png", sheetDataCat)
-
-	local sheetDataDog =
-	{
-		width = 547,
-		height = 481,
-		numFrames = 18,
-		sheetContentWidth = 9846,
-		sheetContentHeight = 481
-	};
+	local mySheetCat = images:getSheet( "Cat" )
 
 	local sequenceDataDog = {
 		{
@@ -279,19 +295,10 @@ function scene:create( event )
 			loopCount = 0
 		},
 	};
-	local mySheetDog = graphics.newImageSheet("Assets/Images/Sprite/3.png", sheetDataDog)
+	local mySheetDog = images:getSheet( "Dog" )
 	-- end animal sprite --
 	-------------------------------------------------------------------------------------------------------
 	-- background animation --
-	local sheetDataTree1 =
-	{
-		width = 1463,
-		height = 821,
-		numFrames = 5,
-		sheetContentWidth = 1463,
-		sheetContentHeight = 4285
-	};
-
 	local sequenceDataTree1 = {
 		{
 			name = "normal1",
@@ -300,19 +307,10 @@ function scene:create( event )
 			loopCount = 0
 		}
 	};
-	local mySheetTree1 = graphics.newImageSheet("Assets/Images/Sprite/4.png", sheetDataTree1)
+	local mySheetTree1 = images:getSheet( "Tree" )
 	--end background animation --
 	-------------------------------------------------------------------------------------------------------
 	-- monument placeholders animation --
-	local sheetDataMonu =
-	{
-		width = 248,
-		height = 242,
-		numFrames = 19,
-		sheetContentWidth = 4892,
-		sheetContentHeight = 242
-	};
-
 	local sequenceDataMonu = {
 		{
 			name = "normal1",
@@ -339,7 +337,7 @@ function scene:create( event )
 			loopCount = 1
 		},
 	};
-	local mySheetMonu = graphics.newImageSheet("Assets/Images/Sprite/5.png", sheetDataMonu)
+	local mySheetMonu = images:getSheet( "Monu" )
 	--end monument placeholders animation --
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------

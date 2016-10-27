@@ -6,8 +6,12 @@ local images = {
     preloadedImages = {}
 }
 
-function images:define( name, path, width, height )
+function images:defineImage( name, path, width, height )
     self.params[name] = { path="Assets/Images/"..path, width=width, height=height }
+end
+
+function images:defineSheet( name, path, options )
+    self.params[name] = { path="Assets/Images/"..path, options=options }
 end
 
 function images:preload( name, count )
@@ -28,6 +32,19 @@ function images:preload( name, count )
     end
 end
 
+function images:preloadSheet( name )
+    local path = self.params[name].path
+
+    print( "Preloading ImageSheet for " .. path )
+
+    if self.preloadedImages[path] == nil then
+        self.preloadedImages[path] = {}
+    end
+
+    local imageSheet = self:makeSheet( name )
+    util.push( self.preloadedImages[path], imageSheet )
+end
+
 function images:make( group, name )
     local params = self.params[name]
     return display.newImageRect(
@@ -35,6 +52,11 @@ function images:make( group, name )
         params.path,
         params.width, params.height
     )
+end
+
+function images:makeSheet( name )
+    local params = self.params[name]
+    return graphics.newImageSheet( params.path, params.options )
 end
 
 function images:hasReady( path )
@@ -58,6 +80,23 @@ function images:get( group, name )
     end
 
     return imageRect
+end
+
+function images:getSheet( name )
+    local path = self.params[name].path
+
+    local imageSheet
+
+    -- Do we have one already?
+    if self:hasReady(path) then
+        print( "Using preloaded ImageSheet for " .. path )
+        imageSheet = util.pop( self.preloadedImages[path] )
+    else
+        print( "Making new ImageSheet for " .. path )
+        imageSheet = self:makeSheet( name )
+    end
+
+    return imageSheet
 end
 
 function images:print()

@@ -5,7 +5,7 @@ function util.aspectRatio()
 end
 
 function util.push( array, value )
-	table.insert( array, value )
+	array[#array + 1] = value
 end
 
 function util.pop( array )

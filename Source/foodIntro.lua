@@ -11,7 +11,7 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-images:define( "Neighborhood", "FoodGame/Intro.png", display.contentWidth, display.contentHeight )
+images:defineImage( "Neighborhood", "FoodGame/Intro.png", display.contentWidth, display.contentHeight )
 
 local function gotoGame()
 	composer.gotoScene("Source.foodGame")
