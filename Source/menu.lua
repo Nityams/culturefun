@@ -16,18 +16,11 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local minigames = {
-	"Source.flagGame",
-	"Source.foodGame"
-};
-
-local menuMusic
 local menuMusicChannel
 
 local function removeMinigames()
-	for i,game in ipairs(minigames) do
-		composer.removeScene( game )
-	end
+	composer.removeScene( "Source.flagGame" )
+	composer.removeScene( "Source.foodGame" )
 end
 
 local function gotoMinigame( name, file, menu )
