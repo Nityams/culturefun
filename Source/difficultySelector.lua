@@ -9,25 +9,12 @@ local scene = composer.newScene()
 local font = fonts.neucha()
 local titleOffsetY = (util.aspectRatio() > 4/3 and 250 or 175)
 
+
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local function returnToMenu()
-	composer.gotoScene( "Source.menu" )
-end
-
-local function gotoGame( difficulty )
-	-- Menu music that started in menu.lua... it's time to stop
-	local menuMusicChannel = composer.getVariable( "menuMusicChannel" )
-	audio.fadeOut( 500, { channel=menuMusicChannel } )
-	audio.stopWithDelay( 500, { channel=menuMusicChannel } )
-
-	composer.setVariable( "difficulty", difficulty )
-	local minigameSourceFile = composer.getVariable( "minigameSourceFile" )
-	composer.gotoScene( minigameSourceFile )
-end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -84,11 +71,9 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	easyButton:addEventListener( "press", function() gotoGame( 1 ) end )
-	mediumButton:addEventListener( "press", function() gotoGame( 2 ) end )
-	hardButton:addEventListener( "press", function() gotoGame( 3 ) end )
-
-	self.preloader = event.params.preloader
+	easyButton:addEventListener( "press", function() self:gotoGame( 1 ) end )
+	mediumButton:addEventListener( "press", function() self:gotoGame( 2 ) end )
+	hardButton:addEventListener( "press", function() self:gotoGame( 3 ) end )
 end
 
 
@@ -97,15 +82,17 @@ function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
+	local minigame = event.params.minigame
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
-		local minigameName = composer.getVariable( "minigameName" )
+		self.menuMusicChannel = event.params.menuMusicChannel
+		self.minigameSourcePath = minigame.sourcePath
 
 		self.nameText = display.newText(
 			sceneGroup,
-			minigameName,
+			minigame.name,
 			display.contentCenterX, titleOffsetY,
 			font, 96
 		)
@@ -115,8 +102,8 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		if self.preloader then
-			timer.performWithDelay( 25, self.preloader )
+		if minigame.preloader then
+			timer.performWithDelay( 25, minigame.preloader )
 		end
 	end
 end
@@ -145,6 +132,15 @@ function scene:destroy( event )
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
 
+end
+
+function scene:gotoGame( difficulty )
+	-- Menu music that started in menu.lua... it's time to stop
+	audio.fadeOut( 500, { channel=self.menuMusicChannel } )
+	audio.stopWithDelay( 500, { channel=self.menuMusicChannel } )
+
+	composer.setVariable( "difficulty", difficulty )
+	composer.gotoScene( self.minigameSourcePath )
 end
 
 

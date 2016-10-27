@@ -22,6 +22,7 @@ local minigames = {
 };
 
 local menuMusic
+local menuMusicChannel
 
 local function removeMinigames()
 	for i,game in ipairs(minigames) do
@@ -29,16 +30,16 @@ local function removeMinigames()
 	end
 end
 
-local function gotoMinigame( name, file )
+local function gotoMinigame( name, file, menu )
 	local sourcePath = "Source." .. file
 
-	composer.setVariable( "minigameName", name )
-	composer.setVariable( "minigameSourceFile", sourcePath )
-
-	local nextScene = require( sourcePath )
-
 	local params = {
-		preloader = nextScene.preload
+		minigame = {
+			name = name,
+			sourcePath = sourcePath,
+			preloader = function() require( sourcePath ):preload() end
+		},
+		menuMusicChannel = menuMusicChannel
 	}
 
 	composer.gotoScene( "Source.difficultySelector", { params=params } )
@@ -52,13 +53,12 @@ local function gotoFoodMinigame()
 	gotoMinigame( "Food Game", "foodIntro" )
 end
 
-musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/Monkey-Drama.mp3", 0.7, 5000 )
-
 local function startMusic()
 	-- This music will be turned off in difficultySelector.lua
-	local channel = musics:play( "Menu Theme" )
-	composer.setVariable( "menuMusicChannel", channel )
+	menuMusicChannel = musics:play( "Menu Theme" )
 end
+
+musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/Monkey-Drama.mp3", 0.7, 5000 )
 
 
 -- -----------------------------------------------------------------------------------
