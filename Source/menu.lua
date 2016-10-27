@@ -134,8 +134,8 @@ function scene:create( event )
 	-- Listeners --
 	---------------
 
-	self.logo:addEventListener( "touch", function(event)
-		self:spinLogo(event)
+	self.logo:addEventListener( "tap", function(event)
+		self:logoTapped(event)
 		return true
 	end)
 
@@ -151,19 +151,31 @@ function scene:create( event )
 	end)
 
 	self.spinning = false
+	self.wantSpin = false
+	self.canWantSpin = false
 end
 
 
-function scene:spinLogo( event )
-	if event.phase ~= "began" then
-		return
+function scene:logoTapped( event )
+	if self.canWantSpin then
+		self.wantSpin = true
 	end
 
 	if self.spinning then
 		return
 	end
 
+	self:spinLogo()
+end
+
+function scene:spinLogo()
 	self.spinning = true
+	self.wantSpin = false
+	self.canWantSpin = false
+
+	timer.performWithDelay(2000, function()
+		self.canWantSpin = true
+	end)
 
 	--logo = display.newImageRect( sceneGroup, "Assets/Images/MenuLogoV1Edit.jpg", 400, 400)
 	--logo.x = display.contentCenterX
@@ -172,6 +184,10 @@ function scene:spinLogo( event )
 	transition.to(self.logo, {rotation=-360, time=3000, onComplete=function()
 		self.logo.rotation = 0
 		self.spinning = false
+		self.canWantSpin = false
+		if self.wantSpin then
+			self:spinLogo()
+		end
 	end})
 end
 
