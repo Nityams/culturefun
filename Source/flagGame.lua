@@ -707,8 +707,8 @@ function scene:create( event )
 				else i = i + 1 end
 			end
 			--local img
-			local function place_img(img,item,randMonument)
-				img = display.newImageRect( sceneGroup,
+			local function place_img(item,randMonument)
+				local img = display.newImageRect( sceneGroup,
 											   monumentAssets[randMonument],
 											   currentWidth/18+35,
 											   currentHeight/27+150
@@ -725,36 +725,45 @@ function scene:create( event )
 			end
 			local portIn_fx = audio.loadSound(audioFiles[9])
 			local portOut_fx = audio.loadSound(audioFiles[10])
-			for i,item in ipairs(mon_placeholders) do
-				if score >= 0 and score <= 6 then
-					if(num == 1 and 6-score == i) then
-						item:setSequence("port_in")
-						item:play()
-						local sound = audio.play(portIn_fx,{loops= 0})
-						audio.setVolume( sfx_level2_Volume, { channel=sound } )
-						timer.performWithDelay(600,function()place_img(img,item,randMonument) return true end, 1)
-					elseif score == 0 and usedMonument[1] ~= nil then
-						usedMonument[1].obj:removeSelf()
-						usedMonument[1] = nil
-						local item2 = mon_placeholders[5]
-						item2:setSequence("port_out")
-						item2:play()
-						local sound2 = audio.play(portOut_fx,{loops= 0})
-						audio.setVolume( sfx_level2_Volume, { channel=sound2 } )
-						timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
-					elseif num == 2 and score ~= 0 then
-						if usedMonument[score+1] ~= nil then
-							usedMonument[score+1].obj:removeSelf()
-							usedMonument[score+1] = nil
-							local item2 = mon_placeholders[5-score]
-							item2:setSequence("port_out")
-							item2:play()
-							local sound2 = audio.play(portOut_fx,{loops= 0})
-							audio.setVolume( sfx_level2_Volume, { channel=sound2 } )
-							timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
-							break
-						end
-					end
+			if num == 1 then
+				if difficulty == 1 then
+					mon_placeholders[6-score]:setSequence("port_in")
+					mon_placeholders[6-score]:play()
+					local sound = audio.play(portIn_fx,{loops= 0})
+					audio.setVolume( sfx_level2_Volume, { channel=sound } )
+					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score],randMonument) return true end, 1)
+				elseif difficulty == 2 and score % 2 == 0 and score ~= 12 then
+					mon_placeholders[6-score/2]:setSequence("port_in")
+					mon_placeholders[6-score/2]:play()
+					local sound = audio.play(portIn_fx,{loops= 0})
+					audio.setVolume( sfx_level2_Volume, { channel=sound } )
+					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score/2],randMonument) return true end, 1)
+				elseif difficulty == 3 and score % 3 == 0 and score ~= 15 then
+					mon_placeholders[6-score/3]:setSequence("port_in")
+					mon_placeholders[6-score/3]:play()
+					local sound = audio.play(portIn_fx,{loops= 0})
+					audio.setVolume( sfx_level2_Volume, { channel=sound } )
+					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score/3],randMonument) return true end, 1)
+				end
+			elseif num == 2 and score == 0 and usedMonument[1] ~= nil then
+				usedMonument[1].obj:removeSelf()
+				usedMonument[1] = nil
+				local item2 = mon_placeholders[5]
+				item2:setSequence("port_out")
+				item2:play()
+				local sound2 = audio.play(portOut_fx,{loops= 0})
+				audio.setVolume( sfx_level2_Volume, { channel=sound2 } )
+				timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
+			elseif num == 2 and score ~= 0 then
+				if usedMonument[score+1] ~= nil then
+					usedMonument[score+1].obj:removeSelf()
+					usedMonument[score+1] = nil
+					local item2 = mon_placeholders[5-score]
+					item2:setSequence("port_out")
+					item2:play()
+					local sound2 = audio.play(portOut_fx,{loops= 0})
+					audio.setVolume( sfx_level2_Volume, { channel=sound2 } )
+					timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
 				end
 			end
 		end
