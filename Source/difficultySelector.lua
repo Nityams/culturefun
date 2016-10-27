@@ -122,7 +122,7 @@ function scene:show( event )
 
 		if minigame.preloader then
 			self.preloadCoroutine = minigame.preloader()
-			timer.performWithDelay( 25, function() self:preload() end )
+			timer.performWithDelay( 75, function() self:preload() end )
 		end
 	end
 end
@@ -131,7 +131,7 @@ end
 function scene:preload()
 	if self.preloadCoroutine and coroutine.status( self.preloadCoroutine ) == "suspended" then
 		coroutine.resume( self.preloadCoroutine )
-		timer.performWithDelay( 25, function() self:preload() end )
+		timer.performWithDelay( 50, function() self:preload() end )
 	end
 end
 

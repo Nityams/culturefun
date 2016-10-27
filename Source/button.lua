@@ -71,9 +71,7 @@ end
 
 function Button:onPress( event )
 	sounds:play( "Button Up" )
-	timer.performWithDelay( 50, function()
-		self.listener:dispatchEvent( "press", nil )
-	end)
+	self.listener:dispatchEvent( "press", nil )
 
 	return true
 end
