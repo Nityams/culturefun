@@ -1,4 +1,5 @@
 local composer = require( "composer" )
+
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
 local util = require( "Source.util" )
@@ -18,8 +19,10 @@ local function returnToMenu()
 end
 
 local function gotoGame( difficulty )
+	-- Menu music that started in menu.lua... it's time to stop
 	local menuMusicChannel = composer.getVariable( "menuMusicChannel" )
-	audio.fadeOut( { channel=menuMusicChannel, time=500 } )  -- Played from menu.lua
+	audio.fadeOut( 500, { channel=menuMusicChannel } )
+	audio.stopWithDelay( 500, { channel=menuMusicChannel } )
 
 	composer.setVariable( "difficulty", difficulty )
 	local minigameSourceFile = composer.getVariable( "minigameSourceFile" )

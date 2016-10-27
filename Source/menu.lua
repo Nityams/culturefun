@@ -1,8 +1,10 @@
 
 local composer = require( "composer" )
-local util = require( "Source.util" )
+
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
+local musics = require( "Source.musics" )
+local util = require( "Source.util" )
 
 local scene = composer.newScene()
 
@@ -39,14 +41,12 @@ local function gotoFoodMinigame()
 	gotoMinigame( "Food Game", "foodIntro" )
 end
 
+musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/Monkey-Drama.mp3", 0.7, 5000 )
+
 local function startMusic()
-	if menuMusic == nil then
-		menuMusic = audio.loadStream( "Assets/Sounds/Music/Monkey-Drama.mp3" )
-	end
-    local menuMusicChannel = audio.play(menuMusic, { loops=-1 } )
-	audio.setVolume( 0, { channel=menuMusicChannel } )
-	audio.fade( { channel=menuMusicChannel, time=5000, volume=0.7 } )
-	composer.setVariable( "menuMusicChannel", menuMusicChannel )  -- Turned off in difficultySelector.lua
+	-- This music will be turned off in difficultySelector.lua
+	local channel = musics:play( "Menu Theme" )
+	composer.setVariable( "menuMusicChannel", channel )
 end
 
 
@@ -56,9 +56,9 @@ end
 
 -- create()
 function scene:create( event )
+	-- Code here runs when the scene is first created but has not yet appeared on screen
 
 	local sceneGroup = self.view
-	-- Code here runs when the scene is first created but has not yet appeared on screen
 
 
 	local background = display.newRect(
@@ -127,8 +127,8 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		timer.performWithDelay( 0, startMusic )
-		timer.performWithDelay( 0, removeMinigames )
+		timer.performWithDelay( 25, startMusic )
+		timer.performWithDelay( 25, removeMinigames )
 	end
 end
 

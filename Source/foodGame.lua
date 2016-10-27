@@ -1,5 +1,7 @@
 local composer = require( "composer" )
 
+local musics = require( "Source.musics" )
+
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -75,14 +77,13 @@ local Countries = require "Countries"
 local foodChoices = {}
 -- other scenes from the game:
 
+-- Temporary Music
+musics:defineMusic( "Food Theme", "Assets/Sounds/Music/Whimsical-Popsicle.mp3", 1, 5000 )
+
 -- create()
 function scene:create( event )
 
-  -- Temporary Music
-  local backgroundMusicChannel = audio.play(
-    audio.loadStream("Assets/Sounds/Music/Whimsical-Popsicle.mp3"),
-    { channel1 = 1, loops =- 1, fadein = 5000 }
-  )
+  musics:play( "Food Theme" )
 
   sceneGroup = self.view
   currentWidth = display.contentWidth
@@ -403,6 +404,9 @@ function scene:hide( event )
   if ( phase == "will" ) then
     -- Code here runs when the scene is on screen (but is about to go off screen)
 
+    audio.fade( 500 )
+    audio.stopWithDelay( 500 )
+
   elseif ( phase == "did" ) then
     -- Code here runs immediately after the scene goes entirely off screen
 
@@ -414,7 +418,6 @@ function scene:destroy( event )
 
   local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
-  audio.stop()
 
 end
 

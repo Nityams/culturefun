@@ -1,6 +1,4 @@
-
 local composer = require( "composer" )
-
 
 local Countries = require "Countries"
 local sounds = require( "Source.sounds" )

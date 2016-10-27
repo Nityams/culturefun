@@ -3,6 +3,7 @@ local composer = require( "composer" )
 local physics = require ( "physics")
 
 local fonts = require( "Source.fonts" )
+local musics = require( "Source.musics" )
 local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
@@ -125,55 +126,24 @@ sounds:defineSound( "WRONG_FX", "Assets/Sounds/FlagGame/WRONG_FX.mp3" )
 sounds:defineSound( "CAT_SOUND_FX", "Assets/Sounds/FlagGame/CAT_SOUND_FX.wav" )
 sounds:defineSound( "Flag Flapping", "Assets/Sounds/FlagGame/Flag Flapping.wav" )
 
-local audioFiles = {
-	"Assets/Sounds/Music/Whimsical-Popsicle.mp3",  -- 1
-	"Assets/Sounds/FlagGame/AMBIENT_BIRDS_FX.mp3",
-	"Assets/Sounds/FlagGame/WIND_FX.mp3"
-};
+musics:defineMusic( "Flag Theme", "Assets/Sounds/Music/Whimsical-Popsicle.mp3", 0.8, 5000 )
+musics:defineMusic( "Birds", "Assets/Sounds/FlagGame/AMBIENT_BIRDS_FX.mp3", 0.8, 5000 )
+musics:defineMusic( "Wind", "Assets/Sounds/FlagGame/WIND_FX.mp3", 0.4, 5000 )
+
+local function startMusic()
+	musics:play( "Flag Theme" )
+	musics:play( "Birds" )
+	musics:play( "Wind" )
+end
 
 local function returnToMenu()
 	composer.gotoScene( "Source.menu" )
-	-- composer.removeScene( "flagGame" )
 end
 
 local font = fonts.neucha()
 
-local backgroundMusic
-local backgroundBirds
-local backgroundWind
-
-local backgroundMusicVolume = 0.8
-local backgroundBirdsVolume = 0.8
-local backgroundWindVolume = 0.4
 local sfxVolume = 0.5
 local catFXVolume = 0.1
-
-local function playFadeIn( sound, volume, time, loops )
-    local channel = audio.play(sound, {loops=loops})
-	audio.setVolume( 0, { channel=channel } )
-	audio.fade( { channel=channel, time=time, volume=volume } )
-	return channel
-end
-
-local function startMusic()
-	-- background music
-	if backgroundMusic == nil then
-		backgroundMusic = audio.loadStream(audioFiles[1])
-	end
-
-	-- background ambient FX
-	if backgroundBirds == nil then
-		backgroundBirds = audio.loadStream(audioFiles[2])
-	end
-	if backgroundWind == nil then
-		backgroundWind = audio.loadStream(audioFiles[3])
-	end
-
-	--background music, loop infinite, fadein in 5s
-	playFadeIn( backgroundMusic, backgroundMusicVolume, 5000, -1 )
-	playFadeIn( backgroundBirds, backgroundBirdsVolume, 5000, -1 )
-	playFadeIn( backgroundWind, backgroundWindVolume, 5000, -1 )
-end
 
 
 -- -----------------------------------------------------------------------------------
@@ -882,8 +852,8 @@ function scene:hide( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
 
-		audio.fade()
-		audio.stopWithDelay( 1000 )
+		audio.fade( 500 )
+		audio.stopWithDelay( 500 )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
