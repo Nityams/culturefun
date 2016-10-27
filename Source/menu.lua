@@ -100,7 +100,7 @@ function scene:create( event )
 	)
 	titleText:setFillColor( 0.4, 0.4, 0.4 )
 
-	local flagButton = Button:new{
+	self.flagButton = Button:new{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Flag Game",
@@ -109,7 +109,7 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
-	local foodButton = Button:new{
+	self.foodButton = Button:new{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Food Game",
@@ -119,8 +119,16 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	flagButton:addEventListener( "press", gotoFlagMinigame )
-	foodButton:addEventListener( "press", gotoFoodMinigame )
+	self.flagButton:addEventListener( "press", function()
+		self.flagButton.enabled = false
+		self.foodButton.enabled = false
+		gotoFlagMinigame()
+	end)
+	self.foodButton:addEventListener( "press", function()
+		self.flagButton.enabled = false
+		self.foodButton.enabled = false
+		gotoFoodMinigame()
+	end)
 end
 
 
@@ -132,6 +140,9 @@ function scene:show( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
+
+		self.flagButton.enabled = true
+		self.foodButton.enabled = true
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen

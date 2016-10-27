@@ -41,7 +41,7 @@ function scene:create( event )
 	)
 	chooseText:setFillColor( 0.4, 0.4, 0.4 )
 
-	local easyButton = Button:new{
+	self.easyButton = Button:new{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Easy",
@@ -51,7 +51,7 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	local mediumButton = Button:new{
+	self.mediumButton = Button:new{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Medium",
@@ -61,7 +61,7 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	local hardButton = Button:new{
+	self.hardButton = Button:new{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Hard",
@@ -71,9 +71,24 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	easyButton:addEventListener( "press", function() self:gotoGame( 1 ) end )
-	mediumButton:addEventListener( "press", function() self:gotoGame( 2 ) end )
-	hardButton:addEventListener( "press", function() self:gotoGame( 3 ) end )
+	self.easyButton:addEventListener( "press", function()
+		self.easyButton.enabled = false
+		self.mediumButton.enabled = false
+		self.hardButton.enabled = false
+		self:gotoGame( 1 )
+	end)
+	self.mediumButton:addEventListener( "press", function()
+		self.easyButton.enabled = false
+		self.mediumButton.enabled = false
+		self.hardButton.enabled = false
+		self:gotoGame( 2 )
+	end)
+	self.hardButton:addEventListener( "press", function()
+		self.easyButton.enabled = false
+		self.mediumButton.enabled = false
+		self.hardButton.enabled = false
+		self:gotoGame( 3 )
+	end)
 end
 
 
@@ -98,6 +113,9 @@ function scene:show( event )
 		)
 		self.nameText:setFillColor( 0.4, 0.4, 0.4 )
 
+		self.easyButton.enabled = true
+		self.mediumButton.enabled = true
+		self.hardButton.enabled = true
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen

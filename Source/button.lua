@@ -66,6 +66,7 @@ function Button:new( options )
 	b.listener = EventListener:new()
 	b.focused = false
 	b.depressed = false
+	b.enabled = true
 
 	b.touchPanel:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
 
@@ -82,6 +83,10 @@ function Button:onPress( event )
 end
 
 function Button:onTouch( event )
+	if not self.enabled then
+		return
+	end
+
 	if event.phase == "began" then
 		sounds:play( "Button Down", 1 )
 
