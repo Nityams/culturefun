@@ -141,9 +141,6 @@ local font = fonts.neucha()
 local backgroundMusic
 local backgroundBirds
 local backgroundWind
-local backgroundMusicChannel
-local backgroundBirdsChannel
-local backgroundWindChannel
 
 local backgroundMusicVolume = 0.8
 local backgroundBirdsVolume = 0.8
@@ -173,9 +170,9 @@ local function startMusic()
 	end
 
 	--background music, loop infinite, fadein in 5s
-	backgroundMusicChannel = playFadeIn( backgroundMusic, backgroundMusicVolume, 5000, -1 )
-	backgroundBirdsChannel = playFadeIn( backgroundBirds, backgroundBirdsVolume, 5000, -1 )
-	backgroundWindChannel = playFadeIn( backgroundWind, backgroundWindVolume, 5000, -1 )
+	playFadeIn( backgroundMusic, backgroundMusicVolume, 5000, -1 )
+	playFadeIn( backgroundBirds, backgroundBirdsVolume, 5000, -1 )
+	playFadeIn( backgroundWind, backgroundWindVolume, 5000, -1 )
 end
 
 
@@ -885,24 +882,22 @@ function scene:hide( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
 
-		audio.stop( backgroundMusicChannel )
-		audio.stop( backgroundBirdsChannel )
-		audio.stop( backgroundWindChannel )
+		audio.fade()
+		audio.stopWithDelay( 1000 )
+
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		-- this remove the scene completely ?
-		composer.removeScene("Source.flagGame")
+
 	end
 end
 
 
 -- destroy()
 function scene:destroy( event )
+	-- Code here runs prior to the removal of scene's view
 
 	local sceneGroup = self.view
-	-- Code here runs prior to the removal of scene's view
-	-- composer.removeScene(sceneGroup)
-	audio.stop(1)
+
 end
 
 
