@@ -70,25 +70,35 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 
-	local background = display.newRect(
+	----------------
+	-- Background --
+	----------------
+
+	local background = display.newImageRect(
 		sceneGroup,
-		display.contentCenterX, display.contentCenterY,
+		"Assets/Images/MenuBackgroundV1Edit.jpg",
 		display.contentWidth, display.contentHeight
 	)
-	background:setFillColor( 1, 1, 1 )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
 
-	local logo = display.newImageRect(
+	self.logo = display.newImageRect(
 		sceneGroup,
-		"Assets/Images/How_In_The_World.png", 323, 319
+		"Assets/Images/MenuLogoV1Edit.jpg",
+		323, 319
 	)
-	logo.x = display.contentCenterX
-	logo.y = display.contentCenterY + 50
+	self.logo.x = display.contentCenterX
+	self.logo.y = display.contentCenterY + 50
 
+
+	----------------
+	-- Foreground --
+	----------------
 
 	local font = fonts.neucha()
 
 	local titleOffsetY = (util.aspectRatio() > 4/3 and 200 or 150)
-	local titleFontSize = (util.aspectRatio() > 4/3 and 96 or 104)
+	local titleFontSize = (util.aspectRatio() > 4/3 and 110 or 140)
 
 	titleText = display.newText(
 		sceneGroup,
@@ -119,6 +129,16 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
+
+	---------------
+	-- Listeners --
+	---------------
+
+	self.logo:addEventListener( "touch", function(event)
+		self:spinLogo(event)
+		return true
+	end)
+
 	self.flagButton:addEventListener( "press", function()
 		self.flagButton.enabled = false
 		self.foodButton.enabled = false
@@ -129,6 +149,30 @@ function scene:create( event )
 		self.foodButton.enabled = false
 		gotoFoodMinigame()
 	end)
+
+	self.spinning = false
+end
+
+
+function scene:spinLogo( event )
+	if event.phase ~= "began" then
+		return
+	end
+
+	if self.spinning then
+		return
+	end
+
+	self.spinning = true
+
+	--logo = display.newImageRect( sceneGroup, "Assets/Images/MenuLogoV1Edit.jpg", 400, 400)
+	--logo.x = display.contentCenterX
+	--logo.y = display.contentCenterY + 50
+	--transition.to(logo, { rotation=-360, time=3000, onComplete=spinLogo} )
+	transition.to(self.logo, {rotation=-360, time=3000, onComplete=function()
+		self.logo.rotation = 0
+		self.spinning = false
+	end})
 end
 
 
