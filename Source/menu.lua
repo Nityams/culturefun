@@ -7,8 +7,6 @@ local musics = require( "Source.musics" )
 local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
 
-local foodIntro = require( "Source.foodIntro" )
-
 local scene = composer.newScene()
 
 
@@ -16,6 +14,22 @@ local scene = composer.newScene()
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+
+local loadedLuaFiles = false
+local difficultySelector
+local flatGame
+local foodIntro
+local foodGame
+
+local function preloadLuaFiles()
+	if not loadedLuaFiles then
+		loadedLuaFiles = true
+		difficultySelector = require( "Source.difficultySelector" )
+		flatGame = require( "Source.flagGame" )
+		foodIntro = require( "Source.foodIntro" )
+		foodGame = require( "Source.foodGame" )
+	end
+end
 
 local menuMusicChannel
 
@@ -225,6 +239,7 @@ function scene:show( event )
 
 		timer.performWithDelay( 25, startMusic )
 		timer.performWithDelay( 25, removeMinigames )
+		timer.performWithDelay( 25, preloadLuaFiles )
 	end
 end
 
