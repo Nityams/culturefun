@@ -285,22 +285,28 @@ function scene:create( event )
 	{
 		width = 248,
 		height = 242,
-		numFrames = 13,
-		sheetContentWidth = 3224,
+		numFrames = 19,
+		sheetContentWidth = 4892,
 		sheetContentHeight = 242
 	};
 
 	local sequenceDataMonu = {
 		{
 			name = "normal1",
-			frames = {5,6,7,8,9,10,11,12,13,1,2,3,4},
+			frames = {9,10,11,12,13,14,15,16,17,5,6,7,8},
 			time = 6000,
 			loopCount = 0
 		},
 		{
 			name = "idle",
-			frames = {5},
+			frames = {9},
 			time = 1000,
+			loopCount = 1
+		},
+		{
+			name = "port",
+			frames = {9,10,11,12,13,14,15,16,17,5,6,7,8,1,2,3,4,18,19,9},
+			time = 700,
 			loopCount = 1
 		}
 	};
@@ -691,21 +697,24 @@ function scene:create( event )
 				else i = i + 1 end
 			end
 			--local img
+			local function place_img(img,item,randMonument)
+				img = display.newImageRect( sceneGroup,
+											   monumentAssets[randMonument],
+											   currentWidth/18+35,
+											   currentHeight/27+150
+											 )
+				img.x = item.x
+				img.y = item.y-75
+				-- insert to table start from 1
+				local monument_item =  {index = randMonument, obj = img}
+				table.insert(usedMonument,monument_item)
+			end
 			for i,item in ipairs(mon_placeholders) do
 				if score >= 0 and score <= 6 then
 					if(num == 1 and 6-score == i) then
-						img = display.newImageRect( sceneGroup,
-											   monumentAssets[randMonument],
-											   currentWidth/7+35,
-											   currentHeight/7+150
-											 )
-						img.x = item.x
-						img.y = item.y-40
-						item:setSequence("idle")
+						item:setSequence("port")
 						item:play()
-						-- insert to table start from 1
-						local monument_item =  {index = randMonument, obj = img}
-						table.insert(usedMonument,monument_item)
+						timer.performWithDelay(700,function()place_img(img,item,randMonument) return true end, 1)
 					elseif score == 0 and usedMonument[1] ~= nil then
 						usedMonument[1].obj:removeSelf()
 						usedMonument[1] = nil
