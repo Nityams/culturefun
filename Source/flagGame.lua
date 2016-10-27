@@ -120,13 +120,16 @@ local monumentAssets = {
 
 local audioFiles = {
 	"Assets/Sounds/Music/Whimsical-Popsicle.mp3"	, --1
-	"Assets/Sounds/FlagGame/YAY_FX.mp3",
+	"Assets/Sounds/FlagGame/YAY_FX.wav",
 	"Assets/Sounds/FlagGame/DING_FX.mp3",
 	"Assets/Sounds/FlagGame/WRONG_FX.mp3",
-	"Assets/Sounds/FlagGame/CAT_SOUND_FX.wav",
+	"Assets/Sounds/FlagGame/CAT_SOUND_FX.wav", --5
 	"Assets/Sounds/FlagGame/AMBIENT_BIRDS_FX.mp3",
 	"Assets/Sounds/FlagGame/WIND_FX.mp3",
-	"Assets/Sounds/FlagGame/Flag Flapping.wav"
+	"Assets/Sounds/FlagGame/Flag Flapping.wav",
+	"Assets/Sounds/FlagGame/PowerUp18.mp3",
+	"Assets/Sounds/FlagGame/PowerUp18_reversed.mp3", --10
+	"Assets/Sounds/FlagGame/CROWD.wav",
 };
 
 local function returnToMenu()
@@ -146,7 +149,8 @@ local backgroundWindChannel
 local backgroundMusicVolume = 0.8
 local backgroundBirdsVolume = 0.8
 local backgroundWindVolume = 0.4
-local sfxVolume = 0.5
+local sfx_level1_Volume = 0.5
+local sfx_level2_Volume = 0.3
 local catFXVolume = 0.1
 
 local flag_fx
@@ -304,11 +308,17 @@ function scene:create( event )
 			loopCount = 1
 		},
 		{
-			name = "port",
+			name = "port_in",
 			frames = {9,10,11,12,13,14,15,16,17,5,6,7,8,1,2,3,4,18,19,9},
 			time = 700,
 			loopCount = 1
-		}
+		},
+		{
+			name = "port_out",
+			frames = {19,18,4,3,2,1,8,7,6,5,17,16,15,14,13,12,11,10,9},
+			time = 1000,
+			loopCount = 1
+		},
 	};
 	local mySheetMonu = graphics.newImageSheet("Assets/Images/Sprite/5.png", sheetDataMonu)
 	--end monument placeholders animation --
@@ -709,25 +719,39 @@ function scene:create( event )
 				local monument_item =  {index = randMonument, obj = img}
 				table.insert(usedMonument,monument_item)
 			end
+			local function resume_animation(obj)
+				obj:setSequence("normal1")
+				obj:play()
+			end
+			local portIn_fx = audio.loadSound(audioFiles[9])
+			local portOut_fx = audio.loadSound(audioFiles[10])
 			for i,item in ipairs(mon_placeholders) do
 				if score >= 0 and score <= 6 then
 					if(num == 1 and 6-score == i) then
-						item:setSequence("port")
+						item:setSequence("port_in")
 						item:play()
-						timer.performWithDelay(700,function()place_img(img,item,randMonument) return true end, 1)
+						local sound = audio.play(portIn_fx,{loops= 0})
+						audio.setVolume( sfx_level2_Volume, { channel=sound } )
+						timer.performWithDelay(600,function()place_img(img,item,randMonument) return true end, 1)
 					elseif score == 0 and usedMonument[1] ~= nil then
 						usedMonument[1].obj:removeSelf()
 						usedMonument[1] = nil
 						local item2 = mon_placeholders[5]
-						item2:setSequence("normal1")
+						item2:setSequence("port_out")
 						item2:play()
+						local sound2 = audio.play(portOut_fx,{loops= 0})
+						audio.setVolume( sfx_level2_Volume, { channel=sound2 } )
+						timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
 					elseif num == 2 and score ~= 0 then
 						if usedMonument[score+1] ~= nil then
 							usedMonument[score+1].obj:removeSelf()
 							usedMonument[score+1] = nil
 							local item2 = mon_placeholders[5-score]
-							item2:setSequence("normal1")
+							item2:setSequence("port_out")
 							item2:play()
+							local sound2 = audio.play(portOut_fx,{loops= 0})
+							audio.setVolume( sfx_level2_Volume, { channel=sound2 } )
+							timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
 							break
 						end
 					end
@@ -764,7 +788,7 @@ function scene:create( event )
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
 				local sound1 = audio.play(ding_fx,{loops= 0})
-				audio.setVolume( sfxVolume, { channel=sound1 } )
+				audio.setVolume( sfx_level1_Volume, { channel=sound1 } )
 				animal1:setSequence("happy")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -774,7 +798,7 @@ function scene:create( event )
 				minusCount()
 				monuments_placer(2,count)
 				local sound2 = audio.play(lose_fx,{loops= 0})
-				audio.setVolume( sfxVolume, { channel=sound2 } )
+				audio.setVolume( sfx_level1_Volume, { channel=sound2 } )
 				animal1:setSequence("sad")
 				animal1:play()
 				moveUpDown(animal3,count)
@@ -792,7 +816,7 @@ function scene:create( event )
 				animationStop(flag)
 				table.insert(usedFlag,countryNames[randomFlag])
 				local sound1 = audio.play(ding_fx,{loops= 0})
-				audio.setVolume( sfxVolume, { channel=sound1 } )
+				audio.setVolume( sfx_level1_Volume, { channel=sound1 } )
 				animal2:setSequence("happy")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -802,7 +826,7 @@ function scene:create( event )
 				minusCount()
 				monuments_placer(2,count)
 				local sound2 = audio.play(lose_fx,{loops= 0})
-				audio.setVolume( sfxVolume, { channel=sound2 } )
+				audio.setVolume( sfx_level1_Volume, { channel=sound2 } )
 				animal2:setSequence("sad")
 				animal2:play()
 				moveUpDown(animal3,count)
@@ -848,9 +872,12 @@ function scene:create( event )
 			animal1:play()
 			animal2:play()
 			local win_fx = audio.loadSound(audioFiles[2])
+			local celebrate_fx = audio.loadSound(audioFiles[11])
 			local sound1 = audio.play(win_fx)
-			audio.setVolume( sfxVolume, { channel=win_fx } )
-			audio.setVolume( sfxVolume, { channel=sound1 } )
+			local sound2 = audio.play(celebrate_fx)
+			audio.setVolume( sfx_level1_Volume, { channel=win_fx } )
+			audio.setVolume( sfx_level1_Volume, { channel=celebrate_fx } )
+			audio.setVolume( sfx_level1_Volume, { channel=sound1 } )
 			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,font,44)
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
