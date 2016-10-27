@@ -34,13 +34,18 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	self.background = display.newImageRect(
+	local fill = display.newRect( sceneGroup, 0, 0, display.contentWidth, display.contentHeight )
+	fill.x = display.contentCenterX
+	fill.y = display.contentCenterY
+	fill:setFillColor( 1, 1, 1 )
+
+	self.neighborhood = display.newImageRect(
 		sceneGroup,
 		"Assets/Images/FoodGame/Intro.png",
 		display.contentWidth, display.contentHeight
 	)
-	self.background.x = display.contentCenterX
-	self.background.y = display.contentCenterY
+	self.neighborhood.x = display.contentCenterX
+	self.neighborhood.y = display.contentCenterY
 
 end
 
@@ -54,8 +59,8 @@ function scene:show( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
-		self.background.alpha = 0
-		transition.to( self.background, { time=800, alpha=1, onComplete=bellsound } )
+		self.neighborhood.alpha = 0
+		transition.to( self.neighborhood, { time=800, alpha=1, onComplete=bellsound } )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
