@@ -3,7 +3,8 @@ local util = require( "Source.util" )
 local images = {
     group = display.newGroup(),
     params = {},
-    preloadedImages = {}
+    preloadedImages = {},
+    imageSheets = {}
 }
 
 function images:defineImage( name, path, width, height )
@@ -21,28 +22,28 @@ function images:preload( name, count )
 
     print( "Preloading ImageRect for " .. path )
 
-    if self.preloadedImages[path] == nil then
-        self.preloadedImages[path] = {}
+    if self.preloadedImages[name] == nil then
+        self.preloadedImages[name] = {}
     end
 
     for i = 1,count do
         local imageRect = self:make( self.group, name )
         imageRect.isVisible = false
-        util.push( self.preloadedImages[path], imageRect )
+        util.push( self.preloadedImages[name], imageRect )
     end
 end
 
-function images:preloadSheet( name )
+function images:loadSheet( name )
     local path = self.params[name].path
+    local options = self.params[name].options
+
+    if self.imageSheets[name] then
+        return
+    end
 
     print( "Preloading ImageSheet for " .. path )
 
-    if self.preloadedImages[path] == nil then
-        self.preloadedImages[path] = {}
-    end
-
-    local imageSheet = self:makeSheet( name )
-    util.push( self.preloadedImages[path], imageSheet )
+    self.imageSheets[name] = graphics.newImageSheet( path, options )
 end
 
 function images:make( group, name )
@@ -54,13 +55,8 @@ function images:make( group, name )
     )
 end
 
-function images:makeSheet( name )
-    local params = self.params[name]
-    return graphics.newImageSheet( params.path, params.options )
-end
-
-function images:hasReady( path )
-    return self.preloadedImages[path] ~= nil and #self.preloadedImages[path] > 0
+function images:hasReady( name )
+    return self.preloadedImages[name] ~= nil and #self.preloadedImages[name] > 0
 end
 
 function images:get( group, name )
@@ -69,9 +65,9 @@ function images:get( group, name )
     local imageRect
 
     -- Do we have one already?
-    if self:hasReady(path) then
+    if self:hasReady(name) then
         print( "Using preloaded ImageRect for " .. path )
-        imageRect = util.pop( self.preloadedImages[path] )
+        imageRect = util.pop( self.preloadedImages[name] )
         imageRect.isVisible = true
         group:insert( imageRect )
     else
@@ -85,23 +81,23 @@ end
 function images:getSheet( name )
     local path = self.params[name].path
 
-    local imageSheet
-
-    -- Do we have one already?
-    if self:hasReady(path) then
+    -- Do we have it already?
+    if self.imageSheets[name] then
         print( "Using preloaded ImageSheet for " .. path )
-        imageSheet = util.pop( self.preloadedImages[path] )
     else
         print( "Making new ImageSheet for " .. path )
-        imageSheet = self:makeSheet( name )
+        self:loadSheet( name )
     end
 
-    return imageSheet
+    return self.imageSheets[name]
 end
 
 function images:print()
     for name,imageList in pairs(self.preloadedImages) do
-        print( "\"" .. name .. "\" = " .. #self.preloadedImages[path] )
+        print( "\"" .. name .. "\" = " .. #self.preloadedImages[name] )
+    end
+    for name,imageList in pairs(self.imageSheets) do
+        print( "\"" .. name .. "\" = " .. #self.imageSheets[name] )
     end
 end
 
