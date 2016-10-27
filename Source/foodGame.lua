@@ -110,7 +110,7 @@ function startGame()
   -- Initialize foodChoices
   for i=1,4 do
     if DEBUG then print("Populating choice ", i) end
-    
+
     foodChoices[i] = Countries[i] -- placeholder country
     -- foodChoices[i] = {}
     -- for key,value in pairs(Countries[i]) do
@@ -143,13 +143,13 @@ function setBackground()
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/11.png", 50, 50 )
+  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/return.png", 60, 60 )--11
   replayButton.y = display.contentCenterY - display.contentCenterY/1.5
   replayButton.x = display.contentCenterX - display.contentCenterX / 2 - 50
 
   replayButton:addEventListener("tap", returnToMenu)
 
-  local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/10.png", 50 , 50 )
+  local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
   pauseButton.y = replayButton.y
   pauseButton.x = replayButton.x - 100
   -- pauseButton:addEventListener("tap", function()
@@ -205,8 +205,8 @@ function checkStar()
   star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
   if score > 36 then
     display.remove( star1 )
-    isplay.remove( star2 )
-    isplay.remove( star3 )
+    display.remove( star2 )
+    display.remove( star3 )
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
