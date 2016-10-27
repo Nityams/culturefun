@@ -87,6 +87,8 @@ function scene:create( event )
 	easyButton:addEventListener( "press", function() gotoGame( 1 ) end )
 	mediumButton:addEventListener( "press", function() gotoGame( 2 ) end )
 	hardButton:addEventListener( "press", function() gotoGame( 3 ) end )
+
+	self.preloader = event.params.preloader
 end
 
 
@@ -113,6 +115,9 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
+		if self.preloader then
+			timer.performWithDelay( 25, self.preloader )
+		end
 	end
 end
 
@@ -139,7 +144,6 @@ function scene:destroy( event )
 
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
-
 
 end
 

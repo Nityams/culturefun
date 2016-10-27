@@ -1,6 +1,7 @@
 local composer = require( "composer" )
 
 local Countries = require "Countries"
+local images = require( "Source.images" )
 local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
@@ -10,9 +11,7 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local function returnToMenu()
-	composer.gotoScene( "Source.menu" )
-end
+images:define( "Neighborhood", "FoodGame/Intro.png", display.contentWidth, display.contentHeight )
 
 local function gotoGame()
 	composer.gotoScene("Source.foodGame")
@@ -22,9 +21,15 @@ local function bellsound()
 	sounds:defineSound( "Door Bell", "Assets/Sounds/door_bell.wav" )
 	sounds:play( "Door Bell", 0.6 )
 end
+
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
+
+function scene:preload()
+	images:preload( "Neighborhood" )
+end
 
 -- create()
 function scene:create( event )
@@ -37,11 +42,7 @@ function scene:create( event )
 	fill.y = display.contentCenterY
 	fill:setFillColor( 1, 1, 1 )
 
-	self.neighborhood = display.newImageRect(
-		sceneGroup,
-		"Assets/Images/FoodGame/Intro.png",
-		display.contentWidth, display.contentHeight
-	)
+	self.neighborhood = images:get( sceneGroup, "Neighborhood" )
 	self.neighborhood.x = display.contentCenterX
 	self.neighborhood.y = display.contentCenterY
 

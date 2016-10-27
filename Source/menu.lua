@@ -6,6 +6,8 @@ local fonts = require( "Source.fonts" )
 local musics = require( "Source.musics" )
 local util = require( "Source.util" )
 
+local foodIntro = require( "Source.foodIntro" )
+
 local scene = composer.newScene()
 
 
@@ -28,9 +30,18 @@ local function removeMinigames()
 end
 
 local function gotoMinigame( name, file )
+	local sourcePath = "Source." .. file
+
 	composer.setVariable( "minigameName", name )
-	composer.setVariable( "minigameSourceFile", "Source." .. file )
-	composer.gotoScene( "Source.difficultySelector" )
+	composer.setVariable( "minigameSourceFile", sourcePath )
+
+	local nextScene = require( sourcePath )
+
+	local params = {
+		preloader = nextScene.preload
+	}
+
+	composer.gotoScene( "Source.difficultySelector", { params=params } )
 end
 
 local function gotoFlagMinigame()
