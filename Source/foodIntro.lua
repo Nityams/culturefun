@@ -30,16 +30,17 @@ end
 
 -- create()
 function scene:create( event )
+	-- Code here runs when the scene is first created but has not yet appeared on screen
 
 	local sceneGroup = self.view
-	-- Code here runs when the scene is first created but has not yet appeared on screen
-	local background = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/Intro.png", display.contentWidth, display.contentHeight )
-	background.x = display.contentCenterX
-	background.y = display.contentCenterY
-	background.alpha = 0
 
-	transition.to( background, { time=800, alpha=1,  y=centerY, x=centerX, onComplete =bellsound})
-
+	self.background = display.newImageRect(
+		sceneGroup,
+		"Assets/Images/FoodGame/Intro.png",
+		display.contentWidth, display.contentHeight
+	)
+	self.background.x = display.contentCenterX
+	self.background.y = display.contentCenterY
 
 end
 
@@ -53,10 +54,13 @@ function scene:show( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
+		self.background.alpha = 0
+		transition.to( self.background, { time=800, alpha=1, onComplete=bellsound } )
+
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		-- In two seconds return to the menu
+		-- In two seconds go to the food game
 		timer.performWithDelay( 2000, gotoGame )
 	end
 end
