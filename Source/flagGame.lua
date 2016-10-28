@@ -206,11 +206,11 @@ images:defineSheet( "Cat", "Sprite/2.png", {
 	sheetContentHeight = 1668
 })
 images:defineSheet( "Dog", "Sprite/3.png", {
-	width = 547,
-	height = 481,
-	numFrames = 18,
-	sheetContentWidth = 9846,
-	sheetContentHeight = 481
+	width = 557,
+	height = 491,
+	numFrames = 30,
+	sheetContentWidth = 2785,
+	sheetContentHeight = 2946
 })
 images:defineSheet( "Tree", "Sprite/4.png", {
 	width = 1463,
@@ -375,18 +375,22 @@ function scene:create( event )
 	local sequenceDataDog = {
 		{
 			name = "run",
-			start = 1,
-			count = 8,
+			frames = {15,10,5,24,23,26,25,20},
 			time = 500,
 			loopCount = 2
 		},
 		{
 			name = "idle",
-			start = 9,
-			count = 18,
+			frames = {1,2,3,4,6,7,8,9,11,12},
 			time = 2000,
 			loopCount = 0
 		},
+		{
+			name = "happy",
+			frames = {13,14,16,17,18,19,21,22},
+			time = 1000,
+			loop = 0
+		}
 	};
 	local mySheetDog = images:getSheet( "Dog" )
 	-- end animal sprite --
