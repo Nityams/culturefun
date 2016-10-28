@@ -99,7 +99,7 @@ function scene:create( event )
 
 	self.logo = display.newImageRect(
 		sceneGroup,
-		"Assets/Images/MenuLogoV1Edit.jpg",
+		"Assets/Images/MenuLogoV1Edit.png",
 		323, 319
 	)
 	self.logo.x = display.contentCenterX
