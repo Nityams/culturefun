@@ -9,7 +9,8 @@ sounds:defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav", 1 )
 local Button = {}
 
 -- Arguments: parentGroup, font, fontSize, fontColor, text, x, y,
---            paddingX, paddingY, fillColor, fillColorPressed,
+--            paddingX, paddingY, width, height, [only two of these four needed]
+--            fillColor, fillColorPressed,
 --            borderWidth, borderColor
 function Button:new( options )
 	-- b inherits from Button
@@ -18,22 +19,33 @@ function Button:new( options )
 	self.__index = self
 
 	local fgGroup = display.newGroup()
-	local text = display.newText(
+	b.text = display.newText(
 		fgGroup,
 		options.text,
 		options.x, options.y,
 		options.font, options.fontSize
 	)
-	text:setFillColor( unpack( options.fontColor ) )
+	b.text:setFillColor( unpack( options.fontColor ) )
 
-	local textWidth = text.width
-	local textHeight = text.height
+	local boxWidth
+	local boxHeight
+
+	if options.width ~= nil then
+		boxWidth = options.width + 2*options.borderWidth
+	else
+		boxWidth = b.text.width + 2*options.paddingX + 2*options.borderWidth
+	end
+
+	if options.height ~= nil then
+		boxHeight = options.height + 2*options.borderWidth
+	else
+		boxHeight = b.text.height + 2*options.paddingY + 2*options.borderWidth
+	end
 
 	b.touchPanel = display.newRect(
 	 	fgGroup,
 		options.x, options.y,
-		textWidth + 2*options.paddingX + 2*options.borderWidth + 2*allowance,
-		textHeight + 2*options.paddingY + 2*options.borderWidth + 2*allowance
+		boxWidth + 2*allowance, boxHeight + 2*allowance
 	)
 	b.touchPanel.isVisible = false
 	b.touchPanel.isHitTestable = true
@@ -42,8 +54,7 @@ function Button:new( options )
 	b.bg = display.newRect(
 	 	bgGroup,
 		options.x, options.y,
-		textWidth + 2*options.paddingX + 2*options.borderWidth,
-		textHeight + 2*options.paddingY + 2*options.borderWidth
+		boxWidth, boxHeight
 	)
 
 	b.bg.strokeWidth = options.borderWidth
@@ -64,14 +75,23 @@ function Button:new( options )
 	b.depressed = false
 	b.enabled = true
 
+	-- Read-only! Changing them does not change the location of the button.
+	b.x = options.x
+	b.y = options.y
+
 	b.touchPanel:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
 
 	return b
 end
 
+function Button:setText( text )
+	self.text.text = text
+	-- TODO: Recompute sizes of bg and touchPanel based on text's size.
+end
+
 function Button:onPress( event )
 	sounds:play( "Button Up" )
-	self.listener:dispatchEvent( "press", nil )
+	self.listener:dispatchEvent( "tap", nil )
 
 	return true
 end
@@ -137,6 +157,10 @@ end
 
 function Button:addEventListener( eventName, handlerFn )
 	self.listener:addEventListener( eventName, handlerFn )
+end
+
+function Button:clearEventListeners()
+	self.listener:clear()
 end
 
 function Button:removeSelf()

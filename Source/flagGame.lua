@@ -2,6 +2,7 @@
 local composer = require( "composer" )
 local physics = require ( "physics")
 
+local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
 local images = require( "Source.images" )
 local musics = require( "Source.musics" )
@@ -134,7 +135,6 @@ images:defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 
 images:defineImage( "Pause Button", sceneBuild[10], currentWidth/20, currentHeight/14 )
 images:defineImage( "Replay Button", sceneBuild[11], currentWidth/20, currentHeight/14 )
 images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
-images:defineImage( "Option Box", sceneBuild[14], currentWidth/5, currentHeight/14 )
 images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
 images:defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
 images:defineImage( "Trophy", sceneBuild[5], 46*1.5, 47*1.5 )
@@ -191,6 +191,20 @@ local function returnToMenu()
 end
 
 local font = fonts.neucha()
+
+local function makeBox( sceneGroup, x, y, text )
+	local totalWidth = currentWidth/5
+	local borderWidth = 2
+	local fillWidth = totalWidth - 2*borderWidth
+	return Button:new{
+		parentGroup=sceneGroup,
+		font=font, fontSize=36, fontColor={ 0.0 },
+		text=text,
+		x=x, y=y, width=fillWidth, height=currentHeight/14-10,
+		fillColor={ 0.77, 0.61, 0.44 }, fillColorPressed={ 0.77*0.8, 0.61*0.8, 0.44*0.8 },
+		borderWidth=borderWidth, borderColor={ 0, 0, 0 }
+	}
+end
 
 
 -- -----------------------------------------------------------------------------------
@@ -453,14 +467,6 @@ function scene:create( event )
 	animal1:addEventListener("tap",pushCat1)
 	animal2:addEventListener("tap",pushCat2)
 	-- end physics test
-
-	-- place holders for answer text
-	local optionBox1 = images:get( sceneGroup, "Option Box" )
-	optionBox1.x = animal1.x
-	optionBox1.y = animal1.y - currentHeight/5
-	local optionBox2 = images:get( sceneGroup, "Option Box" )
-	optionBox2.x = animal2.x
-	optionBox2.y = animal2.y - currentHeight/5
 	-------------------------------------------------------------------------------------------------------
 	-- end front-end --
 	-------------------------------------------------------------------------------------------------------
@@ -509,7 +515,6 @@ function scene:create( event )
 	local usedMonument = {}
 	local textBox1 -- text box for option 1
 	local textBox2 -- text box for option 2
-	local textBox3 -- text box for answer
 
 	-- function to decrease the Count
 	local function minusCount()
@@ -651,24 +656,16 @@ function scene:create( event )
 			box2 = rightAnswer
 		end
 		-- text box to hold the answer texts
-		textBox1 = display.newText( sceneGroup,
-										  box1,
-										  optionBox1.x,
-										  optionBox1.y,
-										  font, 36
-										)
+		if textBox1 == nil then
+			textBox1 = makeBox( sceneGroup, animal1.x, animal1.y - currentHeight/5, box1 )
+		end
+		if textBox2 == nil then
+			textBox2 = makeBox( sceneGroup, animal2.x, animal2.y - currentHeight/5, box2 )
+		end
+		textBox1:setText( box1 )
+		textBox2:setText( box2 )
 
-		textBox2 = display.newText( sceneGroup,
-										  box2,
-										  optionBox2.x,
-										  optionBox2.y,
-										  font, 36
-										)
-
-		-- color for the text
-		textBox1:setFillColor( 0, 0, 0 )
-		textBox2:setFillColor( 0, 0, 0 )
-		-- fucntion for placing monument
+		-- function for placing monument
 		function monuments_placer(num,score)
 			math.randomseed(os.time())
 			local randMonument = math.random(1,14)
@@ -737,20 +734,18 @@ function scene:create( event )
 
 		-- Event for textboxes --
 		local function textTap( obj, value )
-			obj:removeSelf()
-			textBox3 = display.newText( sceneGroup,
-								   value,
-							  	   obj.x,
-								   obj.y,
-								   font, 44
-								 )
 			if obj == textBox1 then
-				textBox2:removeSelf()
+				textBox1:setText( value )
+				textBox2:setText( "" )
 			else
-				textBox1:removeSelf()
+				textBox1:setText( "" )
+				textBox2:setText( value )
 			end
+			textBox1.enabled = false
+			textBox2.enabled = false
 		end
 		-- Event listener for text box 1
+		textBox1:clearEventListeners()
 		textBox1:addEventListener("tap", function()
 			if randomBox == 1 then
 				textTap(textBox1,"Correct!")
@@ -772,11 +767,9 @@ function scene:create( event )
 				animal1:play()
 				moveUpDown(animal3,count)
 			end
-			-- prepare for memory dump
-			textBox1 = nil
-			textBox2 = nil
 		end)
 		-- Event listener for text box 2
+		textBox2:clearEventListeners()
 		textBox2:addEventListener("tap", function()
 			if randomBox ~= 1 then
 				textTap(textBox2,"Correct!")
@@ -798,15 +791,12 @@ function scene:create( event )
 				animal2:play()
 				moveUpDown(animal3,count)
 			end
-			-- prepare for memory dump
-			textBox1 = nil
-			textBox2 = nil
 		end)
 		flag:addEventListener("tap", function()
 			runFlipAnimation(flag)
+			return true
 		end)
 		-- prepare for memory dump
-		textBox3 = nil
 		animationStart(flag)
 	end
 	-------------------------------------------------------------------------------------------------------
@@ -822,18 +812,19 @@ function scene:create( event )
 		animal3:setSequence("idle")
 		animal3:play()
 		if textBox1 ~= nil then
-			textBox1:removeSelf()
+			textBox1.enabled = true
 		end
 		if textBox2 ~= nil then
-			textBox2:removeSelf()
-		end
-		if textBox3 ~= nil then
-			textBox3:removeSelf()
+			textBox2.enabled = true
 		end
 		-- check to start new round
 		if count ~= level then
 			startRound()
 		else
+			textBox1:removeSelf()
+			textBox2:removeSelf()
+			textBox1 = nil
+			textBox2 = nil
 			animal1:setSequence("happy")
 			animal2:setSequence("happy")
 			animal1:play()

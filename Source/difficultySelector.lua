@@ -90,19 +90,19 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	self.easyButton:addEventListener( "press", function()
+	self.easyButton:addEventListener( "tap", function()
 		self.easyButton.enabled = false
 		self.mediumButton.enabled = false
 		self.hardButton.enabled = false
 		self:gotoGame( 1 )
 	end)
-	self.mediumButton:addEventListener( "press", function()
+	self.mediumButton:addEventListener( "tap", function()
 		self.easyButton.enabled = false
 		self.mediumButton.enabled = false
 		self.hardButton.enabled = false
 		self:gotoGame( 2 )
 	end)
-	self.hardButton:addEventListener( "press", function()
+	self.hardButton:addEventListener( "tap", function()
 		self.easyButton.enabled = false
 		self.mediumButton.enabled = false
 		self.hardButton.enabled = false

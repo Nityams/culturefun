@@ -64,9 +64,9 @@ function scene:preload()
 	return Preloader:new(coroutine.create(function()
 		self.difficultySelector = require( "Source.difficultySelector" ); coroutine.yield()
 		self.difficultySelector:preload(); coroutine.yield()
-		self.flatGame = require( "Source.flagGame" ); coroutine.yield()
-		self.foodIntro = require( "Source.foodIntro" ); coroutine.yield()
-		self.foodGame = require( "Source.foodGame" ); coroutine.yield()
+		--self.flatGame = require( "Source.flagGame" ); coroutine.yield()
+		--self.foodIntro = require( "Source.foodIntro" ); coroutine.yield()
+		--self.foodGame = require( "Source.foodGame" ); coroutine.yield()
 	end))
 end
 
@@ -154,12 +154,12 @@ function scene:create( event )
 		return true
 	end)
 
-	self.flagButton:addEventListener( "press", function()
+	self.flagButton:addEventListener( "tap", function()
 		self.flagButton.enabled = false
 		self.foodButton.enabled = false
 		gotoFlagMinigame()
 	end)
-	self.foodButton:addEventListener( "press", function()
+	self.foodButton:addEventListener( "tap", function()
 		self.flagButton.enabled = false
 		self.foodButton.enabled = false
 		gotoFoodMinigame()
