@@ -2,6 +2,7 @@ local composer = require( "composer" )
 
 local Countries = require "Countries"
 local images = require( "Source.images" )
+local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
@@ -28,9 +29,9 @@ end
 -- -----------------------------------------------------------------------------------
 
 function scene:preload()
-	return coroutine.create(function()
+	return Preloader:new(coroutine.create(function()
 		images:preload( "Neighborhood" ); coroutine.yield()
-	end)
+	end))
 end
 
 -- create()

@@ -4,6 +4,7 @@ local composer = require( "composer" )
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
 local musics = require( "Source.musics" )
+local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
 
@@ -15,22 +16,6 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-local loadedLuaFiles = false
-local difficultySelector
-local flatGame
-local foodIntro
-local foodGame
-
-local function preloadLuaFiles()
-	if not loadedLuaFiles then
-		loadedLuaFiles = true
-		difficultySelector = require( "Source.difficultySelector" )
-		flatGame = require( "Source.flagGame" )
-		foodIntro = require( "Source.foodIntro" )
-		foodGame = require( "Source.foodGame" )
-	end
-end
-
 local menuMusicChannel
 
 local function removeMinigames()
@@ -40,17 +25,13 @@ end
 
 local function gotoMinigame( name, file, menu )
 	local sourcePath = "Source." .. file
+	local nextScene = require( sourcePath )
 
 	local params = {
 		minigame = {
 			name = name,
 			sourcePath = sourcePath,
-			preloader = function()
-				local nextScene = require( sourcePath )
-				if nextScene.preload then
-					return nextScene:preload()
-				end
-			end
+			preloadFn = function() return nextScene:preload() end
 		},
 		menuMusicChannel = menuMusicChannel
 	}
@@ -78,6 +59,16 @@ musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3",
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
+
+function scene:preload()
+	return Preloader:new(coroutine.create(function()
+		self.difficultySelector = require( "Source.difficultySelector" ); coroutine.yield()
+		self.difficultySelector:preload(); coroutine.yield()
+		self.flatGame = require( "Source.flagGame" ); coroutine.yield()
+		self.foodIntro = require( "Source.foodIntro" ); coroutine.yield()
+		self.foodGame = require( "Source.foodGame" ); coroutine.yield()
+	end))
+end
 
 -- create()
 function scene:create( event )
@@ -235,7 +226,11 @@ function scene:show( event )
 
 		timer.performWithDelay( 25, startMusic )
 		timer.performWithDelay( 25, removeMinigames )
-		timer.performWithDelay( 25, preloadLuaFiles )
+		timer.performWithDelay( 25, function()
+			if self.preloader == nil then
+				self.preloader = self:preload()
+			end
+		end)
 	end
 end
 
@@ -248,6 +243,8 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
+
+		self.preloader:stop()
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen

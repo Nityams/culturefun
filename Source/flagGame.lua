@@ -5,6 +5,7 @@ local physics = require ( "physics")
 local fonts = require( "Source.fonts" )
 local images = require( "Source.images" )
 local musics = require( "Source.musics" )
+local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
@@ -197,7 +198,7 @@ local font = fonts.neucha()
 -- -----------------------------------------------------------------------------------
 
 function scene:preload()
-	return coroutine.create(function()
+	return Preloader:new(coroutine.create(function()
 		images:loadSheet( "Cat" ); coroutine.yield()
 		images:loadSheet( "Dog" ); coroutine.yield()
 		images:loadSheet( "Tree" ); coroutine.yield()
@@ -214,7 +215,7 @@ function scene:preload()
 		images:preload( "Right Side" ); coroutine.yield()
 		images:preload( "Road" ); coroutine.yield()
 		images:preload( "Trophy" ); coroutine.yield()
-	end)
+	end))
 end
 
 -- create()

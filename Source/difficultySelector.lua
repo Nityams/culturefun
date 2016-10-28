@@ -2,6 +2,8 @@ local composer = require( "composer" )
 
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
+local images = require( "Source.images" )
+local Preloader = require( "Source.preloader" )
 local util = require( "Source.util" )
 
 local scene = composer.newScene()
@@ -15,10 +17,22 @@ local titleOffsetY = (util.aspectRatio() > 4/3 and 250 or 175)
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
+images:defineImage(
+	"World Map Blurred",
+	"MenuBackgroundV1Edit_Blurred.png",
+	display.contentWidth, display.contentHeight*1.4
+)
+
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
+
+function scene:preload()
+	return Preloader:new(coroutine.create(function()
+		images:preload( "World Map Blurred" ); coroutine.yield()
+	end))
+end
 
 -- create()
 function scene:create( event )
@@ -33,11 +47,7 @@ function scene:create( event )
 	)
 	bgWhiteFill:setFillColor( 1, 1, 1 )
 
-	local bgWorldMap = display.newImageRect(
-		sceneGroup,
-		"Assets/Images/MenuBackgroundV1Edit_Blurred.png",
-		display.contentWidth, display.contentHeight*1.4
-	)
+	local bgWorldMap = images:get( sceneGroup, "World Map Blurred" )
 	bgWorldMap.x = display.contentCenterX
 	bgWorldMap.y = display.contentCenterY
 	bgWorldMap.alpha = 0.75
@@ -129,18 +139,9 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		if minigame.preloader then
-			self.preloadCoroutine = minigame.preloader()
-			timer.performWithDelay( 75, function() self:preload() end )
+		if minigame.preloadFn then
+			self.preloader = minigame.preloadFn()
 		end
-	end
-end
-
-
-function scene:preload()
-	if self.preloadCoroutine and coroutine.status( self.preloadCoroutine ) == "suspended" then
-		coroutine.resume( self.preloadCoroutine )
-		timer.performWithDelay( 50, function() self:preload() end )
 	end
 end
 
@@ -154,7 +155,9 @@ function scene:hide( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
 
-		self.preloadCoroutine = nil
+		if self.preloader then
+			self.preloader:stop()
+		end
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
