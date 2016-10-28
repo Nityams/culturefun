@@ -702,12 +702,12 @@ function scene:create( event )
 					mon_placeholders[6-score]:play()
 					sounds:play( "Port In" )
 					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score],randMonument) return true end, 1)
-				elseif difficulty == 2 and score % 2 == 0 and score ~= 12 then
+				elseif difficulty == 2 and score % 2 == 0 and score ~= 12 and usedMonument[score/2] == nil then
 					mon_placeholders[6-score/2]:setSequence("port_in")
 					mon_placeholders[6-score/2]:play()
 					sounds:play( "Port In" )
 					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score/2],randMonument) return true end, 1)
-				elseif difficulty == 3 and score % 3 == 0 and score ~= 15 then
+				elseif difficulty == 3 and score % 3 == 0 then
 					mon_placeholders[6-score/3]:setSequence("port_in")
 					mon_placeholders[6-score/3]:play()
 					sounds:play( "Port In" )

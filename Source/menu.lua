@@ -91,7 +91,7 @@ function scene:create( event )
 	local bgWorldMap = display.newImageRect(
 		sceneGroup,
 		"Assets/Images/MenuBackgroundV1Edit.png",
-		display.contentWidth, display.contentHeight*1.4
+		display.contentWidth, display.contentHeight*1.3
 	)
 	bgWorldMap.x = display.contentCenterX
 	bgWorldMap.y = display.contentCenterY
