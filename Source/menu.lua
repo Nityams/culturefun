@@ -164,10 +164,6 @@ function scene:create( event )
 		self.foodButton.enabled = false
 		gotoFoodMinigame()
 	end)
-
-	self.spinning = false
-	self.wantSpin = false
-	self.canWantSpin = false
 end
 
 
@@ -220,6 +216,11 @@ function scene:show( event )
 
 		self.flagButton.enabled = true
 		self.foodButton.enabled = true
+
+		self.logo.rotation = 0
+		self.spinning = false
+		self.wantSpin = false
+		self.canWantSpin = false
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
