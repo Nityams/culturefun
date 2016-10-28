@@ -61,7 +61,7 @@ local countryNames = {
 	"Kazakhstan",
 	"Kenya",
 	"Laos", -- 40
-	"Liberia", 
+	"Liberia",
 	"Luxembourg",
 	"Macedonia",
 	"Maldives",
@@ -71,7 +71,7 @@ local countryNames = {
 	"Nigeria",
 	"Norway",
 	"Palau", -- 50
-	"Portugal", 
+	"Portugal",
 	"Saudi Arabia",
 	"Serbia",
 	"Singapore",
@@ -320,12 +320,12 @@ function scene:create( event )
 
 	if difficulty == 1 then
 		level = 6		-- 6 rounds
-		randomNum = 20  -- use the first 20 flags
+		randomNum = 15  -- use the first 15 flags
 		distance = 9
 		speed1 = 7000
 	elseif difficulty == 2 then
 		level = 12		-- 12 rounds
-		randomNum = 40	-- use the first 40 flags
+		randomNum = 30	-- use the first 30 flags
 		distance = 18
 		speed1 = 6000
 	else
