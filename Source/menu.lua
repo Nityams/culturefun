@@ -98,7 +98,7 @@ function scene:create( event )
 	)
 	bgWorldMap.x = display.contentCenterX
 	bgWorldMap.y = display.contentCenterY
-	bgWorldMap.alpha = 0.75
+	bgWorldMap.alpha = 0.5
 
 	self.logo = display.newImageRect(
 		sceneGroup,
