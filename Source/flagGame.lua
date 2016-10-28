@@ -233,7 +233,7 @@ images:defineSheet( "Star", "Sprite/6.png", {
 	sheetContentHeight = 639
 })
 
-sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.wav", 0.5 )
+sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.mp3", 0.5 )
 sounds:defineSound( "Celebrate FX", "Assets/Sounds/FlagGame/CROWD.wav", 0.5 )
 sounds:defineSound( "Ding FX", "Assets/Sounds/FlagGame/DING_FX.mp3", 0.5 )
 sounds:defineSound( "Lose FX", "Assets/Sounds/FlagGame/WRONG_FX.mp3", 0.5 )
@@ -324,7 +324,7 @@ function scene:create( event )
 	local difficulty = composer.getVariable( "difficulty" )
 
 	if difficulty == 1 then
-		level = 6		-- 6 rounds
+		level = 1		-- 6 rounds
 		randomNum = 20  -- use the first 20 flags
 		distance = 9
 		speed1 = 7000
@@ -445,7 +445,7 @@ function scene:create( event )
 		{
 			name = "end",
 			frames = {2,5,8,9,6,3,7},
-			time = 1300,
+			time = 2000,
 			loopCount = 1
 		}
 	};
@@ -908,15 +908,16 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	-- function to start the game
 	local function endgame2()
-		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-125,font,44)
+		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-150,font,44)
 		text:setFillColor(0,0,0)
 	end
 	local function endgame()
 		star:setSequence("end")
 		star:play()
+		transition.fadeOut(pole,{time = 2000})
 		transition.to(star,{
-			time = 1000,
-			y = pole.y-130,
+			time = 2000,
+			y = pole.y-40,
 			x = pole.x-17,
 			xScale = 0.9,
 			yScale = 1,
@@ -929,8 +930,6 @@ function scene:create( event )
 		animal2:setSequence("idle")
 		animal1:play()
 		animal2:play()
-		animal3:setSequence("idle")
-		animal3:play()
 		if textBox1 ~= nil then
 			textBox1.enabled = true
 		end
@@ -947,8 +946,10 @@ function scene:create( event )
 			textBox2 = nil
 			animal1:setSequence("happy")
 			animal2:setSequence("happy")
+			animal3:setSequence("happy")
 			animal1:play()
 			animal2:play()
+			animal3:play()
 			sounds:play( "Win FX" )
 			sounds:play( "Celebrate FX" )
 			endgame()
