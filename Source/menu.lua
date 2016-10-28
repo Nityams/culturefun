@@ -23,37 +23,13 @@ local function removeMinigames()
 	composer.removeScene( "Source.foodGame" )
 end
 
-local function gotoMinigame( name, file, menu )
-	local sourcePath = "Source." .. file
-	local nextScene = require( sourcePath )
-
-	local params = {
-		minigame = {
-			name = name,
-			sourcePath = sourcePath,
-			preloadFn = function() return nextScene:preload() end
-		},
-		menuMusicChannel = menuMusicChannel
-	}
-
-	composer.gotoScene( "Source.difficultySelector", { params=params } )
-end
-
-local function gotoFlagMinigame()
-	gotoMinigame( "Flag Game", "flagGame" )
-end
-
-local function gotoFoodMinigame()
-	gotoMinigame( "Food Game", "foodIntro" )
-end
+sounds:defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
+musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
 local function startMusic()
 	-- This music will be turned off in difficultySelector.lua
 	menuMusicChannel = musics:play( "Menu Theme" )
 end
-
-sounds:defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
-musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
 
 -- -----------------------------------------------------------------------------------
@@ -78,7 +54,6 @@ function scene:create( event )
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
 	local sceneGroup = self.view
-
 
 	----------------
 	-- Background --
@@ -157,54 +132,14 @@ function scene:create( event )
 		return true
 	end)
 
-	self.flagButton:addEventListener( "tap", function()
+	local function disableButtons()
 		self.flagButton.enabled = false
 		self.foodButton.enabled = false
-		gotoFlagMinigame()
-	end)
-	self.foodButton:addEventListener( "tap", function()
-		self.flagButton.enabled = false
-		self.foodButton.enabled = false
-		gotoFoodMinigame()
-	end)
-end
-
-
-function scene:logoTapped( event )
-	if self.canWantSpin then
-		self.wantSpin = true
 	end
-
-	if self.spinning then
-		return
-	end
-
-	self:spinLogo()
-end
-
-function scene:spinLogo()
-	timer.performWithDelay( 0, function() sounds:play( "Charm" ) end )
-
-	self.spinning = true
-	self.wantSpin = false
-	self.canWantSpin = false
-
-	timer.performWithDelay(1000, function()
-		self.canWantSpin = true
-	end)
-
-	--logo = display.newImageRect( sceneGroup, "Assets/Images/MenuLogoV1Edit.jpg", 400, 400)
-	--logo.x = display.contentCenterX
-	--logo.y = display.contentCenterY + 50
-	--transition.to(logo, { rotation=-360, time=3000, onComplete=spinLogo} )
-	transition.to(self.logo, {rotation=-360, time=2000, onComplete=function()
-		self.logo.rotation = 0
-		self.spinning = false
-		self.canWantSpin = false
-		if self.wantSpin then
-			self:spinLogo()
-		end
-	end})
+	self.flagButton:addEventListener( "pretap", disableButtons )
+	self.foodButton:addEventListener( "pretap", disableButtons )
+	self.flagButton:addEventListener( "tap", function() self:gotoFlagMinigame() end )
+	self.foodButton:addEventListener( "tap", function() self:gotoFoodMinigame() end )
 end
 
 
@@ -248,8 +183,6 @@ function scene:hide( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
 
-		self.preloader:stop()
-
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 
@@ -264,6 +197,75 @@ function scene:destroy( event )
 	-- Code here runs prior to the removal of scene's view
 
 end
+
+
+function scene:gotoMinigame( name, file, menu )
+	self.preloader:stop()
+
+	local sourcePath = "Source." .. file
+	local nextScene = require( sourcePath )
+
+	local params = {
+		minigame = {
+			name = name,
+			sourcePath = sourcePath,
+			preloadFn = function() return nextScene:preload() end
+		},
+		menuMusicChannel = menuMusicChannel
+	}
+
+	composer.gotoScene( "Source.difficultySelector", { params=params } )
+end
+
+
+function scene:gotoFlagMinigame()
+	self:gotoMinigame( "Flag Game", "flagGame" )
+end
+
+
+function scene:gotoFoodMinigame()
+	self:gotoMinigame( "Food Game", "foodIntro" )
+end
+
+
+function scene:logoTapped( event )
+	if self.canWantSpin then
+		self.wantSpin = true
+	end
+
+	if self.spinning then
+		return
+	end
+
+	self:spinLogo()
+end
+
+
+function scene:spinLogo()
+	timer.performWithDelay( 0, function() sounds:play( "Charm" ) end )
+
+	self.spinning = true
+	self.wantSpin = false
+	self.canWantSpin = false
+
+	timer.performWithDelay(1000, function()
+		self.canWantSpin = true
+	end)
+
+	--logo = display.newImageRect( sceneGroup, "Assets/Images/MenuLogoV1Edit.jpg", 400, 400)
+	--logo.x = display.contentCenterX
+	--logo.y = display.contentCenterY + 50
+	--transition.to(logo, { rotation=-360, time=3000, onComplete=spinLogo} )
+	transition.to(self.logo, {rotation=-360, time=2000, onComplete=function()
+		self.logo.rotation = 0
+		self.spinning = false
+		self.canWantSpin = false
+		if self.wantSpin then
+			self:spinLogo()
+		end
+	end})
+end
+
 
 
 -- -----------------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 local EventListener = require( "Source.eventListener" )
 local sounds = require( "Source.sounds" )
+local util = require( "Source.util" )
 
 local allowance = 30  -- pixels around the button that still trigger it
 
@@ -77,6 +78,7 @@ function Button:new( options )
 
 	b.listener = EventListener:new()
 	b.focused = false
+	b.wantDepressed = false
 	b.depressed = false
 	b.enabled = true
 
@@ -94,11 +96,13 @@ function Button:setText( text )
 	-- TODO: Recompute sizes of bg and touchPanel based on text's size.
 end
 
-function Button:onPress( event )
+function Button:onPreTap( event )
+	self.listener:dispatchEvent( "pretap", nil )
+end
+
+function Button:onTap( event )
 	sounds:play( "Button Up" )
 	self.listener:dispatchEvent( "tap", nil )
-
-	return true
 end
 
 function Button:onTouch( event )
@@ -107,31 +111,45 @@ function Button:onTouch( event )
 	end
 
 	if event.phase == "began" then
-		self:setDepressed( true )
+		self.wantDepressed = true
+		self:updateDepressed()
 
 		display.getCurrentStage():setFocus( event.target )
 		self.focused = true
 
-	elseif event.phase == "moved" then
-		if self.focused then
-			self:setDepressed( self:contains( event.x, event.y ) )
-		end
+	elseif event.phase == "moved" and self.focused then
+		self.wantDepressed = self:contains( event.x, event.y )
+		self:updateDepressed()
 
-	elseif event.phase == "ended" or event.phase == "cancelled" then
+	elseif event.phase == "ended" and self.focused then
 		display.getCurrentStage():setFocus( nil )
-		self:setDepressed( false )
 
 		if self.focused and self:contains( event.x, event.y ) then
-			self:onPress()
+			self:onPreTap()
+			util.nextFrame(function()
+				-- Make sure we show the depressed graphic for at least one
+				-- frame before calling onTap(), which might be an expensive
+				-- operation. We'd like to freeze on the depressed graphic if
+				-- possible.
+				self:onTap()
+			end)
 		end
 
+		self.wantDepressed = false
+		util.nextFrame(function()
+			-- If "began" and "ended" came in during the same frame, wait
+			-- next frame before resetting our graphics.
+			self:updateDepressed()
+		end)
+
 		self.focused = false
 
-	elseif event.phase == "ended" or event.phase == "cancelled" then
+	else  -- event.phase == "cancelled" or self.focused == false
 		display.getCurrentStage():setFocus( nil )
-		self:setDepressed( false )
-
 		self.focused = false
+
+		self.wantDepressed = false
+		self:updateDepressed()
 
 	end
 
@@ -146,14 +164,14 @@ function Button:contains( x, y )
 		    y < panel.y + panel.height/2)
 end
 
-function Button:setDepressed( yes )
-    if self.depressed == false and yes == true then
+function Button:updateDepressed()
+    if self.depressed == false and self.wantDepressed == true then
 		sounds:play( "Button Down" )
 	end
 
-	self.depressed = yes
+	self.depressed = self.wantDepressed
 
-	if yes then
+	if self.depressed then
 		self.bg:setFillColor( unpack( self.fillColorPressed ) )
 	else
 		self.bg:setFillColor( unpack( self.fillColor ) )

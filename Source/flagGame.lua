@@ -742,6 +742,10 @@ function scene:create( event )
 		-- end function for placing monument
 
 		-- Event for textboxes --
+		local function disableButtons()
+			textBox1.enabled = false
+			textBox2.enabled = false
+		end
 		local function textTap( obj, value )
 			if obj == textBox1 then
 				textBox1:setText( value )
@@ -750,11 +754,10 @@ function scene:create( event )
 				textBox1:setText( "" )
 				textBox2:setText( value )
 			end
-			textBox1.enabled = false
-			textBox2.enabled = false
 		end
 		-- Event listener for text box 1
 		textBox1:clearEventListeners()
+		textBox1:addEventListener("pretap", disableButtons)
 		textBox1:addEventListener("tap", function()
 			if randomBox == 1 then
 				textTap(textBox1,"Correct!")
@@ -779,6 +782,7 @@ function scene:create( event )
 		end)
 		-- Event listener for text box 2
 		textBox2:clearEventListeners()
+		textBox2:addEventListener("pretap", disableButtons)
 		textBox2:addEventListener("tap", function()
 			if randomBox ~= 1 then
 				textTap(textBox2,"Correct!")

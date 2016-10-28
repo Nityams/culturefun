@@ -90,24 +90,17 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	self.easyButton:addEventListener( "tap", function()
+	local function disableButtons()
 		self.easyButton.enabled = false
 		self.mediumButton.enabled = false
 		self.hardButton.enabled = false
-		self:gotoGame( 1 )
-	end)
-	self.mediumButton:addEventListener( "tap", function()
-		self.easyButton.enabled = false
-		self.mediumButton.enabled = false
-		self.hardButton.enabled = false
-		self:gotoGame( 2 )
-	end)
-	self.hardButton:addEventListener( "tap", function()
-		self.easyButton.enabled = false
-		self.mediumButton.enabled = false
-		self.hardButton.enabled = false
-		self:gotoGame( 3 )
-	end)
+	end
+	self.easyButton:addEventListener( "pretap", disableButtons )
+	self.mediumButton:addEventListener( "pretap", disableButtons )
+	self.hardButton:addEventListener( "pretap", disableButtons )
+	self.easyButton:addEventListener( "tap", function() self:gotoGame( 1 ) end)
+	self.mediumButton:addEventListener( "tap", function() self:gotoGame( 2 ) end)
+	self.hardButton:addEventListener( "tap", function() self:gotoGame( 3 ) end)
 end
 
 
@@ -155,10 +148,6 @@ function scene:hide( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
 
-		if self.preloader then
-			self.preloader:stop()
-		end
-
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 
@@ -176,6 +165,10 @@ function scene:destroy( event )
 end
 
 function scene:gotoGame( difficulty )
+	if self.preloader then
+		self.preloader:stop()
+	end
+
 	-- Menu music that started in menu.lua... it's time to stop
 	audio.fadeOut( 500, { channel=self.menuMusicChannel } )
 	audio.stopWithDelay( 500, { channel=self.menuMusicChannel } )
