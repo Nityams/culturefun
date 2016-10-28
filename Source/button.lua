@@ -8,6 +8,11 @@ sounds:defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav", 1 )
 
 local Button = {}
 
+function Button.preload()
+	sounds:preloadSound( "Button Up" )
+	sounds:preloadSound( "Button Down" )
+end
+
 -- Arguments: parentGroup, font, fontSize, fontColor, text, x, y,
 --            paddingX, paddingY, width, height, [only two of these four needed]
 --            fillColor, fillColorPressed,

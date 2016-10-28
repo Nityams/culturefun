@@ -62,6 +62,8 @@ musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3",
 
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
+		Button.preload(); coroutine.yield()
+		sounds:preloadSound( "Charm" ); coroutine.yield()
 		sounds:preloadSound( "Charm" ); coroutine.yield()
 		self.difficultySelector = require( "Source.difficultySelector" ); coroutine.yield()
 		self.difficultySelector:preload(); coroutine.yield()
