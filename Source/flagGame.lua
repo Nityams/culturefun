@@ -50,7 +50,37 @@ local countryNames = {
 	"Philippines",
 	"Switzerland",
 	"Ukraine",
-	"Croatia" -- 30
+	"Croatia", -- 30
+	"Dominician",
+	"East Timor",
+	"El Salvador",
+	"France",
+	"Georgia",
+	"Guatemala",
+	"Haiti",
+	"Kazakhstan",
+	"Kenya",
+	"Laos", -- 40
+	"Liberia", 
+	"Luxembourg",
+	"Macedonia",
+	"Maldives",
+	"Motenegro",
+	"Mozambique",
+	"Nauru",
+	"Nigeria",
+	"Norway",
+	"Palau", -- 50
+	"Portugal", 
+	"Saudi Arabia",
+	"Serbia",
+	"Singapore",
+	"Slovakia",
+	"Slovenia",
+	"Sudan",
+	"Syria",
+	"Vatican City",
+	"Zimbabwe" -- 60
 };
 
 local countryFiles = {
@@ -83,7 +113,37 @@ local countryFiles = {
 	"Assets/Images/Flags/Philippines_Flag.png",
 	"Assets/Images/Flags/Switzerland_Flag.png",
 	"Assets/Images/Flags/Ukraine_Flag.png",
-	"Assets/Images/Flags/Croatia_Flag.png"
+	"Assets/Images/Flags/Croatia_Flag.png",
+	"Assets/Images/Flags/Dominican_Republic_Flag.png",
+	"Assets/Images/Flags/East_Timor_Flag.png",
+	"Assets/Images/Flags/El_Salvador_Flag.png",
+	"Assets/Images/Flags/France_Flag.png",
+	"Assets/Images/Flags/Georgia_Flag.png",
+	"Assets/Images/Flags/Guatemala_Flag.png",
+	"Assets/Images/Flags/Haiti_Flag.png",
+	"Assets/Images/Flags/Kazakhstan_Flag.png",
+	"Assets/Images/Flags/Kenya_Flag.png",
+	"Assets/Images/Flags/Laos_Flag.png",
+	"Assets/Images/Flags/Liberia_Flag.png",
+	"Assets/Images/Flags/Luxembourg_Flag.png",
+	"Assets/Images/Flags/Macedonia_Flag.png",
+	"Assets/Images/Flags/Maldives_Flag.png",
+	"Assets/Images/Flags/Montenegro_Flag.png",
+	"Assets/Images/Flags/Mozambique_Flag.png",
+	"Assets/Images/Flags/Nauru_Flag.png",
+	"Assets/Images/Flags/Nigeria_Flag.png",
+	"Assets/Images/Flags/Norway_Flag.png",
+	"Assets/Images/Flags/Palau_Flag.png",
+	"Assets/Images/Flags/Portugal_Flag.png",
+	"Assets/Images/Flags/Saudi_Arabia_Flag.png",
+	"Assets/Images/Flags/Serbia_Flag.png",
+	"Assets/Images/Flags/Singapore_Flag.png",
+	"Assets/Images/Flags/Slovakia_Flag.png",
+	"Assets/Images/Flags/Slovenia_Flag.png",
+	"Assets/Images/Flags/Sudan_Flag.png",
+	"Assets/Images/Flags/Syria_Flag.png",
+	"Assets/Images/Flags/Vatican_City_Flag.png",
+	"Assets/Images/Flags/Zimbabwe_Flag.png"
 };
 
 local sceneBuild ={
@@ -251,27 +311,29 @@ function scene:create( event )
 	local level
 	local randomNum
 	local distance
+	-- flag speed for level 1
+	local speed1
+	local speed2 = 1000
+	-- end level declarations
 
 	local difficulty = composer.getVariable( "difficulty" )
 
 	if difficulty == 1 then
 		level = 6		-- 6 rounds
-		randomNum = 12  -- use the first 12 flags
+		randomNum = 20  -- use the first 20 flags
 		distance = 9
+		speed1 = 7000
 	elseif difficulty == 2 then
 		level = 12		-- 12 rounds
-		randomNum = 24	-- use the first 24 flags
+		randomNum = 40	-- use the first 40 flags
 		distance = 18
+		speed1 = 6000
 	else
 		level = 15		-- 15 rounds
-		randomNum = 30	-- use the first 30 flags
+		randomNum = 60	-- use the first 60 flags
 		distance = 22
+		speed1 = 5000
 	end
-
-	-- flag speed for level 1
-	local speed1 = 7000
-	local speed2 = 1000
-	-- end level declarations
 
 	local flag
 	local flagFlipping = false
@@ -648,13 +710,13 @@ function scene:create( event )
 		local randomBox = math.random(1,2) --countryNames[randomBox]
 		local rightAnswer = countryNames[randomFlag]
 		-- don't have to change the constant here, it's just wrong answer
-		local wrongAnswer = countryNames[math.random(1,30)]
+		local wrongAnswer = countryNames[math.random(1,randomNum)]
 		local box1
 		local box2
 		-- loop to get wrong answer
 		-- don't have to change the constant here, it's just wrong answer
 		while wrongAnswer == countryNames[randomFlag] do
-			wrongAnswer = countryNames[math.random(1,30)]
+			wrongAnswer = countryNames[math.random(1,randomNum)]
 		end
 		-- random placer
 		if randomBox == 1 then
