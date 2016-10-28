@@ -15,6 +15,12 @@ function sounds:defineSound( name, path, volume )
     self.params[name] = { path=path, volume=volume }
 end
 
+function sounds:preloadSound( name )
+    local path = self.params[name].path
+    print( "Preloading Sound for " .. path )
+    self:getSound( path )
+end
+
 function sounds:play( name )
     local path = self.params[name].path
     local volume = self.params[name].volume
