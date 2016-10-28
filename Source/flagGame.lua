@@ -312,7 +312,7 @@ function scene:create( event )
 	local randomNum
 	local distance
 	-- flag speed for level 1
-	local speed1 = 7000
+	local speed1
 	local speed2 = 1000
 	-- end level declarations
 
@@ -322,14 +322,17 @@ function scene:create( event )
 		level = 6		-- 6 rounds
 		randomNum = 20  -- use the first 20 flags
 		distance = 9
+		speed1 = 7000
 	elseif difficulty == 2 then
 		level = 12		-- 12 rounds
 		randomNum = 40	-- use the first 40 flags
 		distance = 18
+		speed1 = 6000
 	else
 		level = 15		-- 15 rounds
 		randomNum = 60	-- use the first 60 flags
 		distance = 22
+		speed1 = 5000
 	end
 
 	local flag
