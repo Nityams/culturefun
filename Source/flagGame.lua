@@ -197,7 +197,6 @@ images:defineImage( "Replay Button", sceneBuild[11], currentWidth/20, currentHei
 images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
 images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
 images:defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
-images:defineImage( "Trophy", sceneBuild[5], 46*1.5, 47*1.5 )
 images:defineSheet( "Cat", "Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
@@ -294,7 +293,6 @@ function scene:preload()
 		images:preload( "Pole" ); coroutine.yield()
 		images:preload( "Right Side" ); coroutine.yield()
 		images:preload( "Road" ); coroutine.yield()
-		images:preload( "Trophy" ); coroutine.yield()
 		musics:preloadMusic( "Flag Theme" ); coroutine.yield()
 		musics:preloadMusic( "Birds" ); coroutine.yield()
 		sounds:preloadSound( "Port In" ); coroutine.yield()
@@ -444,6 +442,12 @@ function scene:create( event )
 			time = 1000,
 			loopCount = 0
 		},
+		{
+			name = "end",
+			frames = {2,5,8,9,6,3,7},
+			time = 1300,
+			loopCount = 1
+		}
 	};
 	local mySheetStar = images:getSheet( "Star" )
 	-- end star animations --
@@ -595,13 +599,13 @@ function scene:create( event )
 	animal3:setSequence("idle")
 	animal3:play()
 
-	-- place holder for trophy
-	local trophy = display.newSprite(sceneGroup,mySheetStar,sequenceDataStar)
-	trophy.x = road.x
-	trophy.y = 140
-	trophy:scale(0.35,0.35)
-	trophy:setSequence("normal")
-	trophy:play()
+	-- place holder for star
+	local star = display.newSprite(sceneGroup,mySheetStar,sequenceDataStar)
+	star.x = road.x
+	star.y = 140
+	star:scale(0.35,0.35)
+	star:setSequence("normal")
+	star:play()
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
 
@@ -903,6 +907,22 @@ function scene:create( event )
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
 	-- function to start the game
+	local function endgame2()
+		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-125,font,44)
+		text:setFillColor(0,0,0)
+	end
+	local function endgame()
+		star:setSequence("end")
+		star:play()
+		transition.to(star,{
+			time = 1000,
+			y = pole.y-130,
+			x = pole.x-17,
+			xScale = 0.9,
+			yScale = 1,
+			onComplete = endgame2
+			})
+	end
 	function startGame()
 	    -- memories dump
 		animal1:setSequence("idle")
@@ -931,7 +951,7 @@ function scene:create( event )
 			animal2:play()
 			sounds:play( "Win FX" )
 			sounds:play( "Celebrate FX" )
-			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,font,44)
+			endgame()
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
 	end
