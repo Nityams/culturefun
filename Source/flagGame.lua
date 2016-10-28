@@ -226,6 +226,13 @@ images:defineSheet( "Monu", "Sprite/5.png", {
 	sheetContentWidth = 4892,
 	sheetContentHeight = 242
 })
+images:defineSheet( "Star", "Sprite/6.png", {
+	width = 252,
+	height = 210,
+	numFrames = 9,
+	sheetContentWidth = 756,
+	sheetContentHeight = 639
+})
 
 sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.wav", 0.5 )
 sounds:defineSound( "Celebrate FX", "Assets/Sounds/FlagGame/CROWD.wav", 0.5 )
@@ -425,6 +432,17 @@ function scene:create( event )
 	};
 	local mySheetMonu = images:getSheet( "Monu" )
 	--end monument placeholders animation --
+	-- star animations --
+	local sequenceDataStar = {
+		{
+			name = "normal",
+			frames = {2,2,2,5,5,5,8,8,8,9,9,9,6,6,6,3,3,3},
+			time = 1000,
+			loopCount = 0
+		},
+	};
+	local mySheetStar = images:getSheet( "Star" )
+	-- end star animations --
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
 	-- top border
@@ -574,9 +592,12 @@ function scene:create( event )
 	animal3:play()
 
 	-- place holder for trophy
-	local trophy = images:get( sceneGroup, "Trophy" )
+	local trophy = display.newSprite(sceneGroup,mySheetStar,sequenceDataStar)
 	trophy.x = road.x
 	trophy.y = 140
+	trophy:scale(0.35,0.35)
+	trophy:setSequence("normal")
+	trophy:play()
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
 
