@@ -327,7 +327,7 @@ function scene:create( event )
 
 	if difficulty == 1 then
 		level = 1		-- 6 rounds
-		randomNum = 20  -- use the first 20 flags
+		randomNum = 15  -- use the first 15 flags
 		distance = 9
 		speed1 = 7000
 	elseif difficulty == 2 then
