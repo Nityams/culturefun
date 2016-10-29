@@ -197,7 +197,6 @@ images:defineImage( "Replay Button", sceneBuild[11], currentWidth/20, currentHei
 images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
 images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
 images:defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
-images:defineImage( "Trophy", sceneBuild[5], 46*1.5, 47*1.5 )
 images:defineSheet( "Cat", "Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
@@ -206,11 +205,11 @@ images:defineSheet( "Cat", "Sprite/2.png", {
 	sheetContentHeight = 1668
 })
 images:defineSheet( "Dog", "Sprite/3.png", {
-	width = 547,
-	height = 481,
-	numFrames = 18,
-	sheetContentWidth = 9846,
-	sheetContentHeight = 481
+	width = 557,
+	height = 491,
+	numFrames = 30,
+	sheetContentWidth = 2785,
+	sheetContentHeight = 2946
 })
 images:defineSheet( "Tree", "Sprite/4.png", {
 	width = 1463,
@@ -226,8 +225,15 @@ images:defineSheet( "Monu", "Sprite/5.png", {
 	sheetContentWidth = 4892,
 	sheetContentHeight = 242
 })
+images:defineSheet( "Star", "Sprite/6.png", {
+	width = 252,
+	height = 210,
+	numFrames = 9,
+	sheetContentWidth = 756,
+	sheetContentHeight = 639
+})
 
-sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.wav", 0.5 )
+sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.mp3", 0.5 )
 sounds:defineSound( "Celebrate FX", "Assets/Sounds/FlagGame/CROWD.wav", 0.5 )
 sounds:defineSound( "Ding FX", "Assets/Sounds/FlagGame/DING_FX.mp3", 0.5 )
 sounds:defineSound( "Lose FX", "Assets/Sounds/FlagGame/WRONG_FX.mp3", 0.5 )
@@ -287,7 +293,6 @@ function scene:preload()
 		images:preload( "Pole" ); coroutine.yield()
 		images:preload( "Right Side" ); coroutine.yield()
 		images:preload( "Road" ); coroutine.yield()
-		images:preload( "Trophy" ); coroutine.yield()
 		musics:preloadMusic( "Flag Theme" ); coroutine.yield()
 		musics:preloadMusic( "Birds" ); coroutine.yield()
 		sounds:preloadSound( "Port In" ); coroutine.yield()
@@ -368,18 +373,22 @@ function scene:create( event )
 	local sequenceDataDog = {
 		{
 			name = "run",
-			start = 1,
-			count = 8,
+			frames = {15,10,5,24,23,26,25,20},
 			time = 500,
 			loopCount = 2
 		},
 		{
 			name = "idle",
-			start = 9,
-			count = 18,
+			frames = {1,2,3,4,6,7,8,9,11,12},
 			time = 2000,
 			loopCount = 0
 		},
+		{
+			name = "happy",
+			frames = {13,14,16,17,18,19,21,22},
+			time = 1000,
+			loop = 0
+		}
 	};
 	local mySheetDog = images:getSheet( "Dog" )
 	-- end animal sprite --
@@ -425,6 +434,23 @@ function scene:create( event )
 	};
 	local mySheetMonu = images:getSheet( "Monu" )
 	--end monument placeholders animation --
+	-- star animations --
+	local sequenceDataStar = {
+		{
+			name = "normal",
+			frames = {2,2,2,5,5,5,8,8,8,9,9,9,6,6,6,3,3,3},
+			time = 1000,
+			loopCount = 0
+		},
+		{
+			name = "end",
+			frames = {2,5,8,9,6,3,7},
+			time = 2000,
+			loopCount = 1
+		}
+	};
+	local mySheetStar = images:getSheet( "Star" )
+	-- end star animations --
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
 	-- top border
@@ -573,10 +599,13 @@ function scene:create( event )
 	animal3:setSequence("idle")
 	animal3:play()
 
-	-- place holder for trophy
-	local trophy = images:get( sceneGroup, "Trophy" )
-	trophy.x = road.x
-	trophy.y = 140
+	-- place holder for star
+	local star = display.newSprite(sceneGroup,mySheetStar,sequenceDataStar)
+	star.x = road.x
+	star.y = 140
+	star:scale(0.35,0.35)
+	star:setSequence("normal")
+	star:play()
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
 
@@ -878,14 +907,29 @@ function scene:create( event )
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
 	-- function to start the game
+	local function endgame2()
+		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-150,font,44)
+		text:setFillColor(0,0,0)
+	end
+	local function endgame()
+		star:setSequence("end")
+		star:play()
+		transition.fadeOut(pole,{time = 2000})
+		transition.to(star,{
+			time = 2000,
+			y = pole.y-40,
+			x = pole.x-17,
+			xScale = 0.9,
+			yScale = 1,
+			onComplete = endgame2
+			})
+	end
 	function startGame()
 	    -- memories dump
 		animal1:setSequence("idle")
 		animal2:setSequence("idle")
 		animal1:play()
 		animal2:play()
-		animal3:setSequence("idle")
-		animal3:play()
 		if textBox1 ~= nil then
 			textBox1.enabled = true
 		end
@@ -902,11 +946,13 @@ function scene:create( event )
 			textBox2 = nil
 			animal1:setSequence("happy")
 			animal2:setSequence("happy")
+			animal3:setSequence("happy")
 			animal1:play()
 			animal2:play()
+			animal3:play()
 			sounds:play( "Win FX" )
 			sounds:play( "Celebrate FX" )
-			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,font,44)
+			endgame()
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
 	end
