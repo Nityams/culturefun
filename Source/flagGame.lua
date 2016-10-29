@@ -168,6 +168,7 @@ local sceneBuild ={
 	"Scene/19.png",
 	"Scene/20.png",
 	"Scene/21.png",
+	"Scene/22.png"
 };
 
 local monumentAssets = {
@@ -193,10 +194,11 @@ images:defineImage( "Bottom Border", sceneBuild[21], currentWidth, 300 )
 images:defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
 images:defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
 images:defineImage( "Pause Button", sceneBuild[10], currentWidth/20, currentHeight/14 )
-images:defineImage( "Replay Button", sceneBuild[11], currentWidth/20, currentHeight/14 )
+images:defineImage( "Info Button", sceneBuild[11], currentWidth/20, currentHeight/14 )
 images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
 images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
 images:defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
+images:defineImage( "Cont Button", sceneBuild[22], currentWidth/5, currentHeight/8)
 images:defineSheet( "Cat", "Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
@@ -289,7 +291,7 @@ function scene:preload()
 		images:preload( "Platform 1" ); coroutine.yield()
 		images:preload( "Column" ); coroutine.yield()
 		images:preload( "Pause Button" ); coroutine.yield()
-		images:preload( "Replay Button" ); coroutine.yield()
+		images:preload( "Info Button" ); coroutine.yield()
 		images:preload( "Pole" ); coroutine.yield()
 		images:preload( "Right Side" ); coroutine.yield()
 		images:preload( "Road" ); coroutine.yield()
@@ -324,7 +326,7 @@ function scene:create( event )
 	local difficulty = composer.getVariable( "difficulty" )
 
 	if difficulty == 1 then
-		level = 6		-- 6 rounds
+		level = 1		-- 6 rounds
 		randomNum = 20  -- use the first 20 flags
 		distance = 9
 		speed1 = 7000
@@ -494,11 +496,13 @@ function scene:create( event )
 	local pauseButton = images:get( sceneGroup, "Pause Button" )
 	pauseButton.x = currentWidth / 20 --50
 	pauseButton.y = currentHeight / 5 --150
+	pauseButton.alpha = 0.9
 
-	-- replay button placeholder
-	local replayButton = images:get( sceneGroup, "Replay Button" )
-	replayButton.x = pauseButton.x
-	replayButton.y = pauseButton.y + currentWidth / 16
+	-- info button placeholder
+	local infoButton = images:get( sceneGroup, "Info Button" )
+	infoButton.x = pauseButton.x
+	infoButton.y = pauseButton.y + currentWidth / 16
+	infoButton.alpha = 0.9
 
 	-- pause/play event
 	-- temp2 store the values to decide play/pause
@@ -521,7 +525,7 @@ function scene:create( event )
 	pauseButton:addEventListener("tap", function()
 		pauseTap()
 	end)
-	replayButton:addEventListener("tap",function()
+	infoButton:addEventListener("tap",function()
 		replayTap()
 	end
 	)
@@ -907,10 +911,22 @@ function scene:create( event )
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
 	-- function to start the game
+	local function contButtonTap()
+		-- this will stop the animations
+		transition.cancel()
+		returnToMenu()
+	end
 	local function endgame2()
 		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-150,font,44)
 		text:setFillColor(0,0,0)
+		local contButton = images:get( sceneGroup, "Cont Button" )
+		contButton.x = star.x + 25
+		contButton.y = star.y + 150
+		contButton.alpha = 0.9
+		contButton:addEventListener("tap",function()
+			contButtonTap() end)
 	end
+
 	local function endgame()
 		star:setSequence("end")
 		star:play()
@@ -928,8 +944,10 @@ function scene:create( event )
 	    -- memories dump
 		animal1:setSequence("idle")
 		animal2:setSequence("idle")
+		animal3:setSequence("idle")
 		animal1:play()
 		animal2:play()
+		animal3:play()
 		if textBox1 ~= nil then
 			textBox1.enabled = true
 		end
