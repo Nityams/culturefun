@@ -7,6 +7,126 @@ local allowance = 30  -- pixels around the button that still trigger it
 sounds:defineSound( "Button Up", "Assets/Sounds/Menu/Button Up.wav", 0.9 )
 sounds:defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav", 1 )
 
+
+--
+-- class TextButtonGraphics
+--
+
+local TextButtonGraphics = {}
+
+function TextButtonGraphics:new( options )
+	-- g inherits from TextButtonGraphics
+	local g = {}
+	setmetatable( g, self )
+	self.__index = self
+
+	g.fillColor = options.fillColor
+	g.fillColorPressed = options.fillColorPressed
+
+	g.group = display.newGroup()
+
+	-- Create text.
+	g.text = display.newText(
+		g.group,
+		options.text,
+		options.x, options.y,
+		options.font, options.fontSize
+	)
+	g.text:setFillColor( unpack( options.fontColor ) )
+
+	-- Compute button's width/height.
+	local boxWidth
+	local boxHeight
+
+	if options.width ~= nil then
+		boxWidth = options.width + 2*options.borderWidth
+	else
+		boxWidth = g.text.width + 2*options.paddingX + 2*options.borderWidth
+	end
+
+	if options.height ~= nil then
+		boxHeight = options.height + 2*options.borderWidth
+	else
+		boxHeight = g.text.height + 2*options.paddingY + 2*options.borderWidth
+	end
+
+	-- Save width and height.
+	g.width = boxWidth
+	g.height = boxHeight
+
+	-- Create background fill and border.
+	g.bg = display.newRect(
+		g.group,
+		options.x, options.y,
+		boxWidth, boxHeight
+	)
+	g.bg.strokeWidth = options.borderWidth
+	g.bg:setStrokeColor( unpack( options.borderColor ) )
+	g.bg:setFillColor( unpack( options.fillColor ) )
+
+	-- Bring text to top, above background.
+	g.group:insert( g.text )
+
+	return g
+end
+
+function TextButtonGraphics:setDepressed( yes )
+	if yes then
+		self.bg:setFillColor( unpack( self.fillColorPressed ) )
+	else
+		self.bg:setFillColor( unpack( self.fillColor ) )
+	end
+end
+
+function TextButtonGraphics:setText( text )
+	self.text.text = text
+	-- TODO: Recompute size of bg based on text's new size.
+end
+
+
+--
+-- class ImageButtonGraphics
+--
+
+local ImageButtonGraphics = {}
+
+function ImageButtonGraphics:new( options )
+	-- g inherits from ImageButtonGraphics
+	local g = {}
+	setmetatable( g, self )
+	self.__index = self
+
+	g.width = options.image.width
+	g.height = options.image.height
+
+	g.image = options.image
+	g.imagePressed = options.imagePressed
+
+	g.group = display.newGroup()
+
+	g.group:insert( g.image )
+	g.group:insert( g.imagePressed )
+
+	g.image.x = options.x
+	g.image.y = options.y
+	g.imagePressed.x = options.x
+	g.imagePressed.y = options.y
+
+	g:setDepressed( false )
+
+	return g
+end
+
+function ImageButtonGraphics:setDepressed( yes )
+	self.image.isVisible = not yes
+	self.imagePressed.isVisible = yes
+end
+
+
+--
+-- class Button
+--
+
 local Button = {}
 
 function Button.preload()
@@ -14,67 +134,30 @@ function Button.preload()
 	sounds:preloadSound( "Button Down" )
 end
 
+-- Button:newTextButton()
 -- Arguments: parentGroup, font, fontSize, fontColor, text, x, y,
 --            paddingX, paddingY, width, height, [only two of these four needed]
 --            fillColor, fillColorPressed,
 --            borderWidth, borderColor
-function Button:new( options )
+-- Returns: Button
+function Button:newTextButton( options )
+	local graphics = TextButtonGraphics:new( options )
+	return Button:new( graphics, options )
+end
+
+-- Button:newImageButton()
+-- Arguments: parentGroup, x, y, image, imagePressed
+-- Returns: Button
+function Button:newImageButton( options )
+	local graphics = ImageButtonGraphics:new( options )
+	return Button:new( graphics, options )
+end
+
+function Button:new( graphics, options )
 	-- b inherits from Button
 	local b = {}
 	setmetatable( b, self )
 	self.__index = self
-
-	local fgGroup = display.newGroup()
-	b.text = display.newText(
-		fgGroup,
-		options.text,
-		options.x, options.y,
-		options.font, options.fontSize
-	)
-	b.text:setFillColor( unpack( options.fontColor ) )
-
-	local boxWidth
-	local boxHeight
-
-	if options.width ~= nil then
-		boxWidth = options.width + 2*options.borderWidth
-	else
-		boxWidth = b.text.width + 2*options.paddingX + 2*options.borderWidth
-	end
-
-	if options.height ~= nil then
-		boxHeight = options.height + 2*options.borderWidth
-	else
-		boxHeight = b.text.height + 2*options.paddingY + 2*options.borderWidth
-	end
-
-	b.touchPanel = display.newRect(
-	 	fgGroup,
-		options.x, options.y,
-		boxWidth + 2*allowance, boxHeight + 2*allowance
-	)
-	b.touchPanel.isVisible = false
-	b.touchPanel.isHitTestable = true
-
-	local bgGroup = display.newGroup()
-	b.bg = display.newRect(
-	 	bgGroup,
-		options.x, options.y,
-		boxWidth, boxHeight
-	)
-
-	b.bg.strokeWidth = options.borderWidth
-	b.bg:setStrokeColor( unpack( options.borderColor ) )
-	b.bg:setFillColor( unpack( options.fillColor ) )
-
-	b.fillColor = options.fillColor
-	b.fillColorPressed = options.fillColorPressed
-
-	b.group = display.newGroup()
-	b.group:insert( bgGroup )
-	b.group:insert( fgGroup )
-
-	options.parentGroup:insert( b.group )
 
 	b.listener = EventListener:new()
 	b.focused = false
@@ -86,14 +169,37 @@ function Button:new( options )
 	b.x = options.x
 	b.y = options.y
 
-	b.touchPanel:addEventListener( "touch", function( e ) return b:onTouch( e ) end )
+	b.graphics = graphics
+
+	b.group = display.newGroup()
+	options.parentGroup:insert( b.group )
+
+	-- Insert graphics
+	b.group:insert( graphics.group )
+
+	-- Insert touch panel above graphics
+	b.touchPanel = display.newRect(
+		b.group,
+		options.x, options.y,
+		graphics.width + 2*allowance, graphics.height + 2*allowance
+	)
+	b.touchPanel.isVisible = false
+	b.touchPanel.isHitTestable = true
+
+	b.touchPanel:addEventListener( "touch", function( e )
+		return b:onTouch( e )
+	end)
 
 	return b
 end
 
 function Button:setText( text )
-	self.text.text = text
-	-- TODO: Recompute sizes of bg and touchPanel based on text's size.
+	if self.graphics.setText ~= nil then
+		self.graphics:setText( text )
+		-- TODO: Recompute size of touchPanel based on text's new size.
+	else
+		print( "Error: Button does not have setText() method!" )
+	end
 end
 
 function Button:onPreTap( event )
@@ -171,11 +277,7 @@ function Button:updateDepressed()
 
 	self.depressed = self.wantDepressed
 
-	if self.depressed then
-		self.bg:setFillColor( unpack( self.fillColorPressed ) )
-	else
-		self.bg:setFillColor( unpack( self.fillColor ) )
-	end
+	self.graphics:setDepressed( self.depressed )
 end
 
 function Button:addEventListener( eventName, handlerFn )

@@ -60,7 +60,7 @@ function scene:create( event )
 	)
 	chooseText:setFillColor( 0.4, 0.4, 0.4 )
 
-	self.easyButton = Button:new{
+	self.easyButton = Button:newTextButton{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Easy",
@@ -70,7 +70,7 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	self.mediumButton = Button:new{
+	self.mediumButton = Button:newTextButton{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Medium",
@@ -80,7 +80,7 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	self.hardButton = Button:new{
+	self.hardButton = Button:newTextButton{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Hard",

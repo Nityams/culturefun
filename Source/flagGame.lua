@@ -264,7 +264,7 @@ local function makeBox( sceneGroup, x, y, text )
 	local totalWidth = currentWidth/5
 	local borderWidth = 2
 	local fillWidth = totalWidth - 2*borderWidth
-	return Button:new{
+	return Button:newTextButton{
 		parentGroup=sceneGroup,
 		font=font, fontSize=36, fontColor={ 0.0 },
 		text=text,

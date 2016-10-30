@@ -103,7 +103,7 @@ function scene:create( event )
 	)
 	titleText:setFillColor( 0.4, 0.4, 0.4 )
 
-	self.flagButton = Button:new{
+	self.flagButton = Button:newTextButton{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Flag Game",
@@ -112,7 +112,7 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
-	self.foodButton = Button:new{
+	self.foodButton = Button:newTextButton{
 		parentGroup=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Food Game",
