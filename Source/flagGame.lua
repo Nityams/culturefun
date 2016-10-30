@@ -201,7 +201,8 @@ images:defineImage( "Info Button Pressed", "Scene/11-pressed.png", currentWidth/
 images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
 images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
 images:defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
-images:defineImage( "Cont Button", sceneBuild[22], currentWidth/5, currentHeight/8)
+images:defineImage( "Cont Button", "Scene/22.png", currentWidth/5, currentHeight/8)
+images:defineImage( "Cont Button Pressed", "Scene/22-pressed.png", currentWidth/5, currentHeight/8)
 images:defineSheet( "Cat", "Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
@@ -540,13 +541,8 @@ function scene:create( event )
 		transition.cancel()
 		returnToMenu()
 	end
-	pauseButton:addEventListener("tap", function()
-		pauseTap()
-	end)
-	infoButton:addEventListener("tap",function()
-		replayTap()
-	end
-	)
+	pauseButton:addEventListener("tap", pauseTap)
+	infoButton:addEventListener("tap", replayTap)
 	-- End event Pause/Replay --
 
 	-- flag pole placeholder
@@ -937,12 +933,17 @@ function scene:create( event )
 	local function endgame2()
 		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-150,font,44)
 		text:setFillColor(0,0,0)
-		local contButton = images:get( sceneGroup, "Cont Button" )
-		contButton.x = star.x + 25
-		contButton.y = star.y + 150
-		contButton.alpha = 0.9
-		contButton:addEventListener("tap",function()
-			contButtonTap() end)
+		local contButton = Button:newImageButton{
+			group = sceneGroup,
+			image = images:get( sceneGroup, "Cont Button" ),
+			imagePressed = images:get( sceneGroup, "Cont Button Pressed" ),
+			x = star.x + 25,
+			y = star.y + 150,
+			width = images:width( "Cont Button" ),
+			height = images:height( "Cont Button" ),
+			alpha = 0.9
+		}
+		contButton:addEventListener("tap", contButtonTap)
 	end
 
 	local function endgame()
