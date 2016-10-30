@@ -8,11 +8,20 @@ local musics = require( "Source.musics" )
 local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
+local physics = require ( "physics")
+
 
 local scene = composer.newScene()
+local loopTimer
+local planesArray = {}
 
 images:defineImage( "Logo",  "Menu/MenuLogoV1Edit.png", 323, 319 )
 images:defineImage( "Logo Pressed", "Menu/MenuLogoV1Edit-pressed.png", 323, 319 )
+images:defineImage( "Plane 1" , "Menu/plane1.png" , 25,25)
+images:defineImage( "Plane 2" , "Menu/plane2.png" , 25,25)
+images:defineImage( "Plane 3" , "Menu/plane3.png" , 25,25)
+images:defineImage( "Plane 4" , "Menu/plane4.png" , 25,25)
+images:defineImage( "Plane 5" , "Menu/plane5.png" , 25,25)
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -88,6 +97,76 @@ function scene:create( event )
 		height = images:height( "Logo" )
 	}
 
+	---------------------------
+	-- Background animations --
+	---------------------------
+	physics.start()
+	physics.setGravity(0,0)
+	local function createPlanes()
+
+		local plane1 = images:get( sceneGroup, "Plane 1")
+		plane1:rotate(90)
+		plane1.x = 100
+		plane1.y = 200
+		plane1.alpha = 0.6
+		physics.addBody(plane1, "dynamic", { radius = 40, bounce = 0})
+		plane1:setLinearVelocity(50,0)
+
+		local plane2 = images:get( sceneGroup, "Plane 2")
+		plane2:rotate(-90)
+		plane2.x = display.contentWidth - 50
+		plane2.y = 300
+		plane2.alpha = 0.6
+		physics.addBody(plane2, "dynamic", { radius = 40, bounce = 0})
+		plane2:setLinearVelocity(-70,0)
+
+		local plane3 = images:get( sceneGroup, "Plane 3")
+		plane3:rotate(90)
+		plane3.x = 100
+		plane3.y = 400
+		plane3.alpha = 0.6
+		physics.addBody(plane3, "dynamic", { radius = 40, bounce = 0})
+		plane3:setLinearVelocity(80,0)
+
+		local plane4 = images:get( sceneGroup, "Plane 4")
+		plane4:rotate(-90)
+		plane4.x = display.contentWidth - 100
+		plane4.y = 500
+		plane4.alpha = 0.6
+		physics.addBody(plane4, "dynamic", { radius = 40, bounce = 0})
+		plane4:setLinearVelocity(-60,0)
+
+		local plane5 = images:get( sceneGroup, "Plane 5")
+		plane5:rotate(90)
+		plane5.x = 100
+		plane5.y = 600
+		plane5.alpha = 0.6
+		physics.addBody(plane5, "dynamic", { radius = 40, bounce = 0})
+		plane5:setLinearVelocity(40,0)
+
+		table.insert(planesArray,plane1)
+		table.insert(planesArray,plane2)
+		table.insert(planesArray,plane3)
+		table.insert(planesArray,plane4)
+		table.insert(planesArray,plane5)
+	end
+	function looping()
+		-- create new planes
+		createPlanes()
+
+		-- Remove out of screen planes
+		for i = #planesArray, 1, -1 do
+			local thisPlane = planesArray[i]
+
+			if ( thisPlane.x < 100 or thisPlane.x > display.contentWidth + 100) then
+				display.remove( thisPlane )
+				table.remove(planesArray,i)
+			end 
+		end 
+	end
+	looping()
+	loopTimer = timer.performWithDelay(11000, function() looping() end, 0)
+
 
 	----------------
 	-- Foreground --
@@ -159,7 +238,6 @@ function scene:create( event )
 	self.creditButton:addEventListener( "tap", function() self:gotoCredit() end)
 end
 
-
 -- show()
 function scene:show( event )
 
@@ -179,7 +257,6 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-
 		timer.performWithDelay( 25, startMusic )
 		timer.performWithDelay( 25, removeMinigames )
 		timer.performWithDelay( 25, function()
