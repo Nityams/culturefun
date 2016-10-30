@@ -113,6 +113,11 @@ function ImageButtonGraphics:new( options )
 	g.imagePressed.x = options.x
 	g.imagePressed.y = options.y
 
+	if options.alpha then
+		g.image.alpha = options.alpha
+		g.imagePressed.alpha = options.alpha
+	end
+
 	g:setDepressed( false )
 
 	return g
@@ -145,7 +150,7 @@ function Button.preload()
 end
 
 -- Button:newTextButton()
--- Arguments: parentGroup, font, fontSize, fontColor, text, x, y,
+-- Arguments: group, font, fontSize, fontColor, text, x, y,
 --            paddingX, paddingY, width, height, [only two of these four needed]
 --            fillColor, fillColorPressed,
 --            borderWidth, borderColor
@@ -156,7 +161,8 @@ function Button:newTextButton( options )
 end
 
 -- Button:newImageButton()
--- Arguments: parentGroup, image, imagePressed, x, y, width, height
+-- Arguments: group, image, imagePressed, x, y, width, height,
+--            alpha [optional]
 -- Returns: Button
 function Button:newImageButton( options )
 	local graphics = ImageButtonGraphics:new( options )
@@ -181,7 +187,7 @@ function Button:new( graphics, options )
 	b.graphics = graphics
 
 	b.group = display.newGroup()
-	options.parentGroup:insert( b.group )
+	options.group:insert( b.group )
 
 	-- Insert graphics
 	b.group:insert( graphics.group )

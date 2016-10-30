@@ -168,7 +168,8 @@ local sceneBuild ={
 	"Scene/19.png",
 	"Scene/20.png",
 	"Scene/21.png",
-	"Scene/22.png"
+	"Scene/22.png", -- 22
+	"Scene/10-pressed.png", -- 23
 };
 
 local monumentAssets = {
@@ -193,7 +194,8 @@ images:defineImage( "Background", sceneBuild[19], currentWidth, currentHeight - 
 images:defineImage( "Bottom Border", sceneBuild[21], currentWidth, 300 )
 images:defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
 images:defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
-images:defineImage( "Pause Button", sceneBuild[10], currentWidth/20, currentHeight/14 )
+images:defineImage( "Pause Button", "Scene/10.png", currentWidth/20, currentHeight/14 )
+images:defineImage( "Pause Button Pressed", "Scene/10-pressed.png", currentWidth/20, currentHeight/14 )
 images:defineImage( "Info Button", sceneBuild[11], currentWidth/20, currentHeight/14 )
 images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
 images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
@@ -265,7 +267,7 @@ local function makeBox( sceneGroup, x, y, text )
 	local borderWidth = 2
 	local fillWidth = totalWidth - 2*borderWidth
 	return Button:newTextButton{
-		parentGroup=sceneGroup,
+		group=sceneGroup,
 		font=font, fontSize=36, fontColor={ 0.0 },
 		text=text,
 		x=x, y=y, width=fillWidth, height=currentHeight/14-10,
@@ -493,10 +495,16 @@ function scene:create( event )
 	collumn.y = display.contentCenterY+8
 
 	-- pause button placeholder
-	local pauseButton = images:get( sceneGroup, "Pause Button" )
-	pauseButton.x = currentWidth / 20 --50
-	pauseButton.y = currentHeight / 5 --150
-	pauseButton.alpha = 0.9
+	local pauseButton = Button:newImageButton{
+		group = sceneGroup,
+		image = images:get( sceneGroup, "Pause Button" ),
+		imagePressed = images:get( sceneGroup, "Pause Button Pressed" ),
+		x = currentWidth / 20,
+		y = currentHeight / 5,
+		width = images:width( "Pause Button" ),
+		height = images:height( "Pause Button" ),
+		alpha = 0.9
+	}
 
 	-- info button placeholder
 	local infoButton = images:get( sceneGroup, "Info Button" )

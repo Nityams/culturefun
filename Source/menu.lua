@@ -79,13 +79,13 @@ function scene:create( event )
 	bgWorldMap.alpha = 0.5
 
 	self.logo = Button:newImageButton{
-		parentGroup = sceneGroup,
+		group = sceneGroup,
 		image = images:get( sceneGroup, "Logo" ),
 		imagePressed = images:get( sceneGroup, "Logo Pressed" ),
 		x = display.contentCenterX,
 		y = display.contentCenterY + 50,
-		width = 323,
-		height = 319
+		width = images:width( "Logo" ),
+		height = images:height( "Logo" )
 	}
 
 
@@ -109,7 +109,7 @@ function scene:create( event )
 	titleText:setFillColor( 0.4, 0.4, 0.4 )
 
 	self.flagButton = Button:newTextButton{
-		parentGroup=sceneGroup,
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Flag Game",
 		x=200, y=display.contentCenterY + 50,
@@ -118,7 +118,7 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 	self.foodButton = Button:newTextButton{
-		parentGroup=sceneGroup,
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Food Game",
 		x=display.contentWidth - 200, y=display.contentCenterY + 50,
