@@ -43,10 +43,6 @@ function scene:create( event )
 	whiteFill:setFillColor( 1, 1, 1 )
 
 	self.neighborhood = images:get( sceneGroup, "Credit" )
-	self.neighborhood.x = display.contentCenterY+400
-	self.neighborhood.y = display.contentCenterX+400
-
-	moveImage(self.neighborhood)
 
 	local returnButton = Button:newImageButton{
 		group = sceneGroup,
@@ -74,6 +70,11 @@ function scene:show( event )
 
 		self.neighborhood.alpha = 0
 		transition.to( self.neighborhood, { time=800, alpha=1 } )
+
+		self.neighborhood.x = display.contentCenterY+400
+		self.neighborhood.y = display.contentCenterX+400
+		moveImage(self.neighborhood)
+
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
