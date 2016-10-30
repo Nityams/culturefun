@@ -20,7 +20,7 @@ images:defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, dis
 images:defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 musics:defineMusic( "Flag Theme", "Assets/Sounds/Music/Fate-Stay-Night.mp3", 0.8, 5000 )
 
-local function gotoGame()
+local function gotoMenu()
 	composer.gotoScene("Source.menu")
 end
 local function removeGame()
@@ -61,7 +61,7 @@ function scene:create( event )
 
 	moveImage(self.neighborhood)
 
-	Button:newImageButton{
+	local returnButton = Button:newImageButton{
 		group = sceneGroup,
 		image = images:get( sceneGroup, "Close Button" ),
 		imagePressed = images:get( sceneGroup, "Close Button Pressed" ),
@@ -71,6 +71,7 @@ function scene:create( event )
 		height = images:height( "Close Button" ),
 		alpha = 0.5
 	}
+	returnButton:addEventListener( "tap", gotoMenu )
 end
 
 
@@ -88,9 +89,6 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-
-		-- In two seconds go to the food game
-		--timer.performWithDelay( 2000, gotoGame )
 	end
 end
 
