@@ -3,6 +3,7 @@ local composer = require( "composer" )
 
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
+local images = require( "Source.images" )
 local musics = require( "Source.musics" )
 local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
@@ -10,6 +11,8 @@ local util = require( "Source.util" )
 
 local scene = composer.newScene()
 
+images:defineImage( "Logo",  "Menu/MenuLogoV1Edit.png", 323, 319 )
+images:defineImage( "Logo Pressed", "Menu/MenuLogoV1Edit-pressed.png", 323, 319 )
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -75,13 +78,15 @@ function scene:create( event )
 	bgWorldMap.y = display.contentCenterY
 	bgWorldMap.alpha = 0.5
 
-	self.logo = display.newImageRect(
-		sceneGroup,
-		"Assets/Images/Menu/MenuLogoV1Edit.png",
-		323, 319
-	)
-	self.logo.x = display.contentCenterX
-	self.logo.y = display.contentCenterY + 50
+	self.logo = Button:newImageButton{
+		parentGroup = sceneGroup,
+		image = images:get( sceneGroup, "Logo" ),
+		imagePressed = images:get( sceneGroup, "Logo Pressed" ),
+		x = display.contentCenterX,
+		y = display.contentCenterY + 50,
+		width = 323,
+		height = 319
+	}
 
 
 	----------------
@@ -252,10 +257,6 @@ function scene:spinLogo()
 		self.canWantSpin = true
 	end)
 
-	--logo = display.newImageRect( sceneGroup, "Assets/Images/MenuLogoV1Edit.jpg", 400, 400)
-	--logo.x = display.contentCenterX
-	--logo.y = display.contentCenterY + 50
-	--transition.to(logo, { rotation=-360, time=3000, onComplete=spinLogo} )
 	transition.to(self.logo, {rotation=-360, time=2000, onComplete=function()
 		self.logo.rotation = 0
 		self.spinning = false

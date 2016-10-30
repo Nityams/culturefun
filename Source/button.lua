@@ -96,8 +96,9 @@ function ImageButtonGraphics:new( options )
 	setmetatable( g, self )
 	self.__index = self
 
-	g.width = options.image.width
-	g.height = options.image.height
+	-- Width and height are differences in X and Y between image corners.
+	g.width = options.width
+	g.height = options.height
 
 	g.image = options.image
 	g.imagePressed = options.imagePressed
@@ -120,6 +121,15 @@ end
 function ImageButtonGraphics:setDepressed( yes )
 	self.image.isVisible = not yes
 	self.imagePressed.isVisible = yes
+end
+
+function ImageButtonGraphics:getRotation()
+	return self.image.rotation
+end
+
+function ImageButtonGraphics:setRotation( rotation )
+	self.image.rotation = rotation
+	self.imagePressed.rotation = rotation
 end
 
 
@@ -146,7 +156,7 @@ function Button:newTextButton( options )
 end
 
 -- Button:newImageButton()
--- Arguments: parentGroup, x, y, image, imagePressed
+-- Arguments: parentGroup, image, imagePressed, x, y, width, height
 -- Returns: Button
 function Button:newImageButton( options )
 	local graphics = ImageButtonGraphics:new( options )
@@ -157,7 +167,6 @@ function Button:new( graphics, options )
 	-- b inherits from Button
 	local b = {}
 	setmetatable( b, self )
-	self.__index = self
 
 	b.listener = EventListener:new()
 	b.focused = false
@@ -291,6 +300,44 @@ end
 function Button:removeSelf()
 	self.group:removeSelf()
 	self.listener:clear()
+end
+
+function Button:getRotation()
+	if self.graphics.getRotation then
+		return self.graphics:getRotation()
+	else
+		return nil
+	end
+end
+
+function Button:setRotation(rotation)
+	if self.graphics.setRotation then
+		self.graphics:setRotation(rotation)
+	end
+end
+
+local getters = {
+	rotation = function(button) return button:getRotation() end
+}
+
+local setters = {
+	rotation = function(button, val) button:setRotation(val) end
+}
+
+Button.__index = function(button, key)
+	if getters[key] then
+		return getters[key](button)
+	else
+		return Button[key]
+	end
+end
+
+Button.__newindex = function(button, key, value)
+	if setters[key] then
+		setters[key](button, value)
+	else
+		rawset( button, key, value )
+	end
 end
 
 return Button
