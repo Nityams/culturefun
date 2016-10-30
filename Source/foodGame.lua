@@ -151,6 +151,10 @@ function checkScore()
   -- local width = currentWidth/2
   -- local height = currentHeight/2
 
+  if scoreCounter ~= nil then
+      scoreCounter:removeSelf()
+  end
+
   scoreCounter = display.newImage(sceneGroup, "Assets/Images/FoodGame/timer/0.png")
 
   -- User score on timer
