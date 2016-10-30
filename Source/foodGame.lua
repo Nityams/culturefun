@@ -327,7 +327,15 @@ function setFoods()
 end
 
 function correctAnswer()
-  score = score + 1
+  local difficulty = composer.getVariable( "difficulty" )
+  if difficulty == 1 then  -- Easy
+      score = score + 3
+  elseif difficulty == 2 then  -- Medium
+      score = score + 2
+  else  -- Hard
+      score = score + 1
+  end
+
   if(score ~= 12 and score ~= 24 and score ~=36) then
     sounds:play("Win")
   end
