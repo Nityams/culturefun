@@ -1,5 +1,4 @@
 local composer = require( "composer" )
-local physics = require ( "physics")
 
 local Button = require( "Source.button" )
 local images = require( "Source.images" )
