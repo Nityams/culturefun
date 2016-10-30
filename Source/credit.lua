@@ -2,7 +2,6 @@ local composer = require( "composer" )
 local physics = require ( "physics")
 
 local Button = require( "Source.button" )
-local fonts = require( "Source.fonts" )
 local images = require( "Source.images" )
 local musics = require( "Source.musics" )
 local sounds = require( "Source.sounds" )
