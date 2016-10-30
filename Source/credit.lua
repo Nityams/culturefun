@@ -52,6 +52,9 @@ function scene:create( event )
 	removeGame()
 	local sceneGroup = self.view
 
+	local whiteFill = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
+	whiteFill:setFillColor( 1, 1, 1 )
+
 	self.neighborhood = images:get( sceneGroup, "Credit" )
 	self.neighborhood.x = display.contentCenterY+400
 	self.neighborhood.y = display.contentCenterX+400
