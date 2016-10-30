@@ -262,7 +262,6 @@ function scene:create( event )
 
 	self.logo:addEventListener( "tap", function(event)
 		self:logoTapped(event)
-		return true
 	end)
 
 	local function disableButtons()
