@@ -19,7 +19,7 @@ local titleOffsetY = (util.aspectRatio() > 4/3 and 250 or 175)
 
 images:defineImage(
 	"World Map Blurred",
-	"MenuBackgroundV1Edit_Blurred.png",
+	"Menu/MenuBackgroundV1Edit_Blurred.png",
 	display.contentWidth, display.contentHeight*1.3
 )
 
@@ -60,8 +60,8 @@ function scene:create( event )
 	)
 	chooseText:setFillColor( 0.4, 0.4, 0.4 )
 
-	self.easyButton = Button:new{
-		parentGroup=sceneGroup,
+	self.easyButton = Button:newTextButton{
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Easy",
 		x=display.contentCenterX - 250, y=display.contentCenterY + 115,
@@ -70,8 +70,8 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	self.mediumButton = Button:new{
-		parentGroup=sceneGroup,
+	self.mediumButton = Button:newTextButton{
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Medium",
 		x=display.contentCenterX, y=display.contentCenterY + 115,
@@ -80,8 +80,8 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	self.hardButton = Button:new{
-		parentGroup=sceneGroup,
+	self.hardButton = Button:newTextButton{
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Hard",
 		x=display.contentCenterX + 250, y=display.contentCenterY + 115,

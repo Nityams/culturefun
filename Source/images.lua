@@ -15,6 +15,14 @@ function images:defineSheet( name, path, options )
     self.params[name] = { path="Assets/Images/"..path, options=options }
 end
 
+function images:width( name )
+    return self.params[name].width
+end
+
+function images:height( name )
+    return self.params[name].height
+end
+
 function images:preload( name, count )
     count = count or 1
 

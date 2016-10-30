@@ -3,6 +3,7 @@ local composer = require( "composer" )
 
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
+local images = require( "Source.images" )
 local musics = require( "Source.musics" )
 local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
@@ -10,6 +11,8 @@ local util = require( "Source.util" )
 
 local scene = composer.newScene()
 
+images:defineImage( "Logo",  "Menu/MenuLogoV1Edit.png", 323, 319 )
+images:defineImage( "Logo Pressed", "Menu/MenuLogoV1Edit-pressed.png", 323, 319 )
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -68,20 +71,22 @@ function scene:create( event )
 
 	local bgWorldMap = display.newImageRect(
 		sceneGroup,
-		"Assets/Images/MenuBackgroundV1Edit.png",
+		"Assets/Images/Menu/MenuBackgroundV1Edit.png",
 		display.contentWidth, display.contentHeight*1.3
 	)
 	bgWorldMap.x = display.contentCenterX
 	bgWorldMap.y = display.contentCenterY
 	bgWorldMap.alpha = 0.5
 
-	self.logo = display.newImageRect(
-		sceneGroup,
-		"Assets/Images/MenuLogoV1Edit.png",
-		323, 319
-	)
-	self.logo.x = display.contentCenterX
-	self.logo.y = display.contentCenterY + 50
+	self.logo = Button:newImageButton{
+		group = sceneGroup,
+		image = images:get( sceneGroup, "Logo" ),
+		imagePressed = images:get( sceneGroup, "Logo Pressed" ),
+		x = display.contentCenterX,
+		y = display.contentCenterY + 50,
+		width = images:width( "Logo" ),
+		height = images:height( "Logo" )
+	}
 
 
 	----------------
@@ -103,8 +108,8 @@ function scene:create( event )
 	)
 	titleText:setFillColor( 0.4, 0.4, 0.4 )
 
-	self.flagButton = Button:new{
-		parentGroup=sceneGroup,
+	self.flagButton = Button:newTextButton{
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Flag Game",
 		x=200, y=display.contentCenterY + 50,
@@ -112,8 +117,8 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
-	self.foodButton = Button:new{
-		parentGroup=sceneGroup,
+	self.foodButton = Button:newTextButton{
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Play Food Game",
 		x=display.contentWidth - 200, y=display.contentCenterY + 50,
@@ -252,10 +257,6 @@ function scene:spinLogo()
 		self.canWantSpin = true
 	end)
 
-	--logo = display.newImageRect( sceneGroup, "Assets/Images/MenuLogoV1Edit.jpg", 400, 400)
-	--logo.x = display.contentCenterX
-	--logo.y = display.contentCenterY + 50
-	--transition.to(logo, { rotation=-360, time=3000, onComplete=spinLogo} )
 	transition.to(self.logo, {rotation=-360, time=2000, onComplete=function()
 		self.logo.rotation = 0
 		self.spinning = false
