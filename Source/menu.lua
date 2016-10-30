@@ -14,14 +14,19 @@ local physics = require ( "physics")
 local scene = composer.newScene()
 local loopTimer
 local planesArray = {}
+local eventsArray = {}
+-- event triggering
+local counter = 0
 
 images:defineImage( "Logo",  "Menu/MenuLogoV1Edit.png", 323, 319 )
 images:defineImage( "Logo Pressed", "Menu/MenuLogoV1Edit-pressed.png", 323, 319 )
-images:defineImage( "Plane 1" , "Menu/plane1.png" , 25,25)
-images:defineImage( "Plane 2" , "Menu/plane2.png" , 25,25)
-images:defineImage( "Plane 3" , "Menu/plane3.png" , 25,25)
-images:defineImage( "Plane 4" , "Menu/plane4.png" , 25,25)
-images:defineImage( "Plane 5" , "Menu/plane5.png" , 25,25)
+images:defineImage( "Plane 1" , "Menu/plane1.png" , 25, 25)
+images:defineImage( "Plane 2" , "Menu/plane2.png" , 25, 25)
+images:defineImage( "Plane 3" , "Menu/plane3.png" , 25, 25)
+images:defineImage( "Plane 4" , "Menu/plane4.png" , 25, 25)
+images:defineImage( "Plane 5" , "Menu/plane5.png" , 25, 25)
+images:defineImage( "Santa" , "Menu/santa.png", 90 ,30)
+images:defineImage( "Pizza", "Menu/pizza.png", 90,90)
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -109,7 +114,7 @@ function scene:create( event )
 		plane1.x = 100
 		plane1.y = 200
 		plane1.alpha = 0.6
-		physics.addBody(plane1, "dynamic", { radius = 40, bounce = 0})
+		physics.addBody(plane1, "dynamic", { radius = 30, bounce = 0.5})
 		plane1:setLinearVelocity(50,0)
 
 		local plane2 = images:get( sceneGroup, "Plane 2")
@@ -117,7 +122,7 @@ function scene:create( event )
 		plane2.x = display.contentWidth - 50
 		plane2.y = 300
 		plane2.alpha = 0.6
-		physics.addBody(plane2, "dynamic", { radius = 40, bounce = 0})
+		physics.addBody(plane2, "dynamic", { radius = 30, bounce = 0.5})
 		plane2:setLinearVelocity(-70,0)
 
 		local plane3 = images:get( sceneGroup, "Plane 3")
@@ -125,7 +130,7 @@ function scene:create( event )
 		plane3.x = 100
 		plane3.y = 400
 		plane3.alpha = 0.6
-		physics.addBody(plane3, "dynamic", { radius = 40, bounce = 0})
+		physics.addBody(plane3, "dynamic", { radius = 30, bounce = 0.5})
 		plane3:setLinearVelocity(80,0)
 
 		local plane4 = images:get( sceneGroup, "Plane 4")
@@ -133,7 +138,7 @@ function scene:create( event )
 		plane4.x = display.contentWidth - 100
 		plane4.y = 500
 		plane4.alpha = 0.6
-		physics.addBody(plane4, "dynamic", { radius = 40, bounce = 0})
+		physics.addBody(plane4, "dynamic", { radius = 30, bounce = 0.5})
 		plane4:setLinearVelocity(-60,0)
 
 		local plane5 = images:get( sceneGroup, "Plane 5")
@@ -141,7 +146,7 @@ function scene:create( event )
 		plane5.x = 100
 		plane5.y = 600
 		plane5.alpha = 0.6
-		physics.addBody(plane5, "dynamic", { radius = 40, bounce = 0})
+		physics.addBody(plane5, "dynamic", { radius = 30, bounce = 0.5})
 		plane5:setLinearVelocity(40,0)
 
 		table.insert(planesArray,plane1)
@@ -150,6 +155,8 @@ function scene:create( event )
 		table.insert(planesArray,plane4)
 		table.insert(planesArray,plane5)
 	end
+
+	-- function generates planes
 	function looping()
 		-- create new planes
 		createPlanes()
@@ -165,6 +172,40 @@ function scene:create( event )
 		end 
 	end
 	looping()
+
+	-- function handles events triggering
+	function eventsTrigger()
+		for i = #eventsArray, 1, -1 do
+			local thisEvent = eventsArray[i]
+
+			if ( thisEvent.x < 100 or thisEvent.x > display.contentWidth + 100) then
+				display.remove( thisEvent )
+				table.remove(eventsArray,i)
+			end 
+		end 
+		-- trigger santa clause 
+		if counter == 2 then 
+			local santa = images:get( sceneGroup, "Santa")
+			santa:rotate(20)
+			santa.x = math.random(0,300)
+			santa.y = 0
+			santa.alpha = 0.8
+			physics.addBody(santa, "kinematic", { radius = 30, bounce = 0.8})
+			santa:setLinearVelocity(math.random(50,100),math.random(50,100))
+			table.insert(eventsArray,santa)
+		-- trigger giant pizza
+		elseif counter == 5 then
+			local pizza = images:get(sceneGroup, "Pizza")
+			pizza.x = 0
+			pizza.y = math.random(0,300)
+			pizza.alpha = 0.8
+			physics.addBody(pizza, "dynamic", {radius = 30, bounce = 0.8})
+			pizza:setLinearVelocity(math.random(100,300),math.random(100, 150))
+			pizza:applyTorque(math.random(-4,4))
+			table.insert(eventsArray,pizza)
+		end
+
+	end
 
 	----------------
 	-- Foreground --
@@ -335,9 +376,15 @@ function scene:logoTapped( event )
 		return
 	end
 
+	if counter ~= 8 then
+		counter = counter + 1
+		eventsTrigger()
+	else
+		counter = 0
+	end
+
 	self:spinLogo()
 end
-
 
 function scene:spinLogo()
 	timer.performWithDelay( 0, function() sounds:play( "Charm" ) end )
@@ -359,8 +406,6 @@ function scene:spinLogo()
 		end
 	end})
 end
-
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
