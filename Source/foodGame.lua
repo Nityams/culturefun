@@ -368,7 +368,7 @@ function leaveCharacters()
 end
 
 function callCharacters()
-  character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/deer.png")
+  character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/deer2.png")
   character_one.y = display.contentCenterY+15
   character_one.x = 0
   character_one:scale(1.3,1)
