@@ -92,7 +92,6 @@ function scene:create( event )
 	----------------
 	-- Foreground --
 	----------------
-
 	local font = fonts.neucha()
 
 	local titleOffsetY = (util.aspectRatio() > 4/3 and 200 or 150)
@@ -126,6 +125,16 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
+	
+	self.creditButton = Button:newTextButton{
+		group=sceneGroup,
+		font=font, fontSize=20, fontColor={ 0.4 },
+		text="Credit",
+		x=display.contentWidth-130, y=display.contentHeight-140,
+		paddingX=20, paddingY=5,
+		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
+		borderWidth=3, borderColor={ 0.85 }
+	}
 
 
 	---------------
@@ -140,11 +149,14 @@ function scene:create( event )
 	local function disableButtons()
 		self.flagButton.enabled = false
 		self.foodButton.enabled = false
+		self.creditButton.enabled = false
 	end
 	self.flagButton:addEventListener( "pretap", disableButtons )
 	self.foodButton:addEventListener( "pretap", disableButtons )
+	self.creditButton:addEventListener( "pretap", disableButtons )
 	self.flagButton:addEventListener( "tap", function() self:gotoFlagMinigame() end )
 	self.foodButton:addEventListener( "tap", function() self:gotoFoodMinigame() end )
+	self.creditButton:addEventListener( "tap", function() self:gotoCredit() end)
 end
 
 
@@ -218,7 +230,6 @@ function scene:gotoMinigame( name, file, menu )
 		},
 		menuMusicChannel = menuMusicChannel
 	}
-
 	composer.gotoScene( "Source.difficultySelector", { params=params } )
 end
 
@@ -232,6 +243,9 @@ function scene:gotoFoodMinigame()
 	self:gotoMinigame( "Food Game", "foodIntro" )
 end
 
+function scene:gotoCredit()
+	self:gotoMinigame( "Credit", "credit" )
+end
 
 function scene:logoTapped( event )
 	if self.canWantSpin then
