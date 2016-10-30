@@ -37,14 +37,22 @@ local score = 0
 local star1
 local star2
 local star3
+local text1
+local text2
+local text3
+local text4
 
 local function returnToMenu()
-
   composer.gotoScene( "Source.menu" )
   composer.removeScene( "Source.foodGame" )
-  foodGroup:removeSelf()
+--  foodGroup:removeSelf()
 end
 
+local function winScene()
+  composer.gotoScene( "Source.winGame" )
+  composer.removeScene( "Source.foodGame" )
+--  foodGroup:removeSelf()
+end
 
 --creating main table
 local Countries = require "Countries"
@@ -63,7 +71,7 @@ function scene:create( event )
   sceneGroup = self.view
   currentWidth = display.contentWidth
   currentHeight = display.contentHeight
-  foodGroup = display.newGroup()
+--  foodGroup = display.newGroup()
   -- `Code here runs when the scene is first created but has not yet appeared on screen
 
   startGame()
@@ -138,8 +146,8 @@ function setBackground()
 
   local foodBack= display.newImageRect(sceneGroup, "Assets/Images/FoodGame/foodBack.png", currentWidth, currentHeight)
   foodBack.x = display.contentCenterX + display.contentCenterX /2
-  foodBack.y = display.contentCenterY + replayButton.y/2
-  foodBack:scale(0.5,0.58)
+  foodBack.y = display.contentCenterY + replayButton.y/2 + 4
+  foodBack:scale(0.5,0.6)
   checkScore()
 
 end
@@ -152,7 +160,7 @@ function checkScore()
   -- local height = currentHeight/2
 
   if scoreCounter ~= nil then
-      scoreCounter:removeSelf()
+      scoreCounter = nil
   end
 
   scoreCounter = display.newImage(sceneGroup, "Assets/Images/FoodGame/timer/0.png")
@@ -191,6 +199,7 @@ function checkStar()
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
+    returnToMenu()
   elseif score >= 24 then
     display.remove( star1 )
     display.remove( star2 )
@@ -236,49 +245,49 @@ end
 function setFoods()
   -- local randomCountryNumber = math.random(1,10) -- selecting random country from Countries module /table
   randomFood = math.random(1, 4) -- selecting random( out of 4) place in the food selection grid
-  print("****** random grid :", randomFood)
+--  print("****** random grid :", randomFood)
   -- Setting random countries i.e, not the correct one on the food grid
 
   secondRandom = (randomCountryNumber) % 10 + 1 -- random country for food1
   path = Countries[secondRandom].flag
-  food1 = display.newImageRect(foodGroup, path, currentWidth / 5, currentHeight / 5)
-  food1_name = Countries[secondRandom].name
+  food1 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
+  food1_name = Countries[secondRandom].food
 
   secondRandom = (secondRandom) % 10 + 1 -- random country for food 2
   path = Countries[secondRandom].flag
-  food2 = display.newImageRect(foodGroup, path, currentWidth / 5, currentHeight / 5)
-  food2_name = Countries[secondRandom].name
+  food2 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
+  food2_name = Countries[secondRandom].food
 
   secondRandom = (secondRandom ) % 10 + 1 -- random country for food 3
   path = Countries[secondRandom].flag
-  food3 = display.newImageRect(foodGroup, path, currentWidth / 5, currentHeight / 5)
-  food3_name = Countries[secondRandom].name
+  food3 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
+  food3_name = Countries[secondRandom].food
 
   secondRandom = (secondRandom ) % 10 + 1 -- random country for food 4
   path = Countries[secondRandom].flag
-  food4 = display.newImageRect(foodGroup, path, currentWidth / 5, currentHeight / 5)
-  food4_name = Countries[secondRandom].name
+  food4 = display.newImageRect(sceneGroup, path, currentWidth / 5, currentHeight / 5)
+  food4_name = Countries[secondRandom].food
 
   -- Setting the correct country on the random food grid
 
   local correctPath = Countries[randomCountryNumber].flag
-  print("******* correctPath: ", Countries[randomCountryNumber].name)
+  --print("******* correctPath: ", Countries[randomCountryNumber].name)
   if randomFood == 1 then
     food1:removeSelf()
-    food1 = display.newImageRect(foodGroup, correctPath, currentWidth / 5, currentHeight / 5)
-    food1_name = Countries[randomCountryNumber].name
+    food1 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
+    food1_name = Countries[randomCountryNumber].food
   elseif randomFood == 2 then
     food2:removeSelf()
-    food2 = display.newImageRect(foodGroup, correctPath, currentWidth / 5, currentHeight / 5)
-    food2_name = Countries[randomCountryNumber].name
+    food2 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
+    food2_name = Countries[randomCountryNumber].food
   elseif randomFood == 3 then
     food3:removeSelf()
-    food3 = display.newImageRect(foodGroup, correctPath, currentWidth / 5, currentHeight / 5)
-    food3_name = Countries[randomCountryNumber].name
+    food3 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
+    food3_name = Countries[randomCountryNumber].food
   else
     food4:removeSelf()
-    food4 = display.newImageRect(foodGroup, correctPath, currentWidth / 5, currentHeight / 5)
-    food4_name = Countries[randomCountryNumber].name
+    food4 = display.newImageRect(sceneGroup, correctPath, currentWidth / 5, currentHeight / 5)
+    food4_name = Countries[randomCountryNumber].food
   end
 
   -- Setting the position of all four grid
@@ -290,6 +299,21 @@ function setFoods()
   food3.x = food1.x; food3.y = food1.y + food1.width
   food4.x = food2.x ; food4.y = food3.y
 
+  if(text1 ~= nil) then
+    text1:removeSelf()
+    text2:removeSelf()
+    text3:removeSelf()
+    text4:removeSelf()
+  end
+
+  text1 = display.newText(sceneGroup,food1_name, food1.x, food1.y + 96 , "Helvetica", 31 )
+  text2 = display.newText(sceneGroup,food2_name,  food2.x, food2.y + 96 , "Helvetica", 31 )
+  text3 = display.newText(sceneGroup,food3_name, food3.x, food3.y + 96 , "Helvetica", 31 )
+  text4 = display.newText(sceneGroup, food4_name, food4.x, food4.y + 96 , "Helvetica", 31 )
+  text1:setFillColor(7,58,35)
+  text2:setFillColor(7,58,35)
+  text3:setFillColor(7,58,35)
+  text4:setFillColor(7,58,35)
   -- setting the animation (pop up) for all the food in the grid
   local function food3Animation()
     transition.to(food3, { time = 200, alpha = 1, xScale = 1, yScale = 1, onComplete = food3Animation })
@@ -305,26 +329,26 @@ function setFoods()
   -- tap acrion listener and answer checker for all the foods in the grid
 
   food1:addEventListener("tap", function ()
-      print("*** food1 pressed, food1 is ", food1_name, " and the answer is ", Countries[randomCountryNumber].name)
-      if food1_name == Countries[randomCountryNumber].name then
+      --print("*** food1 pressed, food1 is ", food1_name, " and the answer is ", Countries[randomCountryNumber].name)
+      if food1_name == Countries[randomCountryNumber].food then
         correctAnswer()
       end
     end )
   food2:addEventListener("tap", function ()
-      print("*** food2 pressed, food2 is ", food2_name, " and the answer is ", Countries[randomCountryNumber].name)
-      if food2_name == Countries[randomCountryNumber].name then
+      --print("*** food2 pressed, food2 is ", food2_name, " and the answer is ", Countries[randomCountryNumber].name)
+      if food2_name == Countries[randomCountryNumber].food then
         correctAnswer()
       end
     end )
   food3:addEventListener("tap", function ()
-      print("*** food3 pressed, food3 is ", food3_name, " and the answer is ", Countries[randomCountryNumber].name)
-      if food3_name == Countries[randomCountryNumber].name then
+    --  print("*** food3 pressed, food3 is ", food3_name, " and the answer is ", Countries[randomCountryNumber].name)
+      if food3_name == Countries[randomCountryNumber].food then
         correctAnswer()
       end
     end )
   food4:addEventListener("tap", function ()
-      print("*** food4 pressed, food4 is ", food4_name, " and the answer is ", Countries[randomCountryNumber].name)
-      if food4_name == Countries[randomCountryNumber].name then
+    --  print("*** food4 pressed, food4 is ", food4_name, " and the answer is ", Countries[randomCountryNumber].name)
+      if food4_name == Countries[randomCountryNumber].food then
         correctAnswer()
       end
     end )
@@ -371,14 +395,15 @@ function callCharacters()
   character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/deer2.png")
   character_one.y = display.contentCenterY+15
   character_one.x = 0
+  --character_one:scale(0.8,0.8)
   character_one:scale(1.3,1)
   transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
 end
 
 function callGreetings()
-  print("****** greeings: ",randomCountryNumber,":", Countries[randomCountryNumber].name)
+--  print("****** greeings: ",randomCountryNumber,":", Countries[randomCountryNumber].name)
   path = Countries[randomCountryNumber].greetings_food
-  print(path)
+--  print(path)
   dialogBox = display.newImage(sceneGroup,path)
   dialogBox.xScale = 0.5
   dialogBox.yScale = 0.5
