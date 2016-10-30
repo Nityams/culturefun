@@ -1,5 +1,6 @@
 
 local composer = require( "composer" )
+local physics = require ( "physics")
 
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
@@ -8,8 +9,8 @@ local musics = require( "Source.musics" )
 local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
-local physics = require ( "physics")
 
+physics.start()
 
 local scene = composer.newScene()
 local loopTimer
@@ -105,8 +106,8 @@ function scene:create( event )
 	---------------------------
 	-- Background animations --
 	---------------------------
-	physics.start()
-	physics.setGravity(0,0)
+	physics.pause()
+
 	local function createPlanes()
 
 		local plane1 = images:get( sceneGroup, "Plane 1")
@@ -295,6 +296,9 @@ function scene:show( event )
 		self.wantSpin = false
 		self.canWantSpin = false
 
+		physics.start()
+		physics.setGravity(0,0)
+
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 	    loopTimer = timer.performWithDelay(11000, function() looping() end, 0)
@@ -324,6 +328,7 @@ function scene:hide( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 
+		physics.pause()
 	end
 end
 
