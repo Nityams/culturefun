@@ -2,7 +2,7 @@ local EventListener = require( "Source.eventListener" )
 local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
 
-local allowance = 30  -- pixels around the button that still trigger it
+local DEFAULT_ALLOWANCE = 30  -- pixels around the button that still trigger it
 
 sounds:defineSound( "Button Up", "Assets/Sounds/Menu/Button Up.wav", 0.9 )
 sounds:defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav", 1 )
@@ -153,7 +153,8 @@ end
 -- Arguments: group, font, fontSize, fontColor, text, x, y,
 --            paddingX, paddingY, width, height, [only two of these four needed]
 --            fillColor, fillColorPressed,
---            borderWidth, borderColor
+--            borderWidth, borderColor,
+--            allowance [optional]
 -- Returns: Button
 function Button:newTextButton( options )
 	local graphics = TextButtonGraphics:new( options )
@@ -162,7 +163,8 @@ end
 
 -- Button:newImageButton()
 -- Arguments: group, image, imagePressed, x, y, width, height,
---            alpha [optional]
+--            alpha [optional],
+--            allowance [optional]
 -- Returns: Button
 function Button:newImageButton( options )
 	local graphics = ImageButtonGraphics:new( options )
@@ -193,6 +195,8 @@ function Button:new( graphics, options )
 	b.group:insert( graphics.group )
 
 	-- Insert touch panel above graphics
+	local allowance = (options.allowance or DEFAULT_ALLOWANCE)
+
 	b.touchPanel = display.newRect(
 		b.group,
 		options.x, options.y,

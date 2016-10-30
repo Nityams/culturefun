@@ -196,7 +196,8 @@ images:defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15
 images:defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
 images:defineImage( "Pause Button", "Scene/10.png", currentWidth/20, currentHeight/14 )
 images:defineImage( "Pause Button Pressed", "Scene/10-pressed.png", currentWidth/20, currentHeight/14 )
-images:defineImage( "Info Button", sceneBuild[11], currentWidth/20, currentHeight/14 )
+images:defineImage( "Info Button", "Scene/11.png", currentWidth/20, currentHeight/14 )
+images:defineImage( "Info Button Pressed", "Scene/11-pressed.png", currentWidth/20, currentHeight/14 )
 images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
 images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
 images:defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
@@ -292,6 +293,7 @@ function scene:preload()
 		images:preload( "Bottom Border" ); coroutine.yield()
 		images:preload( "Platform 1" ); coroutine.yield()
 		images:preload( "Column" ); coroutine.yield()
+		images:preload( "Pause Button" ); coroutine.yield()
 		images:preload( "Pause Button" ); coroutine.yield()
 		images:preload( "Info Button" ); coroutine.yield()
 		images:preload( "Pole" ); coroutine.yield()
@@ -503,14 +505,22 @@ function scene:create( event )
 		y = currentHeight / 5,
 		width = images:width( "Pause Button" ),
 		height = images:height( "Pause Button" ),
-		alpha = 0.9
+		alpha = 0.9,
+		allowance = 8  -- Normally 30, but they are 16 pixels apart
 	}
 
 	-- info button placeholder
-	local infoButton = images:get( sceneGroup, "Info Button" )
-	infoButton.x = pauseButton.x
-	infoButton.y = pauseButton.y + currentWidth / 16
-	infoButton.alpha = 0.9
+	local infoButton = Button:newImageButton{
+		group = sceneGroup,
+		image = images:get( sceneGroup, "Info Button" ),
+		imagePressed = images:get( sceneGroup, "Info Button Pressed" ),
+		x = pauseButton.x,
+		y = pauseButton.y + currentWidth/16,
+		width = images:width( "Pause Button" ),
+		height = images:height( "Pause Button" ),
+		alpha = 0.9,
+		allowance = 8  -- Normally 30, but they are 16 pixels apart
+	}
 
 	-- pause/play event
 	-- temp2 store the values to decide play/pause
