@@ -1009,8 +1009,6 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-		-- In two seconds return to the menu
-		--timer.performWithDelay( 2000, returnToMenu )
 		startGame()
 		timer.performWithDelay( 25, startMusic )
 	end
