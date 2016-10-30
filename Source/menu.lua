@@ -68,7 +68,7 @@ function scene:create( event )
 
 	local bgWorldMap = display.newImageRect(
 		sceneGroup,
-		"Assets/Images/MenuBackgroundV1Edit.png",
+		"Assets/Images/Menu/MenuBackgroundV1Edit.png",
 		display.contentWidth, display.contentHeight*1.3
 	)
 	bgWorldMap.x = display.contentCenterX
@@ -77,7 +77,7 @@ function scene:create( event )
 
 	self.logo = display.newImageRect(
 		sceneGroup,
-		"Assets/Images/MenuLogoV1Edit.png",
+		"Assets/Images/Menu/MenuLogoV1Edit.png",
 		323, 319
 	)
 	self.logo.x = display.contentCenterX

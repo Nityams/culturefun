@@ -19,7 +19,7 @@ local titleOffsetY = (util.aspectRatio() > 4/3 and 250 or 175)
 
 images:defineImage(
 	"World Map Blurred",
-	"MenuBackgroundV1Edit_Blurred.png",
+	"Menu/MenuBackgroundV1Edit_Blurred.png",
 	display.contentWidth, display.contentHeight*1.3
 )
 
