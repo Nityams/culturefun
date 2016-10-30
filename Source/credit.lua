@@ -23,9 +23,6 @@ musics:defineMusic( "Flag Theme", "Assets/Sounds/Music/Fate-Stay-Night.mp3", 0.8
 local function gotoMenu()
 	composer.gotoScene("Source.menu")
 end
-local function removeGame()
-	composer.removeScene("Source.menu")
-end
 
 local function moveImage(obj)
 	transition.to(obj,{
@@ -49,7 +46,6 @@ end
 -- create()
 function scene:create( event )
 	-- Code here runs when the scene is first created but has not yet appeared on screen
-	removeGame()
 	local sceneGroup = self.view
 
 	local whiteFill = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
