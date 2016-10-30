@@ -168,8 +168,8 @@ function scene:create( event )
 			if ( thisPlane.x < 100 or thisPlane.x > display.contentWidth + 100) then
 				display.remove( thisPlane )
 				table.remove(planesArray,i)
-			end 
-		end 
+			end
+		end
 	end
 	looping()
 
@@ -181,10 +181,10 @@ function scene:create( event )
 			if ( thisEvent.x < 100 or thisEvent.x > display.contentWidth + 100) then
 				display.remove( thisEvent )
 				table.remove(eventsArray,i)
-			end 
-		end 
-		-- trigger santa clause 
-		if counter == 2 then 
+			end
+		end
+		-- trigger santa clause
+		if counter == 2 then
 			local santa = images:get( sceneGroup, "Santa")
 			santa:rotate(20)
 			santa.x = math.random(0,300)
@@ -243,7 +243,7 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
-	
+
 	self.creditButton = Button:newTextButton{
 		group=sceneGroup,
 		font=font, fontSize=20, fontColor={ 0.4 },
@@ -288,6 +288,7 @@ function scene:show( event )
 
 		self.flagButton.enabled = true
 		self.foodButton.enabled = true
+		self.creditButton.enabled = true
 
 		self.logo.rotation = 0
 		self.spinning = false
@@ -316,7 +317,7 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-		
+
 		-- this cancels the loop generating planes
 		timer.cancel(loopTimer)
 
