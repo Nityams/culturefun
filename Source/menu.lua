@@ -165,8 +165,6 @@ function scene:create( event )
 		end 
 	end
 	looping()
-	loopTimer = timer.performWithDelay(11000, function() looping() end, 0)
-
 
 	----------------
 	-- Foreground --
@@ -257,6 +255,7 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
+	    loopTimer = timer.performWithDelay(11000, function() looping() end, 0)
 		timer.performWithDelay( 25, startMusic )
 		timer.performWithDelay( 25, removeMinigames )
 		timer.performWithDelay( 25, function()
@@ -276,6 +275,9 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
+		
+		-- this cancels the loop generating planes
+		timer.cancel(loopTimer)
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
