@@ -365,7 +365,12 @@ function scene:gotoFoodMinigame()
 end
 
 function scene:gotoCredit()
-	self:gotoMinigame( "Credit", "credit" )
+	-- When going to a minigame, the audio stops after selecting a difficulty,
+	-- but let's stop it here for the credits.
+	audio.fade( 500 )
+	audio.stopWithDelay( 500 )
+
+	composer.gotoScene( "Source.credit" )
 end
 
 function scene:logoTapped( event )
