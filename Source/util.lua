@@ -14,4 +14,9 @@ function util.pop( array )
 	return value
 end
 
+function util.nextFrame( callback )
+	timer.performWithDelay( 1000/16, callback )
+end
+
+
 return util

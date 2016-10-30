@@ -1,6 +1,7 @@
 local composer = require( "composer" )
 
 local musics = require( "Source.musics" )
+local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
 
@@ -22,8 +23,7 @@ local eventRemover
 local checkScore
 local checkStar
 local correctAnswer
-
-local foodGroup
+local starShine
 
 local currentWidth
 local currentHeight
@@ -35,42 +35,22 @@ local score = 0
 local star1
 local star2
 local star3
+local text1
+local text2
+local text3
+local text4
 
 local function returnToMenu()
-
   composer.gotoScene( "Source.menu" )
   composer.removeScene( "Source.foodGame" )
-  foodGroup:removeSelf()
+--  foodGroup:removeSelf()
 end
 
---
--- local sheetTimer = {
--- width = 276,
--- height = 276,
--- numFrames = 4,
--- sheetContentWidth = 1345,
--- sheetContentHeight = 1010
--- };
--- local sequenceTimer = {
--- {
--- name = "1",
--- frame ={1},
--- loopCount = 0
--- },
--- {
--- name = "2",
--- frame ={4},
--- loopCount = 0
--- },
--- {
--- name = "1",
--- frame ={1},
--- loopCount = 0
--- },
--- };
--- local mySheetTimer = graphics.newImageSheet("Assets/Images/FoodGame/timer/timer.png", sheetTimer)
-
--- local closeScene -- testing
+local function winScene()
+  composer.gotoScene( "Source.winGame" )
+  composer.removeScene( "Source.foodGame" )
+--  foodGroup:removeSelf()
+end
 
 --creating main table
 local Countries = require "Countries"
@@ -79,7 +59,8 @@ local choices = {}
 
 -- Temporary Music
 musics:defineMusic( "Food Theme", "Assets/Sounds/Music/Whimsical-Popsicle.mp3", 1, 5000 )
-
+sounds:defineSound("Win","Assets/Sounds/win.wav",0.5 )
+sounds:defineSound("starWin", "Assets/Sounds/starWin.wav",0.5)
 -- create()
 function scene:create( event )
 
@@ -88,7 +69,7 @@ function scene:create( event )
   sceneGroup = self.view
   currentWidth = display.contentWidth
   currentHeight = display.contentHeight
-  foodGroup = display.newGroup()
+--  foodGroup = display.newGroup()
   -- `Code here runs when the scene is first created but has not yet appeared on screen
 
   startGame()
@@ -104,7 +85,6 @@ function startGame()
   -- resetGame()
   -- randomCountryNumber = math.random(1,10) -- selecting random country from Countries module /table
   setBackground()
-  -- Could replace these lines with newFoods()
   newFoods()
 
   -- local time1 = display.newSprite(sceneGroup,mySheetTimer,sequenceTimer)
@@ -135,18 +115,19 @@ function setBackground()
   local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
   pauseButton.y = replayButton.y
   pauseButton.x = replayButton.x - 100
-  -- pauseButton:addEventListener("tap", function()
-  -- audio.stop() end)
+  pauseButton:addEventListener("tap", function()
+  audio.stop() end)
 
   local oven = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/oven.png", currentWidth, currentHeight)
   oven.x = display.contentCenterX - display.contentCenterX / 2
   oven.y = display.contentCenterY + display.contentCenterY / 1.8
   oven:scale(0.5, 0.22)
 
-  local foodBack= display.newImageRect(sceneGroup, "Assets/Images/FoodGame/foodBack.png", currentWidth, currentHeight)
+  local foodBack = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/foodBack.png", currentWidth, currentHeight)
   foodBack.x = display.contentCenterX + display.contentCenterX / 2
-  foodBack.y = display.contentCenterY + replayButton.y / 2
-  foodBack:scale(0.5, 0.58)
+  foodBack.y = display.contentCenterY + replayButton.y / 2 + 4
+  foodBack:scale(0.5, 0.6)
+
   checkScore()
 
 end
@@ -157,6 +138,10 @@ function checkScore()
   -- Shouldn't need these because dimensions are hard set at end
   -- local width = currentWidth/2
   -- local height = currentHeight/2
+
+  if scoreCounter ~= nil then
+      scoreCounter = nil
+  end
 
   scoreCounter = display.newImage(sceneGroup, "Assets/Images/FoodGame/timer/0.png")
 
@@ -185,19 +170,21 @@ function checkStar()
   star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
   star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
   star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
-  if score > 36 then
+  starShine()
+  if score == 36 then
     display.remove( star1 )
     display.remove( star2 )
     display.remove( star3 )
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
-  elseif score > 24 then
+    returnToMenu()
+  elseif score >= 24 then
     display.remove( star1 )
     display.remove( star2 )
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
-  elseif score > 12 then
+  elseif score >= 12 then
     display.remove( star1 )
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
   end
@@ -217,6 +204,22 @@ function checkStar()
 
 end
 
+function starShine()
+  if score == 12 then
+    sounds:play("starWin")
+    -- star1:scale(4,4)
+    -- transition.to(star1,{time = 500, alpha = 1, xScale = 1, yScale = 1 })
+    -- starShineAnimation(star1)
+  elseif score == 24 then
+    sounds:play("starWin")
+    -- starShineAnimation()
+  elseif score == 36 then
+    sounds:play("starWin")
+    -- starShineAnimation()
+  else
+  end
+end
+
 function getChoices()
   -- Ensure deck has sufficient countries
   if leftInDeck() < 4 then
@@ -227,7 +230,6 @@ function getChoices()
       showDeck()
     end
   end
-
   -- Draw countries from deck
   choices = drawDeck(4)
   if DEBUG then
@@ -244,16 +246,17 @@ function setFoods()
 
   getChoices()
 
-  for i,v in ipairs(choices) do
-    v.image = display.newImageRect(foodGroup, v.flag, currentWidth / 5, currentHeight / 5)
-  end
-
   -- selecting random( out of 4) place in the food selection grid
-
+  
   math.randomseed(os.clock()*10000)
   correctFood = math.random(4)
   print("***** Correct country: "..correctFood..". "..choices[correctFood].name)
 
+  -- Begin drawing food grid
+
+  for i,v in ipairs(choices) do
+    v.image = display.newImageRect(sceneGroup, v.flag, currentWidth / 5, currentHeight / 5)
+  end
 
   -- Setting the position of all four grid
 
@@ -261,6 +264,7 @@ function setFoods()
     v.image.alpha = 0
     v.image:scale(0, 0)
   end
+
   choices[1].image.x = display.contentCenterX + 125
   choices[1].image.y = display.contentCenterY - display.contentCenterY / 8
   
@@ -272,6 +276,21 @@ function setFoods()
   
   choices[4].image.x = choices[2].image.x
   choices[4].image.y = choices[3].image.y
+
+  -- Country text
+  
+  for i,v in ipairs(choices) do
+    v.text = display.newText(sceneGroup, v.name, v.image.x, v.image.y + 96, "Helvetica", 31)
+    v.text:setFillColor(7, 58, 35)
+  end
+  -- text1 = display.newText(sceneGroup,choices[1].name, choices[1].image.x, choices[1].image.y + 96 , "Helvetica", 31 )
+  -- text2 = display.newText(sceneGroup,choices[2].name,  choices[2].image.x, choices[2].image.y + 96 , "Helvetica", 31 )
+  -- text3 = display.newText(sceneGroup,choices[3].name, choices[3].image.x, choices[3].image.y + 96 , "Helvetica", 31 )
+  -- text4 = display.newText(sceneGroup, choices[4].name, choices[4].image.x, choices[4].image.y + 96 , "Helvetica", 31 )
+  -- text1:setFillColor(7,58,35)
+  -- text2:setFillColor(7,58,35)
+  -- text3:setFillColor(7,58,35)
+  -- text4:setFillColor(7,58,35)
 
   -- Staggered animation for food choice grid
 
@@ -306,15 +325,36 @@ function setFoods()
 end
 
 function correctAnswer()
-  score = score + 1
+  local difficulty = composer.getVariable( "difficulty" )
+  if difficulty == 1 then  -- Easy
+      score = score + 3
+  elseif difficulty == 2 then  -- Medium
+      score = score + 2
+  else  -- Hard
+      score = score + 1
+  end
+
+  if(score ~= 12 and score ~= 24 and score ~=36) then
+    sounds:play("Win")
+  end
   checkScore()
   eventRemover()
 end
 
 function eventRemover()
+  if(text1 ~= nil) then
+    for i,v in ipairs(choices) do
+      -- v.text:removeSelf()
+      display.remove(v.text)
+    end
+  end
   for i,v in ipairs(choices) do
     display.remove(v.image)
   end
+  -- text1:removeSelf()
+  -- text2:removeSelf()
+  -- text3:removeSelf()
+  -- text4:removeSelf()
   leaveCharacters()
 end
 
@@ -329,6 +369,15 @@ function callGreetings()
   dialogBox.x = character_one.x - 30
 end
 
+function callCharacters()
+  character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/deer2.png")
+  character_one.y = display.contentCenterY+15
+  character_one.x = 0
+  --character_one:scale(0.8,0.8)
+  character_one:scale(1.3,1)
+  transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
+end
+
 function leaveCharacters()
   -- character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/boy.png")
   display.remove( dialogBox )
@@ -339,14 +388,6 @@ function leaveCharacters()
       transition = easing.outQuad,
       onComplete = newFoods
     })
-end
-
-function callCharacters()
-  character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/boy.png")
-  character_one.y = display.contentCenterY
-  character_one.x = 0
-  character_one:scale(0.8,0.8)
-  transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
 end
 
 -- show()

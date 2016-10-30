@@ -2,9 +2,11 @@
 local composer = require( "composer" )
 local physics = require ( "physics")
 
+local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
 local images = require( "Source.images" )
 local musics = require( "Source.musics" )
+local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
@@ -48,7 +50,37 @@ local countryNames = {
 	"Philippines",
 	"Switzerland",
 	"Ukraine",
-	"Croatia" -- 30
+	"Croatia", -- 30
+	"Dominician",
+	"East Timor",
+	"El Salvador",
+	"France",
+	"Georgia",
+	"Guatemala",
+	"Haiti",
+	"Kazakhstan",
+	"Kenya",
+	"Laos", -- 40
+	"Liberia",
+	"Luxembourg",
+	"Macedonia",
+	"Maldives",
+	"Motenegro",
+	"Mozambique",
+	"Nauru",
+	"Nigeria",
+	"Norway",
+	"Palau", -- 50
+	"Portugal",
+	"Saudi Arabia",
+	"Serbia",
+	"Singapore",
+	"Slovakia",
+	"Slovenia",
+	"Sudan",
+	"Syria",
+	"Vatican City",
+	"Zimbabwe" -- 60
 };
 
 local countryFiles = {
@@ -81,7 +113,37 @@ local countryFiles = {
 	"Assets/Images/Flags/Philippines_Flag.png",
 	"Assets/Images/Flags/Switzerland_Flag.png",
 	"Assets/Images/Flags/Ukraine_Flag.png",
-	"Assets/Images/Flags/Croatia_Flag.png"
+	"Assets/Images/Flags/Croatia_Flag.png",
+	"Assets/Images/Flags/Dominican_Republic_Flag.png",
+	"Assets/Images/Flags/East_Timor_Flag.png",
+	"Assets/Images/Flags/El_Salvador_Flag.png",
+	"Assets/Images/Flags/France_Flag.png",
+	"Assets/Images/Flags/Georgia_Flag.png",
+	"Assets/Images/Flags/Guatemala_Flag.png",
+	"Assets/Images/Flags/Haiti_Flag.png",
+	"Assets/Images/Flags/Kazakhstan_Flag.png",
+	"Assets/Images/Flags/Kenya_Flag.png",
+	"Assets/Images/Flags/Laos_Flag.png",
+	"Assets/Images/Flags/Liberia_Flag.png",
+	"Assets/Images/Flags/Luxembourg_Flag.png",
+	"Assets/Images/Flags/Macedonia_Flag.png",
+	"Assets/Images/Flags/Maldives_Flag.png",
+	"Assets/Images/Flags/Montenegro_Flag.png",
+	"Assets/Images/Flags/Mozambique_Flag.png",
+	"Assets/Images/Flags/Nauru_Flag.png",
+	"Assets/Images/Flags/Nigeria_Flag.png",
+	"Assets/Images/Flags/Norway_Flag.png",
+	"Assets/Images/Flags/Palau_Flag.png",
+	"Assets/Images/Flags/Portugal_Flag.png",
+	"Assets/Images/Flags/Saudi_Arabia_Flag.png",
+	"Assets/Images/Flags/Serbia_Flag.png",
+	"Assets/Images/Flags/Singapore_Flag.png",
+	"Assets/Images/Flags/Slovakia_Flag.png",
+	"Assets/Images/Flags/Slovenia_Flag.png",
+	"Assets/Images/Flags/Sudan_Flag.png",
+	"Assets/Images/Flags/Syria_Flag.png",
+	"Assets/Images/Flags/Vatican_City_Flag.png",
+	"Assets/Images/Flags/Zimbabwe_Flag.png"
 };
 
 local sceneBuild ={
@@ -106,6 +168,8 @@ local sceneBuild ={
 	"Scene/19.png",
 	"Scene/20.png",
 	"Scene/21.png",
+	"Scene/22.png", -- 22
+	"Scene/10-pressed.png", -- 23
 };
 
 local monumentAssets = {
@@ -130,13 +194,15 @@ images:defineImage( "Background", sceneBuild[19], currentWidth, currentHeight - 
 images:defineImage( "Bottom Border", sceneBuild[21], currentWidth, 300 )
 images:defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
 images:defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
-images:defineImage( "Pause Button", sceneBuild[10], currentWidth/20, currentHeight/14 )
-images:defineImage( "Replay Button", sceneBuild[11], currentWidth/20, currentHeight/14 )
+images:defineImage( "Pause Button", "Scene/10.png", currentWidth/20, currentHeight/14 )
+images:defineImage( "Pause Button Pressed", "Scene/10-pressed.png", currentWidth/20, currentHeight/14 )
+images:defineImage( "Info Button", "Scene/11.png", currentWidth/20, currentHeight/14 )
+images:defineImage( "Info Button Pressed", "Scene/11-pressed.png", currentWidth/20, currentHeight/14 )
 images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
-images:defineImage( "Option Box", sceneBuild[14], currentWidth/5, currentHeight/14 )
 images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
 images:defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
-images:defineImage( "Trophy", sceneBuild[5], 46*1.5, 47*1.5 )
+images:defineImage( "Cont Button", "Scene/22.png", currentWidth/5, currentHeight/8)
+images:defineImage( "Cont Button Pressed", "Scene/22-pressed.png", currentWidth/5, currentHeight/8)
 images:defineSheet( "Cat", "Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
@@ -145,11 +211,11 @@ images:defineSheet( "Cat", "Sprite/2.png", {
 	sheetContentHeight = 1668
 })
 images:defineSheet( "Dog", "Sprite/3.png", {
-	width = 547,
-	height = 481,
-	numFrames = 18,
-	sheetContentWidth = 9846,
-	sheetContentHeight = 481
+	width = 557,
+	height = 491,
+	numFrames = 30,
+	sheetContentWidth = 2785,
+	sheetContentHeight = 2946
 })
 images:defineSheet( "Tree", "Sprite/4.png", {
 	width = 1463,
@@ -165,8 +231,15 @@ images:defineSheet( "Monu", "Sprite/5.png", {
 	sheetContentWidth = 4892,
 	sheetContentHeight = 242
 })
+images:defineSheet( "Star", "Sprite/6.png", {
+	width = 252,
+	height = 210,
+	numFrames = 9,
+	sheetContentWidth = 756,
+	sheetContentHeight = 639
+})
 
-sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.wav", 0.5 )
+sounds:defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.mp3", 0.5 )
 sounds:defineSound( "Celebrate FX", "Assets/Sounds/FlagGame/CROWD.wav", 0.5 )
 sounds:defineSound( "Ding FX", "Assets/Sounds/FlagGame/DING_FX.mp3", 0.5 )
 sounds:defineSound( "Lose FX", "Assets/Sounds/FlagGame/WRONG_FX.mp3", 0.5 )
@@ -191,13 +264,27 @@ end
 
 local font = fonts.neucha()
 
+local function makeBox( sceneGroup, x, y, text )
+	local totalWidth = currentWidth/5
+	local borderWidth = 2
+	local fillWidth = totalWidth - 2*borderWidth
+	return Button:newTextButton{
+		group=sceneGroup,
+		font=font, fontSize=36, fontColor={ 0.0 },
+		text=text,
+		x=x, y=y, width=fillWidth, height=currentHeight/14-10,
+		fillColor={ 0.77, 0.61, 0.44 }, fillColorPressed={ 0.77*0.8, 0.61*0.8, 0.44*0.8 },
+		borderWidth=borderWidth, borderColor={ 0, 0, 0 }
+	}
+end
+
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 
 function scene:preload()
-	return coroutine.create(function()
+	return Preloader:new(coroutine.create(function()
 		images:loadSheet( "Cat" ); coroutine.yield()
 		images:loadSheet( "Dog" ); coroutine.yield()
 		images:loadSheet( "Tree" ); coroutine.yield()
@@ -208,13 +295,22 @@ function scene:preload()
 		images:preload( "Platform 1" ); coroutine.yield()
 		images:preload( "Column" ); coroutine.yield()
 		images:preload( "Pause Button" ); coroutine.yield()
-		images:preload( "Replay Button" ); coroutine.yield()
+		images:preload( "Pause Button" ); coroutine.yield()
+		images:preload( "Info Button" ); coroutine.yield()
 		images:preload( "Pole" ); coroutine.yield()
-		images:preload( "Option Box", 2 ); coroutine.yield()
 		images:preload( "Right Side" ); coroutine.yield()
 		images:preload( "Road" ); coroutine.yield()
-		images:preload( "Trophy" ); coroutine.yield()
-	end)
+		musics:preloadMusic( "Flag Theme" ); coroutine.yield()
+		musics:preloadMusic( "Birds" ); coroutine.yield()
+		sounds:preloadSound( "Port In" ); coroutine.yield()
+		sounds:preloadSound( "Port Out" ); coroutine.yield()
+		sounds:preloadSound( "Ding FX" ); coroutine.yield()
+		sounds:preloadSound( "Lose FX" ); coroutine.yield()
+		sounds:preloadSound( "Cat FX" ); coroutine.yield()
+		sounds:preloadSound( "Win FX" ); coroutine.yield()
+		sounds:preloadSound( "Celebrate FX" ); coroutine.yield()
+		sounds:preloadSound( "Flag Flapping" ); coroutine.yield()
+	end))
 end
 
 -- create()
@@ -227,27 +323,29 @@ function scene:create( event )
 	local level
 	local randomNum
 	local distance
+	-- flag speed for level 1
+	local speed1
+	local speed2 = 1000
+	-- end level declarations
 
 	local difficulty = composer.getVariable( "difficulty" )
 
 	if difficulty == 1 then
 		level = 6		-- 6 rounds
-		randomNum = 12  -- use the first 12 flags
+		randomNum = 15  -- use the first 15 flags
 		distance = 9
+		speed1 = 7000
 	elseif difficulty == 2 then
 		level = 12		-- 12 rounds
-		randomNum = 24	-- use the first 24 flags
+		randomNum = 30	-- use the first 30 flags
 		distance = 18
+		speed1 = 6000
 	else
 		level = 15		-- 15 rounds
-		randomNum = 30	-- use the first 30 flags
+		randomNum = 60	-- use the first 60 flags
 		distance = 22
+		speed1 = 5000
 	end
-
-	-- flag speed for level 1
-	local speed1 = 7000
-	local speed2 = 1000
-	-- end level declarations
 
 	local flag
 	local flagFlipping = false
@@ -282,18 +380,22 @@ function scene:create( event )
 	local sequenceDataDog = {
 		{
 			name = "run",
-			start = 1,
-			count = 8,
+			frames = {15,10,5,24,23,26,25,20},
 			time = 500,
 			loopCount = 2
 		},
 		{
 			name = "idle",
-			start = 9,
-			count = 18,
+			frames = {1,2,3,4,6,7,8,9,11,12},
 			time = 2000,
 			loopCount = 0
 		},
+		{
+			name = "happy",
+			frames = {13,14,16,17,18,19,21,22},
+			time = 1000,
+			loop = 0
+		}
 	};
 	local mySheetDog = images:getSheet( "Dog" )
 	-- end animal sprite --
@@ -339,6 +441,23 @@ function scene:create( event )
 	};
 	local mySheetMonu = images:getSheet( "Monu" )
 	--end monument placeholders animation --
+	-- star animations --
+	local sequenceDataStar = {
+		{
+			name = "normal",
+			frames = {2,2,2,5,5,5,8,8,8,9,9,9,6,6,6,3,3,3},
+			time = 1000,
+			loopCount = 0
+		},
+		{
+			name = "end",
+			frames = {2,5,8,9,6,3,7},
+			time = 2000,
+			loopCount = 1
+		}
+	};
+	local mySheetStar = images:getSheet( "Star" )
+	-- end star animations --
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
 	-- top border
@@ -379,14 +498,30 @@ function scene:create( event )
 	collumn.y = display.contentCenterY+8
 
 	-- pause button placeholder
-	local pauseButton = images:get( sceneGroup, "Pause Button" )
-	pauseButton.x = currentWidth / 20 --50
-	pauseButton.y = currentHeight / 5 --150
+	local pauseButton = Button:newImageButton{
+		group = sceneGroup,
+		image = images:get( sceneGroup, "Pause Button" ),
+		imagePressed = images:get( sceneGroup, "Pause Button Pressed" ),
+		x = currentWidth / 20,
+		y = currentHeight / 5,
+		width = images:width( "Pause Button" ),
+		height = images:height( "Pause Button" ),
+		alpha = 0.9,
+		allowance = 8  -- Normally 30, but they are 16 pixels apart
+	}
 
-	-- replay button placeholder
-	local replayButton = images:get( sceneGroup, "Replay Button" )
-	replayButton.x = pauseButton.x
-	replayButton.y = pauseButton.y + currentWidth / 16
+	-- info button placeholder
+	local infoButton = Button:newImageButton{
+		group = sceneGroup,
+		image = images:get( sceneGroup, "Info Button" ),
+		imagePressed = images:get( sceneGroup, "Info Button Pressed" ),
+		x = pauseButton.x,
+		y = pauseButton.y + currentWidth/16,
+		width = images:width( "Pause Button" ),
+		height = images:height( "Pause Button" ),
+		alpha = 0.9,
+		allowance = 8  -- Normally 30, but they are 16 pixels apart
+	}
 
 	-- pause/play event
 	-- temp2 store the values to decide play/pause
@@ -406,13 +541,8 @@ function scene:create( event )
 		transition.cancel()
 		returnToMenu()
 	end
-	pauseButton:addEventListener("tap", function()
-		pauseTap()
-	end)
-	replayButton:addEventListener("tap",function()
-		replayTap()
-	end
-	)
+	pauseButton:addEventListener("tap", pauseTap)
+	infoButton:addEventListener("tap", replayTap)
 	-- End event Pause/Replay --
 
 	-- flag pole placeholder
@@ -452,14 +582,6 @@ function scene:create( event )
 	animal1:addEventListener("tap",pushCat1)
 	animal2:addEventListener("tap",pushCat2)
 	-- end physics test
-
-	-- place holders for answer text
-	local optionBox1 = images:get( sceneGroup, "Option Box" )
-	optionBox1.x = animal1.x
-	optionBox1.y = animal1.y - currentHeight/5
-	local optionBox2 = images:get( sceneGroup, "Option Box" )
-	optionBox2.x = animal2.x
-	optionBox2.y = animal2.y - currentHeight/5
 	-------------------------------------------------------------------------------------------------------
 	-- end front-end --
 	-------------------------------------------------------------------------------------------------------
@@ -495,10 +617,13 @@ function scene:create( event )
 	animal3:setSequence("idle")
 	animal3:play()
 
-	-- place holder for trophy
-	local trophy = images:get( sceneGroup, "Trophy" )
-	trophy.x = road.x
-	trophy.y = 140
+	-- place holder for star
+	local star = display.newSprite(sceneGroup,mySheetStar,sequenceDataStar)
+	star.x = road.x
+	star.y = 140
+	star:scale(0.35,0.35)
+	star:setSequence("normal")
+	star:play()
 	-- end right side of screen --
 	-------------------------------------------------------------------------------------------------------
 
@@ -508,7 +633,6 @@ function scene:create( event )
 	local usedMonument = {}
 	local textBox1 -- text box for option 1
 	local textBox2 -- text box for option 2
-	local textBox3 -- text box for answer
 
 	-- function to decrease the Count
 	local function minusCount()
@@ -633,13 +757,13 @@ function scene:create( event )
 		local randomBox = math.random(1,2) --countryNames[randomBox]
 		local rightAnswer = countryNames[randomFlag]
 		-- don't have to change the constant here, it's just wrong answer
-		local wrongAnswer = countryNames[math.random(1,30)]
+		local wrongAnswer = countryNames[math.random(1,randomNum)]
 		local box1
 		local box2
 		-- loop to get wrong answer
 		-- don't have to change the constant here, it's just wrong answer
 		while wrongAnswer == countryNames[randomFlag] do
-			wrongAnswer = countryNames[math.random(1,30)]
+			wrongAnswer = countryNames[math.random(1,randomNum)]
 		end
 		-- random placer
 		if randomBox == 1 then
@@ -650,24 +774,16 @@ function scene:create( event )
 			box2 = rightAnswer
 		end
 		-- text box to hold the answer texts
-		textBox1 = display.newText( sceneGroup,
-										  box1,
-										  optionBox1.x,
-										  optionBox1.y,
-										  font, 36
-										)
+		if textBox1 == nil then
+			textBox1 = makeBox( sceneGroup, animal1.x, animal1.y - currentHeight/5, box1 )
+		end
+		if textBox2 == nil then
+			textBox2 = makeBox( sceneGroup, animal2.x, animal2.y - currentHeight/5, box2 )
+		end
+		textBox1:setText( box1 )
+		textBox2:setText( box2 )
 
-		textBox2 = display.newText( sceneGroup,
-										  box2,
-										  optionBox2.x,
-										  optionBox2.y,
-										  font, 36
-										)
-
-		-- color for the text
-		textBox1:setFillColor( 0, 0, 0 )
-		textBox2:setFillColor( 0, 0, 0 )
-		-- fucntion for placing monument
+		-- function for placing monument
 		function monuments_placer(num,score)
 			math.randomseed(os.time())
 			local randMonument = math.random(1,14)
@@ -701,12 +817,12 @@ function scene:create( event )
 					mon_placeholders[6-score]:play()
 					sounds:play( "Port In" )
 					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score],randMonument) return true end, 1)
-				elseif difficulty == 2 and score % 2 == 0 and score ~= 12 then
+				elseif difficulty == 2 and score % 2 == 0 and score ~= 12 and usedMonument[score/2] == nil then
 					mon_placeholders[6-score/2]:setSequence("port_in")
 					mon_placeholders[6-score/2]:play()
 					sounds:play( "Port In" )
 					timer.performWithDelay(600,function()place_img(mon_placeholders[6-score/2],randMonument) return true end, 1)
-				elseif difficulty == 3 and score % 3 == 0 and score ~= 15 then
+				elseif difficulty == 3 and score % 3 == 0 then
 					mon_placeholders[6-score/3]:setSequence("port_in")
 					mon_placeholders[6-score/3]:play()
 					sounds:play( "Port In" )
@@ -735,21 +851,22 @@ function scene:create( event )
 		-- end function for placing monument
 
 		-- Event for textboxes --
+		local function disableButtons()
+			textBox1.enabled = false
+			textBox2.enabled = false
+		end
 		local function textTap( obj, value )
-			obj:removeSelf()
-			textBox3 = display.newText( sceneGroup,
-								   value,
-							  	   obj.x,
-								   obj.y,
-								   font, 44
-								 )
 			if obj == textBox1 then
-				textBox2:removeSelf()
+				textBox1:setText( value )
+				textBox2:setText( "" )
 			else
-				textBox1:removeSelf()
+				textBox1:setText( "" )
+				textBox2:setText( value )
 			end
 		end
 		-- Event listener for text box 1
+		textBox1:clearEventListeners()
+		textBox1:addEventListener("pretap", disableButtons)
 		textBox1:addEventListener("tap", function()
 			if randomBox == 1 then
 				textTap(textBox1,"Correct!")
@@ -771,11 +888,10 @@ function scene:create( event )
 				animal1:play()
 				moveUpDown(animal3,count)
 			end
-			-- prepare for memory dump
-			textBox1 = nil
-			textBox2 = nil
 		end)
 		-- Event listener for text box 2
+		textBox2:clearEventListeners()
+		textBox2:addEventListener("pretap", disableButtons)
 		textBox2:addEventListener("tap", function()
 			if randomBox ~= 1 then
 				textTap(textBox2,"Correct!")
@@ -797,49 +913,83 @@ function scene:create( event )
 				animal2:play()
 				moveUpDown(animal3,count)
 			end
-			-- prepare for memory dump
-			textBox1 = nil
-			textBox2 = nil
 		end)
 		flag:addEventListener("tap", function()
 			runFlipAnimation(flag)
+			return true
 		end)
 		-- prepare for memory dump
-		textBox3 = nil
 		animationStart(flag)
 	end
 	-------------------------------------------------------------------------------------------------------
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
 	-- function to start the game
+	local function contButtonTap()
+		-- this will stop the animations
+		transition.cancel()
+		returnToMenu()
+	end
+	local function endgame2()
+		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-150,font,44)
+		text:setFillColor(0,0,0)
+		local contButton = Button:newImageButton{
+			group = sceneGroup,
+			image = images:get( sceneGroup, "Cont Button" ),
+			imagePressed = images:get( sceneGroup, "Cont Button Pressed" ),
+			x = star.x + 25,
+			y = star.y + 150,
+			width = images:width( "Cont Button" ),
+			height = images:height( "Cont Button" ),
+			alpha = 0.9
+		}
+		contButton:addEventListener("tap", contButtonTap)
+	end
+
+	local function endgame()
+		star:setSequence("end")
+		star:play()
+		transition.fadeOut(pole,{time = 2000})
+		transition.to(star,{
+			time = 2000,
+			y = pole.y-40,
+			x = pole.x-17,
+			xScale = 0.9,
+			yScale = 1,
+			onComplete = endgame2
+			})
+	end
 	function startGame()
 	    -- memories dump
 		animal1:setSequence("idle")
 		animal2:setSequence("idle")
+		animal3:setSequence("idle")
 		animal1:play()
 		animal2:play()
-		animal3:setSequence("idle")
 		animal3:play()
 		if textBox1 ~= nil then
-			textBox1:removeSelf()
+			textBox1.enabled = true
 		end
 		if textBox2 ~= nil then
-			textBox2:removeSelf()
-		end
-		if textBox3 ~= nil then
-			textBox3:removeSelf()
+			textBox2.enabled = true
 		end
 		-- check to start new round
 		if count ~= level then
 			startRound()
 		else
+			textBox1:removeSelf()
+			textBox2:removeSelf()
+			textBox1 = nil
+			textBox2 = nil
 			animal1:setSequence("happy")
 			animal2:setSequence("happy")
+			animal3:setSequence("happy")
 			animal1:play()
 			animal2:play()
+			animal3:play()
 			sounds:play( "Win FX" )
 			sounds:play( "Celebrate FX" )
-			display.newText(sceneGroup,"YOU WON !", display.contentCenterX,display.contentCenterY-50,font,44)
+			endgame()
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
 	end

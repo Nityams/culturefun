@@ -1,8 +1,12 @@
+local util = require( "Source.util" )
+
 local EventListener = {}
 
 function EventListener:new()
 	-- el inherits from EventListener
-	local el = {}
+	local el = {
+		listeners = {}
+	}
 	setmetatable( el, self )
 	self.__index = self
 
@@ -10,22 +14,23 @@ function EventListener:new()
 end
 
 function EventListener:addEventListener( eventName, handlerFn )
-	if self[eventName] == nil then
-		self[eventName] = {}
+	if self.listeners[eventName] == nil then
+		self.listeners[eventName] = {}
 	end
-	table.insert( self[eventName], handlerFn )
+	util.push( self.listeners[eventName], handlerFn )
 end
 
 function EventListener:dispatchEvent( eventName, eventDetails )
-	if self[eventName] ~= nil then
-		for _,handlerFn in ipairs( self[eventName] ) do
-			handlerFn( eventDetails )
+	local listeners = self.listeners[eventName]
+	if listeners ~= nil then
+		for i = 1,#listeners do
+			listeners[i]( eventDetails )
 		end
 	end
 end
 
 function EventListener:clear()
-	self = {}
+	self.listeners = {}
 end
 
 return EventListener

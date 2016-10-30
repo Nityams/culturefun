@@ -2,6 +2,8 @@ local composer = require( "composer" )
 
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
+local images = require( "Source.images" )
+local Preloader = require( "Source.preloader" )
 local util = require( "Source.util" )
 
 local scene = composer.newScene()
@@ -15,10 +17,22 @@ local titleOffsetY = (util.aspectRatio() > 4/3 and 250 or 175)
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
+images:defineImage(
+	"World Map Blurred",
+	"Menu/MenuBackgroundV1Edit_Blurred.png",
+	display.contentWidth, display.contentHeight*1.3
+)
+
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
+
+function scene:preload()
+	return Preloader:new(coroutine.create(function()
+		images:preload( "World Map Blurred" ); coroutine.yield()
+	end))
+end
 
 -- create()
 function scene:create( event )
@@ -26,12 +40,17 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	local background = display.newRect(
+	local bgWhiteFill = display.newRect(
 		sceneGroup,
 		display.contentCenterX, display.contentCenterY,
 		display.contentWidth, display.contentHeight
 	)
-	background:setFillColor( 1, 1, 1 )
+	bgWhiteFill:setFillColor( 1, 1, 1 )
+
+	local bgWorldMap = images:get( sceneGroup, "World Map Blurred" )
+	bgWorldMap.x = display.contentCenterX
+	bgWorldMap.y = display.contentCenterY
+	bgWorldMap.alpha = 0.5
 
 	local chooseText = display.newText(
 		sceneGroup,
@@ -41,8 +60,8 @@ function scene:create( event )
 	)
 	chooseText:setFillColor( 0.4, 0.4, 0.4 )
 
-	self.easyButton = Button:new{
-		parentGroup=sceneGroup,
+	self.easyButton = Button:newTextButton{
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Easy",
 		x=display.contentCenterX - 250, y=display.contentCenterY + 115,
@@ -51,8 +70,8 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	self.mediumButton = Button:new{
-		parentGroup=sceneGroup,
+	self.mediumButton = Button:newTextButton{
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Medium",
 		x=display.contentCenterX, y=display.contentCenterY + 115,
@@ -61,8 +80,8 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	self.hardButton = Button:new{
-		parentGroup=sceneGroup,
+	self.hardButton = Button:newTextButton{
+		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
 		text="Hard",
 		x=display.contentCenterX + 250, y=display.contentCenterY + 115,
@@ -71,24 +90,17 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
-	self.easyButton:addEventListener( "press", function()
+	local function disableButtons()
 		self.easyButton.enabled = false
 		self.mediumButton.enabled = false
 		self.hardButton.enabled = false
-		self:gotoGame( 1 )
-	end)
-	self.mediumButton:addEventListener( "press", function()
-		self.easyButton.enabled = false
-		self.mediumButton.enabled = false
-		self.hardButton.enabled = false
-		self:gotoGame( 2 )
-	end)
-	self.hardButton:addEventListener( "press", function()
-		self.easyButton.enabled = false
-		self.mediumButton.enabled = false
-		self.hardButton.enabled = false
-		self:gotoGame( 3 )
-	end)
+	end
+	self.easyButton:addEventListener( "pretap", disableButtons )
+	self.mediumButton:addEventListener( "pretap", disableButtons )
+	self.hardButton:addEventListener( "pretap", disableButtons )
+	self.easyButton:addEventListener( "tap", function() self:gotoGame( 1 ) end)
+	self.mediumButton:addEventListener( "tap", function() self:gotoGame( 2 ) end)
+	self.hardButton:addEventListener( "tap", function() self:gotoGame( 3 ) end)
 end
 
 
@@ -120,18 +132,9 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		if minigame.preloader then
-			self.preloadCoroutine = minigame.preloader()
-			timer.performWithDelay( 75, function() self:preload() end )
+		if minigame.preloadFn then
+			self.preloader = minigame.preloadFn()
 		end
-	end
-end
-
-
-function scene:preload()
-	if self.preloadCoroutine and coroutine.status( self.preloadCoroutine ) == "suspended" then
-		coroutine.resume( self.preloadCoroutine )
-		timer.performWithDelay( 50, function() self:preload() end )
 	end
 end
 
@@ -144,8 +147,6 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-
-		self.preloadCoroutine = nil
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
@@ -164,6 +165,10 @@ function scene:destroy( event )
 end
 
 function scene:gotoGame( difficulty )
+	if self.preloader then
+		self.preloader:stop()
+	end
+
 	-- Menu music that started in menu.lua... it's time to stop
 	audio.fadeOut( 500, { channel=self.menuMusicChannel } )
 	audio.stopWithDelay( 500, { channel=self.menuMusicChannel } )

@@ -7,6 +7,12 @@ function musics:defineMusic( name, path, volume, fadeIn )
     self.configs[name] = { path=path, volume=volume, fadeIn=fadeIn }
 end
 
+function musics:preloadMusic( name )
+    local path = self.configs[name].path
+    print( "Preloading Music for " .. name .. " (" .. path .. ")" )
+    self:getMusic( path )
+end
+
 function musics:play( name )
     local config = self.configs[name]
 
@@ -14,11 +20,7 @@ function musics:play( name )
     local volume = config.volume
     local fadeIn = config.fadeIn
 
-    if self.streams[path] == nil then
-        self.streams[path] = audio.loadStream( path )
-    end
-
-    local stream = self.streams[path]
+    local stream = self:getMusic( path )
 
     audio.rewind( stream )
 	local channel = audio.play( stream, { loops=-1 } )
@@ -31,6 +33,14 @@ function musics:play( name )
     end
 
     return channel
+end
+
+function musics:getMusic( path )
+    if self.streams[path] == nil then
+    	self.streams[path] = audio.loadStream( path )
+    end
+
+    return self.streams[path]
 end
 
 return musics
