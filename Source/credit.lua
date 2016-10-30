@@ -5,7 +5,6 @@ local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
 local images = require( "Source.images" )
 local musics = require( "Source.musics" )
-local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
@@ -36,12 +35,6 @@ end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
-
-function scene:preload()
-	return Preloader:new(coroutine.create(function()
-		images:preload( "Neighborhood" ); coroutine.yield()
-	end))
-end
 
 -- create()
 function scene:create( event )
