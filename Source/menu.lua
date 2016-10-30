@@ -346,13 +346,13 @@ function scene:gotoMinigame( name, file, menu )
 	self.preloader:stop()
 
 	local sourcePath = "Source." .. file
-	local nextScene = require( sourcePath )
+	local minigameScene = require( sourcePath )
 
 	local params = {
 		minigame = {
 			name = name,
 			sourcePath = sourcePath,
-			preloadFn = function() return nextScene:preload() end
+			preloadFn = function() return minigameScene:preload() end
 		},
 		menuMusicChannel = menuMusicChannel
 	}
