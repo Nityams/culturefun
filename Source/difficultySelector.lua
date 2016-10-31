@@ -30,7 +30,7 @@ images:defineImage(
 
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
-		images:preload( "World Map Blurred" ); coroutine.yield()
+		images:loadImage( "World Map Blurred" ); coroutine.yield()
 	end))
 end
 
