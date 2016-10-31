@@ -32,6 +32,7 @@ images:defineImage( "Pizza", "Menu/pizza.png", 90,90)
 
 sounds:defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
 sounds:defineSound( "SantaFX", "Assets/Sounds/Menu/SantaFX.mp3", 0.6)
+sounds:defineSound( "ufoFX", "Assets/Sounds/Menu/ufoFX.mp3", 0.8)
 
 musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
@@ -564,7 +565,8 @@ function scene:spawnPizza()
 		pizza.speed * math.sin( heading )
 	)
 	pizza:applyTorque(math.random(-4,4))
-
+	
+	timer.performWithDelay( 100, function() sounds:play( "ufoFX" ) end )
 	table.insert( self.eventsArray, pizza )
 end
 
