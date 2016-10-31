@@ -240,7 +240,7 @@ function scene:destroy( event )
 end
 
 
-function scene:gotoMinigame( name, file, menu )
+function scene:gotoMinigame( name, file )
 	self.preloader:stop()
 
 	local sourcePath = "Source." .. file
