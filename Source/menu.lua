@@ -375,7 +375,7 @@ end
 function scene:maybeSpawnFunnies()
 	if self.counter < 8 then
 		self.counter = self.counter + 1
-		spawnFunnies()
+		self:spawnFunnies()
 	else
 		self.counter = 0
 	end
