@@ -28,7 +28,7 @@ function images:preload( name, count )
 
     local path = self.params[name].path
 
-    print( "Preloading ImageRect for " .. name .. " (" .. path .. ")" )
+    --print( "Preloading ImageRect for " .. name .. " (" .. path .. ")" )
 
     if self.preloadedImages[name] == nil then
         self.preloadedImages[name] = {}
@@ -52,7 +52,7 @@ function images:loadSheet( name )
         return
     end
 
-    print( "Preloading ImageSheet for " .. name .. " (" .. path .. ")" )
+    --print( "Preloading ImageSheet for " .. name .. " (" .. path .. ")" )
 
     self.imageSheets[name] = graphics.newImageSheet( path, options )
 end
@@ -77,12 +77,12 @@ function images:get( group, name )
 
     -- Do we have one already?
     if self:hasReady(name) then
-        print( "Using preloaded ImageRect for " .. name )
+        --print( "Using preloaded ImageRect for " .. name )
         imageRect = util.pop( self.preloadedImages[name] )
         imageRect.isVisible = true
         group:insert( imageRect )
     else
-        print( "Making new ImageRect for " .. name )
+        --print( "Making new ImageRect for " .. name )
         imageRect = self:make( group, name )
     end
 
@@ -94,9 +94,9 @@ function images:getSheet( name )
 
     -- Do we have it already?
     if self.imageSheets[name] then
-        print( "Using preloaded ImageSheet for " .. name )
+        --print( "Using preloaded ImageSheet for " .. name )
     else
-        print( "Making new ImageSheet for " .. name )
+        --print( "Making new ImageSheet for " .. name )
         self:loadSheet( name )
     end
 
