@@ -135,10 +135,6 @@ end
 function checkScore()
   --local scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png", currentWidth/20,currentHeight/20)
 
-  -- Shouldn't need these because dimensions are hard set at end
-  -- local width = currentWidth/2
-  -- local height = currentHeight/2
-
   if scoreCounter ~= nil then
       scoreCounter:removeSelf()
   end
@@ -283,14 +279,6 @@ function setFoods()
     v.text = display.newText(sceneGroup, v.name, v.image.x, v.image.y + 96, "Helvetica", 31)
     v.text:setFillColor(7, 58, 35)
   end
-  -- text1 = display.newText(sceneGroup,choices[1].name, choices[1].image.x, choices[1].image.y + 96 , "Helvetica", 31 )
-  -- text2 = display.newText(sceneGroup,choices[2].name,  choices[2].image.x, choices[2].image.y + 96 , "Helvetica", 31 )
-  -- text3 = display.newText(sceneGroup,choices[3].name, choices[3].image.x, choices[3].image.y + 96 , "Helvetica", 31 )
-  -- text4 = display.newText(sceneGroup, choices[4].name, choices[4].image.x, choices[4].image.y + 96 , "Helvetica", 31 )
-  -- text1:setFillColor(7,58,35)
-  -- text2:setFillColor(7,58,35)
-  -- text3:setFillColor(7,58,35)
-  -- text4:setFillColor(7,58,35)
 
   -- Staggered animation for food choice grid
 
@@ -342,19 +330,13 @@ function correctAnswer()
 end
 
 function eventRemover()
-  if(text1 ~= nil) then
-    for i,v in ipairs(choices) do
-      -- v.text:removeSelf()
-      display.remove(v.text)
-    end
-  end
   for i,v in ipairs(choices) do
     display.remove(v.image)
   end
-  -- text1:removeSelf()
-  -- text2:removeSelf()
-  -- text3:removeSelf()
-  -- text4:removeSelf()
+  for i,v in ipairs(choices) do
+    -- v.text:removeSelf()
+    display.remove(v.text)
+  end
   leaveCharacters()
 end
 
