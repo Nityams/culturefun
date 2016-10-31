@@ -1009,6 +1009,8 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
+		physics.setGravity( 0, 9.8 )
+
 		startGame()
 		timer.performWithDelay( 25, startMusic )
 	end
