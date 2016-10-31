@@ -152,8 +152,13 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		if minigame.preloadFn then
-			self:startPreloading( minigame.preloadFn )
+		local alreadyPreloaded = composer.getVariable( "Have preloaded " .. minigame.name )
+
+		if minigame.preloadFn and not alreadyPreloaded then
+			composer.setVariable( "Have preloaded " .. minigame.name, true )
+			timer.performWithDelay( 75, function()
+				self:startPreloading( minigame.preloadFn )
+			end)
 		end
 	end
 end

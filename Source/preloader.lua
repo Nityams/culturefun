@@ -21,7 +21,7 @@ function Preloader:new( preloadCoroutine, total )
 end
 
 function Preloader:start()
-	timer.performWithDelay( 75, function() self:run() end )
+	timer.performWithDelay( 0, function() self:run() end )
 end
 
 function Preloader:stop()
@@ -30,9 +30,15 @@ end
 
 function Preloader:run()
 	if self.preloadCoroutine and coroutine.status( self.preloadCoroutine ) == "suspended" then
-		coroutine.resume( self.preloadCoroutine )
+		local before = system.getTimer()
+		local after = before
 
-		self.completed = self.completed + 1
+		while after < before + 10 do
+			self.completed = self.completed + 1
+			coroutine.resume( self.preloadCoroutine )
+			after = system.getTimer()
+		end
+
 		if self.total then
 			self.eventListener:dispatchEvent( "progress", self.completed / self.total )
 		end
