@@ -150,17 +150,20 @@ function scene:show( event )
 		self.mediumButton.enabled = true
 		self.hardButton.enabled = true
 
-	elseif ( phase == "did" ) then
-		-- Code here runs when the scene is entirely on screen
-
 		local alreadyPreloaded = composer.getVariable( "Have preloaded " .. minigame.name )
 
 		if minigame.preloadFn and not alreadyPreloaded then
 			composer.setVariable( "Have preloaded " .. minigame.name, true )
-			timer.performWithDelay( 75, function()
-				self:startPreloading( minigame.preloadFn )
-			end)
+			self:startPreloading( minigame.preloadFn )
 		end
+
+	elseif ( phase == "did" ) then
+		-- Code here runs when the scene is entirely on screen
+
+		if self.preloader then
+			timer.performWithDelay( 1000/16, function() self.preloader:start() end )
+		end
+
 	end
 end
 
@@ -229,8 +232,6 @@ function scene:startPreloading( preloadFn )
 			end
 		end)
 	end
-
-	timer.performWithDelay( 1000/16, function() self.preloader:start() end )
 end
 
 -- -----------------------------------------------------------------------------------
