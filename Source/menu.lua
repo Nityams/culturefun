@@ -42,7 +42,7 @@ local planeImages = {
 	"Plane 5"
 }
 
-local desiredPlanesOnscreen = 25
+local desiredPlanesOnscreen = 5
 
 
 -- -----------------------------------------------------------------------------------
@@ -325,11 +325,6 @@ function scene:removeOldDoodads()
 	local left = -25
 	local bottom = display.contentHeight + 25
 
-	print( "left", left )
-	print( "right", right )
-	print( "top", top )
-	print( "bottom", bottom )
-
 	for i = #self.planesArray, 1, -1 do
 		local thisPlane = self.planesArray[i]
 
@@ -353,18 +348,46 @@ end
 function scene:createPlanes()
 	local toCreate = desiredPlanesOnscreen - #self.planesArray
 	for i = 1,toCreate do
-		timer.performWithDelay( 100 * i, function() self:createPlane() end )
+		timer.performWithDelay( 50 * i, function()
+			if #self.planesArray < desiredPlanesOnscreen then
+				self:createPlane()
+			end
+		end)
 	end
 end
 
--- (A .. B)^2 < b^2 * a^2
--- (ax * bx + ay * by)^2 < b^2 * a^2
--- (ax * bx)^2 + 2*ax*bx*ay*by + (ay * by)^2 < b^2 * a^2
--- ax^2 + 2*ax*bx + bx^2 + 2*ax*bx*ay*by + ay^2 + 2*ay*by + by^2 < b^2 * a^2
--- ax^2 + 2*ax*bx + bx^2 + 2*ax*bx*ay*by + ay^2 + 2*ay*by + by^2 < (bx^2 + by^2)^2 * (ax^2 + ay^2)^2
--- ax^2 + 2*ax*bx + bx^2 + 2*ax*bx*ay*by + ay^2 + 2*ay*by + by^2 < bx^4 + 2*bx^2*by^2 + by^4 * ax^4 + 2*ax^2*ay^2 + ay^4
-
 function scene:createPlane()
+	if self.nextPlaneImage == nil then
+		self.nextPlaneImage = 1
+	end
+
+	local imageName = planeImages[self.nextPlaneImage]
+
+	local speed = math.random( 50, 80 )
+	local plane = self:createFlyingObject( imageName, speed, true, false )
+
+	if plane then
+		self.nextPlaneImage = (self.nextPlaneImage % #planeImages) + 1
+
+		plane.alpha = 0
+		transition.to( plane, {time=500, alpha=0.6} )
+
+		local pathVector = plane.finish - plane.start
+		local heading = math.atan2( pathVector.y, pathVector.x )
+
+		plane.rotation = 180 * heading / math.pi + 90
+
+		physics.addBody( plane, "dynamic", { radius = 30, bounce = 0.5 } )
+		plane:setLinearVelocity(
+			plane.speed * math.cos( heading ),
+			plane.speed * math.sin( heading )
+		)
+
+		table.insert( self.planesArray, plane )
+	end
+end
+
+function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision )
 	local attempts = 1
 
 	local top = 0
@@ -372,54 +395,40 @@ function scene:createPlane()
 	local left = 0
 	local bottom = display.contentHeight
 
-	if self.nextPlaneImage == nil then
-		self.nextPlaneImage = 1
-	end
-
-	local imageName = planeImages[self.nextPlaneImage]
-
 	local plane = images:get( self.doodadsGroup, imageName )
-	plane.alpha = 0
-	transition.to( plane, {time=500, alpha=0.6} )
+	plane.speed = speed
 
-	plane.speed = math.random( 50, 80 )
-
-	plane.start = math2.randomPointWithin( left + 50, right - 50, top + 50, bottom - 50 )
+	if insideScreen then
+		plane.start = math2.randomPointWithin( left + 50, right - 50, top + 50, bottom - 50 )
+	else
+		plane.start = math2.randomPointWithin( left - 25, right + 25, top - 25, bottom + 25 )
+	end
 	plane.finish = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
 	plane.x = plane.start.x
 	plane.y = plane.start.y
 	local collision = self:planeWillIntersectWithAnother( plane )
 
-	while collision do
+	while wantCollision ~= collision do
 		attempts = attempts + 1
 		if attempts > 10 then
-			print( "Failed to create plane -- too many failed attempts" )
+			print( "Failed to create " .. imageName .. " -- too many failed attempts" )
 			plane:removeSelf()
-			return
+			return nil
 		end
 
 		-- Try another point.
-		plane.start = math2.randomPointWithin( left + 25, right - 25, top + 25, bottom - 25 )
+		if insideScreen then
+			plane.start = math2.randomPointWithin( left + 50, right - 50, top + 50, bottom - 50 )
+		else
+			plane.start = math2.randomPointWithin( left - 25, right + 25, top - 25, bottom + 25 )
+		end
 		plane.finish = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
 		plane.x = plane.start.x
 		plane.y = plane.start.y
 		collision = self:planeWillIntersectWithAnother( plane )
 	end
 
-	local pathVector = plane.finish - plane.start
-	local heading = math.atan2( pathVector.y, pathVector.x )
-
-	plane.rotation = 180 * heading / math.pi + 90
-
-	physics.addBody( plane, "dynamic", { radius = 30, bounce = 0.5 } )
-	plane:setLinearVelocity(
-		plane.speed * math.cos( heading ),
-		plane.speed * math.sin( heading )
-	)
-
-	table.insert( self.planesArray, plane )
-
-	self.nextPlaneImage = (self.nextPlaneImage % #planeImages) + 1
+	return plane
 end
 
 function scene:planeWillIntersectWithAnother( plane )
@@ -481,26 +490,41 @@ end
 
 function scene:spawnSanta()
 	-- trigger santa clause
-	local santa = images:get( self.doodadsGroup, "Santa")
-	santa:rotate(20)
-	santa.x = math.random(0,300)
-	santa.y = 0
+	local speed = math.random( 75, 150 )
+	local santa = self:createFlyingObject( "Santa", speed, false, true )
+	santa.rotation = 20
 	santa.alpha = 0.8
-	physics.addBody(santa, "kinematic", { radius = 30, bounce = 0.8})
-	santa:setLinearVelocity(math.random(50,100),math.random(50,100))
-	table.insert(self.eventsArray,santa)
+
+	local pathVector = santa.finish - santa.start
+	local heading = math.atan2( pathVector.y, pathVector.x )
+
+	physics.addBody( santa, "kinematic", { radius = 30, bounce = 0.8 } )
+	santa:setLinearVelocity(
+		santa.speed * math.cos( heading ),
+		santa.speed * math.sin( heading )
+	)
+
+	table.insert( self.eventsArray, santa )
 end
 
 function scene:spawnPizza()
 	-- trigger giant pizza
-	local pizza = images:get(self.doodadsGroup, "Pizza")
-	pizza.x = 0
-	pizza.y = math.random(0,300)
+	local speed = math.random( 150, 250 )
+	local pizza = self:createFlyingObject( "Pizza", speed, false, true )
+	pizza.rotation = 20
 	pizza.alpha = 0.8
-	physics.addBody(pizza, "dynamic", {radius = 30, bounce = 0.8})
-	pizza:setLinearVelocity(math.random(100,300),math.random(100, 150))
+
+	local pathVector = pizza.finish - pizza.start
+	local heading = math.atan2( pathVector.y, pathVector.x )
+
+	physics.addBody( pizza, "dynamic", { radius = 30, bounce = 0.8 } )
+	pizza:setLinearVelocity(
+		pizza.speed * math.cos( heading ),
+		pizza.speed * math.sin( heading )
+	)
 	pizza:applyTorque(math.random(-4,4))
-	table.insert(self.eventsArray,pizza)
+
+	table.insert( self.eventsArray, pizza )
 end
 
 function scene:removeMinigames()
