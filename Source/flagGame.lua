@@ -30,7 +30,8 @@ local countryNames = {
 	"Australia",
 	"Vietnam",
 	"Mexico",
-	"Russia", -- 10
+	"China", -- 10
+	"Russia", 
 	"South Africa",
 	"Germany",
 	"Italy",
@@ -39,8 +40,8 @@ local countryNames = {
 	"Brazil",
 	"Thailand",
 	"Taiwan",
-	"Egypt",
-	"Honduras", -- 20
+	"Egypt", -- 20
+	"Honduras", 
 	"Hungary",
 	"Madagascar",
 	"Mongolia",
@@ -49,8 +50,8 @@ local countryNames = {
 	"Peru",
 	"Philippines",
 	"Switzerland",
-	"Ukraine",
-	"Croatia", -- 30
+	"Ukraine", -- 30
+	"Croatia", 
 	"Dominician",
 	"East Timor",
 	"El Salvador",
@@ -59,8 +60,8 @@ local countryNames = {
 	"Guatemala",
 	"Haiti",
 	"Kazakhstan",
-	"Kenya",
-	"Laos", -- 40
+	"Kenya", -- 40
+	"Laos", 
 	"Liberia",
 	"Luxembourg",
 	"Macedonia",
@@ -69,8 +70,8 @@ local countryNames = {
 	"Mozambique",
 	"Nauru",
 	"Nigeria",
-	"Norway",
-	"Palau", -- 50
+	"Norway", -- 50
+	"Palau", 
 	"Portugal",
 	"Saudi Arabia",
 	"Serbia",
@@ -79,8 +80,8 @@ local countryNames = {
 	"Slovenia",
 	"Sudan",
 	"Syria",
-	"Vatican City",
-	"Zimbabwe" -- 60
+	"Vatican City", -- 60
+	"Zimbabwe" 
 };
 
 local countryFiles = {
@@ -93,6 +94,7 @@ local countryFiles = {
 	"Assets/Images/Flags/Australia_Flag.png",
 	"Assets/Images/Flags/Vietnam_Flag.png",
 	"Assets/Images/Flags/Mexico_Flag.png",
+	"Assets/Images/Flags/China_Flag.png",
 	"Assets/Images/Flags/Russia_Flag.png",
 	"Assets/Images/Flags/South_Africa_Flag.png",
 	"Assets/Images/Flags/Germany_Flag.png",
