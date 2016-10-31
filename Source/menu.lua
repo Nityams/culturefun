@@ -31,6 +31,7 @@ images:defineImage( "Santa" , "Menu/santa.png", 90 ,30)
 images:defineImage( "Pizza", "Menu/pizza.png", 90,90)
 
 sounds:defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
+sounds:defineSound( "SantaFX", "Assets/Sounds/Menu/SantaFX.mp3", 0.6)
 
 musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
@@ -537,7 +538,7 @@ function scene:spawnSanta()
 		santa.speed * math.cos( heading ),
 		santa.speed * math.sin( heading )
 	)
-
+	timer.performWithDelay( 100, function() sounds:play( "SantaFX" ) end )
 	table.insert( self.eventsArray, santa )
 end
 
