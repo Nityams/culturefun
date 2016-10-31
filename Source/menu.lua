@@ -407,7 +407,7 @@ function scene:createPlane()
 end
 
 function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision )
-	local attempts = 1
+	local attempts = 0
 
 	local top = 0
 	local right = display.contentWidth
@@ -417,17 +417,9 @@ function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision
 	local plane = images:get( self.doodadsGroup, imageName )
 	plane.speed = speed
 
-	if insideScreen then
-		plane.start = math2.randomPointWithin( left + 50, right - 50, top + 50, bottom - 50 )
-	else
-		plane.start = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
-	end
-	plane.finish = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
-	plane.x = plane.start.x
-	plane.y = plane.start.y
-	local collision = self:planeWillIntersectWithAnother( plane )
+	local okay = false
 
-	while wantCollision ~= collision do
+	while not okay do
 		attempts = attempts + 1
 		if attempts > 20 then
 			print( "Failed to create " .. imageName .. " -- too many failed attempts" )
@@ -435,7 +427,7 @@ function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision
 			return nil
 		end
 
-		-- Try another point.
+		-- Try a new configuration.
 		if insideScreen then
 			plane.start = math2.randomPointWithin( left + 50, right - 50, top + 50, bottom - 50 )
 		else
@@ -444,10 +436,18 @@ function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision
 		plane.finish = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
 		plane.x = plane.start.x
 		plane.y = plane.start.y
-		collision = self:planeWillIntersectWithAnother( plane )
+
+		okay = self:isGoodFlyingObject( plane, wantCollision )
 	end
 
 	return plane
+end
+
+function scene:isGoodFlyingObject( plane, wantCollision )
+	local collision = self:planeWillIntersectWithAnother( plane )
+	local onScreenTime = (plane.finish - plane.start):magnitude() / plane.speed
+	return wantCollision == collision and
+		   onScreenTime > 3.0
 end
 
 function scene:planeWillIntersectWithAnother( plane )
