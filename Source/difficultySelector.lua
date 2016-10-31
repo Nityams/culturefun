@@ -1,4 +1,5 @@
 local composer = require( "composer" )
+local widget = require( "widget" )
 
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
@@ -152,7 +153,7 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 
 		if minigame.preloadFn then
-			self.preloader = minigame.preloadFn()
+			self:startPreloading( minigame.preloadFn )
 		end
 	end
 end
@@ -171,6 +172,11 @@ function scene:hide( event )
 		-- Code here runs immediately after the scene goes entirely off screen
 
 		self.nameText:removeSelf()
+
+		if self.progressView then
+			self.progressView:removeSelf()
+			self.progressView = nil
+		end
 	end
 end
 
@@ -198,6 +204,32 @@ function scene:gotoGame( difficulty )
 	composer.gotoScene( self.minigameSourcePath )
 end
 
+function scene:startPreloading( preloadFn )
+	self.preloader = preloadFn()
+
+	if self.preloader.emitsProgressEvents then
+		self.progressView = widget.newProgressView(
+		    {
+		        left = display.contentCenterX - 150/2,
+		        top = screenBottom - 100,
+		        width = 150,
+		        isAnimated = false
+		    }
+		)
+		self.progressView:setProgress( 0.01 )
+
+		self.preloader:addEventListener( "progress", function( percent )
+			if self.progressView then
+				if percent < 1.0 then
+					self.progressView:setProgress( percent )
+				else
+					self.progressView:removeSelf()
+					self.progressView = nil
+				end
+			end
+		end)
+	end
+end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners

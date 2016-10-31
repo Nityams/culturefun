@@ -290,6 +290,10 @@ end
 -- -----------------------------------------------------------------------------------
 
 function scene:preload()
+	local numberSheets = 5
+	local numberImages = 13
+	local totalImportantObjects = numberSheets + numberImages
+
 	return Preloader:new(coroutine.create(function()
 		images.loadSheet( "Cat" ); coroutine.yield()
 		images.loadSheet( "Dog" ); coroutine.yield()
@@ -319,7 +323,7 @@ function scene:preload()
 		sounds.loadSound( "Win FX" ); coroutine.yield()
 		sounds.loadSound( "Celebrate FX" ); coroutine.yield()
 		sounds.loadSound( "Flag Flapping" ); coroutine.yield()
-	end))
+	end), totalImportantObjects)
 end
 
 -- create()
