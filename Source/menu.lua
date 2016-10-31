@@ -197,7 +197,7 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 	    self.loopTimer = timer.performWithDelay(11000, function()
-			self:removeOldPlanes()
+			self:removeOldDoodads()
 			self:createPlanes()
 		end, 0)
 		timer.performWithDelay( 25, function() self:startMusic() end )
@@ -311,7 +311,7 @@ function scene:spinLogo()
 	end})
 end
 
-function scene:removeOldPlanes()
+function scene:removeOldDoodads()
 	-- Remove out of screen planes
 	for i = #self.planesArray, 1, -1 do
 		local thisPlane = self.planesArray[i]
@@ -319,6 +319,15 @@ function scene:removeOldPlanes()
 		if ( thisPlane.x < 100 or thisPlane.x > display.contentWidth + 100) then
 			display.remove( thisPlane )
 			table.remove(self.planesArray,i)
+		end
+	end
+
+	for i = #self.eventsArray, 1, -1 do
+		local thisEvent = self.eventsArray[i]
+
+		if ( thisEvent.x < 100 or thisEvent.x > display.contentWidth + 100) then
+			display.remove( thisEvent )
+			table.remove(self.eventsArray,i)
 		end
 	end
 end
@@ -375,43 +384,39 @@ end
 function scene:maybeSpawnFunnies()
 	if self.counter < 8 then
 		self.counter = self.counter + 1
-		self:spawnFunnies()
 	else
 		self.counter = 0
 	end
+
+	if self.counter == 2 then
+		self:spawnSanta()
+	elseif self.counter == 5 then
+		self:spawnPizza()
+	end
 end
 
-function scene:spawnFunnies()
-	for i = #self.eventsArray, 1, -1 do
-		local thisEvent = self.eventsArray[i]
-
-		if ( thisEvent.x < 100 or thisEvent.x > display.contentWidth + 100) then
-			display.remove( thisEvent )
-			table.remove(self.eventsArray,i)
-		end
-	end
+function scene:spawnSanta()
 	-- trigger santa clause
-	if self.counter == 2 then
-		local santa = images:get( doodadsGroup, "Santa")
-		santa:rotate(20)
-		santa.x = math.random(0,300)
-		santa.y = 0
-		santa.alpha = 0.8
-		physics.addBody(santa, "kinematic", { radius = 30, bounce = 0.8})
-		santa:setLinearVelocity(math.random(50,100),math.random(50,100))
-		table.insert(self.eventsArray,santa)
-	-- trigger giant pizza
-	elseif self.counter == 5 then
-		local pizza = images:get(doodadsGroup, "Pizza")
-		pizza.x = 0
-		pizza.y = math.random(0,300)
-		pizza.alpha = 0.8
-		physics.addBody(pizza, "dynamic", {radius = 30, bounce = 0.8})
-		pizza:setLinearVelocity(math.random(100,300),math.random(100, 150))
-		pizza:applyTorque(math.random(-4,4))
-		table.insert(self.eventsArray,pizza)
-	end
+	local santa = images:get( self.doodadsGroup, "Santa")
+	santa:rotate(20)
+	santa.x = math.random(0,300)
+	santa.y = 0
+	santa.alpha = 0.8
+	physics.addBody(santa, "kinematic", { radius = 30, bounce = 0.8})
+	santa:setLinearVelocity(math.random(50,100),math.random(50,100))
+	table.insert(self.eventsArray,santa)
+end
 
+function scene:spawnPizza()
+	-- trigger giant pizza
+	local pizza = images:get(self.doodadsGroup, "Pizza")
+	pizza.x = 0
+	pizza.y = math.random(0,300)
+	pizza.alpha = 0.8
+	physics.addBody(pizza, "dynamic", {radius = 30, bounce = 0.8})
+	pizza:setLinearVelocity(math.random(100,300),math.random(100, 150))
+	pizza:applyTorque(math.random(-4,4))
+	table.insert(self.eventsArray,pizza)
 end
 
 function scene:removeMinigames()
