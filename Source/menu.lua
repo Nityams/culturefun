@@ -410,7 +410,7 @@ function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision
 
 	while wantCollision ~= collision do
 		attempts = attempts + 1
-		if attempts > 10 then
+		if attempts > 20 then
 			print( "Failed to create " .. imageName .. " -- too many failed attempts" )
 			plane:removeSelf()
 			return nil
@@ -492,6 +492,12 @@ function scene:spawnSanta()
 	-- trigger santa clause
 	local speed = math.random( 75, 150 )
 	local santa = self:createFlyingObject( "Santa", speed, false, true )
+
+	if not santa then
+		-- Couldn't find a path that collided with anyone.
+		return
+	end
+
 	santa.rotation = 20
 	santa.alpha = 0.8
 
@@ -511,6 +517,12 @@ function scene:spawnPizza()
 	-- trigger giant pizza
 	local speed = math.random( 150, 250 )
 	local pizza = self:createFlyingObject( "Pizza", speed, false, true )
+
+	if not pizza then
+		-- Couldn't find a path that collided with anyone.
+		return
+	end
+
 	pizza.rotation = 20
 	pizza.alpha = 0.8
 
