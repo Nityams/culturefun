@@ -15,7 +15,7 @@ local scene = composer.newScene()
 images:defineImage( "Credit", "Credits/credit.png", display.contentWidth, display.contentHeight-150 )
 images:defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, display.contentHeight/14 )
 images:defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.contentWidth/20, display.contentHeight/14 )
-musics:defineMusic( "Flag Theme", "Assets/Sounds/Music/Fate-Stay-Night.mp3", 0.8, 5000 )
+musics:defineMusic( "Credits Theme", "Assets/Sounds/Music/Fate-Stay-Night.mp3", 0.8, 5000 )
 
 local function gotoMenu()
 	composer.gotoScene("Source.menu")
@@ -66,7 +66,7 @@ function scene:show( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
-		musics:play("Flag Theme")
+		musics:play("Credits Theme")
 
 		self.neighborhood.alpha = 0
 		transition.to( self.neighborhood, { time=800, alpha=1 } )
