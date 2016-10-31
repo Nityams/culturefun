@@ -41,7 +41,6 @@ function Preloader:run()
 			coroutine.resume( self.preloadCoroutine )
 			self.numberDone = self.numberDone + 1
 			after = system.getTimer()
-			print( "before " .. before .. " after " .. after .. " numberDone " .. self.numberDone )
 		end
 
 		if self.numberTotal then
