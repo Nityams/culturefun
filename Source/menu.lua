@@ -418,7 +418,7 @@ function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision
 	if insideScreen then
 		plane.start = math2.randomPointWithin( left + 50, right - 50, top + 50, bottom - 50 )
 	else
-		plane.start = math2.randomPointWithin( left - 25, right + 25, top - 25, bottom + 25 )
+		plane.start = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
 	end
 	plane.finish = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
 	plane.x = plane.start.x
@@ -437,7 +437,7 @@ function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision
 		if insideScreen then
 			plane.start = math2.randomPointWithin( left + 50, right - 50, top + 50, bottom - 50 )
 		else
-			plane.start = math2.randomPointWithin( left - 25, right + 25, top - 25, bottom + 25 )
+			plane.start = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
 		end
 		plane.finish = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
 		plane.x = plane.start.x
