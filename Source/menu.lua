@@ -364,10 +364,10 @@ end
 function scene:removeOldDoodads()
 	-- Remove out of screen planes
 
-	local top = -25
-	local right = display.contentWidth + 25
-	local left = -25
-	local bottom = display.contentHeight + 25
+	local top = screenTop - 25
+	local right = screenRight + 25
+	local left = screenLeft - 25
+	local bottom = screenBottom + 25
 
 	for i = #self.planesArray, 1, -1 do
 		local thisPlane = self.planesArray[i]
@@ -434,10 +434,10 @@ end
 function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision )
 	local attempts = 0
 
-	local top = 0
-	local right = display.contentWidth
-	local left = 0
-	local bottom = display.contentHeight
+	local top = screenTop
+	local right = screenRight
+	local left = screenLeft
+	local bottom = screenBottom
 
 	local plane = images.get( self.doodadsGroup, imageName )
 	plane.speed = speed
