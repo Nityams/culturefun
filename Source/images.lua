@@ -7,52 +7,52 @@ local images = {
     imageSheets = {}
 }
 
-function images:defineImage( name, path, width, height )
-    self.params[name] = { path="Assets/Images/"..path, width=width, height=height }
+function images.defineImage( name, path, width, height )
+    images.params[name] = { path="Assets/Images/"..path, width=width, height=height }
 end
 
-function images:defineSheet( name, path, options )
-    self.params[name] = { path="Assets/Images/"..path, options=options }
+function images.defineSheet( name, path, options )
+    images.params[name] = { path="Assets/Images/"..path, options=options }
 end
 
-function images:width( name )
-    return self.params[name].width
+function images.width( name )
+    return images.params[name].width
 end
 
-function images:height( name )
-    return self.params[name].height
+function images.height( name )
+    return images.params[name].height
 end
 
-function images:loadImage( name )
-    local path = self.params[name].path
+function images.loadImage( name )
+    local path = images.params[name].path
 
-    if self.individualTextures[path] == nil then
+    if images.individualTextures[path] == nil then
         print( "Loading Texture for " .. name .. " (" .. path .. ")" )
-        self.individualTextures[path] = graphics.newTexture({
+        images.individualTextures[path] = graphics.newTexture({
             type = "image",
             filename = path
         })
     end
 end
 
-function images:loadSheet( name )
-    local path = self.params[name].path
-    local options = self.params[name].options
+function images.loadSheet( name )
+    local path = images.params[name].path
+    local options = images.params[name].options
 
-    if self.imageSheets[name] == nil then
+    if images.imageSheets[name] == nil then
         print( "Loading ImageSheet for " .. name .. " (" .. path .. ")" )
-        self.imageSheets[name] = graphics.newImageSheet( path, options )
+        images.imageSheets[name] = graphics.newImageSheet( path, options )
     end
 
 end
 
-function images:get( group, name )
-    local path = self.params[name].path
-    local width = self.params[name].width
-    local height = self.params[name].height
+function images.get( group, name )
+    local path = images.params[name].path
+    local width = images.params[name].width
+    local height = images.params[name].height
 
-    self:loadImage( name )
-    local texture = self.individualTextures[path]
+    images.loadImage( name )
+    local texture = images.individualTextures[path]
 
     return display.newImageRect(
         group,
@@ -61,21 +61,12 @@ function images:get( group, name )
     )
 end
 
-function images:getSheet( name )
-    local path = self.params[name].path
+function images.getSheet( name )
+    local path = images.params[name].path
 
-    self:loadSheet( name )
+    images.loadSheet( name )
 
-    return self.imageSheets[name]
-end
-
-function images:print()
-    for name,imageList in pairs(self.preloadedImages) do
-        print( "\"" .. name .. "\" = " .. #self.preloadedImages[name] )
-    end
-    for name,imageList in pairs(self.imageSheets) do
-        print( "\"" .. name .. "\" = " .. #self.imageSheets[name] )
-    end
+    return images.imageSheets[name]
 end
 
 return images

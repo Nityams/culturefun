@@ -12,7 +12,7 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-images:defineImage( "Neighborhood", "FoodGame/Intro.png", display.contentWidth, display.contentHeight )
+images.defineImage( "Neighborhood", "FoodGame/Intro.png", display.contentWidth, display.contentHeight )
 
 local function gotoGame()
 	composer.gotoScene("Source.foodGame")
@@ -30,7 +30,7 @@ end
 
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
-		images:preload( "Neighborhood" ); coroutine.yield()
+		images.preload( "Neighborhood" ); coroutine.yield()
 	end))
 end
 
@@ -45,7 +45,7 @@ function scene:create( event )
 	fill.y = display.contentCenterY
 	fill:setFillColor( 1, 1, 1 )
 
-	self.neighborhood = images:get( sceneGroup, "Neighborhood" )
+	self.neighborhood = images.get( sceneGroup, "Neighborhood" )
 	self.neighborhood.x = display.contentCenterX
 	self.neighborhood.y = display.contentCenterY
 

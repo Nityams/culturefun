@@ -12,9 +12,9 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-images:defineImage( "Credit", "Credits/credit.png", display.contentWidth, display.contentHeight-150 )
-images:defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, display.contentHeight/14 )
-images:defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Credit", "Credits/credit.png", display.contentWidth, display.contentHeight-150 )
+images.defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 musics:defineMusic( "Credits Theme", "Assets/Sounds/Music/Fate-Stay-Night.mp3", 1, 5000 )
 
 local function gotoMenu()
@@ -42,16 +42,16 @@ function scene:create( event )
 	local whiteFill = display.newRect( sceneGroup, display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	whiteFill:setFillColor( 1, 1, 1 )
 
-	self.neighborhood = images:get( sceneGroup, "Credit" )
+	self.neighborhood = images.get( sceneGroup, "Credit" )
 
 	local returnButton = Button:newImageButton{
 		group = sceneGroup,
-		image = images:get( sceneGroup, "Close Button" ),
-		imagePressed = images:get( sceneGroup, "Close Button Pressed" ),
+		image = images.get( sceneGroup, "Close Button" ),
+		imagePressed = images.get( sceneGroup, "Close Button Pressed" ),
 		x = display.contentWidth / 20,
 		y = display.contentHeight / 5,
-		width = images:width( "Close Button" ),
-		height = images:height( "Close Button" ),
+		width = images.width( "Close Button" ),
+		height = images.height( "Close Button" ),
 		alpha = 0.5
 	}
 	returnButton:addEventListener( "tap", gotoMenu )

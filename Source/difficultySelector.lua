@@ -17,7 +17,7 @@ local titleOffsetY = (util.aspectRatio() > 4/3 and 250 or 175)
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-images:defineImage(
+images.defineImage(
 	"World Map Blurred",
 	"Menu/MenuBackgroundV1Edit_Blurred.png",
 	display.contentWidth, display.contentHeight*1.3
@@ -30,7 +30,7 @@ images:defineImage(
 
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
-		images:loadImage( "World Map Blurred" ); coroutine.yield()
+		images.loadImage( "World Map Blurred" ); coroutine.yield()
 	end))
 end
 
@@ -47,7 +47,7 @@ function scene:create( event )
 	)
 	bgWhiteFill:setFillColor( 1, 1, 1 )
 
-	local bgWorldMap = images:get( sceneGroup, "World Map Blurred" )
+	local bgWorldMap = images.get( sceneGroup, "World Map Blurred" )
 	bgWorldMap.x = display.contentCenterX
 	bgWorldMap.y = display.contentCenterY
 	bgWorldMap.alpha = 0.5

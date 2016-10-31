@@ -189,49 +189,49 @@ local monumentAssets = {
 	"Assets/Images/Monument/USA_NY.png",
 };
 
-images:defineImage( "Top Border", sceneBuild[21], currentWidth, 300 )
-images:defineImage( "Background", sceneBuild[19], currentWidth, currentHeight - 190 )
-images:defineImage( "Bottom Border", sceneBuild[21], currentWidth, 300 )
-images:defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
-images:defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
-images:defineImage( "Pause Button", "Scene/10.png", currentWidth/20, currentHeight/14 )
-images:defineImage( "Pause Button Pressed", "Scene/10-pressed.png", currentWidth/20, currentHeight/14 )
-images:defineImage( "Info Button", "Scene/11.png", currentWidth/20, currentHeight/14 )
-images:defineImage( "Info Button Pressed", "Scene/11-pressed.png", currentWidth/20, currentHeight/14 )
-images:defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
-images:defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
-images:defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
-images:defineImage( "Cont Button", "Scene/22.png", currentWidth/5, currentHeight/8)
-images:defineImage( "Cont Button Pressed", "Scene/22-pressed.png", currentWidth/5, currentHeight/8)
-images:defineSheet( "Cat", "Sprite/2.png", {
+images.defineImage( "Top Border", sceneBuild[21], currentWidth, 300 )
+images.defineImage( "Background", sceneBuild[19], currentWidth, currentHeight - 190 )
+images.defineImage( "Bottom Border", sceneBuild[21], currentWidth, 300 )
+images.defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
+images.defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
+images.defineImage( "Pause Button", "Scene/10.png", currentWidth/20, currentHeight/14 )
+images.defineImage( "Pause Button Pressed", "Scene/10-pressed.png", currentWidth/20, currentHeight/14 )
+images.defineImage( "Info Button", "Scene/11.png", currentWidth/20, currentHeight/14 )
+images.defineImage( "Info Button Pressed", "Scene/11-pressed.png", currentWidth/20, currentHeight/14 )
+images.defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
+images.defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
+images.defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
+images.defineImage( "Cont Button", "Scene/22.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Cont Button Pressed", "Scene/22-pressed.png", currentWidth/5, currentHeight/8)
+images.defineSheet( "Cat", "Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
 	numFrames = 49,
 	sheetContentWidth = 1934,
 	sheetContentHeight = 1668
 })
-images:defineSheet( "Dog", "Sprite/3.png", {
+images.defineSheet( "Dog", "Sprite/3.png", {
 	width = 557,
 	height = 491,
 	numFrames = 30,
 	sheetContentWidth = 2785,
 	sheetContentHeight = 2946
 })
-images:defineSheet( "Tree", "Sprite/4.png", {
+images.defineSheet( "Tree", "Sprite/4.png", {
 	width = 1463,
 	height = 821,
 	numFrames = 5,
 	sheetContentWidth = 1463,
 	sheetContentHeight = 4105
 })
-images:defineSheet( "Monu", "Sprite/5.png", {
+images.defineSheet( "Monu", "Sprite/5.png", {
 	width = 248,
 	height = 242,
 	numFrames = 19,
 	sheetContentWidth = 4892,
 	sheetContentHeight = 242
 })
-images:defineSheet( "Star", "Sprite/6.png", {
+images.defineSheet( "Star", "Sprite/6.png", {
 	width = 252,
 	height = 210,
 	numFrames = 9,
@@ -285,24 +285,24 @@ end
 
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
-		images:loadSheet( "Cat" ); coroutine.yield()
-		images:loadSheet( "Dog" ); coroutine.yield()
-		images:loadSheet( "Tree" ); coroutine.yield()
-		images:loadSheet( "Monu" ); coroutine.yield()
-		images:loadSheet( "Star" ); coroutine.yield()
-		images:loadImage( "Top Border" ); coroutine.yield()
-		images:loadImage( "Background" ); coroutine.yield()
-		images:loadImage( "Bottom Border" ); coroutine.yield()
-		images:loadImage( "Platform 1" ); coroutine.yield()
-		images:loadImage( "Column" ); coroutine.yield()
-		images:loadImage( "Pause Button" ); coroutine.yield()
-		images:loadImage( "Pause Button" ); coroutine.yield()
-		images:loadImage( "Pause Button Pressed" ); coroutine.yield()
-		images:loadImage( "Info Button" ); coroutine.yield()
-		images:loadImage( "Info Button Pressed" ); coroutine.yield()
-		images:loadImage( "Pole" ); coroutine.yield()
-		images:loadImage( "Right Side" ); coroutine.yield()
-		images:loadImage( "Road" ); coroutine.yield()
+		images.loadSheet( "Cat" ); coroutine.yield()
+		images.loadSheet( "Dog" ); coroutine.yield()
+		images.loadSheet( "Tree" ); coroutine.yield()
+		images.loadSheet( "Monu" ); coroutine.yield()
+		images.loadSheet( "Star" ); coroutine.yield()
+		images.loadImage( "Top Border" ); coroutine.yield()
+		images.loadImage( "Background" ); coroutine.yield()
+		images.loadImage( "Bottom Border" ); coroutine.yield()
+		images.loadImage( "Platform 1" ); coroutine.yield()
+		images.loadImage( "Column" ); coroutine.yield()
+		images.loadImage( "Pause Button" ); coroutine.yield()
+		images.loadImage( "Pause Button" ); coroutine.yield()
+		images.loadImage( "Pause Button Pressed" ); coroutine.yield()
+		images.loadImage( "Info Button" ); coroutine.yield()
+		images.loadImage( "Info Button Pressed" ); coroutine.yield()
+		images.loadImage( "Pole" ); coroutine.yield()
+		images.loadImage( "Right Side" ); coroutine.yield()
+		images.loadImage( "Road" ); coroutine.yield()
 		musics:loadMusic( "Flag Theme" ); coroutine.yield()
 		musics:loadMusic( "Birds" ); coroutine.yield()
 		sounds:loadSound( "Port In" ); coroutine.yield()
@@ -378,7 +378,7 @@ function scene:create( event )
 			loopCount = 0
 		}
 	};
-	local mySheetCat = images:getSheet( "Cat" )
+	local mySheetCat = images.getSheet( "Cat" )
 
 	local sequenceDataDog = {
 		{
@@ -400,7 +400,7 @@ function scene:create( event )
 			loop = 0
 		}
 	};
-	local mySheetDog = images:getSheet( "Dog" )
+	local mySheetDog = images.getSheet( "Dog" )
 	-- end animal sprite --
 	-------------------------------------------------------------------------------------------------------
 	-- background animation --
@@ -412,7 +412,7 @@ function scene:create( event )
 			loopCount = 0
 		}
 	};
-	local mySheetTree1 = images:getSheet( "Tree" )
+	local mySheetTree1 = images.getSheet( "Tree" )
 	--end background animation --
 	-------------------------------------------------------------------------------------------------------
 	-- monument placeholders animation --
@@ -442,7 +442,7 @@ function scene:create( event )
 			loopCount = 1
 		},
 	};
-	local mySheetMonu = images:getSheet( "Monu" )
+	local mySheetMonu = images.getSheet( "Monu" )
 	--end monument placeholders animation --
 	-- star animations --
 	local sequenceDataStar = {
@@ -459,23 +459,23 @@ function scene:create( event )
 			loopCount = 1
 		}
 	};
-	local mySheetStar = images:getSheet( "Star" )
+	local mySheetStar = images.getSheet( "Star" )
 	-- end star animations --
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
 	-- top border
-	local topBorder = images:get( sceneGroup, "Top Border" )
+	local topBorder = images.get( sceneGroup, "Top Border" )
 	topBorder.x = currentWidth/2
 	topBorder.y = 0
 	topBorder:setFillColor(1,1,1,0.7)
 
 	-- background placeholder
-	local background = images:get( sceneGroup, "Background" )
+	local background = images.get( sceneGroup, "Background" )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
 	-- bottom border
-	local botBorder = images:get( sceneGroup, "Bottom Border" )
+	local botBorder = images.get( sceneGroup, "Bottom Border" )
 	botBorder.x = currentWidth/2
 	botBorder.y = background.height+255
 	botBorder:setFillColor(1,1,1,0.7)
@@ -490,25 +490,25 @@ function scene:create( event )
 	tree1:play()
 
 	-- platform placeholder
-	local platform1 = images:get( sceneGroup, "Platform 1" )
+	local platform1 = images.get( sceneGroup, "Platform 1" )
 	platform1.x = display.contentCenterX
 	platform1.y = display.contentCenterY*2 - platform1.height*2 - 3
 	--platform1:setFillColor(0,0,0)
 
     -- screen split placeholder
-	local collumn = images:get( sceneGroup, "Column" )
+	local collumn = images.get( sceneGroup, "Column" )
 	collumn.x = currentWidth * 2 / 3
 	collumn.y = display.contentCenterY+8
 
 	-- pause button placeholder
 	local pauseButton = Button:newImageButton{
 		group = sceneGroup,
-		image = images:get( sceneGroup, "Pause Button" ),
-		imagePressed = images:get( sceneGroup, "Pause Button Pressed" ),
+		image = images.get( sceneGroup, "Pause Button" ),
+		imagePressed = images.get( sceneGroup, "Pause Button Pressed" ),
 		x = currentWidth / 20,
 		y = currentHeight / 5,
-		width = images:width( "Pause Button" ),
-		height = images:height( "Pause Button" ),
+		width = images.width( "Pause Button" ),
+		height = images.height( "Pause Button" ),
 		alpha = 0.9,
 		allowance = 8  -- Normally 30, but they are 16 pixels apart
 	}
@@ -516,12 +516,12 @@ function scene:create( event )
 	-- info button placeholder
 	local infoButton = Button:newImageButton{
 		group = sceneGroup,
-		image = images:get( sceneGroup, "Info Button" ),
-		imagePressed = images:get( sceneGroup, "Info Button Pressed" ),
+		image = images.get( sceneGroup, "Info Button" ),
+		imagePressed = images.get( sceneGroup, "Info Button Pressed" ),
 		x = pauseButton.x,
 		y = pauseButton.y + currentWidth/16,
-		width = images:width( "Pause Button" ),
-		height = images:height( "Pause Button" ),
+		width = images.width( "Pause Button" ),
+		height = images.height( "Pause Button" ),
 		alpha = 0.9,
 		allowance = 8  -- Normally 30, but they are 16 pixels apart
 	}
@@ -549,7 +549,7 @@ function scene:create( event )
 	-- End event Pause/Replay --
 
 	-- flag pole placeholder
-	local pole = images:get( sceneGroup, "Pole" )
+	local pole = images.get( sceneGroup, "Pole" )
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 80
 
@@ -603,13 +603,13 @@ function scene:create( event )
 	end
 	-------------------------------------------------------------------------------------------------------
 		-- temp = placeholder for all right side
-	local temp = images:get( sceneGroup, "Right Side" )
+	local temp = images.get( sceneGroup, "Right Side" )
 	temp.x = collumn.x + collumn.x / 4
 	temp.y = display.contentCenterY+8
 	--temp:setFillColor(0,0,0,0)
 
 	-- placeholder for road
-	local road = images:get( sceneGroup, "Road" )
+	local road = images.get( sceneGroup, "Road" )
 	road.x = collumn.x + collumn.x /4
 	road.y = temp.y
 	-- placeholder for animal on the road
@@ -938,12 +938,12 @@ function scene:create( event )
 		text:setFillColor(0,0,0)
 		local contButton = Button:newImageButton{
 			group = sceneGroup,
-			image = images:get( sceneGroup, "Cont Button" ),
-			imagePressed = images:get( sceneGroup, "Cont Button Pressed" ),
+			image = images.get( sceneGroup, "Cont Button" ),
+			imagePressed = images.get( sceneGroup, "Cont Button Pressed" ),
 			x = star.x + 25,
 			y = star.y + 150,
-			width = images:width( "Cont Button" ),
-			height = images:height( "Cont Button" ),
+			width = images.width( "Cont Button" ),
+			height = images.height( "Cont Button" ),
 			alpha = 0.9
 		}
 		contButton:addEventListener("tap", contButtonTap)

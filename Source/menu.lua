@@ -20,15 +20,15 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-images:defineImage( "Logo",  "Menu/MenuLogoV1Edit.png", 323, 319 )
-images:defineImage( "Logo Pressed", "Menu/MenuLogoV1Edit-pressed.png", 323, 319 )
-images:defineImage( "Plane 1" , "Menu/plane1.png" , 25, 25)
-images:defineImage( "Plane 2" , "Menu/plane2.png" , 25, 25)
-images:defineImage( "Plane 3" , "Menu/plane3.png" , 25, 25)
-images:defineImage( "Plane 4" , "Menu/plane4.png" , 25, 25)
-images:defineImage( "Plane 5" , "Menu/plane5.png" , 25, 25)
-images:defineImage( "Santa" , "Menu/santa.png", 90 ,30)
-images:defineImage( "Pizza", "Menu/pizza.png", 90,90)
+images.defineImage( "Logo",  "Menu/MenuLogoV1Edit.png", 323, 319 )
+images.defineImage( "Logo Pressed", "Menu/MenuLogoV1Edit-pressed.png", 323, 319 )
+images.defineImage( "Plane 1" , "Menu/plane1.png" , 25, 25)
+images.defineImage( "Plane 2" , "Menu/plane2.png" , 25, 25)
+images.defineImage( "Plane 3" , "Menu/plane3.png" , 25, 25)
+images.defineImage( "Plane 4" , "Menu/plane4.png" , 25, 25)
+images.defineImage( "Plane 5" , "Menu/plane5.png" , 25, 25)
+images.defineImage( "Santa" , "Menu/santa.png", 90 ,30)
+images.defineImage( "Pizza", "Menu/pizza.png", 90,90)
 
 sounds:defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
 
@@ -100,12 +100,12 @@ function scene:create( event )
 
 	self.logo = Button:newImageButton{
 		group = uiGroup,
-		image = images:get( sceneGroup, "Logo" ),
-		imagePressed = images:get( sceneGroup, "Logo Pressed" ),
+		image = images.get( sceneGroup, "Logo" ),
+		imagePressed = images.get( sceneGroup, "Logo Pressed" ),
 		x = display.contentCenterX,
 		y = display.contentCenterY + 50,
-		width = images:width( "Logo" ),
-		height = images:height( "Logo" )
+		width = images.width( "Logo" ),
+		height = images.height( "Logo" )
 	}
 
 	----------------
@@ -427,7 +427,7 @@ function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision
 	local left = 0
 	local bottom = display.contentHeight
 
-	local plane = images:get( self.doodadsGroup, imageName )
+	local plane = images.get( self.doodadsGroup, imageName )
 	plane.speed = speed
 
 	local okay = false
