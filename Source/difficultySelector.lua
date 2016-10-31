@@ -22,6 +22,8 @@ images.defineImage(
 	"Menu/MenuBackgroundV1Edit_Blurred.png",
 	display.contentWidth, display.contentHeight*1.3
 )
+images.defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 
 
 -- -----------------------------------------------------------------------------------
@@ -69,7 +71,6 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
-
 	self.mediumButton = Button:newTextButton{
 		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
@@ -79,7 +80,6 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
-
 	self.hardButton = Button:newTextButton{
 		group=sceneGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
@@ -88,6 +88,17 @@ function scene:create( event )
 		paddingX=55, paddingY=15,
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
+	}
+
+	local returnButton = Button:newImageButton{
+		group = sceneGroup,
+		image = images.get( sceneGroup, "Close Button" ),
+		imagePressed = images.get( sceneGroup, "Close Button Pressed" ),
+		x = display.contentWidth / 20,
+		y = display.contentHeight / 5,
+		width = images.width( "Close Button" ),
+		height = images.height( "Close Button" ),
+		alpha = 0.5
 	}
 
 	local function disableButtons()
@@ -101,6 +112,10 @@ function scene:create( event )
 	self.easyButton:addEventListener( "tap", function() self:gotoGame( 1 ) end)
 	self.mediumButton:addEventListener( "tap", function() self:gotoGame( 2 ) end)
 	self.hardButton:addEventListener( "tap", function() self:gotoGame( 3 ) end)
+
+	returnButton:addEventListener( "tap", function()
+		composer.gotoScene("Source.menu")
+	end)
 end
 
 
