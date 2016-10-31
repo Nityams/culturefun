@@ -32,7 +32,7 @@ images.defineImage( "Pizza", "Menu/pizza.png", 90,90)
 
 sounds.defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
 
-musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
+musics.defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
 local planeImages = {
 	"Plane 1",
@@ -578,7 +578,7 @@ function scene:startMusic()
 		composer.setVariable( "Menu music still playing", true )
 
 		-- This music will be turned off in difficultySelector.lua
-		self.menuMusicChannel = musics:play( "Menu Theme" )
+		self.menuMusicChannel = musics.play( "Menu Theme" )
 	end
 end
 

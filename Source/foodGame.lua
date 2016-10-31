@@ -60,13 +60,13 @@ local choices = {}
 -- other scenes from the game:
 
 -- Temporary Music
-musics:defineMusic( "Food Theme", "Assets/Sounds/Music/Whimsical-Popsicle.mp3", 1, 5000 )
+musics.defineMusic( "Food Theme", "Assets/Sounds/Music/Whimsical-Popsicle.mp3", 1, 5000 )
 sounds.defineSound("Win","Assets/Sounds/win.wav",0.5 )
 sounds.defineSound("starWin", "Assets/Sounds/starWin.wav",0.5)
 -- create()
 function scene:create( event )
 
-  musics:play( "Food Theme" )
+  musics.play( "Food Theme" )
 
   sceneGroup = self.view
   currentWidth = display.contentWidth
