@@ -41,12 +41,8 @@ function scene:preload()
 	return Preloader:new(coroutine.create(function()
 		Button.preload(); coroutine.yield()
 		sounds:preloadSound( "Charm" ); coroutine.yield()
-		sounds:preloadSound( "Charm" ); coroutine.yield()
 		self.difficultySelector = require( "Source.difficultySelector" ); coroutine.yield()
 		self.difficultySelector:preload(); coroutine.yield()
-		--self.flatGame = require( "Source.flagGame" ); coroutine.yield()
-		--self.foodIntro = require( "Source.foodIntro" ); coroutine.yield()
-		--self.foodGame = require( "Source.foodGame" ); coroutine.yield()
 	end))
 end
 
