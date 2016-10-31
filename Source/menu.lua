@@ -403,6 +403,10 @@ function scene:createPlanes()
 	local toCreate = desiredPlanesOnscreen - #self.planesArray
 	for i = 1,toCreate do
 		timer.performWithDelay( 50 * i, function()
+			if composer.getSceneName( "current" ) ~= "Source.menu" then
+				-- Happens if the player leaves the scene within these 50ms.
+				return
+			end
 			if #self.planesArray < desiredPlanesOnscreen then
 				self:createPlane()
 			end
