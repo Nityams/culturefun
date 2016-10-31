@@ -607,8 +607,8 @@ function scene:create( event )
 		obj:setSequence("run")
 		obj:play()
 	end
-	-------------------------------------------------------------------------------------------------------
-		-- temp = placeholder for all right side
+	
+	-- temp = placeholder for all right side
 	local temp = images.get( sceneGroup, "Right Side" )
 	temp.x = collumn.x + collumn.x / 4
 	temp.y = display.contentCenterY+8
@@ -803,7 +803,7 @@ function scene:create( event )
 					i = 1
 				else i = i + 1 end
 			end
-			--local img
+			-- place monument on top of the stands
 			local function place_img(item,randMonument)
 				local img = display.newImageRect( sceneGroup,
 											   monumentAssets[randMonument],
@@ -816,6 +816,7 @@ function scene:create( event )
 				local monument_item =  {index = randMonument, obj = img}
 				table.insert(usedMonument,monument_item)
 			end
+			-- function to resume the stands animation
 			local function resume_animation(obj)
 				obj:setSequence("normal1")
 				obj:play()
@@ -846,10 +847,17 @@ function scene:create( event )
 				sounds.play( "Port Out" )
 				timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
 			elseif num == 2 and score ~= 0 then
-				if usedMonument[score+1] ~= nil then
-					usedMonument[score+1].obj:removeSelf()
-					usedMonument[score+1] = nil
-					local item2 = mon_placeholders[5-score]
+			    -- removing monuments based on different difficulty
+				local temp = score
+				if difficulty == 1 then temp = temp + 1
+				elseif difficulty == 2 then temp = (score+1)/2
+				elseif difficulty == 3 then temp = (score+1)/3 end
+				
+				if usedMonument[temp] ~= nil then
+					usedMonument[temp].obj:removeSelf()
+					usedMonument[temp] = nil
+					temp = temp - 1
+					local item2 = mon_placeholders[5-temp]
 					item2:setSequence("port_out")
 					item2:play()
 					sounds.play( "Port Out" )
@@ -1040,7 +1048,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-
+		physics.pause()
 	end
 end
 
