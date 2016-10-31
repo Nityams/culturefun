@@ -22,8 +22,8 @@ function math2.randomPointOnBorder( x1, x2, y1, y2 )
 	end
 end
 
--- Will two circles in motion with a constant linear velocity collide during a
--- particular time interval?
+-- Will two circles in motion with a constant linear velocity collide? And if
+-- so, when?
 -- Algorithm from page 372 of _Mathematics for 3D Game Programming and Computer
 -- Graphics_, 3rd edition, by Eric Lengyel.
 function math2.whenTwoCirclesCollide( P1, P2, Q1, Q2, rP, rQ )
