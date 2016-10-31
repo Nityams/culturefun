@@ -23,7 +23,7 @@ function images.height( name )
     return images.params[name].height
 end
 
-function images.loadImage( name )
+function images.loadImage( name, usedNow )
     local path = images.params[name].path
 
     if images.individualTextures[path] == nil then
@@ -32,6 +32,14 @@ function images.loadImage( name )
             type = "image",
             filename = path
         })
+
+        if not usedNow then
+            -- Force Corona to do processing required on first ImageRect
+            -- creation. An optimizing for when pre-loading images.
+            local group = display.newGroup()
+            local firstCopy = images.get( group, name )
+            firstCopy:removeSelf()
+        end
     end
 end
 
@@ -51,7 +59,7 @@ function images.get( group, name )
     local width = images.params[name].width
     local height = images.params[name].height
 
-    images.loadImage( name )
+    images.loadImage( name, true )
     local texture = images.individualTextures[path]
 
     return display.newImageRect(
