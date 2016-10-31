@@ -78,6 +78,16 @@ function scene:create( event )
 	returnButton:addEventListener( "tap", function()
 		composer.gotoScene("Source.menu")
 	end)
+
+	local x = 225
+	local y = 155
+
+	for i = 1,5 do
+		self:addFlag( x, y )
+		self:addFlag( x + 131 + 10, y )
+
+		y = y + 75 + 10
+	end
 end
 
 
@@ -119,6 +129,36 @@ function scene:destroy( event )
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
 
+end
+
+function scene:findUnusedFlag()
+	if self.usedFlags == nil then
+		self.usedFlags = {}
+	end
+
+	local flagIndex = math.random( 1, #countryNames )
+
+	while self.usedFlags[flagIndex] ~= nil do
+		flagIndex = math.random( 1, #countryNames )
+	end
+
+	self.usedFlags[flagIndex] = true
+
+	return flagIndex
+end
+
+function scene:addFlag( x, y )
+	local flagIndex = self:findUnusedFlag()
+
+	local imagePath = countryFiles[flagIndex]
+
+	local flag = display.newImageRect(
+		self.view,
+		imagePath,
+		7/4 * 75, 75  -- Our flags are 7:4 aspect ratio
+	)
+	flag.x = x
+	flag.y = y
 end
 
 
