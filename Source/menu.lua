@@ -53,7 +53,7 @@ function scene:preload()
 	return Preloader:new(coroutine.create(function()
 		require( "Source.difficultySelector" ):preload(); coroutine.yield()
 		Button.preload(); coroutine.yield()
-		sounds:preloadSound( "Charm" ); coroutine.yield()
+		sounds:loadSound( "Charm" ); coroutine.yield()
 	end))
 end
 

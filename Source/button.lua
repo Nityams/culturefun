@@ -145,8 +145,8 @@ end
 local Button = {}
 
 function Button.preload()
-	sounds:preloadSound( "Button Up" )
-	sounds:preloadSound( "Button Down" )
+	sounds:loadSound( "Button Up" )
+	sounds:loadSound( "Button Down" )
 end
 
 -- Button:newTextButton()
