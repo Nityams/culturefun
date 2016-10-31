@@ -941,12 +941,14 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
-	-- function to start the game
+
 	local function contButtonTap()
 		-- this will stop the animations
 		transition.cancel()
 		returnToMenu()
 	end
+	
+	-- animation for ended round
 	local function endgame2()
 		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-150,font,44)
 		text:setFillColor(0,0,0)
@@ -962,8 +964,9 @@ function scene:create( event )
 		}
 		contButton:addEventListener("tap", contButtonTap)
 	end
-
 	local function endgame()
+		-- moves the dog to proper position
+		transition.to(animal3, {y = currentHeight - 135 - currentHeight/distance * count + 40})
 		star:setSequence("end")
 		star:play()
 		transition.fadeOut(pole,{time = 2000})
@@ -976,6 +979,8 @@ function scene:create( event )
 			onComplete = endgame2
 			})
 	end
+	
+	-- function to start the game
 	function startGame()
 	    -- memories dump
 		animal1:setSequence("idle")
@@ -993,6 +998,7 @@ function scene:create( event )
 		-- check to start new round
 		if count ~= level then
 			startRound()
+		-- this happens when the round ended
 		else
 			textBox1:removeSelf()
 			textBox2:removeSelf()
@@ -1005,7 +1011,7 @@ function scene:create( event )
 			animal2:play()
 			animal3:play()
 			sounds.play( "Win FX" )
-			sounds.play( "Celebrate FX" )
+			sounds.play( "Celebrate FX" ) 
 			endgame()
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
