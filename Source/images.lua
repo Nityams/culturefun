@@ -34,6 +34,9 @@ function images:preload( name, count )
         self.preloadedImages[name] = {}
     end
 
+    -- Just ensure we have `count` of them. Only add as many as are necessary.
+    count = count - #self.preloadedImages[name]
+
     for i = 1,count do
         local imageRect = self:make( self.group, name )
         imageRect.isVisible = false
