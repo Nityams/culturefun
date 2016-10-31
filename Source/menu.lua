@@ -254,6 +254,11 @@ function scene:hide( event )
 
 		physics.pause()
 
+		if self.spinTransition then
+			transition.cancel( self.spinTransition )
+			self.spinTransition = nil
+		end
+
 		self:removeAllDoodads()
 	end
 end
@@ -335,7 +340,7 @@ function scene:spinLogo()
 		self.canWantSpin = true
 	end)
 
-	transition.to(self.logo, {rotation=-360, time=2000, onComplete=function()
+	self.spinTransition = transition.to(self.logo, {rotation=-360, time=2000, onComplete=function()
 		self.logo.rotation = 0
 		self.spinning = false
 		self.canWantSpin = false
