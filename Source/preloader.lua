@@ -9,9 +9,11 @@ function Preloader:new( preloadCoroutine, total )
 
 	p.preloadCoroutine = preloadCoroutine
 
-	p.completed = 0
-	p.total = total
-	p.emitsProgressEvents = (total ~= nil)
+	p.numberDone = 0
+	p.numberTotal = total
+	p.completed = false
+
+	p.emitsProgressEvents = (p.numberTotal ~= nil)
 
 	p.eventListener = EventListener:new()
 
@@ -34,13 +36,18 @@ function Preloader:run()
 		local after = before
 
 		while after < before + 10 do
-			self.completed = self.completed + 1
+			self.numberDone = self.numberDone + 1
 			coroutine.resume( self.preloadCoroutine )
 			after = system.getTimer()
 		end
 
-		if self.total then
-			self.eventListener:dispatchEvent( "progress", self.completed / self.total )
+		if self.numberTotal then
+			self.eventListener:dispatchEvent( "progress", self.numberDone / self.numberTotal )
+
+			if self.numberDone > self.numberTotal and not self.completed then
+				self.completed = true
+				self.eventListener:dispatchEvent( "done" )
+			end
 		end
 
 		timer.performWithDelay( 25, function() self:run() end )

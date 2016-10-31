@@ -220,12 +220,10 @@ function scene:startPreloading( preloadFn )
 		)
 		self.loadingText:setFillColor( 0.4, 0.4, 0.4 )
 
-		self.preloader:addEventListener( "progress", function( percent )
+		self.preloader:addEventListener( "done", function()
 			if self.loadingText then
-				if percent >= 1.0 then
-					self.loadingText:removeSelf()
-					self.loadingText = nil
-				end
+				self.loadingText:removeSelf()
+				self.loadingText = nil
 			end
 		end)
 	end

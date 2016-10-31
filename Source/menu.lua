@@ -61,7 +61,7 @@ function scene:preload()
 		require( "Source.difficultySelector" ):preload(); coroutine.yield()
 		Button.preload(); coroutine.yield()
 		sounds.loadSound( "Charm" ); coroutine.yield()
-	end))
+	end), 3)
 end
 
 -- create()
@@ -221,17 +221,19 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		if self.preloader == nil then
-			self.preloader = self:preload()
-		end
-
 		timer.performWithDelay( 25, function() self:startMusic() end )
 		timer.performWithDelay( 25, function() self:removeMinigames() end )
 
-	    self.loopTimer = timer.performWithDelay(1000, function()
-			self:removeOldDoodads()
-			self:createPlanes()
-		end, 0)
+		if self.preloader == nil then
+			timer.performWithDelay( 25, function()
+				self.preloader = self:preload()
+				self.preloader:addEventListener( "done", function()
+					self:startPlaneTimer()
+				end)
+			end)
+		else
+			self:startPlaneTimer()
+		end
 
 	end
 end
@@ -348,6 +350,13 @@ function scene:spinLogo()
 			self:spinLogo()
 		end
 	end})
+end
+
+function scene:startPlaneTimer()
+    self.loopTimer = timer.performWithDelay(100, function()
+		self:removeOldDoodads()
+		self:createPlanes()
+	end, 0)
 end
 
 function scene:removeAllDoodads()
