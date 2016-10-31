@@ -124,12 +124,12 @@ end
 function shuffleDeck()
   -- Ok I get this
   math.randomseed(os.time())
-  local rand = math.random 
+  local rand = math.random
 
   -- What is going on
   local iterations = #deck
   local j
-  
+
   -- Black magic I say
   for i = iterations, 2, -1 do
     j = rand(i)

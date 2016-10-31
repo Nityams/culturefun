@@ -145,11 +145,20 @@ function scene:create( event )
 		borderWidth=3, borderColor={ 0.85 }
 	}
 
+	self.passportButton = Button:newTextButton{
+		group=uiGroup,
+		font=font, fontSize=20, fontColor={ 0.4 },
+		text="My Passort",
+		x=128, y=display.contentHeight-140,
+		paddingX=20, paddingY=5,
+		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
+		borderWidth=3, borderColor={ 0.85 }
+	}
 	self.creditButton = Button:newTextButton{
 		group=uiGroup,
 		font=font, fontSize=20, fontColor={ 0.4 },
 		text="Credits",
-		x=display.contentWidth-130, y=display.contentHeight-140,
+		x=display.contentWidth-111, y=display.contentHeight-140,
 		paddingX=20, paddingY=5,
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
@@ -167,13 +176,16 @@ function scene:create( event )
 	local function disableButtons()
 		self.flagButton.enabled = false
 		self.foodButton.enabled = false
+		self.passportButton.enabled = false
 		self.creditButton.enabled = false
 	end
 	self.flagButton:addEventListener( "pretap", disableButtons )
 	self.foodButton:addEventListener( "pretap", disableButtons )
+	self.passportButton:addEventListener( "pretap", disableButtons )
 	self.creditButton:addEventListener( "pretap", disableButtons )
 	self.flagButton:addEventListener( "tap", function() self:gotoFlagMinigame() end )
 	self.foodButton:addEventListener( "tap", function() self:gotoFoodMinigame() end )
+	self.passportButton:addEventListener( "tap", function() self:gotoPassport() end)
 	self.creditButton:addEventListener( "tap", function() self:gotoCredit() end)
 end
 
@@ -188,6 +200,7 @@ function scene:show( event )
 
 		self.flagButton.enabled = true
 		self.foodButton.enabled = true
+		self.passportButton.enabled = true
 		self.creditButton.enabled = true
 
 		self.logo.rotation = 0
@@ -271,6 +284,10 @@ end
 
 function scene:gotoFoodMinigame()
 	self:gotoMinigame( "Food Game", "foodIntro" )
+end
+
+function scene:gotoPassport()
+	composer.gotoScene( "Source.passport" )
 end
 
 function scene:gotoCredit()
