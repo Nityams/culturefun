@@ -18,5 +18,9 @@ function util.nextFrame( callback )
 	timer.performWithDelay( 1000/16, callback )
 end
 
+function util.contains( left, right, top, bottom, x, y )
+	return (left < x and x < right and
+	        top  < y and y < bottom)
+end
 
 return util

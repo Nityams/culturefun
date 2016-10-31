@@ -4,10 +4,12 @@ local physics = require ( "physics")
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
 local images = require( "Source.images" )
+local math2 = require( "Source.math2" )
 local musics = require( "Source.musics" )
 local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
+local vector = require( "Source.vector" )
 
 physics.start()
 
@@ -39,10 +41,9 @@ musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3",
 
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
+		require( "Source.difficultySelector" ):preload(); coroutine.yield()
 		Button.preload(); coroutine.yield()
 		sounds:preloadSound( "Charm" ); coroutine.yield()
-		self.difficultySelector = require( "Source.difficultySelector" ); coroutine.yield()
-		self.difficultySelector:preload(); coroutine.yield()
 	end))
 end
 
@@ -96,13 +97,6 @@ function scene:create( event )
 		width = images:width( "Logo" ),
 		height = images:height( "Logo" )
 	}
-
-	---------------------------
-	-- Background animations --
-	---------------------------
-	physics.pause()
-
-	self:createPlanes()
 
 	----------------
 	-- Foreground --
@@ -192,21 +186,25 @@ function scene:show( event )
 		self.canWantSpin = false
 
 		physics.start()
-		physics.setGravity(0,0)
+		physics.setGravity( 0, 0 )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-	    self.loopTimer = timer.performWithDelay(11000, function()
+
+		if self.preloader == nil then
+			self.preloader = self:preload()
+		end
+
+		timer.performWithDelay( 25, function() self:startMusic() end )
+		timer.performWithDelay( 25, function() self:removeMinigames() end )
+
+		timer.performWithDelay( 500, function() self:createPlanes() end )
+
+	    self.loopTimer = timer.performWithDelay(8000, function()
 			self:removeOldDoodads()
 			self:createPlanes()
 		end, 0)
-		timer.performWithDelay( 25, function() self:startMusic() end )
-		timer.performWithDelay( 25, function() self:removeMinigames() end )
-		timer.performWithDelay( 25, function()
-			if self.preloader == nil then
-				self.preloader = self:preload()
-			end
-		end)
+
 	end
 end
 
@@ -313,10 +311,21 @@ end
 
 function scene:removeOldDoodads()
 	-- Remove out of screen planes
+
+	local top = -25
+	local right = display.contentWidth + 25
+	local left = -25
+	local bottom = display.contentHeight + 25
+
+	print( "left", left )
+	print( "right", right )
+	print( "top", top )
+	print( "bottom", bottom )
+
 	for i = #self.planesArray, 1, -1 do
 		local thisPlane = self.planesArray[i]
 
-		if ( thisPlane.x < 100 or thisPlane.x > display.contentWidth + 100) then
+		if not util.contains( left, right, top, bottom, thisPlane.x, thisPlane.y ) then
 			display.remove( thisPlane )
 			table.remove(self.planesArray,i)
 		end
@@ -325,7 +334,7 @@ function scene:removeOldDoodads()
 	for i = #self.eventsArray, 1, -1 do
 		local thisEvent = self.eventsArray[i]
 
-		if ( thisEvent.x < 100 or thisEvent.x > display.contentWidth + 100) then
+		if not util.contains( left, right, top, bottom, thisEvent.x, thisEvent.y ) then
 			display.remove( thisEvent )
 			table.remove(self.eventsArray,i)
 		end
@@ -333,52 +342,131 @@ function scene:removeOldDoodads()
 end
 
 function scene:createPlanes()
+	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
+	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
+	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
+	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
+	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
+	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
+	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
+	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
+	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
+	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
+	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
+	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
+	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
+	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
+	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
+	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
+	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
+	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
+	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
+	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
+	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
+	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
+	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
+	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
+	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
+end
 
-	local plane1 = images:get( self.doodadsGroup, "Plane 1")
-	plane1:rotate(90)
-	plane1.x = 100
-	plane1.y = 200
-	plane1.alpha = 0.6
-	physics.addBody(plane1, "dynamic", { radius = 30, bounce = 0.5})
-	plane1:setLinearVelocity(50,0)
+-- (A .. B)^2 < b^2 * a^2
+-- (ax * bx + ay * by)^2 < b^2 * a^2
+-- (ax * bx)^2 + 2*ax*bx*ay*by + (ay * by)^2 < b^2 * a^2
+-- ax^2 + 2*ax*bx + bx^2 + 2*ax*bx*ay*by + ay^2 + 2*ay*by + by^2 < b^2 * a^2
+-- ax^2 + 2*ax*bx + bx^2 + 2*ax*bx*ay*by + ay^2 + 2*ay*by + by^2 < (bx^2 + by^2)^2 * (ax^2 + ay^2)^2
+-- ax^2 + 2*ax*bx + bx^2 + 2*ax*bx*ay*by + ay^2 + 2*ay*by + by^2 < bx^4 + 2*bx^2*by^2 + by^4 * ax^4 + 2*ax^2*ay^2 + ay^4
 
-	local plane2 = images:get( self.doodadsGroup, "Plane 2")
-	plane2:rotate(-90)
-	plane2.x = display.contentWidth - 50
-	plane2.y = 300
-	plane2.alpha = 0.6
-	physics.addBody(plane2, "dynamic", { radius = 30, bounce = 0.5})
-	plane2:setLinearVelocity(-70,0)
+function scene:createPlane( imageName )
+	local attempts = 1
 
-	local plane3 = images:get( self.doodadsGroup, "Plane 3")
-	plane3:rotate(90)
-	plane3.x = 100
-	plane3.y = 400
-	plane3.alpha = 0.6
-	physics.addBody(plane3, "dynamic", { radius = 30, bounce = 0.5})
-	plane3:setLinearVelocity(80,0)
+	local top = 0
+	local right = display.contentWidth
+	local left = 0
+	local bottom = display.contentHeight
 
-	local plane4 = images:get( self.doodadsGroup, "Plane 4")
-	plane4:rotate(-90)
-	plane4.x = display.contentWidth - 100
-	plane4.y = 500
-	plane4.alpha = 0.6
-	physics.addBody(plane4, "dynamic", { radius = 30, bounce = 0.5})
-	plane4:setLinearVelocity(-60,0)
+	local plane = images:get( self.doodadsGroup, imageName )
+	plane.alpha = 0
+	transition.to( plane, {time=500, alpha=0.6} )
 
-	local plane5 = images:get( self.doodadsGroup, "Plane 5")
-	plane5:rotate(90)
-	plane5.x = 100
-	plane5.y = 600
-	plane5.alpha = 0.6
-	physics.addBody(plane5, "dynamic", { radius = 30, bounce = 0.5})
-	plane5:setLinearVelocity(40,0)
+	plane.speed = math.random( 50, 80 )
 
-	table.insert(self.planesArray,plane1)
-	table.insert(self.planesArray,plane2)
-	table.insert(self.planesArray,plane3)
-	table.insert(self.planesArray,plane4)
-	table.insert(self.planesArray,plane5)
+	plane.start = math2.randomPointWithin( left + 50, right - 50, top + 50, bottom - 50 )
+	plane.finish = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
+	plane.x = plane.start.x
+	plane.y = plane.start.y
+	local collision = self:planeWillIntersectWithAnother( plane )
+
+	while collision do
+		attempts = attempts + 1
+		if attempts > 10 then
+			print( "Failed to create plane -- too many failed attempts" )
+			plane:removeSelf()
+			return
+		end
+
+		-- Try another point.
+		plane.start = math2.randomPointWithin( left + 25, right - 25, top + 25, bottom - 25 )
+		plane.finish = math2.randomPointOnBorder( left - 25, right + 25, top - 25, bottom + 25 )
+		plane.x = plane.start.x
+		plane.y = plane.start.y
+		collision = self:planeWillIntersectWithAnother( plane )
+	end
+
+	local pathVector = plane.finish - plane.start
+	local heading = math.atan2( pathVector.y, pathVector.x )
+
+	plane.rotation = 180 * heading / math.pi + 90
+
+	physics.addBody( plane, "dynamic", { radius = 30, bounce = 0.5 } )
+	plane:setLinearVelocity(
+		plane.speed * math.cos( heading ),
+		plane.speed * math.sin( heading )
+	)
+
+	table.insert( self.planesArray, plane )
+end
+
+function scene:planeWillIntersectWithAnother( plane )
+	local onScreenTime = (plane.finish - plane.start):magnitude() / plane.speed
+
+	for i = 1, #self.planesArray do
+		local other = self.planesArray[i]
+
+		local timeUntilCollision = self:timeUntilPlaneCollision( plane, other )
+
+		if 0 <= timeUntilCollision and timeUntilCollision <= onScreenTime then
+			return true
+		end
+	end
+
+	return false
+end
+
+function scene:timeUntilPlaneCollision( first, second )
+	local firstPosition = vector.new( first.x, first.y )
+	local secondPosition = vector.new( second.x, second.y )
+
+	local firstVelocity = (first.finish - first.start):withMagnitude( first.speed )
+
+	local dx, dy = second:getLinearVelocity()
+	local secondVelocity = vector.new( dx, dy )
+
+	local willCollide
+	local time
+
+	willCollide, time = math2.whenTwoCirclesCollide(
+		firstPosition,
+		firstPosition + firstVelocity,
+		secondPosition,
+		secondPosition + secondVelocity,
+		30, 30  -- Radii of the planes
+	)
+
+	if not willCollide then
+		return -1
+	else
+		return time
+	end
 end
 
 function scene:maybeSpawnFunnies()
