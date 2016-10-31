@@ -14,7 +14,7 @@ USA = {
   greetings_food = "Assets/Images/FoodGame/Dialogs/american_dialog.png"
 }
 South_Africa= {
-  name = "South_Africa",
+  name = "South Africa",
   flag = "Assets/Images/Flags/South_Africa_Flag.png",
   food = "Chakalaka pap",
   greetings_food = "Assets/Images/FoodGame/Dialogs/south_african_dialog.png"
@@ -38,7 +38,7 @@ Egypt = {
   greetings_food = "Assets/Images/FoodGame/Dialogs/egyptian_dialog.png"
 }
 New_Zealand = {
-  name = "New_Zealand",
+  name = "New Zealand",
   flag = "Assets/Images/Flags/New_Zealand_Flag.png",
   food = "Hangi",
   greetings_food = "Assets/Images/FoodGame/Dialogs/new-zealand_dialog.png"
