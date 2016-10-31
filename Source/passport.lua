@@ -10,6 +10,11 @@ local images = require( "Source.images" )
 
 local scene = composer.newScene()
 
+local screenLeft = 0
+local screenRight = display.contentWidth
+local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
+local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
+
 local countryNames = {
 	"United States", -- 1
 	"United Kingdom",
@@ -64,8 +69,8 @@ function scene:create( event )
 		group = sceneGroup,
 		image = images.get( sceneGroup, "Close Button" ),
 		imagePressed = images.get( sceneGroup, "Close Button Pressed" ),
-		x = display.contentWidth / 20,
-		y = display.contentHeight / 5,
+		x = 50,
+		y = screenTop + 50,
 		width = images.width( "Close Button" ),
 		height = images.height( "Close Button" ),
 		alpha = 0.5

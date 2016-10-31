@@ -11,14 +11,19 @@ local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
 local vector = require( "Source.vector" )
 
-physics.start()
-
-local scene = composer.newScene()
-
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+
+physics.start()
+
+local scene = composer.newScene()
+
+local screenLeft = 0
+local screenRight = display.contentWidth
+local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
+local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 
 images.defineImage( "Logo",  "Menu/MenuLogoV1Edit.png", 323, 319 )
 images.defineImage( "Logo Pressed", "Menu/MenuLogoV1Edit-pressed.png", 323, 319 )

@@ -6,16 +6,20 @@ local images = require( "Source.images" )
 local Preloader = require( "Source.preloader" )
 local util = require( "Source.util" )
 
+-- -----------------------------------------------------------------------------------
+-- Code outside of the scene event functions below will only be executed ONCE unless
+-- the scene is removed entirely (not recycled) via "composer.removeScene()"
+-- -----------------------------------------------------------------------------------
+
 local scene = composer.newScene()
 
 local font = fonts.neucha()
 local titleOffsetY = (util.aspectRatio() > 4/3 and 250 or 175)
 
-
--- -----------------------------------------------------------------------------------
--- Code outside of the scene event functions below will only be executed ONCE unless
--- the scene is removed entirely (not recycled) via "composer.removeScene()"
--- -----------------------------------------------------------------------------------
+local screenLeft = 0
+local screenRight = display.contentWidth
+local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
+local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 
 images.defineImage(
 	"World Map Blurred",
@@ -94,8 +98,8 @@ function scene:create( event )
 		group = sceneGroup,
 		image = images.get( sceneGroup, "Close Button" ),
 		imagePressed = images.get( sceneGroup, "Close Button Pressed" ),
-		x = display.contentWidth / 20,
-		y = display.contentHeight / 5,
+		x = 50,
+		y = screenTop + 50,
 		width = images.width( "Close Button" ),
 		height = images.height( "Close Button" ),
 		alpha = 0.5
