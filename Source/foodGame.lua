@@ -53,7 +53,7 @@ local function winScene()
 end
 
 --creating main table
-local Countries = require "Countries"
+local Countries = require "Source.Countries"
 local choices = {}
 -- other scenes from the game:
 
