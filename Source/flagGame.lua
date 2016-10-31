@@ -290,6 +290,12 @@ end
 -- -----------------------------------------------------------------------------------
 
 function scene:preload()
+	local numberSheets = 5
+	local numberImages = 13
+	local numberMusics = 2
+	local numberSounds = 8
+	local totalImportantObjects = numberSheets + numberImages + numberMusics + numberSounds
+
 	return Preloader:new(coroutine.create(function()
 		images.loadSheet( "Cat" ); coroutine.yield()
 		images.loadSheet( "Dog" ); coroutine.yield()
@@ -319,7 +325,7 @@ function scene:preload()
 		sounds.loadSound( "Win FX" ); coroutine.yield()
 		sounds.loadSound( "Celebrate FX" ); coroutine.yield()
 		sounds.loadSound( "Flag Flapping" ); coroutine.yield()
-	end))
+	end), totalImportantObjects)
 end
 
 -- create()
@@ -607,8 +613,8 @@ function scene:create( event )
 		obj:setSequence("run")
 		obj:play()
 	end
-	-------------------------------------------------------------------------------------------------------
-		-- temp = placeholder for all right side
+	
+	-- temp = placeholder for all right side
 	local temp = images.get( sceneGroup, "Right Side" )
 	temp.x = collumn.x + collumn.x / 4
 	temp.y = display.contentCenterY+8
@@ -803,7 +809,7 @@ function scene:create( event )
 					i = 1
 				else i = i + 1 end
 			end
-			--local img
+			-- place monument on top of the stands
 			local function place_img(item,randMonument)
 				local img = display.newImageRect( sceneGroup,
 											   monumentAssets[randMonument],
@@ -816,6 +822,7 @@ function scene:create( event )
 				local monument_item =  {index = randMonument, obj = img}
 				table.insert(usedMonument,monument_item)
 			end
+			-- function to resume the stands animation
 			local function resume_animation(obj)
 				obj:setSequence("normal1")
 				obj:play()
@@ -846,10 +853,17 @@ function scene:create( event )
 				sounds.play( "Port Out" )
 				timer.performWithDelay(1000,function()resume_animation(item2) return true end, 1)
 			elseif num == 2 and score ~= 0 then
-				if usedMonument[score+1] ~= nil then
-					usedMonument[score+1].obj:removeSelf()
-					usedMonument[score+1] = nil
-					local item2 = mon_placeholders[5-score]
+			    -- removing monuments based on different difficulty
+				local temp = score
+				if difficulty == 1 then temp = temp + 1
+				elseif difficulty == 2 then temp = (score+1)/2
+				elseif difficulty == 3 then temp = (score+1)/3 end
+				
+				if usedMonument[temp] ~= nil then
+					usedMonument[temp].obj:removeSelf()
+					usedMonument[temp] = nil
+					temp = temp - 1
+					local item2 = mon_placeholders[5-temp]
 					item2:setSequence("port_out")
 					item2:play()
 					sounds.play( "Port Out" )
@@ -933,12 +947,14 @@ function scene:create( event )
 	-------------------------------------------------------------------------------------------------------
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
-	-- function to start the game
+
 	local function contButtonTap()
 		-- this will stop the animations
 		transition.cancel()
 		returnToMenu()
 	end
+	
+	-- animation for ended round
 	local function endgame2()
 		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-150,font,44)
 		text:setFillColor(0,0,0)
@@ -954,8 +970,9 @@ function scene:create( event )
 		}
 		contButton:addEventListener("tap", contButtonTap)
 	end
-
 	local function endgame()
+		-- moves the dog to proper position
+		transition.to(animal3, {y = currentHeight - 135 - currentHeight/distance * count + 40})
 		star:setSequence("end")
 		star:play()
 		transition.fadeOut(pole,{time = 2000})
@@ -968,6 +985,8 @@ function scene:create( event )
 			onComplete = endgame2
 			})
 	end
+	
+	-- function to start the game
 	function startGame()
 	    -- memories dump
 		animal1:setSequence("idle")
@@ -985,6 +1004,7 @@ function scene:create( event )
 		-- check to start new round
 		if count ~= level then
 			startRound()
+		-- this happens when the round ended
 		else
 			textBox1:removeSelf()
 			textBox2:removeSelf()
@@ -997,7 +1017,7 @@ function scene:create( event )
 			animal2:play()
 			animal3:play()
 			sounds.play( "Win FX" )
-			sounds.play( "Celebrate FX" )
+			sounds.play( "Celebrate FX" ) 
 			endgame()
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
@@ -1040,7 +1060,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-
+		physics.pause()
 	end
 end
 

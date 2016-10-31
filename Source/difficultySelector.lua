@@ -37,6 +37,8 @@ images.defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.cont
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
 		images.loadImage( "World Map Blurred" ); coroutine.yield()
+		images.loadImage( "Close Button" ); coroutine.yield()
+		images.loadImage( "Close Button Pressed" ); coroutine.yield()
 	end))
 end
 
@@ -148,12 +150,20 @@ function scene:show( event )
 		self.mediumButton.enabled = true
 		self.hardButton.enabled = true
 
+		local alreadyPreloaded = composer.getVariable( "Have preloaded " .. minigame.name )
+
+		if minigame.preloadFn and not alreadyPreloaded then
+			composer.setVariable( "Have preloaded " .. minigame.name, true )
+			self:startPreloading( minigame.preloadFn )
+		end
+
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		if minigame.preloadFn then
-			self.preloader = minigame.preloadFn()
+		if self.preloader then
+			timer.performWithDelay( 1000/16, function() self.preloader:start() end )
 		end
+
 	end
 end
 
@@ -171,6 +181,11 @@ function scene:hide( event )
 		-- Code here runs immediately after the scene goes entirely off screen
 
 		self.nameText:removeSelf()
+
+		if self.loadingText then
+			self.loadingText:removeSelf()
+			self.loadingText = nil
+		end
 	end
 end
 
@@ -198,6 +213,26 @@ function scene:gotoGame( difficulty )
 	composer.gotoScene( self.minigameSourcePath )
 end
 
+function scene:startPreloading( preloadFn )
+	self.preloader = preloadFn()
+
+	if self.preloader.emitsProgressEvents then
+		self.loadingText = display.newText(
+			self.view,
+			"Loading...",
+			display.contentCenterX, screenBottom - 100,
+			font, 24
+		)
+		self.loadingText:setFillColor( 0.4, 0.4, 0.4 )
+
+		self.preloader:addEventListener( "done", function()
+			if self.loadingText then
+				self.loadingText:removeSelf()
+				self.loadingText = nil
+			end
+		end)
+	end
+end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners

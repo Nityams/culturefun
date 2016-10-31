@@ -58,10 +58,10 @@ local desiredPlanesOnscreen = 5
 
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
-		require( "Source.difficultySelector" ):preload(); coroutine.yield()
+		require( "Source.difficultySelector" ):preload():start(); coroutine.yield()
 		Button.preload(); coroutine.yield()
 		sounds.loadSound( "Charm" ); coroutine.yield()
-	end))
+	end), 3)
 end
 
 -- create()
@@ -221,17 +221,20 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
-		if self.preloader == nil then
-			self.preloader = self:preload()
-		end
-
 		timer.performWithDelay( 25, function() self:startMusic() end )
 		timer.performWithDelay( 25, function() self:removeMinigames() end )
 
-	    self.loopTimer = timer.performWithDelay(1000, function()
-			self:removeOldDoodads()
-			self:createPlanes()
-		end, 0)
+		if self.preloader == nil then
+			timer.performWithDelay( 25, function()
+				self.preloader = self:preload()
+				self.preloader:addEventListener( "done", function()
+					self:startPlaneTimer()
+				end)
+				self.preloader:start()
+			end)
+		else
+			self:startPlaneTimer()
+		end
 
 	end
 end
@@ -350,6 +353,13 @@ function scene:spinLogo()
 	end})
 end
 
+function scene:startPlaneTimer()
+    self.loopTimer = timer.performWithDelay(100, function()
+		self:removeOldDoodads()
+		self:createPlanes()
+	end, 0)
+end
+
 function scene:removeAllDoodads()
 	for i = 1,#self.planesArray do
 		self.planesArray[i]:removeSelf()
@@ -393,6 +403,10 @@ function scene:createPlanes()
 	local toCreate = desiredPlanesOnscreen - #self.planesArray
 	for i = 1,toCreate do
 		timer.performWithDelay( 50 * i, function()
+			if composer.getSceneName( "current" ) ~= "Source.menu" then
+				-- Happens if the player leaves the scene within these 50ms.
+				return
+			end
 			if #self.planesArray < desiredPlanesOnscreen then
 				self:createPlane()
 			end
