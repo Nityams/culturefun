@@ -34,6 +34,16 @@ sounds:defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
 
 musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
+local planeImages = {
+	"Plane 1",
+	"Plane 2",
+	"Plane 3",
+	"Plane 4",
+	"Plane 5"
+}
+
+local desiredPlanesOnscreen = 25
+
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -198,9 +208,7 @@ function scene:show( event )
 		timer.performWithDelay( 25, function() self:startMusic() end )
 		timer.performWithDelay( 25, function() self:removeMinigames() end )
 
-		timer.performWithDelay( 500, function() self:createPlanes() end )
-
-	    self.loopTimer = timer.performWithDelay(8000, function()
+	    self.loopTimer = timer.performWithDelay(1000, function()
 			self:removeOldDoodads()
 			self:createPlanes()
 		end, 0)
@@ -339,34 +347,14 @@ function scene:removeOldDoodads()
 			table.remove(self.eventsArray,i)
 		end
 	end
+
 end
 
 function scene:createPlanes()
-	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
-	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
-	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
-	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
-	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
-	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
-	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
-	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
-	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
-	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
-	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
-	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
-	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
-	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
-	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
-	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
-	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
-	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
-	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
-	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
-	timer.performWithDelay( 300, function() self:createPlane( "Plane 1" ) end )
-	timer.performWithDelay( 600, function() self:createPlane( "Plane 2" ) end )
-	timer.performWithDelay( 900, function() self:createPlane( "Plane 3" ) end )
-	timer.performWithDelay( 1200, function() self:createPlane( "Plane 4" ) end )
-	timer.performWithDelay( 1500, function() self:createPlane( "Plane 5" ) end )
+	local toCreate = desiredPlanesOnscreen - #self.planesArray
+	for i = 1,toCreate do
+		timer.performWithDelay( 100 * i, function() self:createPlane() end )
+	end
 end
 
 -- (A .. B)^2 < b^2 * a^2
@@ -376,13 +364,19 @@ end
 -- ax^2 + 2*ax*bx + bx^2 + 2*ax*bx*ay*by + ay^2 + 2*ay*by + by^2 < (bx^2 + by^2)^2 * (ax^2 + ay^2)^2
 -- ax^2 + 2*ax*bx + bx^2 + 2*ax*bx*ay*by + ay^2 + 2*ay*by + by^2 < bx^4 + 2*bx^2*by^2 + by^4 * ax^4 + 2*ax^2*ay^2 + ay^4
 
-function scene:createPlane( imageName )
+function scene:createPlane()
 	local attempts = 1
 
 	local top = 0
 	local right = display.contentWidth
 	local left = 0
 	local bottom = display.contentHeight
+
+	if self.nextPlaneImage == nil then
+		self.nextPlaneImage = 1
+	end
+
+	local imageName = planeImages[self.nextPlaneImage]
 
 	local plane = images:get( self.doodadsGroup, imageName )
 	plane.alpha = 0
@@ -424,6 +418,8 @@ function scene:createPlane( imageName )
 	)
 
 	table.insert( self.planesArray, plane )
+
+	self.nextPlaneImage = (self.nextPlaneImage % #planeImages) + 1
 end
 
 function scene:planeWillIntersectWithAnother( plane )
