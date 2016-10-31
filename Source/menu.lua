@@ -246,6 +246,8 @@ function scene:hide( event )
 		-- Code here runs immediately after the scene goes entirely off screen
 
 		physics.pause()
+
+		self:removeAllDoodads()
 	end
 end
 
@@ -334,6 +336,17 @@ function scene:spinLogo()
 			self:spinLogo()
 		end
 	end})
+end
+
+function scene:removeAllDoodads()
+	for i = 1,#self.planesArray do
+		self.planesArray[i]:removeSelf()
+	end
+	for i = 1,#self.eventsArray do
+		self.eventsArray[i]:removeSelf()
+	end
+	self.planesArray = {}
+	self.eventsArray = {}
 end
 
 function scene:removeOldDoodads()
