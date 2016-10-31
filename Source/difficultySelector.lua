@@ -1,5 +1,4 @@
 local composer = require( "composer" )
-local widget = require( "widget" )
 
 local Button = require( "Source.button" )
 local fonts = require( "Source.fonts" )
@@ -178,9 +177,9 @@ function scene:hide( event )
 
 		self.nameText:removeSelf()
 
-		if self.progressView then
-			self.progressView:removeSelf()
-			self.progressView = nil
+		if self.loadingText then
+			self.loadingText:removeSelf()
+			self.loadingText = nil
 		end
 	end
 end
@@ -213,23 +212,19 @@ function scene:startPreloading( preloadFn )
 	self.preloader = preloadFn()
 
 	if self.preloader.emitsProgressEvents then
-		self.progressView = widget.newProgressView(
-		    {
-		        left = display.contentCenterX - 150/2,
-		        top = screenBottom - 100,
-		        width = 150,
-		        isAnimated = false
-		    }
+		self.loadingText = display.newText(
+			self.view,
+			"Loading...",
+			display.contentCenterX, screenBottom - 100,
+			font, 24
 		)
-		self.progressView:setProgress( 0.01 )
+		self.loadingText:setFillColor( 0.4, 0.4, 0.4 )
 
 		self.preloader:addEventListener( "progress", function( percent )
-			if self.progressView then
-				if percent < 1.0 then
-					self.progressView:setProgress( percent )
-				else
-					self.progressView:removeSelf()
-					self.progressView = nil
+			if self.loadingText then
+				if percent >= 1.0 then
+					self.loadingText:removeSelf()
+					self.loadingText = nil
 				end
 			end
 		end)
