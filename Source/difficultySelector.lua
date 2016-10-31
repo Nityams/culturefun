@@ -173,6 +173,8 @@ function scene:gotoGame( difficulty )
 	audio.fadeOut( 500, { channel=self.menuMusicChannel } )
 	audio.stopWithDelay( 500, { channel=self.menuMusicChannel } )
 
+	composer.setVariable( "Menu music still playing", false )
+
 	composer.setVariable( "difficulty", difficulty )
 	composer.gotoScene( self.minigameSourcePath )
 end

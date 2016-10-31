@@ -296,6 +296,8 @@ function scene:gotoCredit()
 	audio.fade( 500 )
 	audio.stopWithDelay( 500 )
 
+	composer.setVariable( "Menu music still playing", false )
+
 	composer.gotoScene( "Source.credit" )
 end
 
@@ -562,8 +564,13 @@ function scene:removeMinigames()
 end
 
 function scene:startMusic()
-	-- This music will be turned off in difficultySelector.lua
-	self.menuMusicChannel = musics:play( "Menu Theme" )
+	local stillPlaying = composer.getVariable( "Menu music still playing" )
+	if not stillPlaying then
+		composer.setVariable( "Menu music still playing", true )
+
+		-- This music will be turned off in difficultySelector.lua
+		self.menuMusicChannel = musics:play( "Menu Theme" )
+	end
 end
 
 -- -----------------------------------------------------------------------------------
