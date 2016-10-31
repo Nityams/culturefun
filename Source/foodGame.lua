@@ -61,8 +61,8 @@ local choices = {}
 
 -- Temporary Music
 musics:defineMusic( "Food Theme", "Assets/Sounds/Music/Whimsical-Popsicle.mp3", 1, 5000 )
-sounds:defineSound("Win","Assets/Sounds/win.wav",0.5 )
-sounds:defineSound("starWin", "Assets/Sounds/starWin.wav",0.5)
+sounds.defineSound("Win","Assets/Sounds/win.wav",0.5 )
+sounds.defineSound("starWin", "Assets/Sounds/starWin.wav",0.5)
 -- create()
 function scene:create( event )
 
@@ -216,15 +216,15 @@ end
 
 function starShine()
   if score == 12 then
-    sounds:play("starWin")
+    sounds.play("starWin")
     -- star1:scale(4,4)
     -- transition.to(star1,{time = 500, alpha = 1, xScale = 1, yScale = 1 })
     -- starShineAnimation(star1)
   elseif score == 24 then
-    sounds:play("starWin")
+    sounds.play("starWin")
     -- starShineAnimation()
   elseif score == 36 then
-    sounds:play("starWin")
+    sounds.play("starWin")
     -- starShineAnimation()
   else
   end
@@ -337,7 +337,7 @@ function correctAnswer()
   end
 
   if(score ~= 12 and score ~= 24 and score ~=36) then
-    sounds:play("Win")
+    sounds.play("Win")
   end
   checkScore()
   eventRemover()

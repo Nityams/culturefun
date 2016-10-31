@@ -4,8 +4,8 @@ local util = require( "Source.util" )
 
 local DEFAULT_ALLOWANCE = 30  -- pixels around the button that still trigger it
 
-sounds:defineSound( "Button Up", "Assets/Sounds/Menu/Button Up.wav", 0.9 )
-sounds:defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav", 1 )
+sounds.defineSound( "Button Up", "Assets/Sounds/Menu/Button Up.wav", 0.9 )
+sounds.defineSound( "Button Down", "Assets/Sounds/Menu/Button Down.wav", 1 )
 
 
 --
@@ -145,8 +145,8 @@ end
 local Button = {}
 
 function Button.preload()
-	sounds:loadSound( "Button Up" )
-	sounds:loadSound( "Button Down" )
+	sounds.loadSound( "Button Up" )
+	sounds.loadSound( "Button Down" )
 end
 
 -- Button:newTextButton()
@@ -226,7 +226,7 @@ function Button:onPreTap( event )
 end
 
 function Button:onTap( event )
-	sounds:play( "Button Up" )
+	sounds.play( "Button Up" )
 	self.listener:dispatchEvent( "tap", nil )
 end
 
@@ -292,7 +292,7 @@ end
 
 function Button:updateDepressed()
     if self.depressed == false and self.wantDepressed == true then
-		sounds:play( "Button Down" )
+		sounds.play( "Button Down" )
 	end
 
 	self.depressed = self.wantDepressed

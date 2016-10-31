@@ -30,7 +30,7 @@ images.defineImage( "Plane 5" , "Menu/plane5.png" , 25, 25)
 images.defineImage( "Santa" , "Menu/santa.png", 90 ,30)
 images.defineImage( "Pizza", "Menu/pizza.png", 90,90)
 
-sounds:defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
+sounds.defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
 
 musics:defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
@@ -53,7 +53,7 @@ function scene:preload()
 	return Preloader:new(coroutine.create(function()
 		require( "Source.difficultySelector" ):preload(); coroutine.yield()
 		Button.preload(); coroutine.yield()
-		sounds:loadSound( "Charm" ); coroutine.yield()
+		sounds.loadSound( "Charm" ); coroutine.yield()
 	end))
 end
 
@@ -318,7 +318,7 @@ end
 function scene:spinLogo()
 	self:maybeSpawnFunnies()
 
-	timer.performWithDelay( 0, function() sounds:play( "Charm" ) end )
+	timer.performWithDelay( 0, function() sounds.play( "Charm" ) end )
 
 	self.spinning = true
 	self.wantSpin = false

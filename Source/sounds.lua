@@ -3,28 +3,28 @@ local sounds = {
     sounds = {}
 }
 
-function sounds:defineSound( name, path, volume )
-    self.params[name] = { path=path, volume=volume }
+function sounds.defineSound( name, path, volume )
+    sounds.params[name] = { path=path, volume=volume }
 end
 
-function sounds:loadSound( name )
-    local path = self.params[name].path
+function sounds.loadSound( name )
+    local path = sounds.params[name].path
 
-    if self.sounds[path] == nil then
+    if sounds.sounds[path] == nil then
         print( "Loading Sound for " .. name .. " (" .. path .. ")" )
-    	self.sounds[path] = audio.loadSound( path )
+    	sounds.sounds[path] = audio.loadSound( path )
     end
 
-    return self.sounds[path]
+    return sounds.sounds[path]
 end
 
-function sounds:play( name )
-    local path = self.params[name].path
-    local volume = self.params[name].volume
+function sounds.play( name )
+    local path = sounds.params[name].path
+    local volume = sounds.params[name].volume
 
-    self:loadSound( name )
+    sounds.loadSound( name )
 
-    local sound = self.sounds[path]
+    local sound = sounds.sounds[path]
 	local channel = audio.play( sound )
 	audio.setVolume( volume, { channel=channel } )
 end

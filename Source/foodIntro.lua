@@ -19,8 +19,8 @@ local function gotoGame()
 end
 
 local function bellsound()
-	sounds:defineSound( "Door Bell", "Assets/Sounds/door_bell.wav", 0.6 )
-	sounds:play( "Door Bell" )
+	sounds.defineSound( "Door Bell", "Assets/Sounds/door_bell.wav", 0.6 )
+	sounds.play( "Door Bell" )
 end
 
 
