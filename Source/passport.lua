@@ -1,5 +1,6 @@
 local composer = require( "composer" )
 
+local Button = require( "Source.button" )
 local images = require( "Source.images" )
 
 -- -----------------------------------------------------------------------------------
@@ -36,6 +37,8 @@ local countryFiles = {
 };
 
 images:defineImage( "Book", "Passport/Book 934x700.png", display.contentWidth, display.contentHeight )
+images:defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, display.contentHeight/14 )
+images:defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 
 
 -- -----------------------------------------------------------------------------------
@@ -57,6 +60,19 @@ function scene:create( event )
 	book.x = display.contentCenterX
 	book.y = display.contentCenterY
 
+	local returnButton = Button:newImageButton{
+		group = sceneGroup,
+		image = images:get( sceneGroup, "Close Button" ),
+		imagePressed = images:get( sceneGroup, "Close Button Pressed" ),
+		x = display.contentWidth / 20,
+		y = display.contentHeight / 5,
+		width = images:width( "Close Button" ),
+		height = images:height( "Close Button" ),
+		alpha = 0.5
+	}
+	returnButton:addEventListener( "tap", function()
+		composer.gotoScene("Source.menu")
+	end)
 end
 
 
