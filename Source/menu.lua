@@ -58,7 +58,7 @@ local desiredPlanesOnscreen = 5
 
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
-		require( "Source.difficultySelector" ):preload(); coroutine.yield()
+		require( "Source.difficultySelector" ):preload():start(); coroutine.yield()
 		Button.preload(); coroutine.yield()
 		sounds.loadSound( "Charm" ); coroutine.yield()
 	end), 3)
@@ -230,6 +230,7 @@ function scene:show( event )
 				self.preloader:addEventListener( "done", function()
 					self:startPlaneTimer()
 				end)
+				self.preloader:start()
 			end)
 		else
 			self:startPlaneTimer()

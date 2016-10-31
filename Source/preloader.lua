@@ -17,28 +17,31 @@ function Preloader:new( preloadCoroutine, total )
 
 	p.eventListener = EventListener:new()
 
-	p:start()
-
 	return p
 end
 
 function Preloader:start()
-	timer.performWithDelay( 0, function() self:run() end )
+	self:run()
 end
 
 function Preloader:stop()
 	self.preloadCoroutine = nil
 end
 
+function Preloader:hasMore()
+	return coroutine.status( self.preloadCoroutine ) == "suspended"
+end
+
 function Preloader:run()
-	if self.preloadCoroutine and coroutine.status( self.preloadCoroutine ) == "suspended" then
+	if self.preloadCoroutine and self:hasMore() then
 		local before = system.getTimer()
 		local after = before
 
-		while after < before + 10 do
-			self.numberDone = self.numberDone + 1
+		while after < before + 10 and self:hasMore() do
 			coroutine.resume( self.preloadCoroutine )
+			self.numberDone = self.numberDone + 1
 			after = system.getTimer()
+			print( "before " .. before .. " after " .. after .. " numberDone " .. self.numberDone )
 		end
 
 		if self.numberTotal then

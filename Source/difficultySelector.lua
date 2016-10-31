@@ -37,6 +37,8 @@ images.defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.cont
 function scene:preload()
 	return Preloader:new(coroutine.create(function()
 		images.loadImage( "World Map Blurred" ); coroutine.yield()
+		images.loadImage( "Close Button" ); coroutine.yield()
+		images.loadImage( "Close Button Pressed" ); coroutine.yield()
 	end))
 end
 
@@ -227,6 +229,8 @@ function scene:startPreloading( preloadFn )
 			end
 		end)
 	end
+
+	timer.performWithDelay( 1000/16, function() self.preloader:start() end )
 end
 
 -- -----------------------------------------------------------------------------------

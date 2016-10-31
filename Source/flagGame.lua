@@ -292,7 +292,9 @@ end
 function scene:preload()
 	local numberSheets = 5
 	local numberImages = 13
-	local totalImportantObjects = numberSheets + numberImages
+	local numberMusics = 2
+	local numberSounds = 8
+	local totalImportantObjects = numberSheets + numberImages + numberMusics + numberSounds
 
 	return Preloader:new(coroutine.create(function()
 		images.loadSheet( "Cat" ); coroutine.yield()
