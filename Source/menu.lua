@@ -11,14 +11,19 @@ local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
 local vector = require( "Source.vector" )
 
-physics.start()
-
-local scene = composer.newScene()
-
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+
+physics.start()
+
+local scene = composer.newScene()
+
+local screenLeft = 0
+local screenRight = display.contentWidth
+local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
+local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 
 images.defineImage( "Logo",  "Menu/MenuLogoV1Edit.png", 323, 319 )
 images.defineImage( "Logo Pressed", "Menu/MenuLogoV1Edit-pressed.png", 323, 319 )
@@ -249,6 +254,11 @@ function scene:hide( event )
 
 		physics.pause()
 
+		if self.spinTransition then
+			transition.cancel( self.spinTransition )
+			self.spinTransition = nil
+		end
+
 		self:removeAllDoodads()
 	end
 end
@@ -330,7 +340,7 @@ function scene:spinLogo()
 		self.canWantSpin = true
 	end)
 
-	transition.to(self.logo, {rotation=-360, time=2000, onComplete=function()
+	self.spinTransition = transition.to(self.logo, {rotation=-360, time=2000, onComplete=function()
 		self.logo.rotation = 0
 		self.spinning = false
 		self.canWantSpin = false
@@ -354,10 +364,10 @@ end
 function scene:removeOldDoodads()
 	-- Remove out of screen planes
 
-	local top = -25
-	local right = display.contentWidth + 25
-	local left = -25
-	local bottom = display.contentHeight + 25
+	local top = screenTop - 25
+	local right = screenRight + 25
+	local left = screenLeft - 25
+	local bottom = screenBottom + 25
 
 	for i = #self.planesArray, 1, -1 do
 		local thisPlane = self.planesArray[i]
@@ -424,10 +434,10 @@ end
 function scene:createFlyingObject( imageName, speed, insideScreen, wantCollision )
 	local attempts = 0
 
-	local top = 0
-	local right = display.contentWidth
-	local left = 0
-	local bottom = display.contentHeight
+	local top = screenTop
+	local right = screenRight
+	local left = screenLeft
+	local bottom = screenBottom
 
 	local plane = images.get( self.doodadsGroup, imageName )
 	plane.speed = speed

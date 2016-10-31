@@ -9,16 +9,20 @@ local musics = require( "Source.musics" )
 local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 
-local scene = composer.newScene()
-
-local currentWidth = display.contentWidth
-local currentHeight = display.contentHeight
-
-
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+
+local scene = composer.newScene()
+
+local screenLeft = 0
+local screenRight = display.contentWidth
+local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
+local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
+
+local currentWidth = display.contentWidth
+local currentHeight = display.contentHeight
 
 local countryNames = {
 	"United States", -- 1
@@ -31,7 +35,7 @@ local countryNames = {
 	"Vietnam",
 	"Mexico",
 	"China", -- 10
-	"Russia", 
+	"Russia",
 	"South Africa",
 	"Germany",
 	"Italy",
@@ -41,7 +45,7 @@ local countryNames = {
 	"Thailand",
 	"Taiwan",
 	"Egypt", -- 20
-	"Honduras", 
+	"Honduras",
 	"Hungary",
 	"Madagascar",
 	"Mongolia",
@@ -51,7 +55,7 @@ local countryNames = {
 	"Philippines",
 	"Switzerland",
 	"Ukraine", -- 30
-	"Croatia", 
+	"Croatia",
 	"Dominician",
 	"East Timor",
 	"El Salvador",
@@ -61,7 +65,7 @@ local countryNames = {
 	"Haiti",
 	"Kazakhstan",
 	"Kenya", -- 40
-	"Laos", 
+	"Laos",
 	"Liberia",
 	"Luxembourg",
 	"Macedonia",
@@ -71,7 +75,7 @@ local countryNames = {
 	"Nauru",
 	"Nigeria",
 	"Norway", -- 50
-	"Palau", 
+	"Palau",
 	"Portugal",
 	"Saudi Arabia",
 	"Serbia",
@@ -81,7 +85,7 @@ local countryNames = {
 	"Sudan",
 	"Syria",
 	"Vatican City", -- 60
-	"Zimbabwe" 
+	"Zimbabwe"
 };
 
 local countryFiles = {
@@ -507,8 +511,8 @@ function scene:create( event )
 		group = sceneGroup,
 		image = images.get( sceneGroup, "Pause Button" ),
 		imagePressed = images.get( sceneGroup, "Pause Button Pressed" ),
-		x = currentWidth / 20,
-		y = currentHeight / 5,
+		x = 50,
+		y = screenTop + 50,
 		width = images.width( "Pause Button" ),
 		height = images.height( "Pause Button" ),
 		alpha = 0.9,

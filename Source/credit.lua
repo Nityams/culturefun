@@ -5,12 +5,17 @@ local images = require( "Source.images" )
 local musics = require( "Source.musics" )
 local sounds = require( "Source.sounds" )
 
-local scene = composer.newScene()
-
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+
+local scene = composer.newScene()
+
+local screenLeft = 0
+local screenRight = display.contentWidth
+local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
+local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 
 images.defineImage( "Credit", "Credits/credit.png", display.contentWidth, display.contentHeight-150 )
 images.defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, display.contentHeight/14 )
@@ -48,8 +53,8 @@ function scene:create( event )
 		group = sceneGroup,
 		image = images.get( sceneGroup, "Close Button" ),
 		imagePressed = images.get( sceneGroup, "Close Button Pressed" ),
-		x = display.contentWidth / 20,
-		y = display.contentHeight / 5,
+		x = 50,
+		y = screenTop + 50,
 		width = images.width( "Close Button" ),
 		height = images.height( "Close Button" ),
 		alpha = 0.5
