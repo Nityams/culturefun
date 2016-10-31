@@ -148,7 +148,7 @@ function scene:create( event )
 	self.creditButton = Button:newTextButton{
 		group=uiGroup,
 		font=font, fontSize=20, fontColor={ 0.4 },
-		text="Credit",
+		text="Credits",
 		x=display.contentWidth-130, y=display.contentHeight-140,
 		paddingX=20, paddingY=5,
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
