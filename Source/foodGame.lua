@@ -39,8 +39,10 @@ local text1
 local text2
 local text3
 local text4
+local victory = false
 
 local function returnToMenu()
+  if DEBUG then print("***** Returning to menu") end
   composer.gotoScene( "Source.menu" )
   composer.removeScene( "Source.foodGame" )
 --  foodGroup:removeSelf()
@@ -75,15 +77,7 @@ function scene:create( event )
   startGame()
 end
 
--- local function resetGame()
---   randomCountryNumber = 0
---   secondRandom = 0
---   path = nil
--- end
-
 function startGame()
-  -- resetGame()
-  -- randomCountryNumber = math.random(1,10) -- selecting random country from Countries module /table
   setBackground()
   newFoods()
 
@@ -95,9 +89,14 @@ function startGame()
 end
 
 function newFoods()
-  -- resetGame()
-  setFoods()
-  callCharacters()
+  if victory then
+    if DEBUG then print("***** You win!") end
+    returnToMenu()
+  else
+    if DEBUG then print("********** Starting round! ****************************************") end
+    setFoods()
+    callCharacters()
+  end
 end
 
 function setBackground()
@@ -136,7 +135,9 @@ function checkScore()
   --local scoreCounter = display.newImage(sceneGroup,"Assets/Images/FoodGame/timer/0.png", currentWidth/20,currentHeight/20)
 
   if scoreCounter ~= nil then
-      scoreCounter:removeSelf()
+    if DEBUG then print("***** Removed old scoreCounter") end
+    display.remove(scoreCounter)
+    -- scoreCounter:removeSelf()
   end
 
   scoreCounter = display.newImage(sceneGroup, "Assets/Images/FoodGame/timer/0.png")
@@ -145,7 +146,10 @@ function checkScore()
   do
     -- User score on timer
     if score % 12 == timer then
-      if DEBUG then print("***** Timer is set to: ", timer) end
+      if DEBUG then
+        print("***** Score is : "..score)
+        print("***** Timer is set to: "..timer)
+      end
       if score > 0 then
         -- Update timer with new score
         scoreCounter:removeSelf()
@@ -156,9 +160,11 @@ function checkScore()
   end
 
   -- Manually set x, y for all counters
-  scoreCounter.x = display.contentCenterX - display.contentCenterX /2+6
-  scoreCounter.y = display.contentCenterY + display.contentCenterY /2
-  scoreCounter:scale(0.19,0.19)
+  
+  scoreCounter.x = display.contentCenterX - display.contentCenterX / 2 + 6
+  scoreCounter.y = display.contentCenterY + display.contentCenterY / 2
+  scoreCounter:scale(0.19, 0.19)
+
   checkStar()
 end
 
@@ -166,21 +172,29 @@ function checkStar()
   star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
   star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
   star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
+  
   starShine()
-  if score == 36 then
+
+  if score >= 36 then
+    if DEBUG then print("***** You have "..math.floor(score/12).." out of 3 stars!") end
     display.remove( star1 )
     display.remove( star2 )
     display.remove( star3 )
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
-    returnToMenu()
+    
+    if DEBUG then print("***** Victory has been achieved") end
+    victory = true
+
   elseif score >= 24 then
+    if DEBUG then print("***** You have "..math.floor(score/12).." out of 3 stars!") end
     display.remove( star1 )
     display.remove( star2 )
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
   elseif score >= 12 then
+    if DEBUG then print("***** You have "..math.floor(score/12).." out of 3 stars!") end
     display.remove( star1 )
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
   end
@@ -194,9 +208,9 @@ function checkStar()
   star3.x = display.contentCenterX + display.contentCenterX / 2 + 150
   star3.y = display.contentCenterY - display.contentCenterY / 1.5 + 15
 
-  star1:scale(0.5,0.5)
-  star2:scale(0.5,0.5)
-  star3:scale(0.5,0.5)
+  star1:scale(0.5, 0.5)
+  star2:scale(0.5, 0.5)
+  star3:scale(0.5, 0.5)
 
 end
 
@@ -222,8 +236,8 @@ function getChoices()
     buildDeck()
     shuffleDeck()
     if DEBUG then
-      print("***** Shuffled deck")
-      showDeck()
+      print("***** Shuffled new deck")
+      -- showDeck()
     end
   end
   -- Draw countries from deck
@@ -341,9 +355,9 @@ function eventRemover()
 end
 
 function callGreetings()
-  print("***** greetings: "..correctFood..". "..choices[correctFood].name)
+  -- print("***** greetings: "..correctFood..". "..choices[correctFood].name)
   greeting = choices[correctFood].greetings_food
-  print(greeting)
+  -- print(greeting)
   dialogBox = display.newImage(sceneGroup, greeting)
   dialogBox.xScale = 0.5
   dialogBox.yScale = 0.5
