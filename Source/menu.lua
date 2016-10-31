@@ -456,9 +456,9 @@ function scene:planeWillIntersectWithAnother( plane )
 	for i = 1, #self.planesArray do
 		local other = self.planesArray[i]
 
-		local timeUntilCollision = self:timeUntilPlaneCollision( plane, other )
+		local willCollide, timeUntilCollision = self:timeUntilPlaneCollision( plane, other )
 
-		if 0 <= timeUntilCollision and timeUntilCollision <= onScreenTime then
+		if willCollide and (0 <= timeUntilCollision and timeUntilCollision <= onScreenTime) then
 			return true
 		end
 	end
@@ -486,11 +486,7 @@ function scene:timeUntilPlaneCollision( first, second )
 		30, 30  -- Radii of the planes
 	)
 
-	if not willCollide then
-		return -1
-	else
-		return time
-	end
+	return willCollide, time
 end
 
 function scene:maybeSpawnFunnies()
