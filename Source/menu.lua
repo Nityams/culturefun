@@ -215,12 +215,13 @@ function scene:show( event )
 		self.wantSpin = false
 		self.canWantSpin = false
 
-		physics.start()
-		physics.setGravity( 0, 0 )
+		
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-
+		physics.start()
+		physics.setGravity( 0, 0 )
+		
 		timer.performWithDelay( 25, function() self:startMusic() end )
 		timer.performWithDelay( 25, function() self:removeMinigames() end )
 
@@ -248,14 +249,14 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-
+		
 		-- this cancels the loop generating planes
 		timer.cancel(self.loopTimer)
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-
 		physics.pause()
+		
 
 		if self.spinTransition then
 			transition.cancel( self.spinTransition )

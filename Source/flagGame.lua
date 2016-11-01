@@ -582,7 +582,6 @@ function scene:create( event )
 	animal2:play()
 
 	-- physics testing
-	physics.start()
 	physics.addBody(platform1,"static")
 	physics.addBody(animal1,"dynamic", {radius = 50, bounce = 0.1})
 	physics.addBody(animal2,"dynamic", {radius = 50, bounce = 0.1})
@@ -1038,6 +1037,7 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
+		physics.start()
 		physics.setGravity( 0, 9.8 )
 
 		startGame()
@@ -1054,7 +1054,7 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-
+		
 		audio.fade( 500 )
 		audio.stopWithDelay( 500 )
 
