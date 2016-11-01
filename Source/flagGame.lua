@@ -331,6 +331,7 @@ end
 -- create()
 function scene:create( event )
 	-- !! need to work on the ratio for the resolutions
+	physics.start()
 	local sceneGroup = self.view
 	local count = 0
 
@@ -1037,7 +1038,6 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-		physics.start()
 		physics.setGravity( 0, 9.8 )
 
 		startGame()
@@ -1060,7 +1060,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-		physics.pause()
+		physics.stop()
 	end
 end
 
