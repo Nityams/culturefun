@@ -26,8 +26,8 @@ images.defineImage(
 	"Menu/MenuBackgroundV1Edit_Blurred.png",
 	display.contentWidth, display.contentHeight*1.3
 )
-images.defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, display.contentHeight/14 )
-images.defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button", "Scene/9.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button Pressed", "Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 
 
 -- -----------------------------------------------------------------------------------

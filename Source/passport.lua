@@ -42,8 +42,8 @@ local countryFiles = {
 };
 
 images.defineImage( "Book", "Passport/Book 934x700.png", display.contentWidth, display.contentHeight )
-images.defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, display.contentHeight/14 )
-images.defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button", "Scene/9.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button Pressed", "Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 
 
 -- -----------------------------------------------------------------------------------

@@ -18,8 +18,8 @@ local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
 local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 
 images.defineImage( "Credit", "Credits/credit.png", display.contentWidth, display.contentHeight-150 )
-images.defineImage( "Close Button", "Scene/11.png", display.contentWidth/20, display.contentHeight/14 )
-images.defineImage( "Close Button Pressed", "Scene/11-pressed.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button", "Scene/9.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button Pressed", "Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 musics.defineMusic( "Credits Theme", "Assets/Sounds/Music/Fate-Stay-Night.mp3", 1, 5000 )
 
 local function gotoMenu()
