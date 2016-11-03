@@ -18,7 +18,12 @@ local scene = composer.newScene()
 
 local screenLeft = 0
 local screenRight = display.contentWidth
-local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
+local screenTop
+if display.viewableContentHeight < 760 then 
+	screenTop = (display.contentHeight - display.viewableContentHeight) / 2
+else
+	screenTop = (display.contentHeight - display.viewableContentHeight) / 2 + 100
+end
 local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 
 local currentWidth = display.contentWidth
@@ -593,7 +598,12 @@ function scene:create( event )
 		transition.pause(flag)
 		local overlay = images.get( sceneGroup, "Info Screen" )
 		overlay.x = display.contentCenterX
-		overlay.y = display.contentCenterY
+		-- dynamically position based on screen's resolution
+		if display.viewableContentHeight < 760 then
+			overlay.y = display.contentCenterY
+		else
+			overlay.y = display.contentCenterY+9
+		end
 		local returnButton = Button:newImageButton{
 			group = sceneGroup,
 			image = images.get( sceneGroup, "Return Button" ),
@@ -1026,7 +1036,7 @@ function scene:create( event )
 	
 	-- animation for ended round
 	local function endgame2()
-		local text = display.newText(sceneGroup,"You earned a wishing star", star.x+25,star.y-150,font,44)
+		local text = display.newText(sceneGroup,"You earned a golden star", star.x+25,star.y-150,font,44)
 		text:setFillColor(0,0,0)
 		local contButton = Button:newImageButton{
 			group = sceneGroup,
