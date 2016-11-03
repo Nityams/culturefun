@@ -19,6 +19,7 @@ local scene = composer.newScene()
 local screenLeft = 0
 local screenRight = display.contentWidth
 local screenTop
+-- dynamically choose right screen top based on resolutions
 if display.viewableContentHeight < 760 then 
 	screenTop = (display.contentHeight - display.viewableContentHeight) / 2
 else
@@ -254,6 +255,13 @@ images.defineSheet( "Star", "Sprite/6.png", {
 	sheetContentWidth = 756,
 	sheetContentHeight = 639
 })
+images.defineSheet( "Emoticon", "Sprite/7.png", {
+	width = 167,
+	height = 173,
+	numFrames = 16,
+	sheetContentWidth = 671,
+	sheetContentHeight = 692
+})
 
 sounds.defineSound( "Win FX", "Assets/Sounds/FlagGame/YAY_FX.mp3", 0.5 )
 sounds.defineSound( "Celebrate FX", "Assets/Sounds/FlagGame/CROWD.wav", 0.5 )
@@ -312,6 +320,7 @@ function scene:preload()
 		images.loadSheet( "Tree" ); coroutine.yield()
 		images.loadSheet( "Monu" ); coroutine.yield()
 		images.loadSheet( "Star" ); coroutine.yield()
+		images.loadSheet( "Emoticon" ); coroutine.yield()
 		images.loadImage( "Top Border" ); coroutine.yield()
 		images.loadImage( "Background" ); coroutine.yield()
 		images.loadImage( "Bottom Border" ); coroutine.yield()
@@ -343,10 +352,12 @@ function scene:create( event )
 	-- !! need to work on the ratio for the resolutions
 	physics.start()
 	local sceneGroup = self.view
-	local count = 0
+	local count = 0 -- keeping track round's score
+	local count2 = 0 -- keeping track wrong answers left
 
 	-- level declarations
 	local level
+	local lives
 	local randomNum
 	local distance
 	-- flag speed for level 1
@@ -358,16 +369,19 @@ function scene:create( event )
 
 	if difficulty == 1 then
 		level = 6		-- 6 rounds
+		lives = 3 		-- 3 lives
 		randomNum = 15  -- use the first 15 flags
 		distance = 9
 		speed1 = 7000
 	elseif difficulty == 2 then
 		level = 12		-- 12 rounds
+		lives = 4		-- 3 lives
 		randomNum = 30	-- use the first 30 flags
 		distance = 18
 		speed1 = 6000
 	else
 		level = 15		-- 15 rounds
+		lives = 5		-- 5 lives
 		randomNum = 60	-- use the first 60 flags
 		distance = 22
 		speed1 = 5000
@@ -484,6 +498,17 @@ function scene:create( event )
 	};
 	local mySheetStar = images.getSheet( "Star" )
 	-- end star animations --
+	-- emoticon animations --
+	local sequenceDataEmoticon = {
+		{name = "1",frames = {11}}, -- win
+		{name = "2",frames = {5}}, -- start
+		{name = "3",frames = {3}},
+		{name = "4",frames = {4}},
+		{name = "5",frames = {9}},
+		{name = "6",frames = {6}}, -- lose
+	};
+	local mySheetEmoticon = images.getSheet( "Emoticon" )
+	-- end emoticon animations --
 	-- Front-end --
 	-------------------------------------------------------------------------------------------------------
 	-- top border
@@ -695,12 +720,19 @@ function scene:create( event )
 	-- placeholder for animal on the road
 	local animal3 = display.newSprite(sceneGroup,mySheetDog,sequenceDataDog)
 	animal3:scale(0.18,0.18)
-	animal3.x = road.x
+	animal3.x = road.x-15
 	animal3.y = currentHeight - (animal3.height * 0.28)
 	animal3:setSequence("idle")
 	animal3:play()
 
-	-- place holder for star
+	-- placeholder for animal3's emoticon
+	emoticonIcon = display.newSprite(sceneGroup, mySheetEmoticon, sequenceDataEmoticon)
+	emoticonIcon:scale(0.27,0.27)
+	emoticonIcon.x = animal3.x + 40
+	emoticonIcon.y = animal3.y - 20
+	emoticonIcon:setSequence("2")
+
+	-- placeholder for star
 	local star = display.newSprite(sceneGroup,mySheetStar,sequenceDataStar)
 	star.x = road.x
 	star.y = 140
@@ -722,6 +754,7 @@ function scene:create( event )
 		if count > 0 then
 			count = count - 1
 		end
+		count2 = count2 + 1
 	end
 	-- function for flags transition + round control
 	local function cleanUP( obj )
@@ -981,6 +1014,7 @@ function scene:create( event )
 				animal1:setSequence("happy")
 				animal1:play()
 				moveUpDown(animal3,count)
+				moveUpDown(emoticonIcon,count)
 			else
 				textTap(textBox1,"Wrong!")
 				animationStop(flag)
@@ -990,6 +1024,7 @@ function scene:create( event )
 				animal1:setSequence("sad")
 				animal1:play()
 				moveUpDown(animal3,count)
+				moveUpDown(emoticonIcon,count)
 			end
 		end)
 		-- Event listener for text box 2
@@ -1006,6 +1041,7 @@ function scene:create( event )
 				animal2:setSequence("happy")
 				animal2:play()
 				moveUpDown(animal3,count)
+				moveUpDown(emoticonIcon,count)
 			else
 				textTap(textBox2,"Wrong!")
 				animationStop(flag)
@@ -1015,13 +1051,48 @@ function scene:create( event )
 				animal2:setSequence("sad")
 				animal2:play()
 				moveUpDown(animal3,count)
+				moveUpDown(emoticonIcon,count)
 			end
 		end)
 		flag:addEventListener("tap", function()
 			runFlipAnimation(flag)
 			return true
 		end)
-		-- prepare for memory dump
+		
+		-- change the emoticon of animals 3
+		local function emoFlashEnd(obj)
+			transition.scaleTo(emoticonIcon, {xScale = 0.27, yScale = 0.27, time = 500})
+		end
+		local function emoFlash(seq)
+			emoticonIcon:setSequence(seq)
+			emoticonIcon:play()
+			transition.scaleTo(emoticonIcon, {xScale = 0.4, yScale = 0.4, time = 500, onComplete = emoFlashEnd})
+		end
+		if difficulty == 1 then
+			if count2 == 1 then
+				emoFlash("4")
+			elseif count2 == 2 then
+				emoFlash("5")
+			end
+		elseif difficulty == 2 then
+			if count2 == 1 then
+				emoFlash("3")
+			elseif count2 == 2 then
+				emoFlash("4")
+			elseif count2 == 3 then
+				emoFlash("5")
+			end
+		elseif difficulty == 3 then
+			if count2 == 1 then
+				emoFlash("2")
+			elseif count2 == 2 then
+				emoFlash("3")
+			elseif count2 == 3 then
+				emoFlash("4")
+			elseif count2 == 4 then
+				emoFlash("5")
+			end
+		end
 		animationStart(flag)
 	end
 	-------------------------------------------------------------------------------------------------------
@@ -1035,7 +1106,7 @@ function scene:create( event )
 	end
 	
 	-- animation for ended round
-	local function endgame2()
+	local function endgameWin()
 		local text = display.newText(sceneGroup,"You earned a golden star", star.x+25,star.y-150,font,44)
 		text:setFillColor(0,0,0)
 		local contButton = Button:newImageButton{
@@ -1050,20 +1121,58 @@ function scene:create( event )
 		}
 		contButton:addEventListener("tap", contButtonTap)
 	end
-	local function endgame()
+	local function endgameLose()
+		local text = display.newText(sceneGroup,"Mr. Kevin is too tired!", star.x+25,star.y-200,font,44)
+		local text2 = display.newText(sceneGroup,"Let's go eatt!", text.x+20,text.y+50,font,44)
+		text:setFillColor(0,0,0)
+		text2:setFillColor(0,0,0)
+		transition.to(emoticonIcon, {time = 4000,
+				y = star.y-20,
+				x = star.x+110,
+				xScale = 0.8,
+				yScale = 0.8})
+		local contButton = Button:newImageButton{
+			group = sceneGroup,
+			image = images.get( sceneGroup, "Cont Button" ),
+			imagePressed = images.get( sceneGroup, "Cont Button Pressed" ),
+			x = star.x + 25,
+			y = star.y + 150,
+			width = images.width( "Cont Button" ),
+			height = images.height( "Cont Button" ),
+			alpha = 0.9
+		}
+		contButton:addEventListener("tap", contButtonTap)
+	end
+	local function endgame(num)
 		-- moves the dog to proper position
-		transition.to(animal3, {y = currentHeight - 135 - currentHeight/distance * count + 40})
-		star:setSequence("end")
-		star:play()
 		transition.fadeOut(pole,{time = 2000})
-		transition.to(star,{
-			time = 2000,
-			y = pole.y-40,
-			x = pole.x-17,
-			xScale = 0.9,
-			yScale = 1,
-			onComplete = endgame2
-			})
+		if num == 1 then
+			transition.to(animal3, {y = currentHeight - 135 - currentHeight/distance * count + 40})
+			star:setSequence("end")
+			star:play()
+			transition.to(star,{
+				time = 2000,
+				y = pole.y-40,
+				x = pole.x-17,
+				xScale = 0.9,
+				yScale = 1,
+				onComplete = endgameWin
+				})
+		else
+			transition.to(animal3, {time = 4000,
+				y = pole.y-40,
+				x = pole.x-17,
+				xScale = 0.5,
+				yScale = 0.5})
+			transition.fadeOut(star,{
+				time = 100,
+				y = pole.y-40,
+				x = pole.x-17,
+				xScale = 0.9,
+				yScale = 1,
+				onComplete = endgameLose
+				})
+		end
 	end
 	
 	-- function to start the game
@@ -1082,7 +1191,21 @@ function scene:create( event )
 			textBox2.enabled = true
 		end
 		-- check to start new round
-		if count ~= level then
+		if count2 == lives then
+			textBox1:removeSelf()
+			textBox2:removeSelf()
+			textBox1 = nil
+			textBox2 = nil
+			animal1:setSequence("sad")
+			animal2:setSequence("sad")
+			animal3:setSequence("happy")
+			emoticonIcon:setSequence("6")
+			animal1:play()
+			animal2:play()
+			animal3:play()
+			emoticonIcon:play()
+			endgame(2)
+		elseif count ~= level then
 			startRound()
 		-- this happens when the round ended
 		else
@@ -1093,12 +1216,14 @@ function scene:create( event )
 			animal1:setSequence("happy")
 			animal2:setSequence("happy")
 			animal3:setSequence("happy")
+			emoticonIcon:setSequence("1")
 			animal1:play()
 			animal2:play()
 			animal3:play()
+			emoticonIcon:play()
 			sounds.play( "Win FX" )
 			sounds.play( "Celebrate FX" ) 
-			endgame()
+			endgame(1)
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
 	end
