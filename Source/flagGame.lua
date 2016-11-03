@@ -748,7 +748,8 @@ function scene:create( event )
 	local usedMonument = {}
 	local textBox1 -- text box for option 1
 	local textBox2 -- text box for option 2
-
+	local temp2 = 0 -- do not animate if the lives stay the same
+	
 	-- function to decrease the Count
 	local function minusCount()
 		if count > 0 then
@@ -1059,7 +1060,7 @@ function scene:create( event )
 			return true
 		end)
 		
-		-- change the emoticon of animals 3
+		-- change emoticons of animals 3 / part of Losing mechanics
 		local function emoFlashEnd(obj)
 			transition.scaleTo(emoticonIcon, {xScale = 0.27, yScale = 0.27, time = 500})
 		end
@@ -1069,28 +1070,37 @@ function scene:create( event )
 			transition.scaleTo(emoticonIcon, {xScale = 0.4, yScale = 0.4, time = 500, onComplete = emoFlashEnd})
 		end
 		if difficulty == 1 then
-			if count2 == 1 then
+			if count2 == 1 and count2 ~= temp2 then
 				emoFlash("4")
-			elseif count2 == 2 then
+				temp2 = 1
+			elseif count2 == 2 and count2 ~= temp2 then
 				emoFlash("5")
+				temp2 = 2
 			end
 		elseif difficulty == 2 then
-			if count2 == 1 then
+			if count2 == 1 and count2 ~= temp2 then
 				emoFlash("3")
-			elseif count2 == 2 then
+				temp2 = 1
+			elseif count2 == 2 and count2 ~= temp2 then
 				emoFlash("4")
-			elseif count2 == 3 then
+				temp2 = 2
+			elseif count2 == 3 and count2 ~= temp2 then
 				emoFlash("5")
+				temp2 = 3
 			end
 		elseif difficulty == 3 then
-			if count2 == 1 then
+			if count2 == 1 and count2 ~= temp2 then
 				emoFlash("2")
-			elseif count2 == 2 then
+				temp2 = 1
+			elseif count2 == 2 and count2 ~= temp2 then
 				emoFlash("3")
-			elseif count2 == 3 then
+				temp2 = 2
+			elseif count2 == 3 and count2 ~= temp2 then
 				emoFlash("4")
-			elseif count2 == 4 then
+				temp2 = 3
+			elseif count2 == 4 and count2 ~= temp2 then
 				emoFlash("5")
+				temp2 = 4
 			end
 		end
 		animationStart(flag)
