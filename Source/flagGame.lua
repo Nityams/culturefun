@@ -199,6 +199,7 @@ local monumentAssets = {
 images.defineImage( "Top Border", sceneBuild[21], currentWidth, 300 )
 images.defineImage( "Background", sceneBuild[19], currentWidth, currentHeight - 190 )
 images.defineImage( "Paused Screen", sceneBuild[24], currentWidth+190, currentHeight)
+images.defineImage( "Info Screen", sceneBuild[3], currentWidth, currentHeight - 190)
 images.defineImage( "Bottom Border", sceneBuild[21], currentWidth, 300 )
 images.defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
 images.defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
@@ -206,6 +207,8 @@ images.defineImage( "Pause Button", "Scene/10.png", currentWidth/20, currentHeig
 images.defineImage( "Pause Button Pressed", "Scene/10-pressed.png", currentWidth/20, currentHeight/14 )
 images.defineImage( "Info Button", "Scene/11.png", currentWidth/20, currentHeight/14 )
 images.defineImage( "Info Button Pressed", "Scene/11-pressed.png", currentWidth/20, currentHeight/14 )
+images.defineImage( "Return Button", "Scene/9.png", currentWidth/20, currentHeight/14)
+images.defineImage( "Return Button Pressed", "Scene/9-pressed.png", currentWidth/20, currentHeight/14)
 images.defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
 images.defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
 images.defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
@@ -544,7 +547,7 @@ function scene:create( event )
 	-- pause/play event
 	-- temp2 store the values to decide play/pause
 	-- overlay
-	local function getOverlay()
+	local function getOverlayPause()
 		local overlay = images.get( sceneGroup, "Paused Screen" )
 		overlay.x = display.contentCenterX
 		overlay.y = display.contentCenterY
@@ -581,12 +584,36 @@ function scene:create( event )
 	local function pauseTap()
 		transition.pause(flag)
 		disableButtonsHelper()
-		getOverlay()
+		getOverlayPause()
 	end
+
 	local function infoTap()
 		-- this will stop the animations
-		transition.cancel()
-		returnToMenu()
+		disableButtonsHelper()
+		transition.pause(flag)
+		local overlay = images.get( sceneGroup, "Info Screen" )
+		overlay.x = display.contentCenterX
+		overlay.y = display.contentCenterY
+		local returnButton = Button:newImageButton{
+			group = sceneGroup,
+			image = images.get( sceneGroup, "Return Button" ),
+			imagePressed = images.get( sceneGroup, "Return Button Pressed" ),
+			x = 70,
+			y = screenTop + 60,
+			width = images.width( "Pause Button" ),
+			height = images.height( "Pause Button" ),
+			alpha = 0.9,
+			allowance = 8  -- Normally 30, but they are 16 pixels apart
+		}
+		local function returnTap()
+			overlay:removeSelf()
+			overlay = nil
+			returnButton:removeSelf()
+			returnButton = nil
+			transition.resume(flag)
+			enableButtons()
+		end
+		returnButton:addEventListener("tap", returnTap)
 	end
 	pauseButton:addEventListener("tap", pauseTap)
 	infoButton:addEventListener("tap", infoTap)
