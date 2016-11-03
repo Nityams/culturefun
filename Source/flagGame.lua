@@ -1063,6 +1063,7 @@ function scene:create( event )
 		-- change emoticons of animals 3 / part of Losing mechanics
 		local function emoFlashEnd(obj)
 			transition.scaleTo(emoticonIcon, {xScale = 0.27, yScale = 0.27, time = 500})
+			moveUpDown(emoticonIcon,count)
 		end
 		local function emoFlash(seq)
 			emoticonIcon:setSequence(seq)
