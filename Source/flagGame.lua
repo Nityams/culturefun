@@ -542,14 +542,16 @@ function scene:create( event )
 	-- pause/play event
 	-- temp2 store the values to decide play/pause
 	-- need to implement overlay when pause to stop all interactions with gameplay
-	local temp2 = 0
+	isPaused = 0
 	local function pauseTap()
-		if temp2 == 0 then
+		if isPaused == 0 then
 			transition.pause(flag)
-			temp2 = 1
+			disableButtons()
+			isPaused = 1
 		else
 			transition.resume(flag)
-			temp2 = 0
+			isPaused = 0
+			enableButtons()
 		end
 	end
 	local function replayTap()
@@ -562,7 +564,7 @@ function scene:create( event )
 	-- End event Pause/Replay --
 
 	-- flag pole placeholder
-	local pole = images.get( sceneGroup, "Pole" )
+	pole = images.get( sceneGroup, "Pole" )
 	pole.x = currentWidth * 1 / 3
 	pole.y = currentHeight - pole.height + 80
 
@@ -874,9 +876,13 @@ function scene:create( event )
 		-- end function for placing monument
 
 		-- Event for textboxes --
-		local function disableButtons()
+		function disableButtons()
 			textBox1.enabled = false
 			textBox2.enabled = false
+		end
+		function enableButtons()
+			textBox1.enabled = true
+			textBox2.enabled = true
 		end
 		local function textTap( obj, value )
 			if obj == textBox1 then
