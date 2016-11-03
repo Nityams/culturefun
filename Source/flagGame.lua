@@ -176,6 +176,7 @@ local sceneBuild ={
 	"Scene/21.png",
 	"Scene/22.png", -- 22
 	"Scene/10-pressed.png", -- 23
+	"Scene/19-blurred.png" -- 24
 };
 
 local monumentAssets = {
@@ -197,6 +198,7 @@ local monumentAssets = {
 
 images.defineImage( "Top Border", sceneBuild[21], currentWidth, 300 )
 images.defineImage( "Background", sceneBuild[19], currentWidth, currentHeight - 190 )
+images.defineImage( "Paused Screen", sceneBuild[24], currentWidth+190, currentHeight)
 images.defineImage( "Bottom Border", sceneBuild[21], currentWidth, 300 )
 images.defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
 images.defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
@@ -541,26 +543,53 @@ function scene:create( event )
 
 	-- pause/play event
 	-- temp2 store the values to decide play/pause
-	-- need to implement overlay when pause to stop all interactions with gameplay
-	isPaused = 0
-	local function pauseTap()
-		if isPaused == 0 then
-			transition.pause(flag)
-			disableButtons()
-			isPaused = 1
-		else
-			transition.resume(flag)
-			isPaused = 0
-			enableButtons()
+	-- overlay
+	local function getOverlay()
+		local overlay = images.get( sceneGroup, "Paused Screen" )
+		overlay.x = display.contentCenterX
+		overlay.y = display.contentCenterY
+		local pausedText = display.newText("Game is Paused", display.contentCenterX,display.contentCenterY-100,font,100)
+		pausedText:setFillColor(0,0,0)
+		local resumeButton = makeBox(sceneGroup, display.contentCenterX, display.contentCenterY+20, "Resume" )
+		local quitButton = makeBox(sceneGroup, display.contentCenterX, display.contentCenterY+100, "Quit" )
+		-- dump memories
+		local function purgeObjs()
+			overlay:removeSelf()
+			overlay = nil
+			resumeButton:removeSelf()
+			resumeButton = nil
+			pausedText:removeSelf()
+			pausedText = nil
+			quitButton:removeSelf()
+			quitButton = nil
 		end
+		-- functions on Paused Screen
+		local function resumeTap()
+			purgeObjs()
+			enableButtons()
+			transition.resume(flag)
+		end
+		local function quitTap()
+			purgeObjs()
+			transition.cancel()
+			returnToMenu()
+		end
+		resumeButton:addEventListener("tap", resumeTap)
+		quitButton:addEventListener("tap", quitTap)
 	end
-	local function replayTap()
+
+	local function pauseTap()
+		transition.pause(flag)
+		disableButtonsHelper()
+		getOverlay()
+	end
+	local function infoTap()
 		-- this will stop the animations
 		transition.cancel()
 		returnToMenu()
 	end
 	pauseButton:addEventListener("tap", pauseTap)
-	infoButton:addEventListener("tap", replayTap)
+	infoButton:addEventListener("tap", infoTap)
 	-- End event Pause/Replay --
 
 	-- flag pole placeholder
@@ -784,7 +813,7 @@ function scene:create( event )
 		end
 		-- random placer
 		if randomBox == 1 then
-			box1 = rightAnswer
+			box1 = rightAnswer -- string 
 			box2 = wrongAnswer
 		else
 			box1 = wrongAnswer
@@ -876,6 +905,12 @@ function scene:create( event )
 		-- end function for placing monument
 
 		-- Event for textboxes --
+		function disableButtonsHelper()
+			disableButtons()
+			pauseButton.enabled = false
+			infoButton.enabled = false
+
+		end
 		function disableButtons()
 			textBox1.enabled = false
 			textBox2.enabled = false
@@ -883,6 +918,8 @@ function scene:create( event )
 		function enableButtons()
 			textBox1.enabled = true
 			textBox2.enabled = true
+			pauseButton.enabled = true
+			infoButton.enabled = true
 		end
 		local function textTap( obj, value )
 			if obj == textBox1 then
