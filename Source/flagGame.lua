@@ -1207,6 +1207,11 @@ function scene:create( event )
 			textBox2:removeSelf()
 			textBox1 = nil
 			textBox2 = nil
+			pauseButton:removeSelf()
+			pauseButton = nil
+			infoButton:removeSelf()
+			infoButton = nil
+			
 			animal1:setSequence("sad")
 			animal2:setSequence("sad")
 			animal3:setSequence("happy")
@@ -1224,6 +1229,11 @@ function scene:create( event )
 			textBox2:removeSelf()
 			textBox1 = nil
 			textBox2 = nil
+			pauseButton:removeSelf()
+			pauseButton = nil
+			infoButton:removeSelf()
+			infoButton = nil
+
 			animal1:setSequence("happy")
 			animal2:setSequence("happy")
 			animal3:setSequence("happy")
