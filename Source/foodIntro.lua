@@ -15,7 +15,7 @@ local scene = composer.newScene()
 images.defineImage( "Neighborhood", "FoodGame/Intro.png", display.contentWidth, display.contentHeight )
 
 local function gotoGame()
-	composer.gotoScene("Source.foodGame")
+	composer.gotoScene("Source.foodGame_UI1")
 end
 
 local function bellsound()
