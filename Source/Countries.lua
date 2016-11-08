@@ -75,7 +75,7 @@ Vietnam = {
 --new items added on Nov 6th
 Austraila = {
   name = "Austraila",
-  flag = "Assets/Images/Flags/Austraila_Flag.png",
+  flag = "Assets/Images/Flags/Australia_Flag.png",
   food = "Barramundi",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hello"
