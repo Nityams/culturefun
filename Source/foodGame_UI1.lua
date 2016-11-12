@@ -328,8 +328,26 @@ function setBackground()
 
   function wrongAnswer( choice )
     if DEBUG then print("WRONG!!!!") end
+
+    if choice.response ~= nil then
+      if DEBUG then print("Removing existing response") end
+      display.remove(choice.response)
+      -- choice.response:removeSelf()
+    end
+
+    -- 
     choice.response = display.newText(sceneGroup, "X", choice.image.x, choice.image.y, "Helvetica", 250)
     choice.response:setFillColor(1,0,0)
+    choice.response.alpha = 0
+    choice.response:scale(1.5, 1.5)
+    
+    transition.to(choice.response, {
+      time = 200,
+      alpha = 1,
+      xScale = 1,
+      yScale = 1,
+      transition = easing.outQuart
+    })
   end
 
   function correctAnswer()
@@ -378,7 +396,7 @@ function setBackground()
     dialogBox.y = display.contentCenterY - display.contentCenterY/2.5
     dialogBox.x = character_one.x - 30
     greetingText = greet..", \n may I get some \n "..fname
-    dialogText =  display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y -10, "Helvetica", 27)
+    dialogText =  display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
     dialogText:setFillColor(0,0,0)
   end
 

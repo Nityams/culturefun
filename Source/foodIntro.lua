@@ -68,7 +68,7 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 
 		-- In two seconds go to the food game
-		timer.performWithDelay( 500, gotoGame )
+		timer.performWithDelay( 2000, gotoGame )
 	end
 end
 
