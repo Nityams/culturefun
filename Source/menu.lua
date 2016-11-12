@@ -10,6 +10,7 @@ local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
 local util = require( "Source.util" )
 local vector = require( "Source.vector" )
+local wallet = require( "Source.wallet" )
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -161,6 +162,15 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
+	self.resetButton = Button:newTextButton{
+		group=uiGroup,
+		font=font, fontSize=14, fontColor={ 0.4 },
+		text="Reset Earned Coins",
+		x=display.contentCenterX, y=display.contentHeight-140,
+		paddingX=20, paddingY=5,
+		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
+		borderWidth=3, borderColor={ 0.85 }
+	}
 	self.creditButton = Button:newTextButton{
 		group=uiGroup,
 		font=font, fontSize=20, fontColor={ 0.4 },
@@ -184,6 +194,7 @@ function scene:create( event )
 		self.flagButton.enabled = false
 		self.foodButton.enabled = false
 		self.passportButton.enabled = false
+		self.resetButton.enabled = false
 		self.creditButton.enabled = false
 	end
 	self.flagButton:addEventListener( "pretap", disableButtons )
@@ -193,6 +204,7 @@ function scene:create( event )
 	self.flagButton:addEventListener( "tap", function() self:gotoFlagMinigame() end )
 	self.foodButton:addEventListener( "tap", function() self:gotoFoodMinigame() end )
 	self.passportButton:addEventListener( "tap", function() self:gotoPassport() end)
+	self.resetButton:addEventListener( "tap", function() self:resetCoins() end)
 	self.creditButton:addEventListener( "tap", function() self:gotoCredit() end)
 end
 
@@ -608,6 +620,10 @@ function scene:startMusic()
 		-- This music will be turned off in difficultySelector.lua
 		self.menuMusicChannel = musics.play( "Menu Theme" )
 	end
+end
+
+function scene:resetCoins()
+	wallet.resetCoins()
 end
 
 -- -----------------------------------------------------------------------------------
