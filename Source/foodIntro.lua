@@ -1,6 +1,6 @@
 local composer = require( "composer" )
 
-local Countries = require "Source.Countries"
+-- local Countries = require "Source.Countries"
 local images = require( "Source.images" )
 local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
@@ -68,7 +68,7 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 
 		-- In two seconds go to the food game
-		timer.performWithDelay( 2000, gotoGame )
+		timer.performWithDelay( 500, gotoGame )
 	end
 end
 

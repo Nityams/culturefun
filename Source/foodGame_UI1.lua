@@ -262,19 +262,16 @@ function setBackground()
     correctFood = math.random(4)
     print("***** Correct country: "..correctFood..". "..choices[correctFood].name)
 
-    -- Begin drawing food grid
+    -- Draw the food grids
 
+    -- Setting the image of all four grid
     for i,v in ipairs(choices) do
       v.image = display.newImageRect(sceneGroup, v.flag, currentWidth / 5, currentHeight / 5)
-    end
-
-    -- Setting the position of all four grid
-
-    for i,v in ipairs(choices) do
       v.image.alpha = 0
       v.image:scale(0, 0)
     end
 
+    -- Positions
     choices[1].image.x = display.contentCenterX + 125
     choices[1].image.y = display.contentCenterY - display.contentCenterY / 8
 
@@ -288,14 +285,17 @@ function setBackground()
     choices[4].image.y = choices[3].image.y
 
     -- Country text
-
     for i,v in ipairs(choices) do
       v.text = display.newText(sceneGroup, v.name, v.image.x, v.image.y + 96, "Helvetica", 31)
       v.text:setFillColor(0, 0, 35)
     end
 
-    -- Staggered animation for food choice grid
+    --  Create response placeholders
+    for i,v in ipairs(choices) do
+      v.response = display.newText(sceneGroup, "", v.image.x, v.image.y, "Helvetica")
+    end
 
+    -- Staggered animation for food choice grid
     for i,v in ipairs(choices) do
       v.appear = function ()
         transition.to(v.image, {
@@ -307,23 +307,29 @@ function setBackground()
           })
       end
     end
-
     timer.performWithDelay(200, choices[3].appear)
     timer.performWithDelay(400, choices[4].appear)
     timer.performWithDelay(600, choices[2].appear)
     timer.performWithDelay(800, choices[1].appear)
 
     -- tap action listener and answer checker for all the foods in the grid
-
     for i,v in ipairs(choices) do
       v.image:addEventListener("tap", function ()
           print("***** Chose: "..i..". "..v.name..", correct: "..correctFood..". "..choices[correctFood].name)
           if i == correctFood then
             correctAnswer()
+          else
+            wrongAnswer(v)
           end
         end)
     end
 
+  end
+
+  function wrongAnswer( choice )
+    if DEBUG then print("WRONG!!!!") end
+    choice.response = display.newText(sceneGroup, "X", choice.image.x, choice.image.y, "Helvetica", 250)
+    choice.response:setFillColor(1,0,0)
   end
 
   function correctAnswer()
@@ -345,11 +351,10 @@ function setBackground()
 
   function eventRemover()
     for i,v in ipairs(choices) do
-      display.remove(v.image)
-    end
-    for i,v in ipairs(choices) do
-      -- v.text:removeSelf()
+      display.remove(v.response)
       display.remove(v.text)
+      display.remove(v.image)
+      -- v.text:removeSelf()
     end
     leaveCharacters()
   end
