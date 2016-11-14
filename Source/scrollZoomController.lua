@@ -191,7 +191,7 @@ function Controller:handleMouse( event )
 		return
 	end
 
-	local dScale = 1 + event.scrollY / 100
+	local dScale = math.exp( event.scrollY / 80 )
 	local x = math2.lerp( event.x, self.object.x, dScale )
 	local y = math2.lerp( event.y, self.object.y, dScale )
 	local scale = self:getScale() * dScale
