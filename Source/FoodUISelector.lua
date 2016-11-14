@@ -61,7 +61,7 @@ function scene:create( event )
 
   local chooseText = display.newText(
     sceneGroup,
-    "Choose game difficulty",
+    "Choice Interface Type",
     display.contentCenterX, titleOffsetY + 115,
     font, 64
   )
@@ -71,7 +71,7 @@ function scene:create( event )
     group=sceneGroup,
     font=font, fontSize=44, fontColor={ 0.4 },
     text="UI - 1",
-    x=display.contentCenterX - 250, y=display.contentCenterY + 115,
+    x=display.contentCenterX - display.contentCenterX/4, y=display.contentCenterY + 115,
     paddingX=55, paddingY=15,
     fillColor={ 0.97 }, fillColorPressed={ 0.90 },
     borderWidth=3, borderColor={ 0.85 }
@@ -80,20 +80,20 @@ function scene:create( event )
     group=sceneGroup,
     font=font, fontSize=44, fontColor={ 0.4 },
     text="UI - 2",
-    x=display.contentCenterX, y=display.contentCenterY + 115,
+    x=display.contentCenterX+display.contentCenterX/4, y=display.contentCenterY + 115,
     paddingX=30, paddingY=15,
     fillColor={ 0.97 }, fillColorPressed={ 0.90 },
     borderWidth=3, borderColor={ 0.85 }
   }
-  self.hardButton = Button:newTextButton{
-    group=sceneGroup,
-    font=font, fontSize=44, fontColor={ 0.4 },
-    text="Nothing here",
-    x=display.contentCenterX + 250, y=display.contentCenterY + 115,
-    paddingX=55, paddingY=15,
-    fillColor={ 0.97 }, fillColorPressed={ 0.90 },
-    borderWidth=3, borderColor={ 0.85 }
-  }
+  -- self.hardButton = Button:newTextButton{
+  --   group=sceneGroup,
+  --   font=font, fontSize=44, fontColor={ 0.4 },
+  --   text="Nothing here",
+  --   x=display.contentCenterX + 250, y=display.contentCenterY + 115,
+  --   paddingX=55, paddingY=15,
+  --   fillColor={ 0.97 }, fillColorPressed={ 0.90 },
+  --   borderWidth=3, borderColor={ 0.85 }
+  -- }
 
   local returnButton = Button:newImageButton{
     group = sceneGroup,
@@ -109,14 +109,14 @@ function scene:create( event )
   local function disableButtons()
     self.easyButton.enabled = false
     self.mediumButton.enabled = false
-    self.hardButton.enabled = false
+    -- self.hardButton.enabled = false
   end
   self.easyButton:addEventListener( "pretap", disableButtons )
   self.mediumButton:addEventListener( "pretap", disableButtons )
-  self.hardButton:addEventListener( "pretap", disableButtons )
+  -- self.hardButton:addEventListener( "pretap", disableButtons )
   self.easyButton:addEventListener( "tap", function() self:gotoGame( 1 ) end)
   self.mediumButton:addEventListener( "tap", function() self:gotoGame( 2 ) end)
-  self.hardButton:addEventListener( "tap", function() self:gotoGame( 3 ) end)
+  -- self.hardButton:addEventListener( "tap", function() self:gotoGame( 3 ) end)
 
   returnButton:addEventListener( "tap", function()
       composer.gotoScene("Source.menu")
@@ -146,7 +146,7 @@ function scene:show( event )
 
     self.easyButton.enabled = true
     self.mediumButton.enabled = true
-    self.hardButton.enabled = true
+    -- self.hardButton.enabled = true
 
     -- local alreadyPreloaded = composer.getVariable( "Have preloaded " .. minigame.name )
     --
