@@ -329,7 +329,7 @@ function scene:gotoCredit()
 
 	composer.setVariable( "Menu music still playing", false )
 
-	composer.gotoScene( "Source.greetingGame" )
+	composer.gotoScene( "Source.credit" )
 end
 
 function scene:logoTapped( event )
