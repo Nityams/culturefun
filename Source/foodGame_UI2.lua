@@ -19,7 +19,7 @@ local setFoods
 local callGreetings
 local flagAnimation
 local startGame
-local eventRemover
+local choiceRemover
 local checkScore
 local checkStar
 local correctAnswer
@@ -106,17 +106,17 @@ function setBackground()
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/return.png", 60, 60 )--11
+  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/9.png", 60, 60 )--11
   replayButton.y = display.contentCenterY - display.contentCenterY / 1.5
-  replayButton.x = display.contentCenterX - display.contentCenterX / 2.3
+  replayButton.x = display.contentCenterX - display.contentCenterX / 1.1
 
   replayButton:addEventListener("tap", returnToMenu)
 
-  local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
-  pauseButton.y = replayButton.y
-  pauseButton.x = replayButton.x - 200
-  pauseButton:addEventListener("tap", function()
-      audio.stop() end)
+  -- local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
+  -- pauseButton.y = replayButton.y
+  -- pauseButton.x = replayButton.x - 200
+  -- pauseButton:addEventListener("tap", function()
+  --     audio.stop() end)
 
     -- local oven = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/oven.png", currentWidth, currentHeight)
     -- oven.x = display.contentCenterX - display.contentCenterX / 2
@@ -409,9 +409,10 @@ function setBackground()
       sounds.play("Win")
     end
     checkScore()
-    eventRemover()
+    thankCharacter()
   end
-  function eventRemover()
+
+  function choiceRemover()
     for i,v in ipairs(choices) do
       display.remove(v.response)
       display.remove(v.text)
@@ -421,7 +422,7 @@ function setBackground()
     leaveCharacters()
   end
 
-  -- function eventRemover()
+  -- function choiceRemover()
   --   for i,v in ipairs(choices) do
   --     display.remove(v.image)
   --   end
@@ -446,10 +447,10 @@ function setBackground()
   --  dialogBox.x = character_one.x - 30
 
     dialogBox = display.newImage(sceneGroup, "Assets/Images/FoodGame/Dialogs/dialogBox_white.png")
-    dialogBox.xScale = 0.35
-    dialogBox.yScale = 0.3
+    dialogBox.xScale = 0.4
+    dialogBox.yScale = 0.35
     dialogBox.y = display.contentCenterY - display.contentCenterY/2.5
-    dialogBox.x = character_one.x - 30
+    dialogBox.x = character_one.x + 30
     greetingText = greet..", \n may I get some \n "..fname
     dialogText =  display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y -10, "Helvetica", 27)
     dialogText:setFillColor(0,0,0)
@@ -464,13 +465,27 @@ function setBackground()
     transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
   end
 
+  function thankCharacter()
+    print("Thank you!!!!")
+    -- character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/boy.png")
+    display.remove(dialogText)
+    dialogText =  display.newText(sceneGroup, "Thank you!", dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
+    dialogText:setFillColor(0,0,0)
+    
+    transition.to(dialogText, {
+        time = 2000,
+        alpha = 1,
+        onComplete = choiceRemover
+      })
+  end
+
   function leaveCharacters()
     -- character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/boy.png")
     display.remove( dialogBox )
     display.remove(dialogText)
     transition.to(character_one, {
         x = currentWidth/10 * -1,
-        time = 500,
+        time = 750,
         alpha = 0,
         transition = easing.outQuad,
         onComplete = newFoods
