@@ -357,6 +357,7 @@ function Button:getX()
 end
 
 function Button:setX( x )
+	self.__x = x
 	self.touchPanel.x = x
 	self.graphics:setX( x )
 end
@@ -366,6 +367,7 @@ function Button:getY()
 end
 
 function Button:setY( y )
+	self.__y = y
 	self.touchPanel.y = y
 	self.graphics:setY( y )
 end
