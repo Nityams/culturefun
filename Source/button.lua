@@ -291,6 +291,7 @@ function Button:onTouch( event )
 		end)
 
 		self.focused = false
+		self.touchId = nil
 
 	else  -- event.phase == "cancelled" or self.focused == false
 		display.getCurrentStage():setFocus( nil )

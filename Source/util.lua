@@ -6,6 +6,7 @@ end
 
 function util.push( array, value )
 	array[#array + 1] = value
+	return #array
 end
 
 function util.pop( array )
