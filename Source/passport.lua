@@ -2,7 +2,10 @@ local composer = require( "composer" )
 
 local Button = require( "Source.button" )
 local countries = require( "Source.countries" )
+local geo = require( "Source.geo" )
 local images = require( "Source.images" )
+local Pin = require( "Source.pin" )
+local util = require( "Source.util" )
 
 
 -- -----------------------------------------------------------------------------------
@@ -23,13 +26,26 @@ images.defineImage( "Close Button", "Scene/9.png", display.contentWidth/20, disp
 images.defineImage( "Close Button Pressed", "Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 
 images.defineImage( "Map", "Passport/blank_map.png", screenWidth, screenWidth )
-images.defineImage( "Pin", "Passport/pin.png", 39, 58 )
 
 local MAP_HEIGHT = 6.0070481862  -- height of Miller projection cylinder
 local MAP_EQUATOR = 0.6114583333  -- percent from top
 
 local MAP_WIDTH = 341.9194386243  -- degrees Longitude
 local MAP_PRIME_MERIDIAN = 0.4666666667  -- percent from left
+
+
+local function makePin( displayGroup, country )
+	local coords = country.coordinates
+
+	-- Our map uses Miller projection. To place our pins in the right spot we'll
+	-- need to use the same projection.
+	local millerY = geo.millerProjection( coords.lat )
+
+	local mapX = geo.convertLogitudeToMap( MAP_WIDTH, MAP_PRIME_MERIDIAN, coords.lon )
+	local mapY = geo.convertMillerToMap( MAP_HEIGHT, MAP_EQUATOR, millerY )
+
+	return Pin:new( displayGroup, mapX, mapY )
+end
 
 
 -- -----------------------------------------------------------------------------------
@@ -65,12 +81,16 @@ function scene:create( event )
 		composer.gotoScene("Source.menu")
 	end)
 
+	self.pins = {}
 	for i = 1,#countries do
 		local country = countries[i]
 		if country.coordinates then
-			self:addPin( country, lat, lon )
+			local pin = makePin( sceneGroup, country, lat, lon )
+			util.push( self.pins, pin )
 		end
 	end
+
+	self:repositionPins()
 end
 
 
@@ -115,65 +135,16 @@ function scene:destroy( event )
 end
 
 
-local function degreesToRadians( x )
-	return x * math.pi / 180
-end
-
-local function millerProjection( lat )
-	-- https://en.wikipedia.org/wiki/Miller_cylindrical_projection
-	local rads = degreesToRadians( lat )
-	local y = 5/4 * math.log( math.tan( 1/4*math.pi + 2/5*rads ) )
-	return y
-end
-
-local function convertMillerToMap( y )
-	-- Output value 0.0 means the top of the map, 1.0 means the bottom.
-
-	-- y ranges from -2.30341 to +2.30341
-	--    0 is the equator
-	--   -2.30341 is the south pole
-	--   +2.30341 is the north pole
-
-	-- Our map's height is MAP_HEIGHT units, and the equator is MAP_EQUATOR
-	-- percent down the map.
-
-	return -y / MAP_HEIGHT + MAP_EQUATOR
-end
-
-local function convertLogitudeToMap( lon )
-	-- Output value 0.0 means the left side of the map, 1.0 means right.
-
-	-- lon ranges from -180 to 180
-	--    0 is the prime meridian
-	--   -180 is a meridian that goes through the Pacific Ocean
-	--   +180 is the same meridian
-
-	-- Our map's width covers MAP_WIDTH degrees of longitude, and the prime
-	-- meridian is MAP_PRIME_MERIDIAN percent over from the left.
-
-	return lon / MAP_WIDTH + MAP_PRIME_MERIDIAN
-end
-
-
-function scene:addPin( country )
-	local coords = country.coordinates
-
-	-- Our map uses Miller projection. To place our pins in the right spot we'll
-	-- need to use the same projection.
-	local millerY = millerProjection( coords.lat )
-
-	local mapX = convertLogitudeToMap( coords.lon )
-	local mapY = convertMillerToMap( millerY )
-
+function scene:repositionPins()
 	local mapWidth = screenWidth
 	local mapHeight = screenWidth
 	local mapLeft = screenLeft
 	local mapTop = screenTop + (screenHeight - screenWidth) / 2
 
-	local image = images.get( self.view, "Pin" )
-	image.anchorY = 1.0  -- Make image.y be for the bottom of the image.
-	image.x = mapLeft + mapX * mapWidth
-	image.y = mapTop + mapY * mapHeight
+	for i = 1,#self.pins do
+		local pin = self.pins[i]
+		pin:reposition( mapTop, mapLeft, mapWidth, mapHeight )
+	end
 end
 
 
