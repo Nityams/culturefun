@@ -14,7 +14,7 @@ local Spain = {
   }
 }
 local USA = {
-  name = "USA",
+  name = "United States of America",
   flag = "Assets/Images/Flags/United_States_Flag.png",
   food = "Apple Pie",
   greetings_food = "Assets/Images/FoodGame/Dialogs/american_dialog.png",
@@ -66,7 +66,7 @@ local New_Zealand = {
   coordinates = { lat = -41.28, lon = 174.45 }  -- Wellington @ 41°17′S 174°27′E
 }
 local UK = {
-  name = "UK",
+  name = "United Kingdom",
   flag = "Assets/Images/Flags/United_Kingdom_Flag.png",
   food = "Fish and Chips",
   greetings_food = "Assets/Images/FoodGame/Dialogs/british_dialog.png",
