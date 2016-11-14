@@ -38,8 +38,8 @@ local MAP_EQUATOR = 0.6114583333  -- percent from top
 local MAP_WIDTH = 341.9194386243  -- degrees Longitude
 local MAP_PRIME_MERIDIAN = 0.4666666667  -- percent from left
 
-local MIN_ZOOM = 0.9
-local MAX_ZOOM = 5
+local MIN_ZOOM = 1.0
+local MAX_ZOOM = 5.0
 
 
 local function makePin( displayGroup, country )
