@@ -1,7 +1,7 @@
 local composer = require( "composer" )
 
 local Button = require( "Source.button" )
-local countries = require( "Source.countries" )
+local countries = require( "Source.Countries" )
 local geo = require( "Source.geo" )
 local images = require( "Source.images" )
 local Pin = require( "Source.pin" )
