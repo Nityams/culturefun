@@ -12,9 +12,9 @@ local scene = composer.newScene()
 
 
 local function returnToMenu()
-	audio.stop(  )
+	audio.fadeOut( 500 )
+	audio.stopWithDelay( 500 )
 	composer.gotoScene( "Source.menu" )
-	composer.removeScene( "Source.winFoodGame" )
 end
 
 
