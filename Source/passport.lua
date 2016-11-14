@@ -133,17 +133,7 @@ function scene:show( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
-		self.currencyText = display.newText{
-			parent = sceneGroup,
-			text = "" .. wallet.getCoins() .. " coins",
-			x = screenRight - 25,
-			y = screenTop + 15,
-			font = font,
-			fontSize = 44
-		}
-		self.currencyText.anchorX = 1.0
-		self.currencyText.anchorY = 0.0
-		self.currencyText:setFillColor( 0.4 )
+		self:makeCoinsDisplay()
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
@@ -168,8 +158,8 @@ function scene:hide( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 
-		self.currencyText:removeSelf()
-		self.currencyText = nil
+
+		self:destroyCoinDisplay()
 
 	end
 end
@@ -217,6 +207,41 @@ function scene:repositionPins()
 		local pin = self.pins[i]
 		pin:reposition( mapTop, mapLeft, mapWidth, mapHeight )
 	end
+end
+
+
+function scene:makeCoinsDisplay()
+	self.currencyText = display.newText{
+		parent = sceneGroup,
+		text = "" .. wallet.getCoins() .. " coins",
+		x = screenRight - 25,
+		y = screenTop + 15,
+		font = font,
+		fontSize = 44
+	}
+	self.currencyText.anchorX = 1.0
+	self.currencyText.anchorY = 0.0
+	self.currencyText:setFillColor( 0.4 )
+
+	self.nextAreaText = display.newText{
+		parent = sceneGroup,
+		text = "next area: 500 coins",
+		x = self.currencyText.x,
+		y = self.currencyText.y + self.currencyText.height,
+		font = font,
+		fontSize = 28
+	}
+	self.nextAreaText.anchorX = 1.0
+	self.nextAreaText.anchorY = 0.0
+	self.nextAreaText:setFillColor( 0.4 )
+end
+
+
+function scene:destroyCoinDisplay()
+	self.currencyText:removeSelf()
+	self.currencyText = nil
+	self.nextAreaText:removeSelf()
+	self.nextAreaText = nil
 end
 
 
