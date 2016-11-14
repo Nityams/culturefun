@@ -104,12 +104,18 @@ function scene:create( event )
 		defaultScale = defaultScale
 	}
 
-	self.map:addEventListener( "touch", function( e )
+	local handleTouch = function( e )
 		return scrollZoom:handleTouch( e )
-	end)
-	whiteFill:addEventListener( "touch", function( e )
-		return scrollZoom:handleTouch( e )
-	end)
+	end
+	local handleMouse = function( e )
+		return scrollZoom:handleMouse( e )
+	end
+
+	self.map:addEventListener( "touch", handleTouch )
+	whiteFill:addEventListener( "touch", handleTouch )
+	self.map:addEventListener( "mouse", handleMouse )
+	whiteFill:addEventListener( "mouse", handleMouse )
+
 	scrollZoom:addEventListener( "move", function()
 		self:repositionPins()
 	end)

@@ -33,6 +33,8 @@ function Controller:new( options )
 	c.listener = EventListener:new()
 	c.touches = {}
 
+	c.recentStartCenter = Vector.new( c.object.x, c.object.y )
+
 	c:setScale( c.scale )
 
 	return c
@@ -127,6 +129,9 @@ function Controller:handleTouch( event )
 	if self.rubberBandTransition then
 		transition.cancel( self.rubberBandTransition )
 	end
+	if self.mouseTimer then
+		timer.cancel( self.mouseTimer )
+	end
 
 	local id = event.id
 
@@ -178,6 +183,31 @@ function Controller:handleTouch( event )
 	end
 
 	return true
+end
+
+
+function Controller:handleMouse( event )
+	if math.abs( event.scrollY ) < 0.01 then
+		return
+	end
+
+	local dScale = 1 + event.scrollY / 100
+	local x = math2.lerp( event.x, self.object.x, dScale )
+	local y = math2.lerp( event.y, self.object.y, dScale )
+	local scale = self:getScale() * dScale
+
+	self:moveTo( x, y, scale )
+
+	if self.rubberBandTransition then
+		transition.cancel( self.rubberBandTransition )
+	end
+	if self.mouseTimer then
+		timer.cancel( self.mouseTimer )
+	end
+	self.mouseTimer = timer.performWithDelay( 250, function()
+		self.mouseTimer = nil
+		self:startRubberBand()
+	end)
 end
 
 
