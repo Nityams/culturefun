@@ -1,6 +1,6 @@
 local composer = require( "composer" )
 
-local Countries = require "Source.Countries"
+-- local Countries = require "Source.Countries"
 local images = require( "Source.images" )
 local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
