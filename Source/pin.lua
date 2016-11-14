@@ -4,6 +4,7 @@ local images = require( "Source.images" )
 
 
 images.defineImage( "Pin", "Passport/pin.png", 39, 58 )
+images.defineImage( "Pin Pressed", "Passport/pin-pressed.png", 39, 58 )
 
 
 local Pin = {}
@@ -15,14 +16,27 @@ function Pin:new( displayGroup, x, y )
 	local p = {}
 	setmetatable( p, Pin )
 
-	local image = images.get( displayGroup, "Pin" )
-	image.anchorY = 1.0  -- Make image.y be for the bottom of the image.
-
-	p.image = image
 	p.x = x
 	p.y = y
 
-	-- TODO: make a Button
+	local image = images.get( displayGroup, "Pin" )
+	local imagePressed = images.get( displayGroup, "Pin Pressed" )
+
+	-- Make image.y be for the bottom of the image.
+	image.anchorY = 1.0
+	imagePressed.anchorY = 1.0
+
+	p.button = Button:newImageButton{
+		group = displayGroup,
+		image = image,
+		imagePressed = imagePressed,
+		x = x,
+		y = y,
+		width = images.width( "Pin" ),
+		height = images.height( "Pin" ),
+		alpha = 0.75
+	}
+
 	-- TODO: button.addEventListener( "tap", onTap )
 
 	return p
@@ -35,8 +49,8 @@ end
 
 
 function Pin:reposition( mapTop, mapLeft, mapWidth, mapHeight )
-	self.image.x = mapLeft + mapWidth * self.x
-	self.image.y = mapTop + mapHeight * self.y
+	self.button.x = mapLeft + mapWidth * self.x
+	self.button.y = mapTop + mapHeight * self.y
 end
 
 

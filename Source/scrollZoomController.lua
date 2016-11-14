@@ -16,6 +16,7 @@ function Controller:new( object, minScale, maxScale, scale )
 	c.maxScale = maxScale
 	c.scale = scale
 
+	c.enabled = true
 	c.listener = EventListener:new()
 	c.touches = {}
 
@@ -106,6 +107,10 @@ end
 
 
 function Controller:handleTouch( event )
+	if not self.enabled then
+		return
+	end
+
 	local id = event.id
 
 	if event.phase == "began" then

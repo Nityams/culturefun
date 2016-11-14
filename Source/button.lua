@@ -83,6 +83,14 @@ function TextButtonGraphics:setText( text )
 	-- TODO: Recompute size of bg based on text's new size.
 end
 
+function TextButtonGraphics:setX( x )
+	self.text.x = x
+end
+
+function TextButtonGraphics:setY( y )
+	self.text.y = y
+end
+
 
 --
 -- class ImageButtonGraphics
@@ -137,6 +145,16 @@ function ImageButtonGraphics:setRotation( rotation )
 	self.imagePressed.rotation = rotation
 end
 
+function ImageButtonGraphics:setX( x )
+	self.image.x = x
+	self.imagePressed.x = x
+end
+
+function ImageButtonGraphics:setY( y )
+	self.image.y = y
+	self.imagePressed.y = y
+end
+
 
 --
 -- class Button
@@ -182,9 +200,8 @@ function Button:new( graphics, options )
 	b.depressed = false
 	b.enabled = true
 
-	-- Read-only! Changing them does not change the location of the button.
-	b.x = options.x
-	b.y = options.y
+	b.__x = options.x
+	b.__y = options.y
 
 	b.graphics = graphics
 
@@ -321,31 +338,53 @@ function Button:getRotation()
 	end
 end
 
-function Button:setRotation(rotation)
+function Button:setRotation( rotation )
 	if self.graphics.setRotation then
-		self.graphics:setRotation(rotation)
+		self.graphics:setRotation( rotation )
 	end
 end
 
+function Button:getX()
+	return self.__x
+end
+
+function Button:setX( x )
+	self.touchPanel.x = x
+	self.graphics:setX( x )
+end
+
+function Button:getY()
+	return self.__y
+end
+
+function Button:setY( y )
+	self.touchPanel.y = y
+	self.graphics:setY( y )
+end
+
 local getters = {
-	rotation = function(button) return button:getRotation() end
+	rotation = function( button ) return button:getRotation() end,
+	x = function( button ) return button:getX() end,
+	y = function( button ) return button:getY() end
 }
 
 local setters = {
-	rotation = function(button, val) button:setRotation(val) end
+	rotation = function( button, val ) button:setRotation( val ) end,
+	x = function( button, val ) button:setX( val ) end,
+	y = function( button, val ) button:setY( val ) end
 }
 
-Button.__index = function(button, key)
+Button.__index = function( button, key )
 	if getters[key] then
-		return getters[key](button)
+		return getters[key]( button )
 	else
 		return Button[key]
 	end
 end
 
-Button.__newindex = function(button, key, value)
+Button.__newindex = function( button, key, value )
 	if setters[key] then
-		setters[key](button, value)
+		setters[key]( button, value )
 	else
 		rawset( button, key, value )
 	end
