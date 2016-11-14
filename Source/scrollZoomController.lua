@@ -151,8 +151,6 @@ function Controller:handleTouch( event )
 			dRadius = 1
 		end
 
-		-- TODO: Set scale.
-		--local scale = self.startScale * math.exp( -1 * d.y / 500 )
 		local x = self.startPos.x + dPos.x
 		local y = self.startPos.y + dPos.y
 		local scale = self.startScale * dRadius
