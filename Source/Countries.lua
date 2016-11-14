@@ -1,7 +1,7 @@
-Countries = {}
-deck = {}
+local Countries = {}
+local deck = {}
 
-Spain = {
+local Spain = {
   name = "Spain",
   flag = "Assets/Images/Flags/Spain_Flag.png",
   food = "Paella",
@@ -9,7 +9,7 @@ Spain = {
   greeting = "Hola",
   coordinates = { lat = 40.43, lon = -3.70 }  -- Madrid @ 40°26′N 3°42′W
 }
-USA = {
+local USA = {
   name = "USA",
   flag = "Assets/Images/Flags/United_States_Flag.png",
   food = "Apple Pie",
@@ -17,7 +17,7 @@ USA = {
   greeting = "Hello",
   coordinates = { lat = 38.88, lon = -77.02 }  -- Washington, D.C. @ 38°53′N 77°01′W
 }
-South_Africa= {
+local South_Africa= {
   name = "South Africa",
   flag = "Assets/Images/Flags/South_Africa_Flag.png",
   food = "Chakalaka pap",
@@ -25,7 +25,7 @@ South_Africa= {
   greeting = "Hello",
   coordinates = { lat = -26.44, lon = 28.06 }  -- Johannesburg @ 26°12′16″S 28°2′44″E
 }
-Mexico = {
+local Mexico = {
   name = "Mexico",
   flag = "Assets/Images/Flags/Mexico_Flag.png",
   food = "Tamales",
@@ -33,7 +33,7 @@ Mexico = {
   greeting = "Hola",
   coordinates = { lat = 19.43, lon = -99.13 }  -- Mexico City @ 19°26′N 99°08′W
 }
-Russia = {
+local Russia = {
   name = "Russia",
   flag = "Assets/Images/Flags/Russia_Flag.png",
   food = "Borsch",
@@ -41,7 +41,7 @@ Russia = {
   greeting = "Zdravstvuyte",
   coordinates = { lat = 55.75, lon = 37.62 }  -- Moscow @ 55°45′N 37°37′E
 }
-Egypt = {
+local Egypt = {
   name = "Egypt",
   flag = "Assets/Images/Flags/Egypt_Flag.png",
   food = "Koshari",
@@ -49,7 +49,7 @@ Egypt = {
   greeting = "Marhabaan",
   coordinates = { lat = 30.03, lon = 31.22 }  -- Cairo @ 30°2′N 31°13′E
 }
-New_Zealand = {
+local New_Zealand = {
   name = "New Zealand",
   flag = "Assets/Images/Flags/New_Zealand_Flag.png",
   food = "Hangi",
@@ -57,7 +57,7 @@ New_Zealand = {
   greeting = "Hello",
   coordinates = { lat = -41.28, lon = 174.45 }  -- Wellington @ 41°17′S 174°27′E
 }
-UK = {
+local UK = {
   name = "UK",
   flag = "Assets/Images/Flags/United_Kingdom_Flag.png",
   food = "Fish and Chips",
@@ -65,7 +65,7 @@ UK = {
   greeting = "Hello",
   coordinates = { lat = 51.62, lon = -0.12 }  -- London @ 51°30′N 0°7′W
 }
-Switzerland = {
+local Switzerland = {
   name = "Switzerland",
   flag = "Assets/Images/Flags/Switzerland_Flag.png",
   food = "Cheese Fondue",
@@ -73,7 +73,7 @@ Switzerland = {
   greeting = "Bonjour",
   coordinates = { lat = 46.95, lon = 7.45 }  -- Bern @ 46°57′N 7°27′E
 }
-Vietnam = {
+local Vietnam = {
   name = "Vietnam",
   flag = "Assets/Images/Flags/Vietnam_Flag.png",
   food = "Pho",
@@ -83,77 +83,77 @@ Vietnam = {
 }
 
 --new items added on Nov 6th
-Austraila = {
+local Austraila = {
   name = "Austraila",
   flag = "Assets/Images/Flags/Australia_Flag.png",
   food = "Barramundi",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hello"
 }
-Brazil = {
+local Brazil = {
   name = "Brazil",
   flag = "Assets/Images/Flags/Brazil_Flag.png",
   food = "Feijoada",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Olá"
 }
-Canada = {
+local Canada = {
   name = "Canada",
   flag = "Assets/Images/Flags/Canada_Flag.png",
   food = "Poutine",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hello"
 }
-China = {
+local China = {
   name = "China",
   flag = "Assets/Images/Flags/China_Flag.png",
   food = "Dumplings",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Nǐ hǎo"
 }
-France = {
+local France = {
   name = "France",
   flag = "Assets/Images/Flags/France_Flag.png",
   food = "Cassoulet",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Bonjour"
 }
-Germany = {
+local Germany = {
   name = "Germany",
   flag = "Assets/Images/Flags/Germany_Flag.png",
   food = "Rouladen",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hallo"
 }
-Italy = {
+local Italy = {
   name = "Italy",
   flag = "Assets/Images/Flags/Italy_Flag.png",
   food = "Pasta",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Ciao"
 }
-Japan = {
+local Japan = {
   name = "Japan",
   flag = "Assets/Images/Flags/Japan_Flag.png",
   food = "Sushi",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Kon'nichiwa"
 }
-Malaysia = {
+local Malaysia = {
   name = "Malaysia",
   flag = "Assets/Images/Flags/Malaysia_Flag.png",
   food = "Satay",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hello"
 }
-Korea = {
+local Korea = {
   name = "Korea",
   flag = "Assets/Images/Flags/South_Korea_Flag.png",
   food = "Kimchi",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Yeoboseyo"
 }
-Thailand = {
+local Thailand = {
   name = "Thailand",
   flag = "Assets/Images/Flags/Thailand_Flag.png",
   food = "Som Tum",
