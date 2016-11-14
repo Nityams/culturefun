@@ -5,6 +5,9 @@ local math2 = require( "Source.math2" )
 local util = require( "Source.util" )
 local Vector = require( "Source.vector" )
 
+local NOW = 0
+local SOON = 1
+
 
 local Controller = {}
 Controller.__index = Controller
@@ -128,6 +131,7 @@ function Controller:handleTouch( event )
 		display.getCurrentStage():setFocus( self.object )
 		self.touches[id] = Vector.new( event.x, event.y )
 		self:startTouch()
+		self:saveTouchInfo( NOW )
 
 	elseif event.phase == "moved" then
 		if self.touches[id] then
@@ -137,6 +141,7 @@ function Controller:handleTouch( event )
 			display.getCurrentStage():setFocus( self.object )
 			self.touches[id] = Vector.new( event.x, event.y )
 			self:startTouch()
+			self:saveTouchInfo( NOW )
 		end
 
 		local endCenter = self:calculateCenter()
@@ -161,6 +166,7 @@ function Controller:handleTouch( event )
 
 		if util.size( self.touches ) > 0 then
 			self:startTouch()
+			self:saveTouchInfo( SOON )
 		else
 			display.getCurrentStage():setFocus( nil )
 			self:startRubberBand()
@@ -172,6 +178,26 @@ function Controller:handleTouch( event )
 end
 
 
+function Controller:saveTouchInfo( when )
+	if self.saveTouchTimer then
+		timer.cancel( self.saveTouchTimer )
+	end
+
+	if when == NOW then
+		self.recentStartCenter = self.startCenter
+
+	else  -- when == SOON
+		-- If the player lets go of all their fingers from a multi-touch gesture, we
+		-- lose the information about where their fingers were centered. Preserve
+		-- it for a little while.
+
+		self.saveTouchTimer = timer.performWithDelay( 100, function()
+			self.recentStartCenter = self.startCenter
+		end)
+	end
+end
+
+
 function Controller:startRubberBand()
 	local scale = self:getScale()
 	local x = self.object.x
@@ -180,6 +206,10 @@ function Controller:startRubberBand()
 	self.rbStartScale = scale
 	self.rbStartX = x
 	self.rbStartY = y
+
+	local dRadius = self.rbEndScale / scale
+	x = math2.lerp( self.recentStartCenter.x, self.object.x, dRadius )
+	y = math2.lerp( self.recentStartCenter.y, self.object.y, dRadius )
 
 	-- TODO: Don't use these min* max* values: just make sure there's no
 	-- background showing.
