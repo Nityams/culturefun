@@ -2,11 +2,13 @@ local composer = require( "composer" )
 
 local Button = require( "Source.button" )
 local countries = require( "Source.Countries" )
+local fonts = require( "Source.fonts" )
 local geo = require( "Source.geo" )
 local images = require( "Source.images" )
 local Pin = require( "Source.pin" )
 local ScrollZoomController = require( "Source.scrollZoomController" )
 local util = require( "Source.util" )
+local wallet = require( "Source.wallet" )
 
 
 -- -----------------------------------------------------------------------------------
@@ -15,6 +17,8 @@ local util = require( "Source.util" )
 -- -----------------------------------------------------------------------------------
 
 local scene = composer.newScene()
+
+local font = fonts.neucha()
 
 local screenLeft = 0
 local screenRight = display.contentWidth
@@ -127,6 +131,18 @@ function scene:show( event )
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
+		self.currencyText = display.newText{
+			parent = sceneGroup,
+			text = "" .. wallet.getCoins() .. " coins",
+			x = screenRight - 25,
+			y = screenTop + 15,
+			font = font,
+			fontSize = 44
+		}
+		self.currencyText.anchorX = 1.0
+		self.currencyText.anchorY = 0.0
+		self.currencyText:setFillColor( 0.4 )
+
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
@@ -149,6 +165,9 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
+
+		self.currencyText:removeSelf()
+		self.currencyText = nil
 
 	end
 end

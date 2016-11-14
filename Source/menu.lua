@@ -119,6 +119,7 @@ function scene:create( event )
 	----------------
 	-- Foreground --
 	----------------
+
 	local font = fonts.neucha()
 
 	local titleOffsetY = (util.aspectRatio() > 4/3 and 200 or 150)
