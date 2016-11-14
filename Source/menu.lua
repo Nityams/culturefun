@@ -220,6 +220,7 @@ function scene:show( event )
 		self.flagButton.enabled = true
 		self.foodButton.enabled = true
 		self.passportButton.enabled = true
+		self.resetButton.enabled = true
 		self.creditButton.enabled = true
 
 		self.logo.rotation = 0
