@@ -49,7 +49,8 @@ local function returnToMenu()
 end
 
 local function winScene()
-  composer.gotoScene( "Source.winGame" )
+  if DEBUG then print("**** Going to win scene") end
+  composer.gotoScene( "Source.winFoodGame" )
   composer.removeScene( "Source.foodGame" )
   -- foodGroup:removeSelf()
 end
@@ -91,7 +92,7 @@ end
 function newFoods()
   if victory then
     if DEBUG then print("***** You win!") end
-    returnToMenu()
+    winScene()
   else
     if DEBUG then print("********** Starting round! ****************************************") end
     setFoods()
@@ -121,9 +122,11 @@ function setBackground()
     -- oven.x = display.contentCenterX - display.contentCenterX / 2
     -- oven.y = display.contentCenterY + display.contentCenterY / 1.8
     -- oven:scale(0.5, 0.22)
+
     wall = display.newImage(sceneGroup, "Assets/Images/FoodGame/wall.jpg")
     wall.x = display.contentCenterX - display.contentCenterX / 2
-    wall.y = display.contentCenterY + 200
+    wall.y = display.contentCenterY + 225
+    wall:scale(0.5,0.5)
 
     starbar = display.newImage(sceneGroup, "Assets/Images/FoodGame/woodBar.png")
     starbar.x = display.contentCenterX - display.contentCenterX / 2
@@ -150,6 +153,15 @@ function setBackground()
     woodbar_v:scale(0.4,0.25)
     checkScore()
 
+    topBorder = display.newImage(sceneGroup, "Assets/Images/Scene/21.png")
+    topBorder.x = currentWidth/2
+  	topBorder.y = 0
+    topBorder:scale(1,0.5)
+
+    botBorder = display.newImage(sceneGroup, "Assets/Images/Scene/21.png")
+    botBorder.x = currentWidth/2
+  	botBorder.y = wall.y + 135
+    botBorder:scale(1,0.5)
   end
 
   function checkScore()
@@ -306,7 +318,7 @@ function setBackground()
     end
 
     choices[1].image.x = display.contentCenterX + 125
-    choices[1].image.y = display.contentCenterY - 200
+    choices[1].image.y = display.contentCenterY - 175
 
     choices[2].image.x = choices[1].image.x + choices[1].image.width + 50
     choices[2].image.y = choices[1].image.y
