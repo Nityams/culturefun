@@ -410,8 +410,16 @@ function setBackground()
   end
 
   function thankCharacter()
-    print("Thank you!!!!")
-    -- character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/boy.png")
+    if DEBUG then print("Thank you!!!!") end
+
+    for i,v in ipairs(choices) do
+      v.image._functionListeners = nil
+      transition.to(v.image, {time = 1000, alpha = 0})
+      if v.response ~= nil then
+        transition.to(v.response, {time = 1000, alpha = 0})
+      end
+    end
+
     display.remove(dialogText)
     dialogText =  display.newText(sceneGroup, "Thank you!", dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
     dialogText:setFillColor(0,0,0)
