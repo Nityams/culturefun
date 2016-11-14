@@ -1,5 +1,6 @@
 local composer = require( "composer" )
 local sounds = require( "Source.sounds" )
+local wallet = require( "Source.wallet" )
 
 local scene = composer.newScene()
 
@@ -41,12 +42,15 @@ function showCoins(difficulty)
   if difficulty == 1 then
     coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c1.png")
    winText = display.newText(sceneGroup,"You won 200 gold coins", display.contentCenterX, display.contentCenterY + 20, native.systemFont, 30 )
+	wallet.addCoins( 200 )
 elseif difficulty == 2 then
   coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c2.png")
   winText = display.newText(sceneGroup, "You won 500 gold coins", display.contentCenterX, display.contentCenterY +20, native.systemFont, 30 )
+	wallet.addCoins( 500 )
 elseif difficulty == 3 then
 coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c3.png")
 winText = display.newText(sceneGroup, "You won 750 gold coins", display.contentCenterX, display.contentCenterY +20, native.systemFont, 30 )
+	wallet.addCoins( 750 )
 else
 	print("nothing to see here")
 end

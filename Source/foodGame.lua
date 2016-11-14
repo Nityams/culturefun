@@ -160,7 +160,7 @@ function checkScore()
   end
 
   -- Manually set x, y for all counters
-  
+
   scoreCounter.x = display.contentCenterX - display.contentCenterX / 2 + 6
   scoreCounter.y = display.contentCenterY + display.contentCenterY / 2
   scoreCounter:scale(0.19, 0.19)
@@ -172,7 +172,7 @@ function checkStar()
   star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
   star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
   star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
-  
+
   starShine()
 
   if score >= 36 then
@@ -183,7 +183,7 @@ function checkStar()
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
     star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
-    
+
     if DEBUG then print("***** Victory has been achieved") end
     victory = true
 

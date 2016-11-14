@@ -335,12 +335,12 @@ function setBackground()
       -- choice.response:removeSelf()
     end
 
-    -- 
+    --
     choice.response = display.newText(sceneGroup, "X", choice.image.x, choice.image.y, "Helvetica", 250)
     choice.response:setFillColor(1,0,0)
     choice.response.alpha = 0
     choice.response:scale(1.5, 1.5)
-    
+
     transition.to(choice.response, {
       time = 200,
       alpha = 1,
@@ -423,7 +423,7 @@ function setBackground()
     display.remove(dialogText)
     dialogText =  display.newText(sceneGroup, "Thank you!", dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
     dialogText:setFillColor(0,0,0)
-    
+
     transition.to(dialogText, {
         time = 2000,
         alpha = 1,

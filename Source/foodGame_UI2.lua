@@ -468,7 +468,7 @@ function setBackground()
     display.remove(dialogText)
     dialogText =  display.newText(sceneGroup, "Thank you!", dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
     dialogText:setFillColor(0,0,0)
-    
+
     transition.to(dialogText, {
         time = 2000,
         alpha = 1,

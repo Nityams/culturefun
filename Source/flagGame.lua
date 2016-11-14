@@ -8,6 +8,7 @@ local images = require( "Source.images" )
 local musics = require( "Source.musics" )
 local Preloader = require( "Source.preloader" )
 local sounds = require( "Source.sounds" )
+local wallet = require( "Source.wallet" )
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -1245,6 +1246,9 @@ function scene:create( event )
 			sounds.play( "Win FX" )
 			sounds.play( "Celebrate FX" )
 			endgame(1)
+
+			local difficulty = composer.getVariable( "difficulty" )
+			wallet.addCoins( 100 * difficulty )
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
 	end
