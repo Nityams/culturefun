@@ -138,8 +138,6 @@ function Controller:handleTouch( event )
 			self:startTouch()
 		end
 
-		self.touches[id] = Vector.new( event.x, event.y )
-
 		local endCenter = self:calculateCenter()
 		local endRadius = self:calculateRadius()
 
@@ -151,9 +149,11 @@ function Controller:handleTouch( event )
 			dRadius = 1
 		end
 
-		local x = self.startPos.x + dPos.x
-		local y = self.startPos.y + dPos.y
+		local fromCenter = self.startPos - self.startCenter
+
 		local scale = self.startScale * dRadius
+		local x = self.startCenter.x + fromCenter.x * dRadius + dPos.x
+		local y = self.startCenter.y + fromCenter.y * dRadius + dPos.y
 
 		self:requestMoveTo( x, y, scale )
 
