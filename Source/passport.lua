@@ -186,7 +186,40 @@ end
 
 
 function scene:onTouch( event )
-	print( "onTouch" )
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( self.map )
+
+		self.touchStartX = event.x
+		self.touchStartY = event.y
+
+		self.touchStartScale = self.scale
+
+	elseif event.phase == "moved" then
+		local dx = event.x - self.touchStartX
+		local dy = event.y - self.touchStartY
+
+		local scale = self.touchStartScale * math.exp( -1 * dy / 500 )
+
+		self:setScale( scale )
+
+	else  -- event.phase == "ended" or event.phase == "cancelled"
+		display.getCurrentStage():setFocus( nil )
+
+		local scale = self.scale
+
+		print( "scale", scale )
+		print( "minScale", self.minScale )
+		print( "maxScale", self.maxScale )
+		if scale < self.minScale then
+			scale = self.minScale
+		elseif self.maxScale < scale then
+			scale = self.maxScale
+		end
+
+		self:setScale( scale )
+
+	end
+
 	return true
 end
 
