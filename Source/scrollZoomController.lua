@@ -5,6 +5,13 @@ local math2 = require( "Source.math2" )
 local util = require( "Source.util" )
 local Vector = require( "Source.vector" )
 
+local screenLeft = 0
+local screenRight = display.contentWidth
+local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
+local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
+local screenWidth = screenRight - screenLeft
+local screenHeight = screenBottom - screenTop
+
 local NOW = 0
 local SOON = 1
 
@@ -21,10 +28,6 @@ function Controller:new( options )
 	c.minScale = options.minScale
 	c.maxScale = options.maxScale
 	c.scale = options.defaultScale
-	c.minX = options.minX
-	c.maxX = options.maxX
-	c.minY = options.minY
-	c.maxY = options.maxY
 
 	c.enabled = true
 	c.listener = EventListener:new()
@@ -207,15 +210,19 @@ function Controller:startRubberBand()
 	self.rbStartX = x
 	self.rbStartY = y
 
+	self.rbEndScale = math2.clamp( scale, self.minScale, self.maxScale )
+
 	local dRadius = self.rbEndScale / scale
 	x = math2.lerp( self.recentStartCenter.x, self.object.x, dRadius )
 	y = math2.lerp( self.recentStartCenter.y, self.object.y, dRadius )
 
-	-- TODO: Don't use these min* max* values: just make sure there's no
-	-- background showing.
-	self.rbEndScale = math2.clamp( scale, self.minScale, self.maxScale )
-	self.rbEndX = math2.clamp( x, self.minX, self.maxX )
-	self.rbEndY = math2.clamp( y, self.minY, self.maxY )
+	local maxX = screenLeft + self.object.width / 2 * scale
+	local minX = screenRight - self.object.width / 2 * scale
+	local maxY = screenTop + self.object.height / 2 * scale
+	local minY = screenBottom - self.object.height / 2 * scale
+
+	self.rbEndX = math2.clamp( x, minX, maxX )
+	self.rbEndY = math2.clamp( y, minY, maxY )
 
 	self.rubberBandTransition = util.transition( 300, easing.outExpo, function( t )
 		self:rubberBandProgress( t )
