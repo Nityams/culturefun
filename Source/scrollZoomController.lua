@@ -1,6 +1,7 @@
 local easing = require( "easing" )
 
 local EventListener = require( "Source.eventListener" )
+local math2 = require( "Source.math2" )
 local util = require( "Source.util" )
 local Vector = require( "Source.vector" )
 
@@ -149,11 +150,9 @@ function Controller:handleTouch( event )
 			dRadius = 1
 		end
 
-		local fromCenter = self.startPos - self.startCenter
-
+		local x = math2.lerp( self.startCenter.x, self.startPos.x, dRadius ) + dPos.x
+		local y = math2.lerp( self.startCenter.y, self.startPos.y, dRadius ) + dPos.y
 		local scale = self.startScale * dRadius
-		local x = self.startCenter.x + fromCenter.x * dRadius + dPos.x
-		local y = self.startCenter.y + fromCenter.y * dRadius + dPos.y
 
 		self:requestMoveTo( x, y, scale )
 
@@ -184,9 +183,9 @@ function Controller:startRubberBand()
 
 	-- TODO: Don't use these min* max* values: just make sure there's no
 	-- background showing.
-	self.rbEndScale = util.clamp( scale, self.minScale, self.maxScale )
-	self.rbEndX = util.clamp( x, self.minX, self.maxX )
-	self.rbEndY = util.clamp( y, self.minY, self.maxY )
+	self.rbEndScale = math2.clamp( scale, self.minScale, self.maxScale )
+	self.rbEndX = math2.clamp( x, self.minX, self.maxX )
+	self.rbEndY = math2.clamp( y, self.minY, self.maxY )
 
 	self.rubberBandTransition = util.transition( 300, easing.outExpo, function( t )
 		self:rubberBandProgress( t )
@@ -196,9 +195,9 @@ end
 
 function Controller:rubberBandProgress( t )
 	self:moveTo(
-		self.rbStartX + (self.rbEndX - self.rbStartX) * t,
-		self.rbStartY + (self.rbEndY - self.rbStartY) * t,
-		self.rbStartScale + (self.rbEndScale - self.rbStartScale) * t
+		math2.lerp( self.rbStartX, self.rbEndX, t ),
+		math2.lerp( self.rbStartY, self.rbEndY, t ),
+		math2.lerp( self.rbStartScale, self.rbEndScale, t )
 	)
 end
 

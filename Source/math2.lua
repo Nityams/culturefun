@@ -2,6 +2,21 @@ local Vector = require( "Source.vector" )
 
 local math2 = {}
 
+function math2.clamp( x, min, max )
+	if x < min then
+		return min
+	elseif max < x then
+		return max
+	else
+		return x
+	end
+end
+
+function math2.lerp( v0, v1, t )
+	-- Linear interpolation
+	return v0 + (v1 - v0) * t
+end
+
 function math2.randomPointWithin( minX, maxX, minY, maxY )
 	local x = math.random( minX, maxX )
 	local y = math.random( minY, maxY )
