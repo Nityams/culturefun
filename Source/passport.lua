@@ -98,8 +98,10 @@ function scene:create( event )
 		object = self.map,
 		minScale = minScale, maxScale = maxScale,
 		defaultScale = defaultScale,
-		minX = screenLeft, maxX = screenRight,
-		minY = screenTop, maxY = screenBottom
+		minX = screenLeft,
+		maxX = screenRight,
+		minY = screenTop - (screenWidth - screenHeight) / 2,
+		maxY = screenBottom + (screenWidth - screenHeight) / 2
 	}
 
 	self.map:addEventListener( "touch", function( e )

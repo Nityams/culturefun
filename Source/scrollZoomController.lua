@@ -1,3 +1,5 @@
+local easing = require( "easing" )
+
 local EventListener = require( "Source.eventListener" )
 local util = require( "Source.util" )
 local Vector = require( "Source.vector" )
@@ -115,6 +117,10 @@ function Controller:handleTouch( event )
 		return
 	end
 
+	if self.rubberBandTransition then
+		transition.cancel( self.rubberBandTransition )
+	end
+
 	local id = event.id
 
 	if event.phase == "began" then
@@ -174,12 +180,33 @@ function Controller:startRubberBand()
 	local x = self.object.x
 	local y = self.object.y
 
-	scale = util.clamp( scale, self.minScale, self.maxScale )
-	x = util.clamp( x, self.minX, self.maxX )
-	y = util.clamp( y, self.minY, self.maxY )
+	self.rbStartScale = scale
+	self.rbStartX = x
+	self.rbStartY = y
 
-	-- TODO: Do this over some period of time.
-	self:requestMoveTo( x, y, scale )
+	self.rbEndScale = util.clamp( scale, self.minScale, self.maxScale )
+	self.rbEndX = util.clamp( x, self.minX, self.maxX )
+	self.rbEndY = util.clamp( y, self.minY, self.maxY )
+
+	print( "self.rbStartScale", self.rbStartScale )
+	print( "self.rbStartX", self.rbStartX )
+	print( "self.rbStartY", self.rbStartY )
+	print( "self.rbEndScale", self.rbEndScale )
+	print( "self.rbEndX", self.rbEndX )
+	print( "self.rbEndY", self.rbEndY )
+
+	self.rubberBandTransition = util.transition( 300, easing.outExpo, function( t )
+		self:rubberBandProgress( t )
+	end)
+end
+
+
+function Controller:rubberBandProgress( t )
+	self:moveTo(
+		self.rbStartX + (self.rbEndX - self.rbStartX) * t,
+		self.rbStartY + (self.rbEndY - self.rbStartY) * t,
+		self.rbStartScale + (self.rbEndScale - self.rbStartScale) * t
+	)
 end
 
 
