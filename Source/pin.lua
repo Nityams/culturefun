@@ -37,14 +37,12 @@ function Pin:new( displayGroup, x, y )
 		alpha = 0.75
 	}
 
-	-- TODO: button.addEventListener( "tap", onTap )
-
 	return p
 end
 
 
 function Pin:addEventListener( eventName, handlerFn )
-	self.image:addEventListener( eventName, handlerFn )
+	self.button:addEventListener( eventName, handlerFn )
 end
 
 
