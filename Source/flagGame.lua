@@ -20,7 +20,7 @@ local screenLeft = 0
 local screenRight = display.contentWidth
 local screenTop
 -- dynamically choose right screen top based on resolutions
-if display.viewableContentHeight < 760 then 
+if display.viewableContentHeight < 760 then
 	screenTop = (display.contentHeight - display.viewableContentHeight) / 2
 else
 	screenTop = (display.contentHeight - display.viewableContentHeight) / 2 + 100
@@ -706,7 +706,7 @@ function scene:create( event )
 		obj:setSequence("run")
 		obj:play()
 	end
-	
+
 	-- temp = placeholder for all right side
 	local temp = images.get( sceneGroup, "Right Side" )
 	temp.x = collumn.x + collumn.x / 4
@@ -749,7 +749,7 @@ function scene:create( event )
 	local textBox1 -- text box for option 1
 	local textBox2 -- text box for option 2
 	local temp2 = 0 -- do not animate if the lives stay the same
-	
+
 	-- function to decrease the Count
 	local function minusCount()
 		if count > 0 then
@@ -884,7 +884,7 @@ function scene:create( event )
 		end
 		-- random placer
 		if randomBox == 1 then
-			box1 = rightAnswer -- string 
+			box1 = rightAnswer -- string
 			box2 = wrongAnswer
 		else
 			box1 = wrongAnswer
@@ -960,7 +960,7 @@ function scene:create( event )
 				if difficulty == 1 then temp = temp + 1
 				elseif difficulty == 2 then temp = (score+1)/2
 				elseif difficulty == 3 then temp = (score+1)/3 end
-				
+
 				if usedMonument[temp] ~= nil then
 					usedMonument[temp].obj:removeSelf()
 					usedMonument[temp] = nil
@@ -1059,7 +1059,7 @@ function scene:create( event )
 			runFlipAnimation(flag)
 			return true
 		end)
-		
+
 		-- change emoticons of animals 3 / part of Losing mechanics
 		local function emoFlashEnd(obj)
 			transition.scaleTo(emoticonIcon, {xScale = 0.27, yScale = 0.27, time = 500})
@@ -1115,7 +1115,7 @@ function scene:create( event )
 		transition.cancel()
 		returnToMenu()
 	end
-	
+
 	-- animation for ended round
 	local function endgameWin()
 		local text = display.newText(sceneGroup,"You earned a golden star", star.x+25,star.y-150,font,44)
@@ -1185,7 +1185,7 @@ function scene:create( event )
 				})
 		end
 	end
-	
+
 	-- function to start the game
 	function startGame()
 	    -- memories dump
@@ -1211,7 +1211,7 @@ function scene:create( event )
 			pauseButton = nil
 			infoButton:removeSelf()
 			infoButton = nil
-			
+
 			animal1:setSequence("sad")
 			animal2:setSequence("sad")
 			animal3:setSequence("happy")
@@ -1243,7 +1243,7 @@ function scene:create( event )
 			animal3:play()
 			emoticonIcon:play()
 			sounds.play( "Win FX" )
-			sounds.play( "Celebrate FX" ) 
+			sounds.play( "Celebrate FX" )
 			endgame(1)
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
@@ -1280,7 +1280,7 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-		
+
 		audio.fade( 500 )
 		audio.stopWithDelay( 500 )
 

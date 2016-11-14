@@ -1,17 +1,21 @@
 local composer = require( "composer" )
+local sounds = require( "Source.sounds" )
 
 local scene = composer.newScene()
 
 
 local setBackground
 local sceneGroup
+local showCoins
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
 local function returnToMenu()
+	audio.stop(  )
 	composer.gotoScene( "Source.menu" )
+	composer.removeScene( "Source.winFoodGame" )
 end
 
 
@@ -20,31 +24,57 @@ end
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 function setBackground()
-
+	sounds.defineSound( "Win Theme", "Assets/Sounds/FlagGame/YAY_FX.mp3", 1	 )
+	  sounds.play( "Win Theme" )
   background = display.newRect(sceneGroup,0,0,4,3)
   background.x = display.contentWidth / 2
   background.y = display.contentHeight / 2
   background:scale(500,500)
+
+	local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/return.png", 100, 100 )--11
+	replayButton.y = display.contentCenterY - display.contentCenterY / 1.5
+	replayButton.x = display.contentCenterX - display.contentCenterX / 2.3
+	replayButton:addEventListener("tap", returnToMenu)
+end
+
+function showCoins(difficulty)
+  if difficulty == 1 then
+    coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c1.png")
+   winText = display.newText(sceneGroup,"You won 200 gold coins", display.contentCenterX, display.contentCenterY + 20, native.systemFont, 30 )
+elseif difficulty == 2 then
+  coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c2.png")
+  winText = display.newText(sceneGroup, "You won 500 gold coins", display.contentCenterX, display.contentCenterY +20, native.systemFont, 30 )
+elseif difficulty == 3 then
+coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c3.png")
+winText = display.newText(sceneGroup, "You won 750 gold coins", display.contentCenterX, display.contentCenterY +20, native.systemFont, 30 )
+else
+	print("nothing to see here")
+end
+coin.x = display.contentCenterX
+coin.y = display.contentCenterY - 50
+coin:scale(0.3,0.3)
+winText:setFillColor(0,0,31)
+
 end
 
 local function startGame()
+
   setBackground()
-  local difficulty = composer.getVariable( "difficulty" )
-  if difficulty == 1 then
-    winText = display.newText(sceneGroup, "Yay you win a coin and new food. Use this coin to travel around the world... 1", display.contentCenterX, display.contentCenterY, native.systemFont, 20 )
-  elseif difficulty == 2 then
-		winText = display.newText(sceneGroup, "Yay you win a coin and new food. Use this coin to travel around the world... 2", display.contentCenterX, display.contentCenterY, native.systemFont, 20 )
-  elseif difficulty == 3 then
-		winText = display.newText(sceneGroup, "Yay you win a coin and new food. Use this coin to travel around the world... 3", display.contentCenterX, display.contentCenterY, native.systemFont, 20 )
-  else
-		winText = display.newText(sceneGroup, "Yay you win a coin and new food. Use this coin to travel around the world... 0", display.contentCenterX, display.contentCenterY, native.systemFont, 20 )
-  end
-  winText:setFillColor(0,0,0)
+	showCoins(composer.getVariable( "difficulty" ))
+  -- if difficulty == 1 then
+  --   winText = display.newText(sceneGroup, "Yay you win a coin and new food. Use this coin to travel around the world... 1", display.contentCenterX, display.contentCenterY, native.systemFont, 20 )
+  -- elseif difficulty == 2 then
+	-- 	winText = display.newText(sceneGroup, "Yay you win a coin and new food. Use this coin to travel around the world... 2", display.contentCenterX, display.contentCenterY, native.systemFont, 20 )
+  -- elseif difficulty == 3 then
+	-- 	winText = display.newText(sceneGroup, "Yay you win a coin and new food. Use this coin to travel around the world... 3", display.contentCenterX, display.contentCenterY, native.systemFont, 20 )
+  -- else
+	-- 	winText = display.newText(sceneGroup, "Yay you win a coin and new food. Use this coin to travel around the world... 0", display.contentCenterX, display.contentCenterY, native.systemFont, 20 )
+  -- end
+  -- winText:setFillColor(0,0,0)
 end
 
 -- create()
 function scene:create( event )
-
 	sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 startGame()
