@@ -34,6 +34,9 @@ local MAP_EQUATOR = 0.6114583333  -- percent from top
 local MAP_WIDTH = 341.9194386243  -- degrees Longitude
 local MAP_PRIME_MERIDIAN = 0.4666666667  -- percent from left
 
+local MIN_ZOOM = 0.9
+local MAX_ZOOM = 5
+
 
 local function makePin( displayGroup, country )
 	local coords = country.coordinates
@@ -70,8 +73,9 @@ function scene:create( event )
 	self.map.x = display.contentCenterX
 	self.map.y = display.contentCenterY
 
-	local minScale = screenWidth / self.map.width
-	local maxScale = minScale * 3
+	local defaultScale = screenWidth / self.map.width
+	local minScale = defaultScale * MIN_ZOOM
+	local maxScale = defaultScale * MAX_ZOOM
 
 	local returnButton = Button:newImageButton{
 		group = sceneGroup,
@@ -93,7 +97,7 @@ function scene:create( event )
 	local scrollZoom = ScrollZoomController:new(
 		self.map,
 		minScale, maxScale,
-		minScale
+		defaultScale
 	)
 
 	self.map:addEventListener( "touch", function( e )
