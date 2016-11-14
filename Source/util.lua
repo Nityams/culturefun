@@ -33,4 +33,9 @@ function util.contains( left, right, top, bottom, x, y )
 	        top  < y and y < bottom)
 end
 
+function util.isNaN( x )
+	-- http://lua-users.org/wiki/InfAndNanComparisons
+	return x ~= x
+end
+
 return util

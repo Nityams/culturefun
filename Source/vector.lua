@@ -1,9 +1,9 @@
-local vector = {}
-vector.__index = vector
+local Vector = {}
+Vector.__index = Vector
 
-function vector.new( x, y )
+function Vector.new( x, y )
 	local V = {}
-	setmetatable( V, vector )
+	setmetatable( V, Vector )
 	V.x = x
 	V.y = y
 	return V
@@ -11,59 +11,59 @@ end
 
 -- Vector unary minus
 --   -V
-function vector.__unm( V )
-	return vector.new( -V.x, -V.y )
+function Vector.__unm( V )
+	return Vector.new( -V.x, -V.y )
 end
 
 -- Vector addition
 --   V + W
-function vector.__add( V, W )
-	return vector.new( V.x + W.x, V.y + W.y )
+function Vector.__add( V, W )
+	return Vector.new( V.x + W.x, V.y + W.y )
 end
 
 -- Vector subtraction
 --   V - W
-function vector.__sub( V, W )
-	return vector.new( V.x - W.x, V.y - W.y )
+function Vector.__sub( V, W )
+	return Vector.new( V.x - W.x, V.y - W.y )
 end
 
 -- Cross product's magnitude
 --   V * W
-function vector.__mul( V, W )
+function Vector.__mul( V, W )
 	return V.x * W.y - V.y * W.x
 end
 
 -- Dot product
 --   V .. W
-function vector.__concat( V, W )
+function Vector.__concat( V, W )
 	return V.x * W.x + V.y * W.y
 end
 
-function vector:unit()
+function Vector:unit()
 	local magnitude = self:magnitude()
-	return vector.new( self.x / magnitude, self.y / magnitude )
+	return Vector.new( self.x / magnitude, self.y / magnitude )
 end
 
-function vector:scaleBy( c )
-	return vector.new( c * self.x, c * self.y )
+function Vector:scaleBy( c )
+	return Vector.new( c * self.x, c * self.y )
 end
 
-function vector:magnitude()
+function Vector:magnitude()
 	local x = self.x
 	local y = self.y
 	return math.sqrt( x * x + y * y )
 end
 
-function vector:withMagnitude( c )
+function Vector:withMagnitude( c )
 	return self:unit():scaleBy( c )
 end
 
-function vector:distanceTo( other )
+function Vector:distanceTo( other )
 	return (self - other):magnitude()
 end
 
-function vector:toString()
+function Vector:toString()
 	return "{x=" .. self.x .. ",y=" .. self.y .. "}"
 end
 
-return vector
+return Vector

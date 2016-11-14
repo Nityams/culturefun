@@ -1,7 +1,11 @@
 local EventListener = require( "Source.eventListener" )
+local util = require( "Source.util" )
+local Vector = require( "Source.vector" )
+
 
 local Controller = {}
 Controller.__index = Controller
+
 
 function Controller:new( object, minScale, maxScale, scale )
 	local c = {}
@@ -27,11 +31,6 @@ end
 
 
 function Controller:moveTo( x, y, scale )
-	print( "x", x )
-	print( "y", y )
-	print( "scale", scale )
-
-	scale = (scale or self:getScale())
 	local obj = self.object
 	obj.x = x
 	obj.y = y
@@ -64,6 +63,8 @@ end
 
 
 function Controller:calculateCenter()
+	-- Mean location of all touches
+
 	local count = 0
 	local sumX = 0
 	local sumY = 0
@@ -74,7 +75,33 @@ function Controller:calculateCenter()
 		sumY = sumY + touch.y
 	end
 
-	return sumX / count, sumY / count
+	return Vector.new( sumX / count, sumY / count )
+end
+
+
+function Controller:calculateRadius()
+	-- Mean distance from touches to center of touches
+
+	local center = self:calculateCenter()
+
+	local count = 0
+	local sum = 0
+
+	for _,touch in pairs( self.touches ) do
+		count = count + 1
+		sum = sum + center:distanceTo( touch )
+	end
+
+	return sum / count
+end
+
+
+function Controller:startTouch()
+	self.startPos = Vector.new( self.object.x, self.object.y )
+	self.startScale = self:getScale()
+
+	self.startCenter = self:calculateCenter()
+	self.startRadius = self:calculateRadius()
 end
 
 
@@ -83,39 +110,45 @@ function Controller:handleTouch( event )
 
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( self.object )
-
-		self.touches[id] = {
-			x = event.x,
-			y = event.y
-		}
-
-		self.oldMapX = self.object.x
-		self.oldMapY = self.object.y
-		self.touchCenterX, self.touchCenterY = self:calculateCenter()
+		self.touches[id] = Vector.new( event.x, event.y )
+		self:startTouch()
 
 	elseif event.phase == "moved" then
-		self.touches[id] = {
-			x = event.x,
-			y = event.y
-		}
+		if self.touches[id] then
+			self.touches[id] = Vector.new( event.x, event.y )
+		else
+			-- Touch might have originated off of the object.
+			display.getCurrentStage():setFocus( self.object )
+			self.touches[id] = Vector.new( event.x, event.y )
+			self:startTouch()
+		end
 
-		local newCenterX, newCenterY = self:calculateCenter()
+		self.touches[id] = Vector.new( event.x, event.y )
 
-		local dx = newCenterX - self.touchCenterX
-		local dy = newCenterY - self.touchCenterY
+		local endCenter = self:calculateCenter()
+		local endRadius = self:calculateRadius()
 
-		--local scale = self.oldScale * math.exp( -1 * dy / 500 )
-		local scale = self:getScale()
+		local dPos = endCenter - self.startCenter
+		local dRadius = endRadius / self.startRadius
 
-		self:requestMoveTo( self.oldMapX + dx, self.oldMapY + dy, scale )
+		if util.isNaN( dRadius ) then
+			-- Only one finger on the screen causes a divide by zero.
+			dRadius = 1
+		end
+
+		-- TODO: Set scale.
+		--local scale = self.startScale * math.exp( -1 * d.y / 500 )
+		local x = self.startPos.x + dPos.x
+		local y = self.startPos.y + dPos.y
+		local scale = self.startScale * dRadius
+
+		self:requestMoveTo( x, y, scale )
 
 	else  -- event.phase == "ended" or event.phase == "cancelled"
 		self.touches[id] = nil
 
-		if #self.touches > 0 then
-			self.oldMapX = self.object.x
-			self.oldMapY = self.object.y
-			self.touchCenterX, self.touchCenterY = self:calculateCenter()
+		if util.size( self.touches ) > 0 then
+			self:startTouch()
 		else
 			display.getCurrentStage():setFocus( nil )
 			self:startRubberBand()

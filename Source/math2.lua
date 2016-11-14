@@ -1,11 +1,11 @@
-local vector = require( "Source.vector" )
+local Vector = require( "Source.vector" )
 
 local math2 = {}
 
 function math2.randomPointWithin( minX, maxX, minY, maxY )
 	local x = math.random( minX, maxX )
 	local y = math.random( minY, maxY )
-	return vector.new( x, y )
+	return Vector.new( x, y )
 end
 
 function math2.randomPointOnBorder( x1, x2, y1, y2 )
