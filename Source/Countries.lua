@@ -7,7 +7,7 @@ Spain = {
   food = "Paella",
   greetings_food = "Assets/Images/FoodGame/Dialogs/spanish_dialog.png",
   greeting = "Hola",
-  coordinates = { lat = 40.43, lon = -3.70 }  -- 40°26′N 3°42′W
+  coordinates = { lat = 40.43, lon = -3.70 }  -- Madrid @ 40°26′N 3°42′W
 }
 USA = {
   name = "USA",
@@ -15,63 +15,71 @@ USA = {
   food = "Apple Pie",
   greetings_food = "Assets/Images/FoodGame/Dialogs/american_dialog.png",
   greeting = "Hello",
-  coordinates = { lat = 38.88, lon = -77.02 }  -- 38°53′N 77°01′W
+  coordinates = { lat = 38.88, lon = -77.02 }  -- Washington, D.C. @ 38°53′N 77°01′W
 }
 South_Africa= {
   name = "South Africa",
   flag = "Assets/Images/Flags/South_Africa_Flag.png",
   food = "Chakalaka pap",
   greetings_food = "Assets/Images/FoodGame/Dialogs/south_african_dialog.png",
-  greeting = "Hello"
+  greeting = "Hello",
+  coordinates = { lat = -26.44, lon = 28.06 }  -- Johannesburg @ 26°12′16″S 28°2′44″E
 }
 Mexico = {
   name = "Mexico",
   flag = "Assets/Images/Flags/Mexico_Flag.png",
   food = "Tamales",
   greetings_food = "Assets/Images/FoodGame/Dialogs/mexican_dialog.png",
-  greeting = "Hola"
+  greeting = "Hola",
+  coordinates = { lat = 19.43, lon = -99.13 }  -- Mexico City @ 19°26′N 99°08′W
 }
 Russia = {
   name = "Russia",
   flag = "Assets/Images/Flags/Russia_Flag.png",
   food = "Borsch",
   greetings_food = "Assets/Images/FoodGame/Dialogs/russian_dialog.png",
-  greeting = "Zdravstvuyte"
+  greeting = "Zdravstvuyte",
+  coordinates = { lat = 55.75, lon = 37.62 }  -- Moscow @ 55°45′N 37°37′E
 }
 Egypt = {
   name = "Egypt",
   flag = "Assets/Images/Flags/Egypt_Flag.png",
   food = "Koshari",
   greetings_food = "Assets/Images/FoodGame/Dialogs/egyptian_dialog.png",
-  greeting = "Marhabaan"
+  greeting = "Marhabaan",
+  coordinates = { lat = 30.03, lon = 31.22 }  -- Cairo @ 30°2′N 31°13′E
 }
 New_Zealand = {
   name = "New Zealand",
   flag = "Assets/Images/Flags/New_Zealand_Flag.png",
   food = "Hangi",
   greetings_food = "Assets/Images/FoodGame/Dialogs/new-zealand_dialog.png",
-  greeting = "Hello"
+  greeting = "Hello",
+  coordinates = { lat = -41.28, lon = 174.45 }  -- Wellington @ 41°17′S 174°27′E
 }
 UK = {
   name = "UK",
   flag = "Assets/Images/Flags/United_Kingdom_Flag.png",
   food = "Fish and Chips",
   greetings_food = "Assets/Images/FoodGame/Dialogs/british_dialog.png",
-    greeting = "Hello"
+  greeting = "Hello",
+  coordinates = { lat = 51.62, lon = -0.12 }  -- London @ 51°30′N 0°7′W
 }
 Switzerland = {
   name = "Switzerland",
   flag = "Assets/Images/Flags/Switzerland_Flag.png",
   food = "Cheese Fondue",
   greetings_food = "Assets/Images/FoodGame/Dialogs/swiss_dialog.png",
-  greeting = "Bonjour"
+  greeting = "Bonjour",
+  coordinates = { lat = 46.95, lon = 7.45 }  -- Bern @ 46°57′N 7°27′E
 }
 Vietnam = {
   name = "Vietnam",
   flag = "Assets/Images/Flags/Vietnam_Flag.png",
   food = "Pho",
   greetings_food = "Assets/Images/FoodGame/Dialogs/vietnamese_dialog.png",
-  greeting = "Chao ban"
+  greeting = "Chao ban",
+  coordinates = { lat = 21.03, lon = 105.85 }  -- Hanoi @ 21°2′N 105°51′E
 }
 
 --new items added on Nov 6th
