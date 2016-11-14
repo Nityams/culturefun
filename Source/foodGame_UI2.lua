@@ -362,12 +362,39 @@ function setBackground()
           print("***** Chose: "..i..". "..v.name..", correct: "..correctFood..". "..choices[correctFood].name)
           if i == correctFood then
             correctAnswer()
+          else
+            wrongAnswer(v)
           end
         end)
     end
 
   end
+---------------------------
+  function wrongAnswer( choice )
+    if DEBUG then print("WRONG!!!!") end
 
+    if choice.response ~= nil then
+      if DEBUG then print("Removing existing response") end
+      display.remove(choice.response)
+      -- choice.response:removeSelf()
+    end
+
+    --
+    choice.response = display.newText(sceneGroup, "X", choice.image.x, choice.image.y, "Helvetica", 250)
+    choice.response:setFillColor(1,0,0)
+    choice.response.alpha = 0
+    choice.response:scale(1.5, 1.5)
+
+    transition.to(choice.response, {
+      time = 200,
+      alpha = 1,
+      xScale = 1,
+      yScale = 1,
+      transition = easing.outQuart
+    })
+  end
+
+  ----------
   function correctAnswer()
     local difficulty = composer.getVariable( "difficulty" )
     if difficulty == 1 then -- Easy
@@ -384,17 +411,26 @@ function setBackground()
     checkScore()
     eventRemover()
   end
-
   function eventRemover()
     for i,v in ipairs(choices) do
-      display.remove(v.image)
-    end
-    for i,v in ipairs(choices) do
-      -- v.text:removeSelf()
+      display.remove(v.response)
       display.remove(v.text)
+      display.remove(v.image)
+      -- v.text:removeSelf()
     end
     leaveCharacters()
   end
+
+  -- function eventRemover()
+  --   for i,v in ipairs(choices) do
+  --     display.remove(v.image)
+  --   end
+  --   for i,v in ipairs(choices) do
+  --     -- v.text:removeSelf()
+  --     display.remove(v.text)
+  --   end
+  --   leaveCharacters()
+  -- end
 
   function callGreetings()
     -- print("***** greetings: "..correctFood..". "..choices[correctFood].name)
