@@ -57,4 +57,13 @@ function Pin:reposition( mapTop, mapLeft, mapWidth, mapHeight )
 end
 
 
+function Pin.__newindex( pin, key, value )
+	if key == "enabled" then
+		pin.button.enabled = value
+	else
+		rawset( pin, key, value )
+	end
+end
+
+
 return Pin

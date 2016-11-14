@@ -72,4 +72,9 @@ function util.isNaN( x )
 	return x ~= x
 end
 
+function util.sample( arr )
+	local choice = math.random( 1, #arr )
+	return arr[choice]
+end
+
 return util

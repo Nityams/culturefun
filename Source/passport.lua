@@ -98,17 +98,17 @@ function scene:create( event )
 	self.pins = {}
 	self:addPins( countries )
 
-	local scrollZoom = ScrollZoomController:new{
+	self.scrollZoom = ScrollZoomController:new{
 		object = self.map,
 		minScale = minScale, maxScale = maxScale,
 		defaultScale = defaultScale
 	}
 
 	local handleTouch = function( e )
-		return scrollZoom:handleTouch( e )
+		return self.scrollZoom:handleTouch( e )
 	end
 	local handleMouse = function( e )
-		return scrollZoom:handleMouse( e )
+		return self.scrollZoom:handleMouse( e )
 	end
 
 	self.map:addEventListener( "touch", handleTouch )
@@ -116,7 +116,7 @@ function scene:create( event )
 	self.map:addEventListener( "mouse", handleMouse )
 	whiteFill:addEventListener( "mouse", handleMouse )
 
-	scrollZoom:addEventListener( "move", function()
+	self.scrollZoom:addEventListener( "move", function()
 		self:repositionPins()
 	end)
 
@@ -180,6 +180,10 @@ function scene:addPins( countries )
 		local country = countries[i]
 		if country.coordinates then
 			local pin = makePin( self.view, country, lat, lon )
+			pin.country = country
+			pin:addEventListener( "tap", function()
+				self:openDialog( country )
+			end)
 			util.push( self.pins, pin )
 		end
 	end
@@ -242,6 +246,81 @@ function scene:destroyCoinDisplay()
 	self.currencyText = nil
 	self.nextAreaText:removeSelf()
 	self.nextAreaText = nil
+end
+
+
+function scene:openDialog( country )
+	self.scrollZoom.enabled = false
+	for i = 1,#self.pins do
+		local pin = self.pins[i]
+		pin.enabled = false
+	end
+
+	self.dbg = display.newRect(
+		self.view,
+		display.contentCenterX, display.contentCenterY,
+		400, 300
+	)
+	self.dbg:setFillColor( 0.70, 0.90, 0.90 )
+
+	self.dname = display.newText{
+		parent = self.view,
+		text = country.name,
+		x = self.dbg.x - self.dbg.width / 2 + 25,
+		y = self.dbg.y - self.dbg.height / 2 + 25,
+		width = self.dbg.width - 50,
+		font = font,
+		fontSize = 36
+	}
+	self.dname.anchorX = 0.0
+	self.dname.anchorY = 0.0
+	self.dname:setFillColor( 0.4 )
+
+	if country.fun_fact then
+		local fun_fact = country.fun_fact
+
+		if type( fun_fact ) == "table" then
+			-- fun_fact is an array of fun facts... choose one
+			fun_fact = util.sample( fun_fact )
+		end
+
+		self.dfact = display.newText{
+			parent = self.view,
+			text = fun_fact,
+			x = self.dname.x,
+			y = self.dname.y + self.dname.height,
+			width = self.dbg.width -  50,
+			font = font,
+			fontSize = 24
+		}
+		self.dfact.anchorX = 0.0
+		self.dfact.anchorY = 0.0
+		self.dfact:setFillColor( 0.4 )
+	end
+
+	timer.performWithDelay( 2000, function()
+		self:closeDialog()
+	end)
+end
+
+
+function scene:closeDialog()
+	self.scrollZoom.enabled = true
+	for i = 1,#self.pins do
+		local pin = self.pins[i]
+		pin.enabled = true
+	end
+
+	self.dbg:removeSelf()
+	self.dbg = nil
+
+	self.dname:removeSelf()
+	self.dname = nil
+
+	if self.dfact then
+		self.dfact:removeSelf()
+		self.dfact = nil
+	end
 end
 
 
