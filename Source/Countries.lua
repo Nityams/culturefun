@@ -6,14 +6,16 @@ Spain = {
   flag = "Assets/Images/Flags/Spain_Flag.png",
   food = "Paella",
   greetings_food = "Assets/Images/FoodGame/Dialogs/spanish_dialog.png",
-  greeting = "Hola"
+  greeting = "Hola",
+  coordinates = { lat = 40.43, lon = -3.70 }  -- 40°26′N 3°42′W
 }
 USA = {
   name = "USA",
   flag = "Assets/Images/Flags/United_States_Flag.png",
   food = "Apple Pie",
   greetings_food = "Assets/Images/FoodGame/Dialogs/american_dialog.png",
-  greeting = "Hello"
+  greeting = "Hello",
+  coordinates = { lat = 38.88, lon = -77.02 }  -- 38°53′N 77°01′W
 }
 South_Africa= {
   name = "South Africa",

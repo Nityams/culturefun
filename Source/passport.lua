@@ -1,7 +1,9 @@
 local composer = require( "composer" )
 
 local Button = require( "Source.button" )
+local countries = require( "Source.countries" )
 local images = require( "Source.images" )
+
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -14,36 +16,20 @@ local screenLeft = 0
 local screenRight = display.contentWidth
 local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
 local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
+local screenWidth = screenRight - screenLeft
+local screenHeight = screenBottom - screenTop
 
-local countryNames = {
-	"United States", -- 1
-	"United Kingdom",
-	"Canada",
-	"South Korea",
-	"Netherlands",
-	"Japan",
-	"Australia",
-	"Vietnam",
-	"Mexico",
-	"Russia" -- 10
-};
-
-local countryFiles = {
-	"Assets/Images/Flags/United_States_Flag.png",
-	"Assets/Images/Flags/United_Kingdom_Flag.png",
-	"Assets/Images/Flags/Canada_Flag.png",
-	"Assets/Images/Flags/South_Korea_Flag.png",
-	"Assets/Images/Flags/Netherlands_Flag.png",
-	"Assets/Images/Flags/Japan_Flag.png",
-	"Assets/Images/Flags/Australia_Flag.png",
-	"Assets/Images/Flags/Vietnam_Flag.png",
-	"Assets/Images/Flags/Mexico_Flag.png",
-	"Assets/Images/Flags/Russia_Flag.png"
-};
-
-images.defineImage( "Book", "Passport/Book 934x700.png", display.contentWidth, display.contentHeight )
 images.defineImage( "Close Button", "Scene/9.png", display.contentWidth/20, display.contentHeight/14 )
 images.defineImage( "Close Button Pressed", "Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
+
+images.defineImage( "Map", "Passport/blank_map.png", screenWidth, screenWidth )
+images.defineImage( "Pin", "Passport/pin.png", 39, 58 )
+
+local MAP_HEIGHT = 6.0070481862  -- height of Miller projection cylinder
+local MAP_EQUATOR = 0.6114583333  -- percent from top
+
+local MAP_WIDTH = 341.9194386243  -- degrees Longitude
+local MAP_PRIME_MERIDIAN = 0.4666666667  -- percent from left
 
 
 -- -----------------------------------------------------------------------------------
@@ -61,9 +47,9 @@ function scene:create( event )
 	whiteFill.y = display.contentCenterY
 	whiteFill:setFillColor( 1, 1, 1 )
 
-	local book = images.get( sceneGroup, "Book" )
-	book.x = display.contentCenterX
-	book.y = display.contentCenterY
+	local map = images.get( sceneGroup, "Map" )
+	map.x = display.contentCenterX
+	map.y = display.contentCenterY
 
 	local returnButton = Button:newImageButton{
 		group = sceneGroup,
@@ -79,14 +65,11 @@ function scene:create( event )
 		composer.gotoScene("Source.menu")
 	end)
 
-	local x = 225
-	local y = 155
-
-	for i = 1,5 do
-		self:addFlag( x, y )
-		self:addFlag( x + 131 + 10, y )
-
-		y = y + 75 + 10
+	for i = 1,#countries do
+		local country = countries[i]
+		if country.coordinates then
+			self:addPin( country, lat, lon )
+		end
 	end
 end
 
@@ -131,21 +114,68 @@ function scene:destroy( event )
 
 end
 
-function scene:findUnusedFlag()
-	if self.usedFlags == nil then
-		self.usedFlags = {}
-	end
 
-	local flagIndex = math.random( 1, #countryNames )
-
-	while self.usedFlags[flagIndex] ~= nil do
-		flagIndex = math.random( 1, #countryNames )
-	end
-
-	self.usedFlags[flagIndex] = true
-
-	return flagIndex
+local function degreesToRadians( x )
+	return x * math.pi / 180
 end
+
+local function millerProjection( lat )
+	-- https://en.wikipedia.org/wiki/Miller_cylindrical_projection
+	local rads = degreesToRadians( lat )
+	local y = 5/4 * math.log( math.tan( 1/4*math.pi + 2/5*rads ) )
+	return y
+end
+
+local function convertMillerToMap( y )
+	-- Output value 0.0 means the top of the map, 1.0 means the bottom.
+
+	-- y ranges from -2.30341 to +2.30341
+	--    0 is the equator
+	--   -2.30341 is the south pole
+	--   +2.30341 is the north pole
+
+	-- Our map's height is MAP_HEIGHT units, and the equator is MAP_EQUATOR
+	-- percent down the map.
+
+	return -y / MAP_HEIGHT + MAP_EQUATOR
+end
+
+local function convertLogitudeToMap( lon )
+	-- Output value 0.0 means the left side of the map, 1.0 means right.
+
+	-- lon ranges from -180 to 180
+	--    0 is the prime meridian
+	--   -180 is a meridian that goes through the Pacific Ocean
+	--   +180 is the same meridian
+
+	-- Our map's width covers MAP_WIDTH degrees of longitude, and the prime
+	-- meridian is MAP_PRIME_MERIDIAN percent over from the left.
+
+	return lon / MAP_WIDTH + MAP_PRIME_MERIDIAN
+end
+
+
+function scene:addPin( country )
+	local coords = country.coordinates
+
+	-- Our map uses Miller projection. To place our pins in the right spot we'll
+	-- need to use the same projection.
+	local millerY = millerProjection( coords.lat )
+
+	local mapX = convertLogitudeToMap( coords.lon )
+	local mapY = convertMillerToMap( millerY )
+
+	local mapWidth = screenWidth
+	local mapHeight = screenWidth
+	local mapLeft = screenLeft
+	local mapTop = screenTop + (screenHeight - screenWidth) / 2
+
+	local image = images.get( self.view, "Pin" )
+	image.anchorY = 1.0  -- Make image.y be for the bottom of the image.
+	image.x = mapLeft + mapX * mapWidth
+	image.y = mapTop + mapY * mapHeight
+end
+
 
 function scene:addFlag( x, y )
 	local flagIndex = self:findUnusedFlag()
