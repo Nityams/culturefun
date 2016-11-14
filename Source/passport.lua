@@ -94,11 +94,13 @@ function scene:create( event )
 	self.pins = {}
 	self:addPins( countries )
 
-	local scrollZoom = ScrollZoomController:new(
-		self.map,
-		minScale, maxScale,
-		defaultScale
-	)
+	local scrollZoom = ScrollZoomController:new{
+		object = self.map,
+		minScale = minScale, maxScale = maxScale,
+		defaultScale = defaultScale,
+		minX = screenLeft, maxX = screenRight,
+		minY = screenTop, maxY = screenBottom
+	}
 
 	self.map:addEventListener( "touch", function( e )
 		return scrollZoom:handleTouch( e )

@@ -7,20 +7,24 @@ local Controller = {}
 Controller.__index = Controller
 
 
-function Controller:new( object, minScale, maxScale, scale )
+function Controller:new( options )
 	local c = {}
 	setmetatable( c, Controller )
 
-	c.object = object
-	c.minScale = minScale
-	c.maxScale = maxScale
-	c.scale = scale
+	c.object = options.object
+	c.minScale = options.minScale
+	c.maxScale = options.maxScale
+	c.scale = options.defaultScale
+	c.minX = options.minX
+	c.maxX = options.maxX
+	c.minY = options.minY
+	c.maxY = options.maxY
 
 	c.enabled = true
 	c.listener = EventListener:new()
 	c.touches = {}
 
-	c:setScale( scale )
+	c:setScale( c.scale )
 
 	return c
 end
@@ -167,15 +171,15 @@ end
 
 function Controller:startRubberBand()
 	local scale = self:getScale()
+	local x = self.object.x
+	local y = self.object.y
 
-	if scale < self.minScale then
-		scale = self.minScale
-	elseif self.maxScale < scale then
-		scale = self.maxScale
-	end
+	scale = util.clamp( scale, self.minScale, self.maxScale )
+	x = util.clamp( x, self.minX, self.maxX )
+	y = util.clamp( y, self.minY, self.maxY )
 
 	-- TODO: Do this over some period of time.
-	self:setScale( scale )
+	self:requestMoveTo( x, y, scale )
 end
 
 
