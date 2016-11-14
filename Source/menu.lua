@@ -242,7 +242,9 @@ function scene:show( event )
 			timer.performWithDelay( 25, function()
 				self.preloader = self:preload()
 				self.preloader:addEventListener( "done", function()
-					self:startPlaneTimer()
+					if composer.getSceneName( "current" ) == "Source.menu" then
+						self:startPlaneTimer()
+					end
 				end)
 				self.preloader:start()
 			end)
