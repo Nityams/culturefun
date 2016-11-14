@@ -202,27 +202,31 @@ end
 
 
 function Controller:startRubberBand()
-	local scale = self:getScale()
-	local x = self.object.x
-	local y = self.object.y
+	local startScale = self:getScale()
+	local startX = self.object.x
+	local startY = self.object.y
 
-	self.rbStartScale = scale
-	self.rbStartX = x
-	self.rbStartY = y
+	local scale = math2.clamp( startScale, self.minScale, self.maxScale )
 
-	self.rbEndScale = math2.clamp( scale, self.minScale, self.maxScale )
-
-	local dRadius = self.rbEndScale / scale
-	x = math2.lerp( self.recentStartCenter.x, self.object.x, dRadius )
-	y = math2.lerp( self.recentStartCenter.y, self.object.y, dRadius )
+	local dRadius = scale / startScale
+	local x = math2.lerp( self.recentStartCenter.x, startX, dRadius )
+	local y = math2.lerp( self.recentStartCenter.y, startY, dRadius )
 
 	local maxX = screenLeft + self.object.width / 2 * scale
 	local minX = screenRight - self.object.width / 2 * scale
 	local maxY = screenTop + self.object.height / 2 * scale
 	local minY = screenBottom - self.object.height / 2 * scale
 
-	self.rbEndX = math2.clamp( x, minX, maxX )
-	self.rbEndY = math2.clamp( y, minY, maxY )
+	x = math2.clamp( x, minX, maxX )
+	y = math2.clamp( y, minY, maxY )
+
+	self.rbStartScale = startScale
+	self.rbStartX = startX
+	self.rbStartY = startY
+
+	self.rbEndScale = scale
+	self.rbEndX = (minX < maxX and x or display.contentCenterX)
+	self.rbEndY = (minY < maxY and y or display.contentCenterY)
 
 	self.rubberBandTransition = util.transition( 300, easing.outExpo, function( t )
 		self:rubberBandProgress( t )
