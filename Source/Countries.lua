@@ -7,7 +7,11 @@ local Spain = {
   food = "Paella",
   greetings_food = "Assets/Images/FoodGame/Dialogs/spanish_dialog.png",
   greeting = "Hola",
-  coordinates = { lat = 40.43, lon = -3.70 }  -- Madrid @ 40°26′N 3°42′W
+  coordinates = { lat = 40.43, lon = -3.70 },  -- Madrid @ 40°26′N 3°42′W
+  fun_fact = {
+    "Did you know, the world’s oldest restaurant, Botin Restaurant, is located in Madrid Spain?",
+    "Madrid is the largest city and capital of Spain!"
+  }
 }
 local USA = {
   name = "USA",
@@ -15,7 +19,11 @@ local USA = {
   food = "Apple Pie",
   greetings_food = "Assets/Images/FoodGame/Dialogs/american_dialog.png",
   greeting = "Hello",
-  coordinates = { lat = 38.88, lon = -77.02 }  -- Washington, D.C. @ 38°53′N 77°01′W
+  coordinates = { lat = 38.88, lon = -77.02 },  -- Washington, D.C. @ 38°53′N 77°01′W
+  fun_fact = {
+    "The first man to walk on the moon was the American Neil Armstrong.",
+    "The U.S. has the longest border in the world with Canada but the border is not a straight line!"
+  }
 }
 local South_Africa= {
   name = "South Africa",
