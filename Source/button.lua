@@ -229,6 +229,10 @@ function Button:new( graphics, options )
 	return b
 end
 
+function Button:insertInto( displayGroup )
+	displayGroup:insert( self.group )
+end
+
 function Button:setText( text )
 	if self.graphics.setText ~= nil then
 		self.graphics:setText( text )

@@ -41,6 +41,11 @@ function Pin:new( displayGroup, x, y )
 end
 
 
+function Pin:insertInto( displayGroup )
+	self.button:insertInto( displayGroup )
+end
+
+
 function Pin:addEventListener( eventName, handlerFn )
 	self.button:addEventListener( eventName, handlerFn )
 end

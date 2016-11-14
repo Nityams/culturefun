@@ -164,12 +164,34 @@ end
 
 
 function scene:addPins( countries )
+	-- Add the new countries
 	for i = 1,#countries do
 		local country = countries[i]
 		if country.coordinates then
 			local pin = makePin( self.view, country, lat, lon )
 			util.push( self.pins, pin )
 		end
+	end
+
+	print( "BEFORE" )
+	for i = 1,#self.pins do
+		print( self.pins[i].y )
+	end
+
+	-- Graphically re-order the pins
+	local function byLatitude( a, b )
+		return a.y < b.y
+	end
+
+	table.sort( self.pins, byLatitude )
+
+	print( "AFTER" )
+	for i = 1,#self.pins do
+		print( self.pins[i].y )
+	end
+
+	for i = 1,#self.pins do
+		self.pins[i]:insertInto( self.view )
 	end
 end
 

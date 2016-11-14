@@ -184,16 +184,11 @@ function Controller:startRubberBand()
 	self.rbStartX = x
 	self.rbStartY = y
 
+	-- TODO: Don't use these min* max* values: just make sure there's no
+	-- background showing.
 	self.rbEndScale = util.clamp( scale, self.minScale, self.maxScale )
 	self.rbEndX = util.clamp( x, self.minX, self.maxX )
 	self.rbEndY = util.clamp( y, self.minY, self.maxY )
-
-	print( "self.rbStartScale", self.rbStartScale )
-	print( "self.rbStartX", self.rbStartX )
-	print( "self.rbStartY", self.rbStartY )
-	print( "self.rbEndScale", self.rbEndScale )
-	print( "self.rbEndX", self.rbEndX )
-	print( "self.rbEndY", self.rbEndY )
 
 	self.rubberBandTransition = util.transition( 300, easing.outExpo, function( t )
 		self:rubberBandProgress( t )
