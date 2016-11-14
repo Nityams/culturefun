@@ -252,12 +252,18 @@ function Button:onTouch( event )
 		return
 	end
 
+	if self.touchId ~= nil and self.touchId ~= event.id then
+		-- Ignore secondary touches when multi-touch mode is on.
+		return
+	end
+
 	if event.phase == "began" then
 		self.wantDepressed = true
 		self:updateDepressed()
 
 		display.getCurrentStage():setFocus( event.target )
 		self.focused = true
+		self.touchId = event.id
 
 	elseif event.phase == "moved" and self.focused then
 		self.wantDepressed = self:contains( event.x, event.y )
@@ -289,6 +295,7 @@ function Button:onTouch( event )
 	else  -- event.phase == "cancelled" or self.focused == false
 		display.getCurrentStage():setFocus( nil )
 		self.focused = false
+		self.touchId = nil
 
 		self.wantDepressed = false
 		self:updateDepressed()
