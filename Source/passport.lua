@@ -25,7 +25,7 @@ local screenHeight = screenBottom - screenTop
 images.defineImage( "Close Button", "Scene/9.png", display.contentWidth/20, display.contentHeight/14 )
 images.defineImage( "Close Button Pressed", "Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 
-images.defineImage( "Map", "Passport/blank_map.png", screenWidth, screenWidth )
+images.defineImage( "Map", "Passport/blank_map.png", 1920, 1920 )
 
 local MAP_HEIGHT = 6.0070481862  -- height of Miller projection cylinder
 local MAP_EQUATOR = 0.6114583333  -- percent from top
@@ -58,14 +58,22 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	local whiteFill = display.newRect( sceneGroup, 0, 0, display.contentWidth, display.contentHeight )
-	whiteFill.x = display.contentCenterX
-	whiteFill.y = display.contentCenterY
+	local whiteFill = display.newRect(
+		sceneGroup,
+		display.contentCenterX, display.contentCenterY,
+		screenWidth, screenHeight
+	)
 	whiteFill:setFillColor( 1, 1, 1 )
 
-	local map = images.get( sceneGroup, "Map" )
-	map.x = display.contentCenterX
-	map.y = display.contentCenterY
+	self.map = images.get( sceneGroup, "Map" )
+	self.map.x = display.contentCenterX
+	self.map.y = display.contentCenterY
+	self.map:addEventListener( "touch", function( e )
+		return self:onTouch( e )
+	end)
+
+	self.minScale = screenWidth / self.map.width
+	self.maxScale = self.minScale * 3
 
 	local returnButton = Button:newImageButton{
 		group = sceneGroup,
@@ -82,15 +90,9 @@ function scene:create( event )
 	end)
 
 	self.pins = {}
-	for i = 1,#countries do
-		local country = countries[i]
-		if country.coordinates then
-			local pin = makePin( sceneGroup, country, lat, lon )
-			util.push( self.pins, pin )
-		end
-	end
+	self:addPins( countries )
 
-	self:repositionPins()
+	self:setScale( self.minScale )
 end
 
 
@@ -135,16 +137,36 @@ function scene:destroy( event )
 end
 
 
+function scene:addPins( countries )
+	for i = 1,#countries do
+		local country = countries[i]
+		if country.coordinates then
+			local pin = makePin( self.view, country, lat, lon )
+			util.push( self.pins, pin )
+		end
+	end
+end
+
+
 function scene:repositionPins()
-	local mapWidth = screenWidth
-	local mapHeight = screenWidth
-	local mapLeft = screenLeft
-	local mapTop = screenTop + (screenHeight - screenWidth) / 2
+	local mapWidth = self.map.width * self.map.xScale
+	local mapHeight = self.map.height * self.map.yScale
+	local mapTop = self.map.y - mapHeight / 2
+	local mapLeft = self.map.x - mapWidth / 2
 
 	for i = 1,#self.pins do
 		local pin = self.pins[i]
 		pin:reposition( mapTop, mapLeft, mapWidth, mapHeight )
 	end
+end
+
+
+function scene:setScale( scale )
+	self.scale = scale
+	self.map.xScale = scale
+	self.map.yScale = scale
+
+	self:repositionPins()
 end
 
 
@@ -160,6 +182,12 @@ function scene:addFlag( x, y )
 	)
 	flag.x = x
 	flag.y = y
+end
+
+
+function scene:onTouch( event )
+	print( "onTouch" )
+	return true
 end
 
 

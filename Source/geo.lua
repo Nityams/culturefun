@@ -13,8 +13,6 @@ function geo.millerProjection( lat )
 end
 
 function geo.convertMillerToMap( mapHeight, mapEquator, y )
-	-- Output value 0.0 means the top of the map, 1.0 means the bottom.
-
 	-- y ranges from -2.30341 to +2.30341
 	--    0 is the equator
 	--   -2.30341 is the south pole
@@ -23,12 +21,11 @@ function geo.convertMillerToMap( mapHeight, mapEquator, y )
 	-- Our map's height is mapHeight units, and the equator is mapEquator
 	-- percent down the map.
 
+	-- Output value 0.0 means the top of the map, 1.0 means the bottom.
 	return -y / mapHeight + mapEquator
 end
 
 function geo.convertLogitudeToMap( mapWidth, mapPrimeMeridian, lon )
-	-- Output value 0.0 means the left side of the map, 1.0 means right.
-
 	-- lon ranges from -180 to 180
 	--    0 is the prime meridian
 	--   -180 is a meridian that goes through the Pacific Ocean
@@ -37,6 +34,7 @@ function geo.convertLogitudeToMap( mapWidth, mapPrimeMeridian, lon )
 	-- Our map's width covers mapWidth degrees of longitude, and the prime
 	-- meridian is mapPrimeMeridian percent over from the left.
 
+	-- Output value 0.0 means the left side of the map, 1.0 means the right.
 	return lon / mapWidth + mapPrimeMeridian
 end
 
