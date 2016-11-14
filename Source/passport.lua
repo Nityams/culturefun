@@ -5,6 +5,7 @@ local countries = require( "Source.Countries" )
 local geo = require( "Source.geo" )
 local images = require( "Source.images" )
 local Pin = require( "Source.pin" )
+local ScrollZoomController = require( "Source.scrollZoomController" )
 local util = require( "Source.util" )
 
 
@@ -68,12 +69,9 @@ function scene:create( event )
 	self.map = images.get( sceneGroup, "Map" )
 	self.map.x = display.contentCenterX
 	self.map.y = display.contentCenterY
-	self.map:addEventListener( "touch", function( e )
-		return self:onTouch( e )
-	end)
 
-	self.minScale = screenWidth / self.map.width
-	self.maxScale = self.minScale * 3
+	local minScale = screenWidth / self.map.width
+	local maxScale = minScale * 3
 
 	local returnButton = Button:newImageButton{
 		group = sceneGroup,
@@ -92,7 +90,20 @@ function scene:create( event )
 	self.pins = {}
 	self:addPins( countries )
 
-	self:setScale( self.minScale )
+	local scrollZoom = ScrollZoomController:new(
+		self.map,
+		minScale, maxScale,
+		minScale
+	)
+
+	self.map:addEventListener( "touch", function( e )
+		return scrollZoom:handleTouch( e )
+	end)
+	scrollZoom:addEventListener( "move", function()
+		self:repositionPins()
+	end)
+
+	self:repositionPins()
 end
 
 
@@ -161,15 +172,6 @@ function scene:repositionPins()
 end
 
 
-function scene:setScale( scale )
-	self.scale = scale
-	self.map.xScale = scale
-	self.map.yScale = scale
-
-	self:repositionPins()
-end
-
-
 function scene:addFlag( x, y )
 	local flagIndex = self:findUnusedFlag()
 
@@ -182,45 +184,6 @@ function scene:addFlag( x, y )
 	)
 	flag.x = x
 	flag.y = y
-end
-
-
-function scene:onTouch( event )
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( self.map )
-
-		self.touchStartX = event.x
-		self.touchStartY = event.y
-
-		self.touchStartScale = self.scale
-
-	elseif event.phase == "moved" then
-		local dx = event.x - self.touchStartX
-		local dy = event.y - self.touchStartY
-
-		local scale = self.touchStartScale * math.exp( -1 * dy / 500 )
-
-		self:setScale( scale )
-
-	else  -- event.phase == "ended" or event.phase == "cancelled"
-		display.getCurrentStage():setFocus( nil )
-
-		local scale = self.scale
-
-		print( "scale", scale )
-		print( "minScale", self.minScale )
-		print( "maxScale", self.maxScale )
-		if scale < self.minScale then
-			scale = self.minScale
-		elseif self.maxScale < scale then
-			scale = self.maxScale
-		end
-
-		self:setScale( scale )
-
-	end
-
-	return true
 end
 
 
