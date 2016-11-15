@@ -207,9 +207,9 @@ function scene:gotoGame(UINum )
 
   --composer.setVariable( "difficulty", difficulty )
   if UINum == 1 then
-    composer.gotoScene("Source.foodgame_UI1")
+    composer.gotoScene("Source.foodGame_UI1")
   else
-    composer.gotoScene("source.foodgame_UI2")
+    composer.gotoScene("Source.foodGame_UI2")
   end
 end
 
