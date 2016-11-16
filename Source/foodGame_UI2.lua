@@ -123,15 +123,15 @@ function setBackground()
     -- oven.y = display.contentCenterY + display.contentCenterY / 1.8
     -- oven:scale(0.5, 0.22)
 
-    wall = display.newImage(sceneGroup, "Assets/Images/FoodGame/wall.jpg")
-    wall.x = display.contentCenterX - display.contentCenterX / 2
-    wall.y = display.contentCenterY + 225
-    wall:scale(0.5,0.5)
+    -- wall = display.newImage(sceneGroup, "Assets/Images/FoodGame/wall.jpg")
+    -- wall.x = display.contentCenterX - display.contentCenterX / 2
+    -- wall.y = display.contentCenterY + 225
+    -- wall:scale(0.5,0.5)
 
-    starbar = display.newImage(sceneGroup, "Assets/Images/FoodGame/woodBar.png")
-    starbar.x = display.contentCenterX - display.contentCenterX / 2
-    starbar.y = display.contentCenterY + 133
-    starbar:scale(0.5,0.25)
+    -- starbar = display.newImage(sceneGroup, "Assets/Images/FoodGame/woodBar.png")
+    -- starbar.x = display.contentCenterX - display.contentCenterX / 2
+    -- starbar.y = display.contentCenterY + 133
+    -- starbar:scale(0.5,0.25)
 
 
 
@@ -160,7 +160,7 @@ function setBackground()
 
     botBorder = display.newImage(sceneGroup, "Assets/Images/Scene/21.png")
     botBorder.x = currentWidth/2
-  	botBorder.y = wall.y + 135
+  	botBorder.y = display.contentCenterY + 225 + 135
     botBorder:scale(1,0.5)
   end
 
@@ -438,19 +438,19 @@ function setBackground()
     dialogBox = display.newImage(sceneGroup, "Assets/Images/FoodGame/Dialogs/dialogBox_white.png")
     dialogBox.xScale = 0.4
     dialogBox.yScale = 0.35
-    dialogBox.y = display.contentCenterY - display.contentCenterY/2.5
-    dialogBox.x = character_one.x + 30
+    dialogBox.y = display.contentCenterY - display.contentCenterY/2.5 - 20
+    dialogBox.x = character_one.x + 85
     greetingText = greet..", \n may I get some \n "..fname
     dialogText =  display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y -10, "Helvetica", 27)
     dialogText:setFillColor(0,0,0)
   end
 
   function callCharacters()
-    character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/deer2.png")
-    character_one.y = display.contentCenterY+15
-    character_one.x = 0
+    character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/bear.png")
+    character_one.y = display.contentCenterY + 30
+    character_one.x = - 20
     --character_one:scale(0.8,0.8)
-    character_one:scale(1.3,1)
+    character_one:scale(0.45,0.45)
     transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
   end
 
