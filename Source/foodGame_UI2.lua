@@ -20,6 +20,7 @@ local callGreetings
 local flagAnimation
 local startGame
 local choiceRemover
+local choiceFade
 local checkScore
 local checkStar
 local correctAnswer
@@ -40,6 +41,7 @@ local text2
 local text3
 local text4
 local victory = false
+local difficulty
 
 local function returnToMenu()
   if DEBUG then print("***** Returning to menu") end
@@ -79,6 +81,9 @@ function scene:create( event )
 end
 
 function startGame()
+  difficulty = composer.getVariable( "difficulty" )
+  if DEBUG then print("Difficulty set to "..difficulty) end
+
   setBackground()
   newFoods()
 
@@ -275,7 +280,7 @@ function setBackground()
   function getChoices()
     -- Ensure deck has sufficient countries
     if leftInDeck() < 4 then
-      buildDeck()
+      buildDeck(difficulty)
       shuffleDeck()
       if DEBUG then
         print("***** Shuffled new deck")
@@ -373,30 +378,33 @@ function setBackground()
   function wrongAnswer( choice )
     if DEBUG then print("WRONG!!!!") end
 
-    if choice.response ~= nil then
-      if DEBUG then print("Removing existing response") end
-      display.remove(choice.response)
-      -- choice.response:removeSelf()
-    end
+    wrongChoiceCharacter()
+    choiceRemover()
+    timer.performWithDelay(1900, setFoods)
 
-    --
-    choice.response = display.newText(sceneGroup, "X", choice.image.x, choice.image.y, "Helvetica", 250)
-    choice.response:setFillColor(1,0,0)
-    choice.response.alpha = 0
-    choice.response:scale(1.5, 1.5)
+    -- if choice.response ~= nil then
+    --   if DEBUG then print("Removing existing response") end
+    --   display.remove(choice.response)
+    --   -- choice.response:removeSelf()
+    -- end
 
-    transition.to(choice.response, {
-      time = 200,
-      alpha = 1,
-      xScale = 1,
-      yScale = 1,
-      transition = easing.outQuart
-    })
+    -- --
+    -- choice.response = display.newText(sceneGroup, "X", choice.image.x, choice.image.y, "Helvetica", 250)
+    -- choice.response:setFillColor(1,0,0)
+    -- choice.response.alpha = 0
+    -- choice.response:scale(1.5, 1.5)
+
+    -- transition.to(choice.response, {
+    --   time = 200,
+    --   alpha = 1,
+    --   xScale = 1,
+    --   yScale = 1,
+    --   transition = easing.outQuart
+    -- })
   end
 
   ----------
   function correctAnswer()
-    local difficulty = composer.getVariable( "difficulty" )
     if difficulty == 1 then -- Easy
       score = score + 3
     elseif difficulty == 2 then -- Medium
@@ -414,17 +422,17 @@ function setBackground()
 
   function choiceRemover()
     for i,v in ipairs(choices) do
-      display.remove(v.response)
+      -- display.remove(v.response)
       display.remove(v.text)
       display.remove(v.image)
       -- v.text:removeSelf()
     end
-    leaveCharacters()
+    -- leaveCharacters()
   end
 
   function callGreetings()
     -- print("***** greetings: "..correctFood..". "..choices[correctFood].name)
-    greeting = choices[correctFood].greetings_food
+    -- greeting = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png"
     fname = choices[correctFood].food
     greet = choices[correctFood].greeting
     -- print(greeting)
@@ -435,13 +443,15 @@ function setBackground()
   --  dialogBox.y = display.contentCenterY - display.contentCenterY/2.5
   --  dialogBox.x = character_one.x - 30
 
+    display.remove(dialogBox) -- in case it was there before
     dialogBox = display.newImage(sceneGroup, "Assets/Images/FoodGame/Dialogs/dialogBox_white.png")
     dialogBox.xScale = 0.4
     dialogBox.yScale = 0.35
     dialogBox.y = display.contentCenterY - display.contentCenterY/2.5
     dialogBox.x = character_one.x + 30
     greetingText = greet..", \n may I get some \n "..fname
-    dialogText =  display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y -10, "Helvetica", 27)
+    display.remove(dialogText) -- in case it was there before
+    dialogText =  display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
     dialogText:setFillColor(0,0,0)
   end
 
@@ -454,25 +464,46 @@ function setBackground()
     transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
   end
 
+  function choiceFade()
+    for i,v in ipairs(choices) do
+      v.image._functionListeners = nil
+      transition.to(v.image, {time = 500, alpha = 0})
+      transition.to(v.text, {time = 500, alpha = 0})
+      -- if v.response ~= nil then
+      --   transition.to(v.response, {time = 1000, alpha = 0})
+      -- end
+    end
+  end
+
   function thankCharacter()
     if DEBUG then print("Thank you!!!!") end
 
-    for i,v in ipairs(choices) do
-      v.image._functionListeners = nil
-      transition.to(v.image, {time = 1000, alpha = 0})
-      if v.response ~= nil then
-        transition.to(v.response, {time = 1000, alpha = 0})
-      end
-    end
+    choiceFade()
 
     display.remove(dialogText)
     dialogText =  display.newText(sceneGroup, "Thank you!", dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
     dialogText:setFillColor(0,0,0)
-    
+
     transition.to(dialogText, {
         time = 2000,
         alpha = 1,
-        onComplete = choiceRemover
+        onComplete = leaveCharacters
+      })
+  end
+
+  function wrongChoiceCharacter()
+    -- if DEBUG then print("Thank you!!!!") end
+
+    choiceFade()
+
+    display.remove(dialogText)
+    dialogText = display.newText(sceneGroup, "I didn't order \nthat.", dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
+    dialogText:setFillColor(0,0,0)
+
+    transition.to(dialogText, {
+        time = 2000,
+        alpha = 1,
+        onComplete = callGreetings
       })
   end
 
@@ -487,6 +518,7 @@ function setBackground()
         transition = easing.outQuad,
         onComplete = newFoods
       })
+    choiceRemover()
   end
 
   -- show()
