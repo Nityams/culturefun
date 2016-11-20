@@ -194,9 +194,9 @@ function setBackground()
 
     -- Manually set x, y for all counters
 
-    scoreCounter.x = woodbar_h.x - 20
-    scoreCounter.y = display.contentCenterY - 10
-    scoreCounter:scale(0.22, 0.22)
+    scoreCounter.x = woodbar_h.x -26
+    scoreCounter.y = display.contentCenterY
+    scoreCounter:scale(0.23, 0.23)
 
     checkStar()
   end

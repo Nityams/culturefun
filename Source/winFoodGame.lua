@@ -17,30 +17,67 @@ local function returnToMenu()
 	composer.gotoScene( "Source.menu" )
 end
 
+local function returnToGame()
+	audio.fadeOut( 500 )
+	audio.stopWithDelay( 500 )
+	composer.gotoScene( "Source.difficultySelector" )
+end
+
+local function returnToWallet()
+	audio.fadeOut( 500 )
+	audio.stopWithDelay( 500 )
+	composer.gotoScene( "Source.passport" )
+end
+
 
 
 local function setBackground()
 	sounds.defineSound( "Win Theme", "Assets/Sounds/FlagGame/YAY_FX.mp3", 1	 )
 	sounds.play( "Win Theme" )
-	background = display.newRect(sceneGroup,0,0,4,3)
-	background.x = display.contentWidth / 2
-	background.y = display.contentHeight / 2
-	background:scale(500,500)
+	-- background = display.newRect(sceneGroup,0,0,4,3)
+	-- background.x = display.contentWidth / 2
+	-- background.y = display.contentHeight / 2
+	-- background:scale(500,500)
 
-	local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/return.png", 100, 100 )--11
-	replayButton.y = display.contentCenterY - display.contentCenterY / 1.5
-	replayButton.x = display.contentCenterX - display.contentCenterX / 2.3
-	replayButton:addEventListener("tap", returnToMenu)
+	background = display.newImage( sceneGroup, "Assets/Images/FoodGame/foodBack.png")
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
+	background:scale(1.9,2.5)
+
+	local exit = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/backtoMenu2.png", 200, 100 )--11
+	exit.y = display.contentCenterY - display.contentCenterY / 2
+	exit.x = display.contentCenterX - display.contentCenterX / 2 - 15
+	exit:addEventListener("tap", returnToMenu)
+
+	local returnbtn = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/returnbtn.png", 220, 100 )--11
+	returnbtn.y = display.contentCenterY - display.contentCenterY / 2
+	returnbtn.x = display.contentCenterX + display.contentCenterX / 2
+	returnbtn:addEventListener("tap", returnToGame)
+
+	local character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/bear.png")
+	character_one:scale(0.45,0.45)
+	character_one.x = display.contentCenterX + display.contentCenterX/2 + 40
+	character_one.y = display.contentCenterY + 20
+
+	local winBox = display.newImage(sceneGroup,"Assets/Images/FoodGame/winBox.png" )
+	winBox.x = display.contentCenterX - 40
+	winBox.y = display.contentCenterY + 20
+	winBox:scale(0.57,0.66)
+
+	local myCoins = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/myCoins.png", 220, 100)
+	myCoins.y = winBox.y + 170
+	myCoins.x = winBox.x
+	myCoins:addEventListener("tap", returnToWallet)
 end
 
 local function showCoins(difficulty)
 	if difficulty == 1 then
 		coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c1.png")
-		winText = display.newText(sceneGroup,"You won 100 gold coins", display.contentCenterX, display.contentCenterY + 20, native.systemFont, 30 )
+		winText = display.newText(sceneGroup,"You won 100 gold coins")--, display.contentCenterX)-- display.contentCenterY + 20, native.systemFont, 30 )
 		wallet.addCoins( 100 )
 	elseif difficulty == 2 then
 		coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c2.png")
-		winText = display.newText(sceneGroup, "You won 200 gold coins", display.contentCenterX, display.contentCenterY +20, native.systemFont, 30 )
+		winText = display.newText(sceneGroup, "You won 200 gold coins")--, display.contentCenterX)-- display.contentCenterY +20, native.systemFont, 30 )
 		wallet.addCoins( 200 )
 	elseif difficulty == 3 then
 		coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c3.png")
@@ -49,10 +86,12 @@ local function showCoins(difficulty)
 	else
 		print("nothing to see here")
 	end
-	coin.x = display.contentCenterX
-	coin.y = display.contentCenterY - 50
+	coin.x = display.contentCenterX - 20
+	coin.y = display.contentCenterY + 5
 	coin:scale(0.3,0.3)
-	winText:setFillColor(0,0,31)
+	winText.x = coin.x - 10
+	winText.y = coin.y + 80
+	winText:setFillColor(0,0,0)
 
 end
 

@@ -15,7 +15,7 @@ local scene = composer.newScene()
 images.defineImage( "Neighborhood", "FoodGame/Intro.png", display.contentWidth, display.contentHeight )
 
 local function gotoGame()
-	composer.gotoScene("Source.FoodUISelector")
+	composer.gotoScene("Source.winFoodGame")
 end
 
 local function bellsound()
@@ -68,7 +68,8 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 
 		-- In two seconds go to the food game
-		timer.performWithDelay( 2000, gotoGame )
+		--timer.performWithDelay( 2000, gotoGame )
+		timer.performWithDelay( 1, gotoGame )
 	end
 end
 
