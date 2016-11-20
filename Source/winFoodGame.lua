@@ -29,8 +29,6 @@ local function returnToWallet()
 	composer.gotoScene( "Source.passport" )
 end
 
-
-
 local function setBackground()
 	sounds.defineSound( "Win Theme", "Assets/Sounds/FlagGame/YAY_FX.mp3", 1	 )
 	sounds.play( "Win Theme" )
