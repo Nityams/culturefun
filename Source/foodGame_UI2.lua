@@ -46,13 +46,17 @@ local difficulty
 local function returnToMenu()
   if DEBUG then print("***** Returning to menu") end
   composer.gotoScene( "Source.menu" )
-  composer.removeScene( "Source.foodGame" )
+--  composer.removeScene( "Source.foodGame" )
   -- foodGroup:removeSelf()
 end
 
 local function winScene()
   if DEBUG then print("**** Going to win scene") end
   composer.gotoScene( "Source.winFoodGame" )
+  if score ~= nil then
+    score = 0
+  end
+  composer.removeScene( sceneGroup )
   composer.removeScene( "Source.foodGame" )
   -- foodGroup:removeSelf()
 end
@@ -111,15 +115,15 @@ function setBackground()
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/9.png", 60, 60 )--11
-  replayButton.y = display.contentCenterY - display.contentCenterY / 1.5
-  replayButton.x = display.contentCenterX - display.contentCenterX / 1.1
+  local returnButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/9.png", 60, 60 )--11
+  returnButton.y = display.contentCenterY - display.contentCenterY / 1.5
+  returnButton.x = display.contentCenterX - display.contentCenterX / 1.1
 
-  replayButton:addEventListener("tap", returnToMenu)
+  returnButton:addEventListener("tap", returnToMenu)
 
   -- local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
-  -- pauseButton.y = replayButton.y
-  -- pauseButton.x = replayButton.x - 200
+  -- pauseButton.y = returnButton.y
+  -- pauseButton.x = returnButton.x - 200
   -- pauseButton:addEventListener("tap", function()
   --     audio.stop() end)
 
@@ -406,7 +410,7 @@ function setBackground()
   ----------
   function correctAnswer()
     if difficulty == 1 then -- Easy
-      score = score + 3
+      score = score + 12
     elseif difficulty == 2 then -- Medium
       score = score + 2
     else -- Hard
@@ -554,6 +558,10 @@ function setBackground()
   function scene:destroy( event )
 
     local sceneGroup = self.view
+    score:removeSelf()
+    scoreCounter:removeSelf()
+    sceneGroup:removeSelf()
+
 
   end
 

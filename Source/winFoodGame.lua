@@ -3,6 +3,7 @@ local sounds = require( "Source.sounds" )
 local wallet = require( "Source.wallet" )
 
 
+
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -10,6 +11,26 @@ local wallet = require( "Source.wallet" )
 
 local scene = composer.newScene()
 
+function scene:gotoMinigame()
+--	self.preloader:stop()
+
+	local sourcePath = "Source." .. "foodIntro"
+	local minigameScene = require( sourcePath )
+
+	local params = {
+		minigame = {
+			name = "Food Game",
+			sourcePath = sourcePath,
+			preloadFn = function() return minigameScene:preload() end
+		},
+		menuMusicChannel = self.menuMusicChannel
+	}
+	composer.gotoScene( "Source.difficultySelector", { params=params } )
+end
+
+function scene:gotoFoodMinigame()
+	self:gotoMinigame( "Food Game", "foodIntro" )
+end
 
 local function returnToMenu()
 	audio.fadeOut( 500 )
@@ -20,7 +41,7 @@ end
 local function returnToGame()
 	audio.fadeOut( 500 )
 	audio.stopWithDelay( 500 )
-	composer.gotoScene( "Source.difficultySelector" )
+	composer.gotoScene( "Source.difficultySelector")
 end
 
 local function returnToWallet()
@@ -50,7 +71,7 @@ local function setBackground()
 	local returnbtn = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/returnbtn.png", 220, 100 )--11
 	returnbtn.y = display.contentCenterY - display.contentCenterY / 2
 	returnbtn.x = display.contentCenterX + display.contentCenterX / 2
-	returnbtn:addEventListener("tap", returnToGame)
+	returnbtn:addEventListener("tap",function() scene:gotoMinigame() end)
 
 	local character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/bear.png")
 	character_one:scale(0.45,0.45)
@@ -71,11 +92,11 @@ end
 local function showCoins(difficulty)
 	if difficulty == 1 then
 		coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c1.png")
-		winText = display.newText(sceneGroup,"You won 100 gold coins")--, display.contentCenterX)-- display.contentCenterY + 20, native.systemFont, 30 )
+		winText = display.newText(sceneGroup,"You won 100 gold coins", display.contentCenterX, display.contentCenterY + 20, native.systemFont, 30 )
 		wallet.addCoins( 100 )
 	elseif difficulty == 2 then
 		coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c2.png")
-		winText = display.newText(sceneGroup, "You won 200 gold coins")--, display.contentCenterX)-- display.contentCenterY +20, native.systemFont, 30 )
+		winText = display.newText(sceneGroup, "You won 200 gold coins", display.contentCenterX, display.contentCenterY +20, native.systemFont, 30 )
 		wallet.addCoins( 200 )
 	elseif difficulty == 3 then
 		coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c3.png")

@@ -11,7 +11,7 @@ local Spain = {
   }
 }
 local USA = {
-  name = "United States of America",
+  name = "U.S.A.",
   flag = "Assets/Images/Flags/United_States_Flag.png",
   food = "Apple Pie",
   -- greetings_food = "Assets/Images/FoodGame/Dialogs/american_dialog.png",
