@@ -45,9 +45,9 @@ local difficulty
 
 local function returnToMenu()
   if DEBUG then print("***** Returning to menu") end
+  composer.removeScene( "Source.foodGame" )
   composer.gotoScene( "Source.menu" )
---  composer.removeScene( "Source.foodGame" )
-  -- foodGroup:removeSelf()
+
 end
 
 local function winScene()
@@ -540,27 +540,37 @@ function setBackground()
 
   -- hide()
   function scene:hide( event )
-
+print( "Destroy scene called" )
+  composer.removeScene( "Source.foodGame" )
+  score = 0
+  checkStar()
     local sceneGroup = self.view
     local phase = event.phase
 
     if ( phase == "will" ) then
+      score = 0
+      checkStar()
+        composer.removeScene( "Source.foodGame" )
 
+print( "Destroy scene called" )
       audio.fade( 500 )
       audio.stopWithDelay( 500 )
-
     elseif ( phase == "did" ) then
-
+      score = 0
+      checkStar()
+        composer.removeScene( "Source.foodGame" )
+print( "Destroy scene called" )
     end
   end
 
   -- destroy()
   function scene:destroy( event )
-
+    print( "Destroy scene called" )
     local sceneGroup = self.view
-    score:removeSelf()
-    scoreCounter:removeSelf()
-    sceneGroup:removeSelf()
+      print( "Destroy scene called here too" )
+    -- score:removeSelf()
+    -- scoreCounter:removeSelf()
+    -- sceneGroup:removeSelf()
 
 
   end
