@@ -57,6 +57,7 @@ function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
+	print( "foodIntro here..." )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
@@ -68,8 +69,8 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
 
 		-- In two seconds go to the food game
-		--timer.performWithDelay( 2000, gotoGame )
-		timer.performWithDelay( 1, gotoGame )
+		timer.performWithDelay( 2000, gotoGame )
+	--	timer.performWithDelay( 1, gotoGame )
 	end
 end
 
