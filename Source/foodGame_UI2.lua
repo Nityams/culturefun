@@ -213,7 +213,6 @@ function checkStar()
   star2 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
   star3 = display.newImage(sceneGroup, "Assets/Images/FoodGame/starGrey.png", currentWidth, currentHeight)
 
-  starShine()
 
   if score >= 36 then
     if DEBUG then print("***** You have "..math.floor(score/12).." out of 3 stars!") end
@@ -260,20 +259,46 @@ function checkStar()
   star1:scale(0.5, 0.5)
   star2:scale(0.5, 0.5)
   star3:scale(0.5, 0.5)
+  starShine()
 
 end
 
 function starShine()
   if score == 12 then
+     if DEBUG then print( "score star here!!" ) end
     sounds.play("starWin")
-    -- star1:scale(4,4)
-    -- transition.to(star1,{time = 500, alpha = 1, xScale = 1, yScale = 1 })
-    -- starShineAnimation(star1)
+   star1:scale(10,10)
+   star1.x = display.contentCenterX
+   star1.y = display.contentCenterY
+    transition.to(star1,{time = 500,
+                        alpha = 1,
+                        x = display.contentCenterX - display.contentCenterX / 1.3,
+                         y = display.contentCenterY + display.contentCenterY / 1.8,
+                         xScale = 0.5, yScale = 0.5 })
+    --starShineAnimation(star1)
   elseif score == 24 then
     sounds.play("starWin")
+    star2:scale(10,10)
+    star2.x = display.contentCenterX
+    star2.y = display.contentCenterY
+     transition.to(star1,{time = 500,
+                         alpha = 1,
+                         x = display.contentCenterX - display.contentCenterX / 2,
+                          y = display.contentCenterY + display.contentCenterY / 1.8,
+                          xScale = 0.5, yScale = 0.5 })
+     --starShineAnimation(star1)
     -- starShineAnimation()
   elseif score == 36 then
     sounds.play("starWin")
+    star3:scale(10,10)
+    star3.x = display.contentCenterX
+    star3.y = display.contentCenterY
+     transition.to(star1,{time = 500,
+                         alpha = 1,
+                         x = display.contentCenterX - display.contentCenterX / 4,
+                          y = display.contentCenterY + display.contentCenterY / 1.8,
+                          xScale = 0.5, yScale = 0.5 })
+     --starShineAnimation(star1)
     -- starShineAnimation()
   else
   end
