@@ -332,7 +332,7 @@ local Malaysia = {
   food = "Satay",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Selamat pagi",
-  coordinates = { late = 3.14, lon = 101.69}, -- Kuala Lumpur @ 3° 8.34' N, 101° 41.21 E
+  coordinates = { lat = 3.14, lon = 101.69}, -- Kuala Lumpur @ 3° 8.34' N, 101° 41.21 E
   fun_fact = {
     "Did you know, the national animal of Malaysia is the endangered Malayan tiger? SAVE THE TIGERS!",
     "Fun Fact: Malaysia is located on two landmasses separated by the South China Sea?"
