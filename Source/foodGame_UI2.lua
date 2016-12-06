@@ -281,7 +281,7 @@ function starShine()
     star2:scale(10,10)
     star2.x = display.contentCenterX
     star2.y = display.contentCenterY
-     transition.to(star1,{time = 500,
+     transition.to(star2,{time = 500,
                          alpha = 1,
                          x = display.contentCenterX - display.contentCenterX / 2,
                           y = display.contentCenterY + display.contentCenterY / 1.8,
@@ -293,7 +293,7 @@ function starShine()
     star3:scale(10,10)
     star3.x = display.contentCenterX
     star3.y = display.contentCenterY
-     transition.to(star1,{time = 500,
+     transition.to(star3,{time = 500,
                          alpha = 1,
                          x = display.contentCenterX - display.contentCenterX / 4,
                           y = display.contentCenterY + display.contentCenterY / 1.8,
