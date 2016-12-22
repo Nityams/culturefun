@@ -221,6 +221,8 @@ images.defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight
 images.defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
 images.defineImage( "Cont Button", "Scene/22.png", currentWidth/5, currentHeight/8)
 images.defineImage( "Cont Button Pressed", "Scene/22-pressed.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Repl Button", "Scene/23.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Repl Button Pressed", "Scene/23-pressed.png", currentWidth/5, currentHeight/8)
 images.defineSheet( "Cat", "Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
@@ -1114,28 +1116,42 @@ function scene:create( event )
 	local function contButtonTap()
 		-- this will stop the animations
 		transition.cancel()
-		returnToMenu()
+		local sourcePath = "Source.flagGame"
+		local minigameScene = require( sourcePath )
+		local params = {
+			minigame = {
+				name = "Flag Game",
+				sourcePath = sourcePath,
+				preloadFn = function() return minigameScene:preload() end
+			},
+			menuMusicChannel = nil
+		}
+		composer.gotoScene( "Source.difficultySelector", { params=params } )
 	end
 
 	-- animation for ended round
 	local function endgameWin()
-		local text = display.newText(sceneGroup,"You earned a golden star", star.x+25,star.y-150,font,44)
-		text:setFillColor(0,0,0)
 		local contButton = Button:newImageButton{
 			group = sceneGroup,
 			image = images.get( sceneGroup, "Cont Button" ),
 			imagePressed = images.get( sceneGroup, "Cont Button Pressed" ),
 			x = star.x + 25,
-			y = star.y + 150,
+			y = star.y + 250,
 			width = images.width( "Cont Button" ),
 			height = images.height( "Cont Button" ),
 			alpha = 0.9
 		}
 		contButton:addEventListener("tap", contButtonTap)
+
+		local currentCoins = wallet.getCoins()
+		local text = display.newText(sceneGroup,""..currentCoins.."", star.x+20,star.y+100,font,44)
+		text:setFillColor(0,0,0)
+		local difficulty = composer.getVariable( "difficulty" )
+		wallet.addCoins( 100 * difficulty )
 	end
 	local function endgameLose()
 		local text = display.newText(sceneGroup,"Mr. Kevin is too tired!", star.x+25,star.y-200,font,44)
-		local text2 = display.newText(sceneGroup,"Let's go eatt!", text.x+20,text.y+50,font,44)
+		local text2 = display.newText(sceneGroup,"Let's go eat!", text.x+20,text.y+50,font,44)
 		text:setFillColor(0,0,0)
 		text2:setFillColor(0,0,0)
 		transition.to(emoticonIcon, {time = 4000,
@@ -1145,8 +1161,8 @@ function scene:create( event )
 				yScale = 0.8})
 		local contButton = Button:newImageButton{
 			group = sceneGroup,
-			image = images.get( sceneGroup, "Cont Button" ),
-			imagePressed = images.get( sceneGroup, "Cont Button Pressed" ),
+			image = images.get( sceneGroup, "Repl Button" ),
+			imagePressed = images.get( sceneGroup, "Repl Button Pressed" ),
 			x = star.x + 25,
 			y = star.y + 150,
 			width = images.width( "Cont Button" ),
@@ -1164,7 +1180,7 @@ function scene:create( event )
 			star:play()
 			transition.to(star,{
 				time = 2000,
-				y = pole.y-40,
+				y = pole.y-200,
 				x = pole.x-17,
 				xScale = 0.9,
 				yScale = 1,
@@ -1246,9 +1262,6 @@ function scene:create( event )
 			sounds.play( "Win FX" )
 			sounds.play( "Celebrate FX" )
 			endgame(1)
-
-			local difficulty = composer.getVariable( "difficulty" )
-			wallet.addCoins( 100 * difficulty )
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
 	end
