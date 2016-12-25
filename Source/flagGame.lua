@@ -1,4 +1,4 @@
-
+-- rearranging folder into FlagGame folder
 local composer = require( "composer" )
 local physics = require ( "physics")
 
@@ -160,47 +160,47 @@ local countryFiles = {
 };
 
 local sceneBuild ={
-	"Scene/1.png",
-	"Scene/2.png",
-	"Scene/3.png",
-	"Scene/4.png",
-	"Scene/5.png",
-	"Scene/6.png",
-	"Scene/7.png",
-	"Scene/8.png",
-	"Scene/9.png",
-	"Scene/10.png",
-	"Scene/11.png",
-	"Scene/12.png",
-	"Scene/13.png", -- 13
-	"Scene/14.png",
-	"Scene/15.png",
-	"Scene/16.png",
-	"Scene/17.png",
-	"Scene/18.png",
-	"Scene/19.png",
-	"Scene/20.png",
-	"Scene/21.png",
-	"Scene/22.png", -- 22
-	"Scene/10-pressed.png", -- 23
-	"Scene/19-blurred.png" -- 24
+	"FlagGame/Scene/1.png",
+	"FlagGame/Scene/2.png",
+	"FlagGame/Scene/3.png",
+	"FlagGame/Scene/4.png",
+	"FlagGame/Scene/5.png",
+	"FlagGame/Scene/6.png",
+	"FlagGame/Scene/7.png",
+	"FlagGame/Scene/8.png",
+	"FlagGame/Scene/9.png",
+	"FlagGame/Scene/10.png",
+	"FlagGame/Scene/11.png",
+	"FlagGame/Scene/12.png",
+	"FlagGame/Scene/13.png", -- 13
+	"FlagGame/Scene/14.png",
+	"FlagGame/Scene/15.png",
+	"FlagGame/Scene/16.png",
+	"FlagGame/Scene/17.png",
+	"FlagGame/Scene/18.png",
+	"FlagGame/Scene/19.png",
+	"FlagGame/Scene/20.png",
+	"FlagGame/Scene/21.png",
+	"FlagGame/Scene/22.png", -- 22
+	"FlagGame/Scene/10-pressed.png", -- 23
+	"FlagGame/Scene/19-blurred.png" -- 24
 };
 
 local monumentAssets = {
-	"Assets/Images/Monument/Australia.png",
-	"Assets/Images/Monument/Brazil.png",
-	"Assets/Images/Monument/Chile.png",
-	"Assets/Images/Monument/China.png",
-	"Assets/Images/Monument/Egypt_Cairo.png",
-	"Assets/Images/Monument/France_Eiffel.png",
-	"Assets/Images/Monument/Germany_Berlin.png",
-	"Assets/Images/Monument/Italy_Pissa.png",
-	"Assets/Images/Monument/Japan.png",
-	"Assets/Images/Monument/Mexico.png",
-	"Assets/Images/Monument/Netherland.png",
-	"Assets/Images/Monument/Spain_Barcelona.png",
-	"Assets/Images/Monument/UK_BigBen.png",
-	"Assets/Images/Monument/USA_NY.png",
+	"Assets/Images/FlagGame/Monument/Australia.png",
+	"Assets/Images/FlagGame/Monument/Brazil.png",
+	"Assets/Images/FlagGame/Monument/Chile.png",
+	"Assets/Images/FlagGame/Monument/China.png",
+	"Assets/Images/FlagGame/Monument/Egypt_Cairo.png",
+	"Assets/Images/FlagGame/Monument/France_Eiffel.png",
+	"Assets/Images/FlagGame/Monument/Germany_Berlin.png",
+	"Assets/Images/FlagGame/Monument/Italy_Pissa.png",
+	"Assets/Images/FlagGame/Monument/Japan.png",
+	"Assets/Images/FlagGame/Monument/Mexico.png",
+	"Assets/Images/FlagGame/Monument/Netherland.png",
+	"Assets/Images/FlagGame/Monument/Spain_Barcelona.png",
+	"Assets/Images/FlagGame/Monument/UK_BigBen.png",
+	"Assets/Images/FlagGame/Monument/USA_NY.png",
 };
 
 images.defineImage( "Top Border", sceneBuild[21], currentWidth, 300 )
@@ -210,53 +210,55 @@ images.defineImage( "Info Screen", sceneBuild[3], currentWidth, currentHeight - 
 images.defineImage( "Bottom Border", sceneBuild[21], currentWidth, 300 )
 images.defineImage( "Platform 1", sceneBuild[20], currentWidth, currentHeight/15 )
 images.defineImage( "Column", sceneBuild[13], currentWidth/8, currentHeight-175 )
-images.defineImage( "Pause Button", "Scene/10.png", currentWidth/20, currentHeight/14 )
-images.defineImage( "Pause Button Pressed", "Scene/10-pressed.png", currentWidth/20, currentHeight/14 )
-images.defineImage( "Info Button", "Scene/11.png", currentWidth/20, currentHeight/14 )
-images.defineImage( "Info Button Pressed", "Scene/11-pressed.png", currentWidth/20, currentHeight/14 )
-images.defineImage( "Return Button", "Scene/9.png", currentWidth/20, currentHeight/14)
-images.defineImage( "Return Button Pressed", "Scene/9-pressed.png", currentWidth/20, currentHeight/14)
+images.defineImage( "Pause Button", "FlagGame/Scene/10.png", currentWidth/20, currentHeight/14 )
+images.defineImage( "Pause Button Pressed", "FlagGame/Scene/10-pressed.png", currentWidth/20, currentHeight/14 )
+images.defineImage( "Info Button", "FlagGame/Scene/11.png", currentWidth/20, currentHeight/14 )
+images.defineImage( "Info Button Pressed", "FlagGame/Scene/11-pressed.png", currentWidth/20, currentHeight/14 )
+images.defineImage( "Return Button", "FlagGame/Scene/9.png", currentWidth/20, currentHeight/14)
+images.defineImage( "Return Button Pressed", "FlagGame/Scene/9-pressed.png", currentWidth/20, currentHeight/14)
 images.defineImage( "Pole", sceneBuild[2], currentWidth/17, currentHeight/1.8 )
 images.defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight-174 )
 images.defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
-images.defineImage( "Cont Button", "Scene/22.png", currentWidth/5, currentHeight/8)
-images.defineImage( "Cont Button Pressed", "Scene/22-pressed.png", currentWidth/5, currentHeight/8)
-images.defineSheet( "Cat", "Sprite/2.png", {
+images.defineImage( "Cont Button", "FlagGame/Scene/22.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Cont Button Pressed", "FlagGame/Scene/22-pressed.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Repl Button", "FlagGame/Scene/23.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Repl Button Pressed", "FlagGame/Scene/23-pressed.png", currentWidth/5, currentHeight/8)
+images.defineSheet( "Cat", "FlagGame/Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
 	numFrames = 49,
 	sheetContentWidth = 1934,
 	sheetContentHeight = 1668
 })
-images.defineSheet( "Dog", "Sprite/3.png", {
+images.defineSheet( "Dog", "FlagGame/Sprite/3.png", {
 	width = 557,
 	height = 491,
 	numFrames = 30,
 	sheetContentWidth = 2785,
 	sheetContentHeight = 2946
 })
-images.defineSheet( "Tree", "Sprite/4.png", {
+images.defineSheet( "Tree", "FlagGame/Sprite/4.png", {
 	width = 1463,
 	height = 821,
 	numFrames = 5,
 	sheetContentWidth = 1463,
 	sheetContentHeight = 4105
 })
-images.defineSheet( "Monu", "Sprite/5.png", {
+images.defineSheet( "Monu", "FlagGame/Sprite/5.png", {
 	width = 248,
 	height = 242,
 	numFrames = 19,
 	sheetContentWidth = 4892,
 	sheetContentHeight = 242
 })
-images.defineSheet( "Star", "Sprite/6.png", {
+images.defineSheet( "Star", "FlagGame/Sprite/6.png", {
 	width = 252,
 	height = 210,
 	numFrames = 9,
 	sheetContentWidth = 756,
 	sheetContentHeight = 639
 })
-images.defineSheet( "Emoticon", "Sprite/7.png", {
+images.defineSheet( "Emoticon", "FlagGame/Sprite/7.png", {
 	width = 167,
 	height = 173,
 	numFrames = 16,
@@ -1114,28 +1116,42 @@ function scene:create( event )
 	local function contButtonTap()
 		-- this will stop the animations
 		transition.cancel()
-		returnToMenu()
+		local sourcePath = "Source.flagGame"
+		local minigameScene = require( sourcePath )
+		local params = {
+			minigame = {
+				name = "Flag Game",
+				sourcePath = sourcePath,
+				preloadFn = function() return minigameScene:preload() end
+			},
+			menuMusicChannel = nil
+		}
+		composer.gotoScene( "Source.difficultySelector", { params=params } )
 	end
 
 	-- animation for ended round
 	local function endgameWin()
-		local text = display.newText(sceneGroup,"You earned a golden star", star.x+25,star.y-150,font,44)
-		text:setFillColor(0,0,0)
 		local contButton = Button:newImageButton{
 			group = sceneGroup,
 			image = images.get( sceneGroup, "Cont Button" ),
 			imagePressed = images.get( sceneGroup, "Cont Button Pressed" ),
 			x = star.x + 25,
-			y = star.y + 150,
+			y = star.y + 250,
 			width = images.width( "Cont Button" ),
 			height = images.height( "Cont Button" ),
 			alpha = 0.9
 		}
 		contButton:addEventListener("tap", contButtonTap)
+
+		local currentCoins = wallet.getCoins()
+		local text = display.newText(sceneGroup,""..currentCoins.."", star.x+20,star.y+100,font,44)
+		text:setFillColor(0,0,0)
+		local difficulty = composer.getVariable( "difficulty" )
+		wallet.addCoins( 100 * difficulty )
 	end
 	local function endgameLose()
 		local text = display.newText(sceneGroup,"Mr. Kevin is too tired!", star.x+25,star.y-200,font,44)
-		local text2 = display.newText(sceneGroup,"Let's go eatt!", text.x+20,text.y+50,font,44)
+		local text2 = display.newText(sceneGroup,"Let's go eat!", text.x+20,text.y+50,font,44)
 		text:setFillColor(0,0,0)
 		text2:setFillColor(0,0,0)
 		transition.to(emoticonIcon, {time = 4000,
@@ -1145,8 +1161,8 @@ function scene:create( event )
 				yScale = 0.8})
 		local contButton = Button:newImageButton{
 			group = sceneGroup,
-			image = images.get( sceneGroup, "Cont Button" ),
-			imagePressed = images.get( sceneGroup, "Cont Button Pressed" ),
+			image = images.get( sceneGroup, "Repl Button" ),
+			imagePressed = images.get( sceneGroup, "Repl Button Pressed" ),
 			x = star.x + 25,
 			y = star.y + 150,
 			width = images.width( "Cont Button" ),
@@ -1164,7 +1180,7 @@ function scene:create( event )
 			star:play()
 			transition.to(star,{
 				time = 2000,
-				y = pole.y-40,
+				y = pole.y-200,
 				x = pole.x-17,
 				xScale = 0.9,
 				yScale = 1,
@@ -1246,9 +1262,6 @@ function scene:create( event )
 			sounds.play( "Win FX" )
 			sounds.play( "Celebrate FX" )
 			endgame(1)
-
-			local difficulty = composer.getVariable( "difficulty" )
-			wallet.addCoins( 100 * difficulty )
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
 	end
