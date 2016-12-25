@@ -115,9 +115,15 @@ function setBackground()
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
+<<<<<<< HEAD
   local returnButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
   returnButton.y = display.contentCenterY - display.contentCenterY / 1.5
   returnButton.x = display.contentCenterX - display.contentCenterX / 1.1
+=======
+  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/9.png", 60, 60 )--11
+  replayButton.y = display.contentCenterY - display.contentCenterY / 1.5
+  replayButton.x = display.contentCenterX - display.contentCenterX / 1.1
+>>>>>>> origin/master
 
   returnButton:addEventListener("tap", returnToMenu)
 
