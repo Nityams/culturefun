@@ -64,16 +64,16 @@ end
 function scene:create( event )
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
-	local scnGrp = self.view
+	local sceneGroup = self.view
 
 	local whiteFill = display.newRect(
-		scnGrp,
+		sceneGroup,
 		display.contentCenterX, display.contentCenterY,
 		screenWidth, screenHeight
 	)
 	whiteFill:setFillColor( 1, 1, 1 )
 
-	self.map = images.get( scnGrp, "Map" )
+	self.map = images.get( sceneGroup, "Map" )
 	self.map.x = display.contentCenterX
 	self.map.y = display.contentCenterY
 
@@ -82,9 +82,9 @@ function scene:create( event )
 	local maxScale = defaultScale * MAX_ZOOM
 
 	local returnButton = Button:newImageButton{
-		group = scnGrp,
-		image = images.get( scnGrp, "Close Button" ),
-		imagePressed = images.get( scnGrp, "Close Button Pressed" ),
+		group = sceneGroup,
+		image = images.get( sceneGroup, "Close Button" ),
+		imagePressed = images.get( sceneGroup, "Close Button Pressed" ),
 		x = 50,
 		y = screenTop + 50,
 		width = images.width( "Close Button" ),
@@ -127,7 +127,7 @@ end
 -- show()
 function scene:show( event )
 
-	local scnGrp = self.view
+	local sceneGroup = self.view
 	local phase = event.phase
 
 	if ( phase == "will" ) then
@@ -147,7 +147,7 @@ end
 -- hide()
 function scene:hide( event )
 
-	local scnGrp = self.view
+	local sceneGroup = self.view
 	local phase = event.phase
 
 	if ( phase == "will" ) then
@@ -168,7 +168,7 @@ end
 -- destroy()
 function scene:destroy( event )
 
-	local scnGrp = self.view
+	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
 
 end
@@ -215,9 +215,8 @@ end
 
 
 function scene:makeCoinsDisplay()
-	print("coins here....".. wallet.getCoins())
 	self.currencyText = display.newText{
-		parent = scnGrp,
+		parent = sceneGroup,
 		text = "" .. wallet.getCoins() .. " coins",
 		x = screenRight - 25,
 		y = screenTop + 15,
@@ -229,7 +228,7 @@ function scene:makeCoinsDisplay()
 	self.currencyText:setFillColor( 0.4 )
 
 	self.nextAreaText = display.newText{
-		parent = scnGrp,
+		parent = sceneGroup,
 		text = "next area: 500 coins",
 		x = self.currencyText.x,
 		y = self.currencyText.y + self.currencyText.height,
@@ -239,7 +238,6 @@ function scene:makeCoinsDisplay()
 	self.nextAreaText.anchorX = 1.0
 	self.nextAreaText.anchorY = 0.0
 	self.nextAreaText:setFillColor( 0.4 )
-	print("coins here again....".. wallet.getCoins())
 end
 
 

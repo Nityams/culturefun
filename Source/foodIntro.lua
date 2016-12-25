@@ -15,7 +15,7 @@ local scene = composer.newScene()
 images.defineImage( "Neighborhood", "FoodGame/Intro.png", display.contentWidth, display.contentHeight )
 
 local function gotoGame()
-	composer.gotoScene("Source.foodGame_UI2")
+	composer.gotoScene("Source.FoodUISelector")
 end
 
 local function bellsound()
@@ -57,7 +57,6 @@ function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
-	print( "foodIntro here..." )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
@@ -70,7 +69,6 @@ function scene:show( event )
 
 		-- In two seconds go to the food game
 		timer.performWithDelay( 2000, gotoGame )
-	--	timer.performWithDelay( 1, gotoGame )
 	end
 end
 
