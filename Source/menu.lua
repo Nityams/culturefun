@@ -147,11 +147,7 @@ function scene:create( event )
 	self.foodButton = Button:newTextButton{
 		group=uiGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
-<<<<<<< HEAD
 		text="Foods & Flags",
-=======
-		text="Food & Flags",
->>>>>>> origin/master
 		x=display.contentWidth - 200, y=display.contentCenterY + 50,
 		paddingX=20, paddingY=5,
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
