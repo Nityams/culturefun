@@ -28,13 +28,13 @@ local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 
 images.defineImage( "Logo",  "Menu/MenuLogoV1Edit.png", 323, 319 )
 images.defineImage( "Logo Pressed", "Menu/MenuLogoV1Edit-pressed.png", 323, 319 )
-images.defineImage( "Plane 1" , "Menu/plane1.png" , 25, 25)
-images.defineImage( "Plane 2" , "Menu/plane2.png" , 25, 25)
-images.defineImage( "Plane 3" , "Menu/plane3.png" , 25, 25)
-images.defineImage( "Plane 4" , "Menu/plane4.png" , 25, 25)
-images.defineImage( "Plane 5" , "Menu/plane5.png" , 25, 25)
-images.defineImage( "Santa" , "Menu/santa.png", 90 ,30)
-images.defineImage( "Pizza", "Menu/pizza.png", 90,90)
+images.defineImage( "Plane 1" , "Menu/plane1.png" , 40, 40)
+images.defineImage( "Plane 2" , "Menu/plane2.png" , 40, 40)
+images.defineImage( "Plane 3" , "Menu/plane3.png" , 40, 40)
+images.defineImage( "Plane 4" , "Menu/plane4.png" , 40, 40)
+images.defineImage( "Plane 5" , "Menu/plane5.png" , 40, 40)
+images.defineImage( "Santa" , "Menu/santa.png", 120 ,60)
+images.defineImage( "Pizza", "Menu/pizza.png", 120,120)
 
 sounds.defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
 sounds.defineSound( "SantaFX", "Assets/Sounds/Menu/SantaFX.mp3", 0.6)
@@ -51,7 +51,6 @@ local planeImages = {
 }
 
 local desiredPlanesOnscreen = 5
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
