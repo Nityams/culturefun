@@ -1113,7 +1113,7 @@ function scene:create( event )
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
 
-	local function contButtonTap()
+	local function replayButtonTap()
 		-- this will stop the animations
 		transition.cancel()
 		local sourcePath = "Source.flagGame"
@@ -1127,6 +1127,12 @@ function scene:create( event )
 			menuMusicChannel = nil
 		}
 		composer.gotoScene( "Source.difficultySelector", { params=params } )
+	end
+
+	local function contButtonTap()
+		-- this will stop the animations
+		transition.cancel()
+		returnToMenu()
 	end
 
 	-- animation for ended round
@@ -1159,7 +1165,7 @@ function scene:create( event )
 				x = star.x+110,
 				xScale = 0.8,
 				yScale = 0.8})
-		local contButton = Button:newImageButton{
+		local replayButton = Button:newImageButton{
 			group = sceneGroup,
 			image = images.get( sceneGroup, "Repl Button" ),
 			imagePressed = images.get( sceneGroup, "Repl Button Pressed" ),
@@ -1169,7 +1175,7 @@ function scene:create( event )
 			height = images.height( "Cont Button" ),
 			alpha = 0.9
 		}
-		contButton:addEventListener("tap", contButtonTap)
+		replayButton:addEventListener("tap", replayButtonTap)
 	end
 	local function endgame(num)
 		-- moves the dog to proper position
