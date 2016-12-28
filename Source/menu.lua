@@ -127,7 +127,7 @@ function scene:create( event )
 
 	titleText = display.newText(
 		uiGroup,
-		"Culture Fun",
+		"How In The World?",
 		display.contentCenterX,
 		titleOffsetY,
 		font,
@@ -138,7 +138,7 @@ function scene:create( event )
 	self.flagButton = Button:newTextButton{
 		group=uiGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
-		text="Play Flag Game",
+		text="Name That Flag",
 		x=200, y=display.contentCenterY + 50,
 		paddingX=20, paddingY=5,
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
@@ -147,7 +147,11 @@ function scene:create( event )
 	self.foodButton = Button:newTextButton{
 		group=uiGroup,
 		font=font, fontSize=44, fontColor={ 0.4 },
-		text="Play Food Game",
+
+		text="Foods & Flags",
+
+		text="Food & Flags",
+
 		x=display.contentWidth - 200, y=display.contentCenterY + 50,
 		paddingX=20, paddingY=5,
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
@@ -312,12 +316,12 @@ end
 
 
 function scene:gotoFlagMinigame()
-	self:gotoMinigame( "Flag Game", "flagGame" )
+	self:gotoMinigame( "Name That Flag", "flagGame" )
 end
 
 
 function scene:gotoFoodMinigame()
-	self:gotoMinigame( "Food Game", "foodIntro" )
+	self:gotoMinigame( "Foods & Flags", "foodIntro" )
 end
 
 function scene:gotoPassport()
