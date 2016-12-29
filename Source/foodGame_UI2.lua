@@ -115,7 +115,7 @@ function setBackground()
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  local returnButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/9.png", 60, 60 )--11
+  local returnButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
   returnButton.y = display.contentCenterY - display.contentCenterY / 1.5
   returnButton.x = display.contentCenterX - display.contentCenterX / 1.1
 
@@ -160,12 +160,12 @@ function setBackground()
   woodbar_v:scale(0.4,0.25)
   checkScore()
 
-  topBorder = display.newImage(sceneGroup, "Assets/Images/Scene/21.png")
+  topBorder = display.newImage(sceneGroup, "Assets/Images/FlagGame/Scene/21.png")
   topBorder.x = currentWidth/2
   topBorder.y = 0
   topBorder:scale(1,0.5)
 
-  botBorder = display.newImage(sceneGroup, "Assets/Images/Scene/21.png")
+  botBorder = display.newImage(sceneGroup, "Assets/Images/FlagGame/Scene/21.png")
   botBorder.x = currentWidth/2
   botBorder.y = display.contentCenterY + 225 + 135
   botBorder:scale(1,0.5)

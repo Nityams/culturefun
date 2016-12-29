@@ -105,7 +105,7 @@ function setBackground()
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/9.png", 60, 60 )--11
+  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
   replayButton.y = display.contentCenterY - display.contentCenterY / 1.2
   replayButton.x = display.contentCenterX - display.contentCenterX / 1.2
 

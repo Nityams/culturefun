@@ -27,8 +27,8 @@ local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 local screenWidth = screenRight - screenLeft
 local screenHeight = screenBottom - screenTop
 
-images.defineImage( "Close Button", "Scene/9.png", display.contentWidth/20, display.contentHeight/14 )
-images.defineImage( "Close Button Pressed", "Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button", "FlagGame/Scene/9.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineImage( "Close Button Pressed", "FlagGame/Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
 
 images.defineImage( "Map", "Passport/blank_map.png", 1920, 1920 )
 

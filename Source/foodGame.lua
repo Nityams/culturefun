@@ -105,13 +105,13 @@ function setBackground()
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/return.png", 60, 60 )--11
+  local replayButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/return.png", 60, 60 )--11
   replayButton.y = display.contentCenterY - display.contentCenterY / 1.5
   replayButton.x = display.contentCenterX - display.contentCenterX / 2 - 50
 
   replayButton:addEventListener("tap", returnToMenu)
 
-  local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
+  local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/pause.png", 60 , 60 )--10
   pauseButton.y = replayButton.y
   pauseButton.x = replayButton.x - 100
   pauseButton:addEventListener("tap", function()
