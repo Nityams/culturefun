@@ -1,4 +1,4 @@
-
+-- rearranging folder into FlagGame folder
 local composer = require( "composer" )
 local physics = require ( "physics")
 
@@ -221,6 +221,8 @@ images.defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight
 images.defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
 images.defineImage( "Cont Button", "FlagGame/Scene/22.png", currentWidth/5, currentHeight/8)
 images.defineImage( "Cont Button Pressed", "FlagGame/Scene/22-pressed.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Repl Button", "FlagGame/Scene/23.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Repl Button Pressed", "FlagGame/Scene/23-pressed.png", currentWidth/5, currentHeight/8)
 images.defineSheet( "Cat", "FlagGame/Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
@@ -369,7 +371,7 @@ function scene:create( event )
 	local difficulty = composer.getVariable( "difficulty" )
 
 	if difficulty == 1 then
-		level = 6		-- 6 rounds
+		level = 1		-- 6 rounds
 		lives = 3 		-- 3 lives
 		randomNum = 15  -- use the first 15 flags
 		distance = 9
@@ -1111,6 +1113,22 @@ function scene:create( event )
 	-- End event for textboxes --
 	-------------------------------------------------------------------------------------------------------
 
+	local function replayButtonTap()
+		-- this will stop the animations
+		transition.cancel()
+		local sourcePath = "Source.flagGame"
+		local minigameScene = require( sourcePath )
+		local params = {
+			minigame = {
+				name = "Flag Game",
+				sourcePath = sourcePath,
+				preloadFn = function() return minigameScene:preload() end
+			},
+			menuMusicChannel = nil
+		}
+		composer.gotoScene( "Source.difficultySelector", { params=params } )
+	end
+
 	local function contButtonTap()
 		-- this will stop the animations
 		transition.cancel()
@@ -1119,23 +1137,30 @@ function scene:create( event )
 
 	-- animation for ended round
 	local function endgameWin()
-		local text = display.newText(sceneGroup,"You earned a golden star", star.x+25,star.y-150,font,44)
-		text:setFillColor(0,0,0)
 		local contButton = Button:newImageButton{
 			group = sceneGroup,
 			image = images.get( sceneGroup, "Cont Button" ),
 			imagePressed = images.get( sceneGroup, "Cont Button Pressed" ),
 			x = star.x + 25,
-			y = star.y + 150,
+			y = star.y + 250,
 			width = images.width( "Cont Button" ),
 			height = images.height( "Cont Button" ),
 			alpha = 0.9
 		}
 		contButton:addEventListener("tap", contButtonTap)
+
+		local currentCoins = wallet.getCoins()
+		local earnedCoins = 100 * difficulty
+		local text = display.newText(sceneGroup,""..currentCoins.."", star.x+20,star.y+110,font,44)
+		local text2 = display.newText(sceneGroup,"+"..earnedCoins.."", star.x+10,star.y+160,font,44)
+		text:setFillColor(0,0,0)
+		text2:setFillColor(0,0,0)
+		local difficulty = composer.getVariable( "difficulty" )
+		wallet.addCoins( earnedCoins )
 	end
 	local function endgameLose()
 		local text = display.newText(sceneGroup,"Mr. Kevin is too tired!", star.x+25,star.y-200,font,44)
-		local text2 = display.newText(sceneGroup,"Let's go eatt!", text.x+20,text.y+50,font,44)
+		local text2 = display.newText(sceneGroup,"Let's go eat!", text.x+20,text.y+50,font,44)
 		text:setFillColor(0,0,0)
 		text2:setFillColor(0,0,0)
 		transition.to(emoticonIcon, {time = 4000,
@@ -1143,17 +1168,17 @@ function scene:create( event )
 				x = star.x+110,
 				xScale = 0.8,
 				yScale = 0.8})
-		local contButton = Button:newImageButton{
+		local replayButton = Button:newImageButton{
 			group = sceneGroup,
-			image = images.get( sceneGroup, "Cont Button" ),
-			imagePressed = images.get( sceneGroup, "Cont Button Pressed" ),
+			image = images.get( sceneGroup, "Repl Button" ),
+			imagePressed = images.get( sceneGroup, "Repl Button Pressed" ),
 			x = star.x + 25,
 			y = star.y + 150,
 			width = images.width( "Cont Button" ),
 			height = images.height( "Cont Button" ),
 			alpha = 0.9
 		}
-		contButton:addEventListener("tap", contButtonTap)
+		replayButton:addEventListener("tap", replayButtonTap)
 	end
 	local function endgame(num)
 		-- moves the dog to proper position
@@ -1164,7 +1189,7 @@ function scene:create( event )
 			star:play()
 			transition.to(star,{
 				time = 2000,
-				y = pole.y-40,
+				y = pole.y-200,
 				x = pole.x-17,
 				xScale = 0.9,
 				yScale = 1,
@@ -1246,9 +1271,6 @@ function scene:create( event )
 			sounds.play( "Win FX" )
 			sounds.play( "Celebrate FX" )
 			endgame(1)
-
-			local difficulty = composer.getVariable( "difficulty" )
-			wallet.addCoins( 100 * difficulty )
 		end
 		--display.newText(sceneGroup,count, display.contentCenterX,display.contentCenterY,font,44)
 	end
