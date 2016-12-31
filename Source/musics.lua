@@ -38,5 +38,9 @@ function musics.play( name )
 
     return channel
 end
+-- New UPDATED
+function musics.stop()
+  audio.stop()
+end
 
 return musics
