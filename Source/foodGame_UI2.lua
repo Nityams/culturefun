@@ -1,7 +1,8 @@
 local composer = require( "composer" )
-
+local images = require( "Source.images" )
 local musics = require( "Source.musics" )
 local sounds = require( "Source.sounds" )
+local Button = require( "Source.button" )
 
 local scene = composer.newScene()
 
@@ -44,11 +45,62 @@ local victory = false
 local difficulty
 local mute = false
 
+-- images.defineImage( "Paused Screen", "FoodGame/Background4-blur.png", display.contentWidth+190, currentHeight)
+
+
 local function returnToMenu()
   if DEBUG then print("***** Returning to menu") end
   musics.stop()
   composer.removeScene( "Source.foodGame_UI2" )
   composer.gotoScene( "Source.menu" )
+end
+
+local function makeBox( sceneGroup, x, y, text )
+	local totalWidth = currentWidth/5
+	local borderWidth = 2
+	local fillWidth = totalWidth - 2*borderWidth
+	return Button:newTextButton{
+		group=sceneGroup,
+		font=font, fontSize=36, fontColor={ 0.0 },
+		text=text,
+		x=x, y=y, width=fillWidth, height=currentHeight/14-10,
+		fillColor={ 0.77, 0.61, 0.44 }, fillColorPressed={ 0.77*0.8, 0.61*0.8, 0.44*0.8 },
+		borderWidth=borderWidth, borderColor={ 0, 0, 0 }
+	}
+end
+
+local function getOverlayPause()
+  local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/Background4blur.png", display.contentWidth + 190, display.contentHeight )
+  overlay.x = display.contentCenterX
+  overlay.y = display.contentCenterY + 30
+  local pausedText = display.newText("Sure want to return?", display.contentCenterX,display.contentCenterY-100,font,100)
+  pausedText:setFillColor(0,0,0)
+  local resumeButton = makeBox(sceneGroup, display.contentCenterX, display.contentCenterY+20, "Resume" )
+  local quitButton = makeBox(sceneGroup, display.contentCenterX, display.contentCenterY+100, "Quit" )
+  -- dump memories
+  local function purgeObjs()
+    overlay:removeSelf()
+    overlay = nil
+    resumeButton:removeSelf()
+    resumeButton = nil
+    pausedText:removeSelf()
+    pausedText = nil
+    quitButton:removeSelf()
+    quitButton = nil
+  end
+  -- functions on Paused Screen
+  local function resumeTap()
+    purgeObjs()
+    -- enableButtons()
+  -- transition.resume()
+  end
+  local function quitTap()
+    purgeObjs()
+    transition.cancel()
+    returnToMenu()
+  end
+  resumeButton:addEventListener("tap", resumeTap)
+  quitButton:addEventListener("tap", quitTap)
 end
 
 local function winScene()
@@ -138,7 +190,7 @@ function setBackground()
   returnButton.y = display.contentCenterY - display.contentCenterY / 1.5
   returnButton.x = display.contentCenterX - display.contentCenterX / 1.1
 
-  returnButton:addEventListener("tap", returnToMenu)
+  returnButton:addEventListener("tap", getOverlayPause)
 
   muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
   muteButton.y = returnButton.y
