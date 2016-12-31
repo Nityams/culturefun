@@ -43,4 +43,14 @@ function musics.stop()
   audio.stop()
 end
 
+--New UPDATED
+function musics.pause()
+  audio.pause()
+end
+
+function musics.unPause()
+  audio.resume()
+end
+
+
 return musics

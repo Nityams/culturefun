@@ -42,6 +42,7 @@ local text3
 local text4
 local victory = false
 local difficulty
+local mute = false
 
 local function returnToMenu()
   if DEBUG then print("***** Returning to menu") end
@@ -109,17 +110,38 @@ function newFoods()
   end
 end
 
+function audioButton()
+  if mute == false then
+    mute = true
+    musics.pause()
+    muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/mute.png", 60, 60 )
+    muteButton.y = returnButton.y
+    muteButton.x = returnButton.x + 70
+  else
+    mute = false
+    musics.unPause()
+    muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
+    muteButton.y = returnButton.y
+    muteButton.x = returnButton.x + 70
+end
+end
+
 function setBackground()
 
   local background = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/Background4.png",currentWidth, currentHeight )
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  local returnButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
+  returnButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
   returnButton.y = display.contentCenterY - display.contentCenterY / 1.5
   returnButton.x = display.contentCenterX - display.contentCenterX / 1.1
 
   returnButton:addEventListener("tap", returnToMenu)
+
+  muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
+  muteButton.y = returnButton.y
+  muteButton.x = returnButton.x + 70
+  muteButton:addEventListener("tap", audioButton)
 
   -- local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
   -- pauseButton.y = returnButton.y
