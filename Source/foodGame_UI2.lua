@@ -114,12 +114,14 @@ function audioButton()
   if mute == false then
     mute = true
     musics.pause()
+    sounds.mute()
     muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/mute.png", 60, 60 )
     muteButton.y = returnButton.y
     muteButton.x = returnButton.x + 70
   else
     mute = false
     musics.unPause()
+    sounds.unMute()
     muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
     muteButton.y = returnButton.y
     muteButton.x = returnButton.x + 70

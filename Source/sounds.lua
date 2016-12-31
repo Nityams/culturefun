@@ -29,4 +29,12 @@ function sounds.play( name )
 	audio.setVolume( volume, { channel=channel } )
 end
 
+function sounds.mute()
+  audio.setVolume(0)
+end
+
+function sounds.unMute()
+  audio.setVolume(0.5)
+end
+
 return sounds
