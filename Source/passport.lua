@@ -178,7 +178,9 @@ function scene:addPins( countries )
 	-- Add the new countries
 	for i = 1,#countries do
 		local country = countries[i]
+		--print("Country"..country.name)
 		if country.coordinates then
+			print("Found Coordinate"..country.name)
 			local pin = makePin( self.view, country, lat, lon )
 			pin.country = country
 			pin:addEventListener( "tap", function()
