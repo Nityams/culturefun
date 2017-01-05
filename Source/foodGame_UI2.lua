@@ -181,8 +181,9 @@ function audioButton()
 end
 
 function infoButton()
+  print("INFO CLICKED!!!")
     musics.pause()
-    -- YOUR CODE HERE 
+    -- YOUR CODE HERE
 end
 
 function setBackground()

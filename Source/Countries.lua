@@ -68,16 +68,8 @@ local Croatia = {
 
 local DominicanRepublic = {
   name = "Dominican Republic",
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
   flag = "Assets/Images/Flags/Dominica_Republic_Flag.png",
   food ="Sancocho",
-=======
->>>>>>> Stashed changes
-  flag = "Assets/Images/Flags/Dominican_Republic_Flag.png",
-  --Food =
->>>>>>> origin/master
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hola",
   coordinates = {lat = 18.49, lon = -69.93}, -- Santo Domingo @ 18° 29.16348' N, 69° 55.87 W
