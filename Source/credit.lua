@@ -17,23 +17,14 @@ local screenRight = display.contentWidth
 local screenTop = (display.contentHeight - display.viewableContentHeight) / 2
 local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 
-images.defineImage( "Credit", "Credits/credit.png", display.contentWidth, display.contentHeight-150 )
+images.defineImage( "Credit", "Credits/credit_2.png", display.contentWidth, display.contentHeight-150 )
 images.defineImage( "Close Button", "FlagGame/Scene/9.png", display.contentWidth/20, display.contentHeight/14 )
 images.defineImage( "Close Button Pressed", "FlagGame/Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
-musics.defineMusic( "Credits Theme", "Assets/Sounds/Music/Fate-Stay-Night.mp3", 1, 5000 )
+musics.defineMusic( "Credits Theme", "Assets/Sounds/Music/A-Night-Of-Dizzy-Spells.mp3", 1, 5000 )
 
 local function gotoMenu()
 	composer.gotoScene("Source.menu")
 end
-
-local function moveImage(obj)
-	transition.to(obj,{
-			time = 14000,
-			y = display.contentCenterY,
-			x = display.contentCenterX,
-			})
-end
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -57,7 +48,7 @@ function scene:create( event )
 		y = screenTop + 50,
 		width = images.width( "Close Button" ),
 		height = images.height( "Close Button" ),
-		alpha = 0.5
+		alpha = 0.9
 	}
 	returnButton:addEventListener( "tap", gotoMenu )
 end
@@ -76,9 +67,8 @@ function scene:show( event )
 		self.neighborhood.alpha = 0
 		transition.to( self.neighborhood, { time=800, alpha=1 } )
 
-		self.neighborhood.x = display.contentCenterY+400
-		self.neighborhood.y = display.contentCenterX+400
-		moveImage(self.neighborhood)
+		self.neighborhood.x = display.contentCenterY+128
+		self.neighborhood.y = display.contentCenterX-110
 
 
 	elseif ( phase == "did" ) then
