@@ -177,7 +177,12 @@ function audioButton()
     muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
     muteButton.y = returnButton.y
     muteButton.x = returnButton.x + 70
+  end
 end
+
+function infoButton()
+    musics.pause()
+    -- YOUR CODE HERE 
 end
 
 function setBackground()
@@ -195,7 +200,14 @@ function setBackground()
   muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
   muteButton.y = returnButton.y
   muteButton.x = returnButton.x + 70
+
   muteButton:addEventListener("tap", audioButton)
+
+  infoButton = display.newImageRect ( sceneGroup, "Assets/Images/FlagGame/Scene/11.png", 60, 60)
+  infoButton.y = muteButton.y
+  infoButton.x = muteButton.x + 70
+
+  infoButton:addEventListener("tap", infoButton)
 
   -- local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
   -- pauseButton.y = returnButton.y

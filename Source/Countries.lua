@@ -68,7 +68,7 @@ local Croatia = {
 
 local DominicanRepublic = {
   name = "Dominican Republic",
-  flag = "Assets/Images/Flags/Dominica_Republic_Flag.png",
+  flag = "Assets/Images/Flags/Dominican_Republic_Flag.png",
   --Food =
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hola",
