@@ -521,7 +521,7 @@ end
 ----------
 function correctAnswer()
   if difficulty == 1 then -- Easy
-    score = score + 12
+    score = score + 3
   elseif difficulty == 2 then -- Medium
     score = score + 2
   else -- Hard
@@ -548,6 +548,9 @@ end
 function callGreetings()
   -- print("***** greetings: "..correctFood..". "..choices[correctFood].name)
   -- greeting = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png"
+  if DEBUG then
+    print("<NITYAM>..Correct from the deck -> "..choices[correctFood].name)
+  end
   fname = choices[correctFood].food
   greet = choices[correctFood].greeting
   -- print(greeting)

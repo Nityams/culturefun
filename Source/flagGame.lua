@@ -20,6 +20,7 @@ local scene = composer.newScene()
 local screenLeft = 0
 local screenRight = display.contentWidth
 local screenTop
+
 -- dynamically choose right screen top based on resolutions
 if display.viewableContentHeight < 760 then
 	screenTop = (display.contentHeight - display.viewableContentHeight) / 2
@@ -563,6 +564,8 @@ function scene:create( event )
 		alpha = 0.9,
 		allowance = 8  -- Normally 30, but they are 16 pixels apart
 	}
+	
+
 
 	-- info button placeholder
 	local infoButton = Button:newImageButton{
