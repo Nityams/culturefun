@@ -1160,7 +1160,7 @@ function scene:create( event )
 	end
 	local function endgameLose()
 		local text = display.newText(sceneGroup,"Mr. Kevin is too tired!", star.x+25,star.y-200,font,44)
-		local text2 = display.newText(sceneGroup,"Let's go eat!", text.x+20,text.y+50,font,44)
+		local text2 = display.newText(sceneGroup,"Time for a short break.", text.x+20,text.y+50,font,44)
 		text:setFillColor(0,0,0)
 		text2:setFillColor(0,0,0)
 		transition.to(emoticonIcon, {time = 4000,
