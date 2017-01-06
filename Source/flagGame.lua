@@ -564,7 +564,7 @@ function scene:create( event )
 		alpha = 0.9,
 		allowance = 8  -- Normally 30, but they are 16 pixels apart
 	}
-	
+
 
 
 	-- info button placeholder

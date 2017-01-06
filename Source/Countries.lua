@@ -759,7 +759,7 @@ local Uruguay = {
 local Vatican = {
   name = "Vatican City",
   flag = "Assets/Images/Flags/Vatican_City_Flag.png",
-  --food = "",
+  food = "Cannoli",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Ciao!",
   coordinates = { lat = 41.90, lon = 12.45},
