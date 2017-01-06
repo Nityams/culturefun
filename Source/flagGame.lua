@@ -20,6 +20,7 @@ local scene = composer.newScene()
 local screenLeft = 0
 local screenRight = display.contentWidth
 local screenTop
+
 -- dynamically choose right screen top based on resolutions
 if display.viewableContentHeight < 760 then
 	screenTop = (display.contentHeight - display.viewableContentHeight) / 2
@@ -563,6 +564,8 @@ function scene:create( event )
 		alpha = 0.9,
 		allowance = 8  -- Normally 30, but they are 16 pixels apart
 	}
+
+
 
 	-- info button placeholder
 	local infoButton = Button:newImageButton{
@@ -1160,7 +1163,7 @@ function scene:create( event )
 	end
 	local function endgameLose()
 		local text = display.newText(sceneGroup,"Mr. Kevin is too tired!", star.x+25,star.y-200,font,44)
-		local text2 = display.newText(sceneGroup,"Let's go eat!", text.x+20,text.y+50,font,44)
+		local text2 = display.newText(sceneGroup,"Time for a short break.", text.x+20,text.y+50,font,44)
 		text:setFillColor(0,0,0)
 		text2:setFillColor(0,0,0)
 		transition.to(emoticonIcon, {time = 4000,

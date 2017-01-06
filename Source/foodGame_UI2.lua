@@ -44,6 +44,9 @@ local text4
 local victory = false
 local difficulty
 local mute = false
+local muteButton
+local infoButton
+local returnButton
 
 -- images.defineImage( "Paused Screen", "FoodGame/Background4-blur.png", display.contentWidth+190, currentHeight)
 
@@ -69,7 +72,20 @@ local function makeBox( sceneGroup, x, y, text )
 	}
 end
 
+local function disableMain()
+  print("disableMain called!!!!")
+  returnButton:removeEventListener("tap", getOverlayPause)
+
+  muteButton:removeEventListener("tap", audioButton)
+
+  infoButton:removeEventListener("tap", infobutton)
+  
+end
+
+
 local function getOverlayPause()
+  print("!!!returnButton clicked!!!")
+  disableMain()
   local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/Background4blur.png", display.contentWidth + 190, display.contentHeight )
   overlay.x = display.contentCenterX
   overlay.y = display.contentCenterY + 30
@@ -163,6 +179,7 @@ function newFoods()
 end
 
 function audioButton()
+  print("!!!audioButton clicked!!!")
   if mute == false then
     mute = true
     musics.pause()
@@ -177,7 +194,31 @@ function audioButton()
     muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
     muteButton.y = returnButton.y
     muteButton.x = returnButton.x + 70
+  end
 end
+
+function infobutton()
+  print("!!!infobutton CLICKED!!!")
+    musics.pause()
+    disableMain()
+    local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/food_tutorial.png", display.contentWidth - 30 , display.contentHeight - 85)
+    overlay.x = display.contentCenterX
+    overlay.y = display.contentCenterY -25
+    -- local returnB = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
+    -- returnB.y = display.contentCenterY - display.contentCenterY / 1.5
+    -- returnB.x = display.contentCenterX - display.contentCenterX / 1.1
+
+    -- dump memories
+    local function purgeObjs()
+      overlay:removeSelf()
+      overlay = nil
+      returnB:removeSelf()
+      resumeB = nil
+      musics.unPause()
+    end
+
+    -- returnB:addEventListener("tap", purgeObjs)
+    -- YOUR CODE HERE
 end
 
 function setBackground()
@@ -195,7 +236,13 @@ function setBackground()
   muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
   muteButton.y = returnButton.y
   muteButton.x = returnButton.x + 70
+
   muteButton:addEventListener("tap", audioButton)
+
+  infoButton = display.newImageRect ( sceneGroup, "Assets/Images/FlagGame/Scene/11.png", 60, 60)
+  infoButton.y = muteButton.y + 70
+  infoButton.x = returnButton.x
+  infoButton:addEventListener("tap", infobutton)
 
   -- local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
   -- pauseButton.y = returnButton.y
@@ -509,7 +556,7 @@ end
 ----------
 function correctAnswer()
   if difficulty == 1 then -- Easy
-    score = score + 12
+    score = score + 3
   elseif difficulty == 2 then -- Medium
     score = score + 2
   else -- Hard
@@ -536,6 +583,9 @@ end
 function callGreetings()
   -- print("***** greetings: "..correctFood..". "..choices[correctFood].name)
   -- greeting = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png"
+  if DEBUG then
+    print("<NITYAM>..Correct from the deck -> "..choices[correctFood].name)
+  end
   fname = choices[correctFood].food
   greet = choices[correctFood].greeting
   -- print(greeting)

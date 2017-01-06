@@ -56,7 +56,7 @@ local China = {
 local Croatia = {
   name = "Croatia",
   flag = "Assets/Images/Flags/Croatia_Flag.png",
-  --Food =
+  food = "Cobanac",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Dobrodošli",
   coordinates = {lat = 48.86, lon = 2.35}, -- Zagreb @ 48° 51.39 N, 2° 21.13 E
@@ -69,7 +69,7 @@ local Croatia = {
 local DominicanRepublic = {
   name = "Dominican Republic",
   flag = "Assets/Images/Flags/Dominica_Republic_Flag.png",
-  --Food =
+  food ="Sancocho",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hola",
   coordinates = {lat = 18.49, lon = -69.93}, -- Santo Domingo @ 18° 29.16348' N, 69° 55.87 W
@@ -82,7 +82,7 @@ local DominicanRepublic = {
 local EastTimor = {
   name = "East Timor",
   flag = "Assets/Images/Flags/East_Timor_Flag.png",
-  --Food =
+  food ="Batar daan",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Elo",
   coordinates = {lat = -8.56, lon = 125.56}, -- Dili
@@ -108,7 +108,7 @@ local Egypt = {
 local ElSalvador = {
   name = "El Salvador",
   flag = "Assets/Images/Flags/El_Salvador_Flag.png",
-  --food = "",
+  food = "Panes Rellenos",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "buenos dias!",
   coordinates = { lat = 13.69, lon = -89.22 },  -- San Salvador
@@ -134,7 +134,7 @@ local France = {
 local Georgia = {
   name = "Georgia",
   flag = "Assets/Images/Flags/Georgia_Flag.png",
-  --food = "",
+  food = "Khinkali",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "buenos dias!",
   coordinates = { lat = 41.72, lon = 44.83 },  -- Tbilisi
@@ -160,7 +160,7 @@ local Germany = {
 local Guatemala = {
   name = "Guatemala",
   flag = "Assets/Images/Flags/Guatemala_Flag.png",
-  --food = "",
+  food = "Pastel de banano",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hola",
   coordinates = { lat =14.63 , lon = -90.51}, -- Guatemala City @ 14° 38.10'N, 90° 30.41' W
@@ -173,7 +173,7 @@ local Guatemala = {
 local Haiti = {
   name = "Haiti",
   flag = "Assets/Images/Flags/Haiti_Flag.png",
-  --food = "",
+  food = "Bean purée",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Alo",
   coordinates = { lat =18.59 , lon = -72.31}, -- Port-au-Prince @ 18° 35.67'N, 72° 18.45' W
@@ -186,7 +186,7 @@ local Haiti = {
 local Honduras = {
   name = "Honduras",
   flag = "Assets/Images/Flags/Honduras_Flag.png",
-  --food = "Pasta",
+  food = "Pastelitos",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hola",
   coordinates = { lat =14.07 , lon = -87.19}, -- Tegucigalpa @ 14° 4.34'N, 87° 11.53' W
@@ -199,7 +199,7 @@ local Honduras = {
 local Hungary = {
   name = "Hungary",
   flag = "Assets/Images/Flags/Hungary_Flag.png",
-  --food = "Pasta",
+  food = "Lángos",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Helló",
   coordinates = { lat =47.50 , lon = 19.04}, -- Budapest @ 47° 29.87'N, 19° 2.41' E
@@ -238,7 +238,7 @@ local Japan = {
 local Kazakhstan = {
   name = "Kazakhstan",
   flag = "Assets/Images/Flags/Kazakhstan_Flag.png",
-  --food = "",
+  food = "Besbarmak",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Sälem!",
   coordinates = { lat =51.16 , lon = 71.47}, -- Astana @ 51° 9.63'N, 71° 28.22' E
@@ -251,7 +251,7 @@ local Kazakhstan = {
 local Kenya = {
   name = "Kenya",
   flag = "Assets/Images/Flags/Kenya_Flag.png",
-  --food = "",
+  food = "Ugali",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Jambo!",
   coordinates = { lat =-1.29, lon = 36.82}, -- Nairobi @ 1° 17.52'S, 36° 49.32' E
@@ -264,7 +264,7 @@ local Kenya = {
 local Laos = {
   name = "Laos",
   flag = "Assets/Images/Flags/Laos_Flag.png",
-  --food = "",
+  food = "Ping Kai",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "sabaidee!",
   coordinates = { lat =-17.97, lon = 102.63}, -- Vientiane @ 17° 58.54' N, 102° 37.99' E
@@ -277,7 +277,7 @@ local Laos = {
 local Liberia = {
   name = "Liberia",
   flag = "Assets/Images/Flags/Liberia_Flag.png",
-  --food = "",
+  food = "Fufu",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hello!",
   coordinates = { lat = 34.14, lon = -118.00}, -- Monrovia @ 34° 8.66' N, 118° 0.12' W
@@ -290,7 +290,7 @@ local Liberia = {
 local Luxembourg = {
   name = "Luxembourg",
   flag = "Assets/Images/Flags/Luxembourg_Flag.png",
-  --food = "",
+  food = "F'rell Am Rèisleck",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Salut!",
   coordinates = { lat = 49.61, lon = 6.13}, -- Luxembourg City @ 49° 36.70' N, 6° 7.92' E
@@ -303,7 +303,7 @@ local Luxembourg = {
 local Macedonia = {
   name = "Macedonia",
   flag = "Assets/Images/Flags/Macedonia_Flag.png",
-  --food = "",
+  food = "Burek",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Zdravo!",
   coordinates = { lat = 42.00, lon = 21.42}, -- Skopje@ 41° 59.84' N, 21° 25.68' E
@@ -316,7 +316,7 @@ local Macedonia = {
 local Madagascar = {
   name = "Madagascar",
   flag = "Assets/Images/Flags/Madagascar_Flag.png",
-  --food = "",
+  food = "Romazava",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Manahoana!",
   coordinates = { lat = -18.88, lon = 47.51}, -- Antananarivo@ 18° 52.75' S, 47° 30.47' E
@@ -342,7 +342,7 @@ local Malaysia = {
 local Maldives = {
   name = "Maldives",
   flag = "Assets/Images/Flags/Maldives_Flag.png",
-  --food = "",
+  food = "Bis keemiyaa",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Assalaamu Alaikum!",
   coordinates = { lat = 4.18, lon = 73.51}, -- Malé @ 4° 10.53' N, 73° 30.56' E
@@ -368,7 +368,7 @@ local Mexico = {
 local Mongolia = {
   name = "Mongolia",
   flag = "Assets/Images/Flags/Mongolia_Flag.png",
-  --food = "",
+  food = "Khorkhog",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Сайн уу!",
   coordinates = { lat = 47.89, lon = 106.91}, -- Ulaanbaatar @ 47° 53.18' N, 106° 54.34' E
@@ -381,7 +381,7 @@ local Mongolia = {
 local Montenegro = {
   name = "Montenegro",
   flag = "Assets/Images/Flags/Montenegro_Flag.png",
-  --food = "",
+  food = "Kacamak",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Zdravo!",
   coordinates = { lat = 42.43, lon = 19.26}, -- Podgorica @ 42° 25.83' N, 19° 15.56' E
@@ -394,7 +394,7 @@ local Montenegro = {
 local Morocco = {
   name = "Morocco",
   flag = "Assets/Images/Flags/Morocco_Flag.png",
-  --food = "",
+  food = "B’ssara",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "ṣbah lkḥīr!",
   coordinates = { lat = 33.97, lon = -6.84}, -- Rabat @ 33° 58' N, 6° 51' W
@@ -407,7 +407,7 @@ local Morocco = {
 local Mozambique = {
   name = "Mozambique",
   flag = "Assets/Images/Flags/Mozambique_Flag.png",
-  --food = "",
+  food = "Matapa",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hola!",
   coordinates = { lat = -25.89, lon = 32.60}, -- Maputo @ 25° 54 S, 32° 36' E
@@ -417,23 +417,24 @@ local Mozambique = {
   }
 }
 
-local Nauru = {
-  name = "Nauru",
-  flag = "Assets/Images/Flags/Nauru_Flag.png",
-  --food = "",
-  greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
-  greeting = "Ekamowir Omo!",
-  coordinates = { lat = -0.55, lon = 166.92}, -- Yaren District @ 0°32 S, 166° 55' E
-  fun_fact = {
-    "Fun Fact: Nauru is the world’s smallest island nation",
-    "Nauru is the only republican state without an official capital!"
-  }
-}
+--food not found!!!
+-- local Nauru = {
+--   name = "Nauru",
+--   flag = "Assets/Images/Flags/Nauru_Flag.png",
+--   --food = "",
+--   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
+--   greeting = "Ekamowir Omo!",
+--   coordinates = { lat = -0.55, lon = 166.92}, -- Yaren District @ 0°32 S, 166° 55' E
+--   fun_fact = {
+--     "Fun Fact: Nauru is the world’s smallest island nation",
+--     "Nauru is the only republican state without an official capital!"
+--   }
+-- }
 
 local Netherlands = {
   name = "Netherlands",
   flag = "Assets/Images/Flags/Netherlands_Flag.png",
-  --food = "",
+  food = "Poffertjes",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Ekamowir Omo!",
   coordinates = { lat = 52.37, lon = 4.90}, -- Amsterdam @ 52° 22' N, 4° 54' E
@@ -459,7 +460,7 @@ local New_Zealand = {
 local Nigeria = {
   name = "Nigeria",
   flag = "Assets/Images/Flags/Nigeria_Flag.png",
-  --food = "",
+  food = "Jollof rice",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hello!",
   coordinates = { lat = 9.08, lon = 7.40}, -- Abuja @ 9° 4' N, 7° 24' E
@@ -472,7 +473,7 @@ local Nigeria = {
 local Norway = {
   name = "Norway",
   flag = "Assets/Images/Flags/Norway_Flag.png",
-  --food = "",
+  food = "Røkt Laks",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hallo!",
   coordinates = { lat = 59.91, lon = 10.75}, -- Oslo @ 59° 55' N, 10° 45' E
@@ -485,7 +486,7 @@ local Norway = {
 local Palau = {
   name = "Palau",
   flag = "Assets/Images/Flags/Palau_Flag.png",
-  --food = "",
+  food = "Pichi-pichi",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Alii!",
   coordinates = { lat = 7.50, lon = 134.62}, -- Ngerulmud @ 7° 30' N, 134° 37' E
@@ -498,7 +499,7 @@ local Palau = {
 local Peru = {
   name = "Peru",
   flag = "Assets/Images/Flags/Peru_Flag.png",
-  --food = "",
+  food = "Ceviche",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Quechua !",
   coordinates = { lat = -12.05, lon = -77.04}, -- Lima @ 12° 3' S, 77° 3' W
@@ -511,7 +512,7 @@ local Peru = {
 local Philippines = {
   name = "Philippines",
   flag = "Assets/Images/Flags/Philippines_Flag.png",
-  --food = "",
+  food = "Adobo",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "kumusta ka!",
   coordinates = { lat = 14.60, lon = 120.98}, -- Manila @ 14° 36' N, 120° 59' E
@@ -524,7 +525,7 @@ local Philippines = {
 local Portugal = {
   name = "Portugal",
   flag = "Assets/Images/Flags/Portugal_Flag.png",
-  --food = "",
+  food = "Caldo Verde",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Boa tarde!",
   coordinates = { lat = 38.72, lon = -9.14}, -- Lisbon
@@ -550,7 +551,7 @@ local Russia = {
 local Saudi_Arabia = {
   name = "Saudi Arabia",
   flag = "Assets/Images/Flags/Saudi_Arabia_Flag.png",
-  --food = "",
+  food = "Kabsa",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Marhaba!",
   coordinates = { lat = 24.71, lon = 46.68}, -- Riyadh
@@ -563,7 +564,7 @@ local Saudi_Arabia = {
 local Serbia = {
   name = "Serbia",
   flag = "Assets/Images/Flags/Serbia_Flag.png",
-  --food = "",
+  food = "PLJESKAVICA",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Zdravo!",
   coordinates = { lat = 44.79, lon = 20.45}, -- Belgrade
@@ -576,7 +577,7 @@ local Serbia = {
 local Singapore = {
   name = "Singapore",
   flag = "Assets/Images/Flags/Singapore_Flag.png",
-  --food = "",
+  food = "Bak Kut Teh",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Ni hao!",
   coordinates = { lat = 1.35, lon = 103.82},
@@ -589,7 +590,7 @@ local Singapore = {
 local Slovakia = {
   name = "Slovakia",
   flag = "Assets/Images/Flags/Slovakia_Flag.png",
-  --food = "",
+  food = "Halušky",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Ahoj!",
   coordinates = { lat = 48.15, lon = 17.11}, -- Bratislava
@@ -602,7 +603,7 @@ local Slovakia = {
 local Slovenia = {
   name = "Slovenia",
   flag = "Assets/Images/Flags/Slovenia_Flag.png",
-  --food = "",
+  food = "Bujta repa ",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "zdravo!",
   coordinates = { lat = 46.06, lon = 14.50}, -- Ljubljana
@@ -667,7 +668,7 @@ local Switzerland = {
 local Syria = {
   name = "Syria",
   flag = "Assets/Images/Flags/Syria_Flag.png",
-  --food = "",
+  food = "Fattoush",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "ahlan!",
   coordinates = { lat = 33.51, lon = 36.27}, -- Damascus
@@ -680,7 +681,7 @@ local Syria = {
 local Taiwan = {
   name = "Taiwan",
   flag = "Assets/Images/Flags/Taiwan_Flag.png",
-  --food = "",
+  food = "Gua bao",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "ni hao!",
   coordinates = { lat = 25.03, lon = 121.56}, -- Taipei
@@ -706,7 +707,7 @@ local Thailand = {
 local Ukraine = {
   name = "Ukraine",
   flag = "Assets/Images/Flags/Ukraine_Flag.png",
-  --food = "",
+  food = "Varenyky",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Dobryy den'!",
   coordinates = { lat = 50.45, lon = 30.52}, -- Kiev
@@ -745,7 +746,7 @@ local USA = {
 local Uruguay = {
   name = "Uruguay",
   flag = "Assets/Images/Flags/Uruguay_Flag.png",
-  --food = "",
+  food = "Chivito",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hola!",
   coordinates = { lat = -34.90, lon = -56.16}, -- Montevideo
@@ -758,7 +759,7 @@ local Uruguay = {
 local Vatican = {
   name = "Vatican City",
   flag = "Assets/Images/Flags/Vatican_City_Flag.png",
-  --food = "",
+  food = "Cannoli",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Ciao!",
   coordinates = { lat = 41.90, lon = 12.45},
@@ -784,7 +785,7 @@ local Vietnam = {
 local Zimbabwe = {
   name = "Zimbabwe",
   flag = "Assets/Images/Flags/Zimbabwe_Flag.png",
-  --food = "",
+  food = "Sadza",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hello!",
   coordinates = { lat = -17.83, lon = 31.03}, -- Harare
