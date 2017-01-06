@@ -20,6 +20,23 @@ local screenBottom = (display.contentHeight + display.viewableContentHeight) / 2
 images.defineImage( "Credit", "Credits/credit_2.png", display.contentWidth, display.contentHeight-150 )
 images.defineImage( "Close Button", "FlagGame/Scene/9.png", display.contentWidth/20, display.contentHeight/14 )
 images.defineImage( "Close Button Pressed", "FlagGame/Scene/9-pressed.png", display.contentWidth/20, display.contentHeight/14 )
+images.defineSheet( "Screen", "Credits/sprite.png", {
+	width = 712,
+	height = 558,
+	numFrames = 2,
+	sheetContentWidth = 1424,
+	sheetContentHeight = 558
+})
+local sequenceDataScreen = {
+		{
+			name = "normal1",
+			frames = {1,2},
+			time = 500,
+			loopCount = 0
+		}
+	};
+local mySheetScreen = images.getSheet( "Screen" )
+
 musics.defineMusic( "Credits Theme", "Assets/Sounds/Music/A-Night-Of-Dizzy-Spells.mp3", 1, 5000 )
 
 local function gotoMenu()
@@ -51,6 +68,13 @@ function scene:create( event )
 		alpha = 0.9
 	}
 	returnButton:addEventListener( "tap", gotoMenu )
+
+	local screen = display.newSprite(sceneGroup,mySheetScreen,sequenceDataScreen)
+	screen:scale(0.55,0.55)
+	screen.x = display.contentCenterX+9
+	screen.y = display.contentCenterY-23
+	screen:setSequence("normal1")
+	screen:play()
 end
 
 
