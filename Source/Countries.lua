@@ -795,30 +795,41 @@ local Zimbabwe = {
 }
 
 --Alphabetical Insertion of Countries into Countries Table listing
-
 table.insert(Countries, Austraila)
+
 table.insert(Countries, Brazil)
+
 table.insert(Countries, Canada)
 table.insert(Countries, China)
 table.insert(Countries, Croatia)
+
 table.insert(Countries, DominicanRepublic)
+
 table.insert(Countries, EastTimor)
 table.insert(Countries, Egypt)  --Koshari
 table.insert(Countries, ElSalvador)
+
 table.insert(Countries, France)
+
 table.insert(Countries, Georgia)
 table.insert(Countries, Germany)
 table.insert(Countries, Guatemala)
+
 table.insert(Countries, Haiti)
 table.insert(Countries, Honduras)
 table.insert(Countries, Hungary)
+
 table.insert(Countries, Italy)
+
 table.insert(Countries, Japan)
+
 table.insert(Countries, Kazakhstan)
 table.insert(Countries, Kenya)
+
 table.insert(Countries, Laos)
 table.insert(Countries, Liberia)
 table.insert(Countries, Luxembourg)
+
 table.insert(Countries, Macedonia)
 table.insert(Countries, Madagascar)
 table.insert(Countries, Malaysia)
@@ -828,16 +839,20 @@ table.insert(Countries, Mongolia)
 table.insert(Countries, Montenegro)
 table.insert(Countries, Morocco)
 table.insert(Countries, Mozambique)
+
 table.insert(Countries, Nauru)
 table.insert(Countries, Netherlands)
 table.insert(Countries, New_Zealand)
 table.insert(Countries, Nigeria)
 table.insert(Countries, Norway)
+
 table.insert(Countries, Palau)
 table.insert(Countries, Peru)
 table.insert(Countries, Philippines)
 table.insert(Countries, Portugal)
+
 table.insert(Countries, Russia) --Borsch
+
 table.insert(Countries, Saudi_Arabia)
 table.insert(Countries, Serbia)
 table.insert(Countries, Singapore)
@@ -846,14 +861,19 @@ table.insert(Countries, Korea) -- Should be changed to south Korea
 table.insert(Countries, Spain) --Paella
 -- table.insert(Countries, Sudan) -- Need to Find Info
 table.insert(Countries, Switzerland) --Cheese fondue
+
 table.insert(Countries, Taiwan)
+
 table.insert(Countries, New_Zealand)  --Hangi
+
 table.insert(Countries, Ukraine)
 table.insert(Countries, UK)   --Fish and Chips
 table.insert(Countries, USA)  -- Apple Pie
 table.insert(Countries, Uruguay)
+
 table.insert(Countries, Vatican)
 table.insert(Countries, Vietnam)  --Pho
+
 table.insert(Countries, Zimbabwe)
 
 
