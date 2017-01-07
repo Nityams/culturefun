@@ -26,6 +26,9 @@ local checkScore
 local checkStar
 local correctAnswer
 local starShine
+local audioButton
+local getOverlayPause
+local infobutton
 
 local currentWidth
 local currentHeight
@@ -47,6 +50,7 @@ local mute = false
 local muteButton
 local infoButton
 local returnButton
+local choices = {}
 
 -- images.defineImage( "Paused Screen", "FoodGame/Background4-blur.png", display.contentWidth+190, currentHeight)
 
@@ -75,15 +79,21 @@ end
 local function disableMain()
   print("disableMain called!!!!")
   returnButton:removeEventListener("tap", getOverlayPause)
-
   muteButton:removeEventListener("tap", audioButton)
-
   infoButton:removeEventListener("tap", infobutton)
-  
+  choices:removeEventListener()
+
+end
+
+local function enableMain()
+  print("EnableMain called!!!!")
+  returnButton:addEventListener("tap", getOverlayPause)
+  muteButton:addEventListener("tap", audioButton)
+  infoButton:addEventListener("tap", infobutton)
 end
 
 
-local function getOverlayPause()
+function getOverlayPause()
   print("!!!returnButton clicked!!!")
   disableMain()
   local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/Background4blur.png", display.contentWidth + 190, display.contentHeight )
@@ -106,6 +116,7 @@ local function getOverlayPause()
   end
   -- functions on Paused Screen
   local function resumeTap()
+    enableMain()
     purgeObjs()
     -- enableButtons()
   -- transition.resume()
@@ -132,7 +143,7 @@ end
 
 --creating main table
 local Countries = require "Source.Countries"
-local choices = {}
+
 -- other scenes from the game:
 
 -- Temporary Music
@@ -155,6 +166,7 @@ end
 
 function startGame()
   difficulty = composer.getVariable( "difficulty" )
+
   if DEBUG then print("Difficulty set to "..difficulty) end
 
   setBackground()
@@ -178,43 +190,27 @@ function newFoods()
   end
 end
 
-function audioButton()
-  print("!!!audioButton clicked!!!")
-  if mute == false then
-    mute = true
-    musics.pause()
-    sounds.mute()
-    muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/mute.png", 60, 60 )
-    muteButton.y = returnButton.y
-    muteButton.x = returnButton.x + 70
-  else
-    mute = false
-    musics.unPause()
-    sounds.unMute()
-    muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
-    muteButton.y = returnButton.y
-    muteButton.x = returnButton.x + 70
-  end
-end
-
 function infobutton()
   print("!!!infobutton CLICKED!!!")
     musics.pause()
     disableMain()
+    returnButton:addEventListener("tap", getOverlayPause)
     local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/food_tutorial.png", display.contentWidth - 30 , display.contentHeight - 85)
     overlay.x = display.contentCenterX
     overlay.y = display.contentCenterY -25
-    -- local returnB = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
-    -- returnB.y = display.contentCenterY - display.contentCenterY / 1.5
-    -- returnB.x = display.contentCenterX - display.contentCenterX / 1.1
+    local returnB = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
+    returnB.y = display.contentCenterY - display.contentCenterY / 1.5
+    returnB.x = display.contentCenterX - display.contentCenterX / 1.1
 
     -- dump memories
     local function purgeObjs()
+      returnButton:removeEventListener("tap", getOverlayPause)
       overlay:removeSelf()
       overlay = nil
       returnB:removeSelf()
       resumeB = nil
       musics.unPause()
+      enableMain()
     end
 
     -- returnB:addEventListener("tap", purgeObjs)
@@ -236,34 +232,12 @@ function setBackground()
   muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
   muteButton.y = returnButton.y
   muteButton.x = returnButton.x + 70
-
   muteButton:addEventListener("tap", audioButton)
 
   infoButton = display.newImageRect ( sceneGroup, "Assets/Images/FlagGame/Scene/11.png", 60, 60)
   infoButton.y = muteButton.y + 70
   infoButton.x = returnButton.x
   infoButton:addEventListener("tap", infobutton)
-
-  -- local pauseButton = display.newImageRect( sceneGroup, "Assets/Images/Scene/pause.png", 60 , 60 )--10
-  -- pauseButton.y = returnButton.y
-  -- pauseButton.x = returnButton.x - 200
-  -- pauseButton:addEventListener("tap", function()
-  -- audio.stop() end)
-
-  -- local oven = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/oven.png", currentWidth, currentHeight)
-  -- oven.x = display.contentCenterX - display.contentCenterX / 2
-  -- oven.y = display.contentCenterY + display.contentCenterY / 1.8
-  -- oven:scale(0.5, 0.22)
-
-  -- wall = display.newImage(sceneGroup, "Assets/Images/FoodGame/wall.jpg")
-  -- wall.x = display.contentCenterX - display.contentCenterX / 2
-  -- wall.y = display.contentCenterY + 225
-  -- wall:scale(0.5,0.5)
-
-  -- starbar = display.newImage(sceneGroup, "Assets/Images/FoodGame/woodBar.png")
-  -- starbar.x = display.contentCenterX - display.contentCenterX / 2
-  -- starbar.y = display.contentCenterY + 133
-  -- starbar:scale(0.5,0.25)
 
   local foodBack = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/foodBack.png", currentWidth, currentHeight)
   foodBack.x = display.contentCenterX + display.contentCenterX / 2
@@ -673,6 +647,26 @@ function leaveCharacters()
     })
   choiceRemover()
 end
+
+function audioButton()
+  print("!!!audioButton clicked!!!")
+  if mute == false then
+    mute = true
+    musics.pause()
+    sounds.mute()
+    muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/mute.png", 60, 60 )
+    muteButton.y = returnButton.y
+    muteButton.x = returnButton.x + 70
+  else
+    mute = false
+    musics.unPause()
+    sounds.unMute()
+    muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
+    muteButton.y = returnButton.y
+    muteButton.x = returnButton.x + 70
+  end
+end
+
 
 -- show()
 function scene:show( event )
