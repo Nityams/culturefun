@@ -132,9 +132,9 @@ function scene:show( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
-
+		print("Went to will of show")
 		self:makeCoinsDisplay()
-
+		self:addPins( countries )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
@@ -152,7 +152,8 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-
+		print("Went to Will of Hide")
+		self:addPins( countries )
 		system.deactivate( "multitouch" )
 
 	elseif ( phase == "did" ) then
@@ -176,8 +177,9 @@ end
 -- Note: Wallet value must be less than or equal to
 -- 4000 considering there's less than 8 groups
 function scene:addPins( countries )
-	--wallet.setCoins(600)
+	--wallet.setCoins(400)
 	j = wallet.getCoins() / 500
+	print("Money Got: ".. j)
 	local tempChecker = "Mexico"
 	-- Add the new countries
 	if (j <= 2 and j >= 1) then
@@ -205,7 +207,8 @@ function scene:addPins( countries )
 	for i = 1,#countries do
 		local country = countries[i]
 		if (country.name == tempChecker) then break end
-		if country.coordinates then
+		if (country.coordinates)then
+			print("Got In Here")
 			local pin = makePin( self.view, country, lat, lon )
 			pin.country = country
 			pin:addEventListener( "tap", function()
@@ -243,7 +246,7 @@ end
 
 function scene:makeCoinsDisplay()
 	print("coins here....".. wallet.getCoins())
-
+	--self:addPins( countries )
 	j = wallet.getCoins() % 500
 
 	self.currencyText = display.newText{
@@ -336,7 +339,8 @@ function scene:openDialog( country )
 		self.dfact:setFillColor( 0.4 )
 	end
 
-	timer.performWithDelay( 2000, function()
+	--timer.performWithDelay( 2000, function()
+	timer.performWithDelay( 4000, function()
 		self:closeDialog()
 	end)
 end
