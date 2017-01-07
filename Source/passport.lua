@@ -173,14 +173,39 @@ function scene:destroy( event )
 
 end
 
-
+-- Note: Wallet value must be less than or equal to
+-- 4000 considering there's less than 8 groups
 function scene:addPins( countries )
+	--wallet.setCoins(600)
+	j = wallet.getCoins() / 500
+	local tempChecker = "Mexico"
 	-- Add the new countries
+	if (j <= 2 and j >= 1) then
+		tempChecker = "Peru"
+	end
+	if (j <= 3 and j >= 2) then
+		tempChecker = "Morocco"
+	end
+	if (j <= 4 and j >= 3) then
+		tempChecker = "Portugal"
+	end
+	if (j <= 5 and j >= 4) then
+		tempChecker = "Vatican"
+	end
+	if (j <= 6 and j >= 5) then
+		tempChecker = "Ukraine"
+	end
+	if (j <= 7 and j >= 6) then
+		tempChecker = "Mongolia"
+	end
+	if (j <= 8 and j >= 7) then
+		tempChecker = "Malaysia"
+	end
+
 	for i = 1,#countries do
 		local country = countries[i]
-		--print("Country"..country.name)
+		if (country.name == tempChecker) then break end
 		if country.coordinates then
-			print("Found Coordinate"..country.name)
 			local pin = makePin( self.view, country, lat, lon )
 			pin.country = country
 			pin:addEventListener( "tap", function()
@@ -218,9 +243,12 @@ end
 
 function scene:makeCoinsDisplay()
 	print("coins here....".. wallet.getCoins())
+
+	j = wallet.getCoins() % 500
+
 	self.currencyText = display.newText{
 		parent = scnGrp,
-		text = "" .. wallet.getCoins() .. " coins",
+		text = "" .. j .. " coins",
 		x = screenRight - 25,
 		y = screenTop + 15,
 		font = font,
@@ -230,9 +258,15 @@ function scene:makeCoinsDisplay()
 	self.currencyText.anchorY = 0.0
 	self.currencyText:setFillColor( 0.4 )
 
+	local temp = "next area: " .. 500 - j
+	x = wallet.getCoins() / 500
+	if (x == 8) then
+		temp = "No New Area For Now!"
+	end
+
 	self.nextAreaText = display.newText{
 		parent = scnGrp,
-		text = "next area: 500 coins",
+		text = temp,
 		x = self.currencyText.x,
 		y = self.currencyText.y + self.currencyText.height,
 		font = font,

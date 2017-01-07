@@ -59,7 +59,7 @@ local Croatia = {
   food = "Cobanac",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Dobrodošli",
-  coordinates = {lat = 48.86, lon = 2.35}, -- Zagreb @ 48° 51.39 N, 2° 21.13 E
+  coordinates = {lat = 45.815399, lon = 15.966568}, -- Zagreb @ 48° 51.39 N, 2° 21.13 E
   fun_fact = {
     "Did you know, the breed of dog from the movie 101 Dalmatians came from Croatia?",
     "Fun fact: Pens were invented in Croatia by Slavoljub Penkala"
@@ -215,7 +215,7 @@ local Italy = {
   food = "Pasta",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Ciao",
-  coordinates = { lat =41.90 , lon = 12.50}, -- Rome @ 41° 54.17'N, 12° 29.78' E
+  coordinates = { lat = 40.90 , lon = 16.50}, -- Rome @ 41° 54.17'N, 12° 29.78' E
   fun_fact = {
     "Did you know, city-states such as the Vatican City and San Marino are located in Italy?",
     "Fun Fact: Leonardo Da Vinci was born and raised in Italy"
@@ -267,7 +267,7 @@ local Laos = {
   food = "Ping Kai",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "sabaidee!",
-  coordinates = { lat =-17.97, lon = 102.63}, -- Vientiane @ 17° 58.54' N, 102° 37.99' E
+  coordinates = { lat =17.97, lon = 102.63}, -- Vientiane @ 17° 58.54' N, 102° 37.99' E
   fun_fact = {
     "The Laotian New Year is celebrated for three whole days! April 13th to 15th!",
     "Fun Fact: There is an area where there are over 300 giant jars of unknown origin! "
@@ -280,7 +280,8 @@ local Liberia = {
   food = "Fufu",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hello!",
-  coordinates = { lat = 34.14, lon = -118.00}, -- Monrovia @ 34° 8.66' N, 118° 0.12' W
+  --coordinates = { lat = 34.14, lon = -118.00}, -- Monrovia @ 34° 8.66' N, 118° 0.12' W
+    coordinates = { lat = 6.300774, lon = -10.797160}, -- Monrovia @ 34° 8.66' N, 118° 0.12' W
   fun_fact = {
     "Did you know, The Liberian flag is designed after the American flag?",
     "Fun Fact: Liberia is a bird-haven where more than 700 bird species reside!"
@@ -652,6 +653,17 @@ local Spain = {
   }
 }
 
+--local Sudan = {
+-- name = "Sudan",
+-- flag = "Assets/Images/Flags/Sudan_Flag.png",
+-- food = "",
+-- greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
+-- greeting = "",
+-- coordinates = { lat = , long = },
+-- fun_fact = {
+  
+--}
+--}
 local Switzerland = {
   name = "Switzerland",
   flag = "Assets/Images/Flags/Switzerland_Flag.png",
@@ -794,89 +806,77 @@ local Zimbabwe = {
     "Fun Fact: Zimbabwe means 'Great House of Stones'"
   }
 }
-
---Alphabetical Insertion of Countries into Countries Table listing
-table.insert(Countries, Austraila)
-
-table.insert(Countries, Brazil)
-
-table.insert(Countries, Canada)
-table.insert(Countries, China)
-table.insert(Countries, Croatia)
-
-table.insert(Countries, DominicanRepublic)
-
-table.insert(Countries, EastTimor)
-table.insert(Countries, Egypt)  --Koshari
-table.insert(Countries, ElSalvador)
-
-table.insert(Countries, France)
-
-table.insert(Countries, Georgia)
-table.insert(Countries, Germany)
+--Group 1
+table.insert(Countries, Mexico)
 table.insert(Countries, Guatemala)
-
-table.insert(Countries, Haiti)
+table.insert(Countries, ElSalvador)
 table.insert(Countries, Honduras)
-table.insert(Countries, Hungary)
+table.insert(Countries, Canada)
+table.insert(Countries, USA)
 
-table.insert(Countries, Italy)
-
-table.insert(Countries, Japan)
-
-table.insert(Countries, Kazakhstan)
-table.insert(Countries, Kenya)
-
-table.insert(Countries, Laos)
-table.insert(Countries, Liberia)
-table.insert(Countries, Luxembourg)
-
-table.insert(Countries, Macedonia)
-table.insert(Countries, Madagascar)
-table.insert(Countries, Malaysia)
-table.insert(Countries, Maldives)
-table.insert(Countries, Mexico) --Tamales
-table.insert(Countries, Mongolia)
-table.insert(Countries, Montenegro)
-table.insert(Countries, Morocco)
-table.insert(Countries, Mozambique)
-
-table.insert(Countries, Nauru)
-table.insert(Countries, Netherlands)
-table.insert(Countries, New_Zealand)
-table.insert(Countries, Nigeria)
-table.insert(Countries, Norway)
-
-table.insert(Countries, Palau)
+-- Group 2
 table.insert(Countries, Peru)
-table.insert(Countries, Philippines)
-table.insert(Countries, Portugal)
-
-table.insert(Countries, Russia) --Borsch
-
-table.insert(Countries, Saudi_Arabia)
-table.insert(Countries, Serbia)
-table.insert(Countries, Singapore)
-table.insert(Countries, South_Africa) --Chakalaka & pap
-table.insert(Countries, Korea) -- Should be changed to south Korea
-table.insert(Countries, Spain) --Paella
--- table.insert(Countries, Sudan) -- Need to Find Info
-table.insert(Countries, Switzerland) --Cheese fondue
-
-table.insert(Countries, Taiwan)
-
-table.insert(Countries, New_Zealand)  --Hangi
-
-table.insert(Countries, Ukraine)
-table.insert(Countries, UK)   --Fish and Chips
-table.insert(Countries, USA)  -- Apple Pie
+table.insert(Countries, Brazil)
 table.insert(Countries, Uruguay)
+table.insert(Countries, DominicanRepublic)
+table.insert(Countries, Haiti)
 
-table.insert(Countries, Vatican)
-table.insert(Countries, Vietnam)  --Pho
-
+-- Group 3 
+table.insert(Countries, Morocco)
+table.insert(Countries, Liberia)
+table.insert(Countries, Nigeria)
+table.insert(Countries, Kenya)
 table.insert(Countries, Zimbabwe)
+table.insert(Countries, South_Africa)
+table.insert(Countries, Mozambique)
+table.insert(Countries, Madagascar)
 
+-- Group 4
+table.insert(Countries, Portugal)
+table.insert(Countries, Spain)
+table.insert(Countries, UK)
+table.insert(Countries, Switzerland)
+table.insert(Countries, Netherlands)
+table.insert(Countries, Luxembourg)
+table.insert(Countries, France)
+table.insert(Countries, Norway)
+table.insert(Countries, Germany)
+
+-- Group 5
+table.insert(Countries, Vatican)
+table.insert(Countries, Croatia)
+table.insert(Countries, Italy)
+table.insert(Countries, Hungary)
+table.insert(Countries, Serbia)
+table.insert(Countries, Monenegro)
+table.insert(Countries, Macedonia)
+
+-- Group 6
+table.insert(Countries, Ukraine)
+table.insert(Countries, Russia)
+table.insert(Countries, Georgia)
+table.insert(Countries, Egypt)
+table.insert(Countries, Saudi_Arabia)
+table.insert(Countries, Kazakhstan)
+table.insert(Countries, Maldives)
+
+-- Group 7
+table.insert(Countries, Mongolia)
+table.insert(Countries, China)
+table.insert(Countries, Korea)
+table.insert(Countries, Japan)
+table.insert(Countries, Taiwan)
+table.insert(Countries, Laos)
+table.insert(Countries, Vietnam)
+table.insert(Countries, Philippines)
+
+-- Group 8
+table.insert(Countries, Malaysia)
+table.insert(Countries, Singapore)
+table.insert(Countries, Palau)
+table.insert(Countries, EastTimor)
+table.insert(Countries, Australia)
+table.insert(Countries, New_Zealand)
 
 -- No flags or dialog
 -- table.insert(Countries, France)
