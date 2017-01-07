@@ -1,4 +1,6 @@
 local Countries = {}
+local easyCountries = {}
+local midCountries = {}
 local deck = {}
 
 local Austraila = {
@@ -661,7 +663,7 @@ local Spain = {
 -- greeting = "",
 -- coordinates = { lat = , long = },
 -- fun_fact = {
-  
+
 --}
 --}
 local Switzerland = {
@@ -821,7 +823,7 @@ table.insert(Countries, Uruguay)
 table.insert(Countries, DominicanRepublic)
 table.insert(Countries, Haiti)
 
--- Group 3 
+-- Group 3
 table.insert(Countries, Morocco)
 table.insert(Countries, Liberia)
 table.insert(Countries, Nigeria)
@@ -878,6 +880,38 @@ table.insert(Countries, EastTimor)
 table.insert(Countries, Australia)
 table.insert(Countries, New_Zealand)
 
+--easyCountries
+table.insert( easyCountries, Mexico)
+table.insert( easyCountries, Canada)
+table.insert( easyCountries, USA)
+table.insert( easyCountries, Brazil)
+table.insert( easyCountries, Spain)
+table.insert( easyCountries, UK)
+table.insert( easyCountries, France)
+table.insert( easyCountries, Germany)
+table.insert( easyCountries, Italy)
+table.insert( easyCountries, Russia)
+table.insert( easyCountries, China)
+table.insert( easyCountries, Japan)
+table.insert( easyCountries, Australia)
+
+--mid Countries
+table.insert( midCountries, Honduras)
+table.insert( midCountries, Uruguay)
+table.insert( midCountries, South_Africa)
+table.insert( midCountries, Nigeria)
+table.insert( midCountries, Switzerland)
+table.insert( midCountries, Norway)
+table.insert( midCountries, New_Zealand)
+table.insert( midCountries, Malaysia)
+table.insert( midCountries, Vietnam)
+table.insert( midCountries, Korea)
+for i, names in pairs(easyCountries) do
+  table.insert( midCountries, names)
+end
+
+
+
 -- No flags or dialog
 -- table.insert(Countries, France)
 -- table.insert(Countries, China)
@@ -890,11 +924,13 @@ function showCountries()
     print(i, v.name)
   end
 end
+
 function showDeck()
   for i,v in ipairs(deck) do
     print(i, v.name)
   end
 end
+
 function showTable(t)
   for i,v in ipairs(t) do
     print(i, v.name)
@@ -902,13 +938,22 @@ function showTable(t)
 end
 
 -- Clear current deck and create new one from Countries
-function buildDeck()
+function buildDeck(t)
   -- Discard
   deck = {}
   -- Build
-  for i,v in ipairs(Countries) do
-    deck[i] = v
+  -- for i,v in ipairs(Countries) do
+  --   deck[i] = v
+  -- end
+
+  if t == 1 then
+    for i,v in ipairs(easyCountries) do deck[i] = v end
+  else if t==2 then
+    for i,v in ipairs(midCountries) do deck[i] = v end
+  else
+    for i,v in ipairs(Countries) do deck[i] = v end
   end
+end
 end
 
 -- Randomizes deck order
