@@ -68,7 +68,7 @@ local Croatia = {
 
 local DominicanRepublic = {
   name = "Dominican Republic",
-  flag = "Assets/Images/Flags/Dominican_Republic_Flag.png",
+  flag = "Assets/Images/Flags/Dominica_Republic_Flag.png",
   food ="Sancocho",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hola",
@@ -254,7 +254,7 @@ local Kenya = {
   food = "Ugali",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Jambo!",
-  coordinates = { lat = 1.29, lon = 36.82}, -- Nairobi @ 1° 17.52'S, 36° 49.32' E
+  coordinates = { lat =-1.29, lon = 36.82}, -- Nairobi @ 1° 17.52'S, 36° 49.32' E
   fun_fact = {
     "Nairobi is the largest city and capital of Kenya!",
     "Fun Fact: Kenya only has two seasons, a rainy and dry season!"
@@ -267,11 +267,7 @@ local Laos = {
   food = "Ping Kai",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "sabaidee!",
-<<<<<<< HEAD
   coordinates = { lat =17.97, lon = 102.63}, -- Vientiane @ 17° 58.54' N, 102° 37.99' E
-=======
-  coordinates = { lat =17.58, lon = 102.63}, -- Vientiane @ 17° 58.54' N, 102° 37.99' E
->>>>>>> 53f0acaf8ca5d96a2108479a621db000b87361e9
   fun_fact = {
     "The Laotian New Year is celebrated for three whole days! April 13th to 15th!",
     "Fun Fact: There is an area where there are over 300 giant jars of unknown origin! "
