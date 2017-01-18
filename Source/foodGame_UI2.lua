@@ -81,7 +81,6 @@ local function disableMain()
   print("disableMain called!!!!")
   returnButton:removeEventListener("tap", getOverlayPause)
   muteButton:removeEventListener("tap", audioButton)
-  muteButton:removeSelf()
   infoButton:removeEventListener("tap", infobutton)
 
   if choices[1] ~= nil then
@@ -175,9 +174,10 @@ local Countries = require "Source.Countries"
 -- other scenes from the game:
 
 -- Temporary Music
-musics.defineMusic( "Food Theme", "Assets/Sounds/Music/Whimsical-Popsicle.mp3", 1, 5000 )
-sounds.defineSound("Win","Assets/Sounds/win.wav",0.5 )
-sounds.defineSound("starWin", "Assets/Sounds/starWin.wav",0.5)
+musics.defineMusic( "Food Theme", "Assets/Sounds/Music/bensound-buddy.mp3", 0.9, 5000 )
+sounds.defineSound("Win","Assets/Sounds/win.wav",0.8 )
+sounds.defineSound("starWin", "Assets/Sounds/starWin.wav",0.8)
+sounds.defineSound("correct", "Assets/Sounds/FlagGame/DING_FX.mp3",0.8)
 -- create()
 function scene:create( event )
     print( "scene:create" )
@@ -571,6 +571,7 @@ end
 
 ----------
 function correctAnswer()
+  sounds.play("correct")
   if difficulty == 1 then -- Easy
     score = score + 3
   elseif difficulty == 2 then -- Medium
