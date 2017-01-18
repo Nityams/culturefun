@@ -81,6 +81,7 @@ local function disableMain()
   print("disableMain called!!!!")
   returnButton:removeEventListener("tap", getOverlayPause)
   muteButton:removeEventListener("tap", audioButton)
+  muteButton:removeSelf()
   infoButton:removeEventListener("tap", infobutton)
 
   if choices[1] ~= nil then
@@ -96,7 +97,7 @@ end
 local function enableMain()
   print("EnableMain called!!!!")
   returnButton:addEventListener("tap", getOverlayPause)
-  muteButton:addEventListener("tap", audioButton)
+  -- muteButton:addEventListener("tap", audioButton)
   infoButton:addEventListener("tap", infobutton)
   if choices[1] ~= nil then
     if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
@@ -690,7 +691,7 @@ function leaveCharacters()
 end
 
 function audioButton(event)
-  print("!!!audioButton clicked!!!")
+  print("!!!audioButton clicked!!! audio is now: "..tostring(mute))
   if mute == false then
     mute = true
     musics.pause()
