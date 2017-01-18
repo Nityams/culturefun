@@ -29,6 +29,8 @@ local starShine
 local audioButton
 local getOverlayPause
 local infobutton
+local reutnBFunction
+local checkFunction
 
 local currentWidth
 local currentHeight
@@ -53,7 +55,6 @@ local returnButton
 local choices = {}
 
 -- images.defineImage( "Paused Screen", "FoodGame/Background4-blur.png", display.contentWidth+190, currentHeight)
-
 
 local function returnToMenu()
   if DEBUG then print("***** Returning to menu") end
@@ -81,8 +82,15 @@ local function disableMain()
   returnButton:removeEventListener("tap", getOverlayPause)
   muteButton:removeEventListener("tap", audioButton)
   infoButton:removeEventListener("tap", infobutton)
-  choices:removeEventListener()
 
+  if choices[1] ~= nil then
+    if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
+      print("Nityam- Attempting to remove the flag listener") end
+  choices[1].image:removeEventListener("tap", checkFunction)
+  choices[2].image:removeEventListener("tap", checkFunction)
+  choices[3].image:removeEventListener("tap", checkFunction)
+  choices[4].image:removeEventListener("tap", checkFunction)
+  end
 end
 
 local function enableMain()
@@ -90,8 +98,27 @@ local function enableMain()
   returnButton:addEventListener("tap", getOverlayPause)
   muteButton:addEventListener("tap", audioButton)
   infoButton:addEventListener("tap", infobutton)
+  if choices[1] ~= nil then
+    if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
+      print("Nityam- Attempting to remove the flag listener") end
+  choices[1].image:addEventListener("tap", checkFunction)
+  choices[2].image:addEventListener("tap", checkFunction)
+  choices[3].image:addEventListener("tap", checkFunction)
+  choices[4].image:addEventListener("tap", checkFunction)
+  end
 end
 
+
+function checkFunction(event)
+  -- made changes here
+   print("Nityam- myChoice in function ="..event.target.num)
+   print("Nityam - correctAnswer = "..tostring(correctFood))
+   if event.target.num == correctFood then
+     correctAnswer()
+   else
+     wrongAnswer() --v
+   end
+ end
 
 function getOverlayPause()
   print("!!!returnButton clicked!!!")
@@ -190,29 +217,36 @@ function newFoods()
   end
 end
 
+
 function infobutton()
   print("!!!infobutton CLICKED!!!")
     musics.pause()
     disableMain()
-    returnButton:addEventListener("tap", getOverlayPause)
-    local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/food_tutorial.png", display.contentWidth - 30 , display.contentHeight - 85)
+    local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/food_tutorial.png", display.contentWidth , display.contentHeight - 170)
     overlay.x = display.contentCenterX
-    overlay.y = display.contentCenterY -25
+    overlay.y = display.contentCenterY - 12
     local returnB = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
-    returnB.y = display.contentCenterY - display.contentCenterY / 1.5
-    returnB.x = display.contentCenterX - display.contentCenterX / 1.1
+    returnB.y = display.contentCenterY - display.contentCenterY / 2.1
+    returnB.x = display.contentCenterX - display.contentCenterX / 1.3
+  -- dump memories
 
-    -- dump memories
     local function purgeObjs()
-      returnButton:removeEventListener("tap", getOverlayPause)
+      print("Nityam - returnB event removed")
       overlay:removeSelf()
       overlay = nil
+      -- returnB:removeEventListener("tap", reutnBFunction)
       returnB:removeSelf()
       resumeB = nil
       musics.unPause()
+
+    end
+   function reutnBFunction()
       enableMain()
+      purgeObjs()
+      -- transition.cancel()
     end
 
+      returnB:addEventListener("tap", reutnBFunction)
     -- returnB:addEventListener("tap", purgeObjs)
     -- YOUR CODE HERE
 end
@@ -460,6 +494,18 @@ function setFoods()
 
   -- Country text
 
+  -- local returnButton = Button:newImageButton{
+  --   group = sceneGroup,
+  --   image = images.get( sceneGroup, "Return Button" ),
+  --   imagePressed = images.get( sceneGroup, "Return Button Pressed" ),
+  --   x = 70,
+  --   y = screenTop + 60,
+  --   width = images.width( "Pause Button" ),
+  --   height = images.height( "Pause Button" ),
+  --   alpha = 0.9,
+  --   allowance = 8  -- Normally 30, but they are 16 pixels apart
+  -- }
+
   for i,v in ipairs(choices) do
     v.text = display.newText(sceneGroup, v.name, v.image.x, v.image.y + 96, "Helvetica", 31)
     v.text:setFillColor(0, 0, 35)
@@ -487,19 +533,14 @@ function setFoods()
   -- tap action listener and answer checker for all the foods in the grid
 
   for i,v in ipairs(choices) do
-    v.image:addEventListener("tap", function ()
-        print("***** Chose: "..i..". "..v.name..", correct: "..correctFood..". "..choices[correctFood].name)
-        if i == correctFood then
-          correctAnswer()
-        else
-          wrongAnswer(v)
-        end
-      end)
+    print("Nityam- Printing the myChoice before callings: "..i)
+    v.image.num = i
+    v.image:addEventListener("tap", checkFunction)
   end
 
 end
 ---------------------------
-function wrongAnswer( choice )
+function wrongAnswer()
   if DEBUG then print("WRONG!!!!") end
 
   wrongChoiceCharacter()
@@ -648,7 +689,7 @@ function leaveCharacters()
   choiceRemover()
 end
 
-function audioButton()
+function audioButton(event)
   print("!!!audioButton clicked!!!")
   if mute == false then
     mute = true
