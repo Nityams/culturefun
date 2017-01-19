@@ -80,7 +80,12 @@ end
 local function disableMain()
   print("disableMain called!!!!")
   returnButton:removeEventListener("tap", getOverlayPause)
-  muteButton:removeEventListener("tap", audioButton)
+  -- if muteButton ~=nil then
+  -- muteButton:removeEventListener("tap", audioButton) end
+  if muteButton ~= nil then
+     muteButton:removeSelf()
+    muteButton = nil end
+
   infoButton:removeEventListener("tap", infobutton)
 
   if choices[1] ~= nil then
@@ -96,7 +101,12 @@ end
 local function enableMain()
   print("EnableMain called!!!!")
   returnButton:addEventListener("tap", getOverlayPause)
+
+  muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
+  muteButton.y = returnButton.y
+  muteButton.x = returnButton.x + 70
   -- muteButton:addEventListener("tap", audioButton)
+
   infoButton:addEventListener("tap", infobutton)
   if choices[1] ~= nil then
     if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
