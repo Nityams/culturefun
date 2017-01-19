@@ -372,7 +372,7 @@ function scene:create( event )
 	local difficulty = composer.getVariable( "difficulty" )
 
 	if difficulty == 1 then
-		level = 1		-- 6 rounds
+		level = 6		-- 6 rounds
 		lives = 3 		-- 3 lives
 		randomNum = 15  -- use the first 15 flags
 		distance = 9
