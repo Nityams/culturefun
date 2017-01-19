@@ -177,7 +177,7 @@ end
 -- Note: Wallet value must be less than or equal to
 -- 4000 considering there's less than 8 groups
 function scene:addPins( countries )
-	--wallet.setCoins(400)
+	--wallet.setCoins(1900)
 	j = wallet.getCoins() / 500
 	print("Money Got: ".. j)
 	local tempChecker = "Mexico"
@@ -192,7 +192,7 @@ function scene:addPins( countries )
 		tempChecker = "Portugal"
 	end
 	if (j <= 5 and j >= 4) then
-		tempChecker = "Vatican"
+		tempChecker = "Vatican City"
 	end
 	if (j <= 6 and j >= 5) then
 		tempChecker = "Ukraine"
@@ -208,7 +208,6 @@ function scene:addPins( countries )
 		local country = countries[i]
 		if (country.name == tempChecker) then break end
 		if (country.coordinates)then
-			print("Got In Here")
 			local pin = makePin( self.view, country, lat, lon )
 			pin.country = country
 			pin:addEventListener( "tap", function()
