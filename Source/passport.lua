@@ -246,11 +246,11 @@ end
 function scene:makeCoinsDisplay()
 	print("coins here....".. wallet.getCoins())
 	--self:addPins( countries )
-	j = wallet.getCoins() % 500
+	--j = wallet.getCoins() % 500
 
 	self.currencyText = display.newText{
 		parent = scnGrp,
-		text = "" .. j .. " coins",
+		text = "" .. wallet.getCoins() .. " coins",
 		x = screenRight - 25,
 		y = screenTop + 15,
 		font = font,
