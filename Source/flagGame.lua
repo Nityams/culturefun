@@ -1152,7 +1152,7 @@ function scene:create( event )
 		}
 		contButton:addEventListener("tap", contButtonTap)
 
-		local currentCoins = wallet.getCoins() % 500
+		local currentCoins = wallet.getCoins()
 		local earnedCoins = 100 * difficulty
 		local text = display.newText(sceneGroup,""..currentCoins.."", star.x+20,star.y+110,font,44)
 		local text2 = display.newText(sceneGroup,"+"..earnedCoins.."", star.x+10,star.y+160,font,44)
