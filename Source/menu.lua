@@ -35,10 +35,15 @@ images.defineImage( "Plane 4" , "Menu/plane4.png" , 25, 25)
 images.defineImage( "Plane 5" , "Menu/plane5.png" , 25, 25)
 images.defineImage( "Santa" , "Menu/santa.png", 90 ,30)
 images.defineImage( "Pizza", "Menu/pizza.png", 90,90)
+images.defineImage( "Ketchup", "Menu/ketchup.png", 45,90)
+images.defineImage( "Fries", "Menu/fries.png", 70,80)
+images.defineImage( "Smiley Face", "Menu/smiley-face.png", 300,300)
 
 sounds.defineSound( "Charm", "Assets/Sounds/Menu/Charm.mp3", 1.0 )
 sounds.defineSound( "SantaFX", "Assets/Sounds/Menu/SantaFX.mp3", 0.6)
 sounds.defineSound( "ufoFX", "Assets/Sounds/Menu/ufoFX.mp3", 0.8)
+sounds.defineSound( "ketchupFX", "Assets/Sounds/Menu/funnyFX.mp3", 0.8)
+sounds.defineSound( "faceFX", "Assets/Sounds/Menu/whistleFX.mp3", 0.8)
 
 musics.defineMusic( "Menu Theme", "Assets/Sounds/Music/bensound-littleidea.mp3", 0.7, 5000 )
 
@@ -550,7 +555,7 @@ function scene:timeUntilPlaneCollision( first, second )
 end
 
 function scene:maybeSpawnFunnies()
-	if self.counter < 8 then
+	if self.counter < 9 then
 		self.counter = self.counter + 1
 	else
 		self.counter = 0
@@ -558,8 +563,13 @@ function scene:maybeSpawnFunnies()
 
 	if self.counter == 2 then
 		self:spawnSanta()
-	elseif self.counter == 5 then
+	elseif self.counter == 4 then
 		self:spawnPizza()
+	elseif self.counter == 6 then
+		self:spawnKetchup()
+		self:spawnFries()
+	elseif self.counter == 8 then
+		self:spawnSmileyFace()
 	end
 end
 
@@ -613,6 +623,85 @@ function scene:spawnPizza()
 
 	timer.performWithDelay( 100, function() sounds.play( "ufoFX" ) end )
 	table.insert( self.eventsArray, pizza )
+end
+
+function scene:spawnKetchup()
+	-- trigger giant pizza
+	local speed = math.random( 150, 250 )
+	local ketchup = self:createFlyingObject( "Ketchup", speed, false, true )
+
+	if not ketchup then
+		-- Couldn't find a path that collided with anyone.
+		return
+	end
+
+	ketchup.rotation = 20
+	ketchup.alpha = 0.8
+
+	local pathVector = ketchup.finish - ketchup.start
+	local heading = math.atan2( pathVector.y, pathVector.x )
+
+	physics.addBody( ketchup, "dynamic", { radius = 30, bounce = 0.8 } )
+	ketchup:setLinearVelocity(
+		ketchup.speed * math.cos( heading ),
+		ketchup.speed * math.sin( heading )
+	)
+	ketchup:applyTorque(math.random(-4,4))
+
+	timer.performWithDelay( 200, function() sounds.play( "ketchupFX" ) end )
+	table.insert( self.eventsArray, ketchup )
+end
+
+function scene:spawnFries()
+	-- trigger giant pizza
+	local speed = math.random( 150, 250 )
+	local fries = self:createFlyingObject( "Fries", speed, false, true )
+
+	if not fries then
+		-- Couldn't find a path that collided with anyone.
+		return
+	end
+
+	fries.rotation = 20
+	fries.alpha = 0.8
+
+	local pathVector = fries.finish - fries.start
+	local heading = math.atan2( pathVector.y, pathVector.x )
+
+	physics.addBody( fries, "dynamic", { radius = 30, bounce = 0.8 } )
+	fries:setLinearVelocity(
+		fries.speed * math.cos( heading ),
+		fries.speed * math.sin( heading )
+	)
+	fries:applyTorque(math.random(-4,4))
+
+	timer.performWithDelay( 500, function() sounds.play( "ketchupFX" ) end )
+	table.insert( self.eventsArray, fries )
+end
+
+function scene:spawnSmileyFace()
+	-- trigger santa clause
+	local speed = 30
+	local face = self:createFlyingObject( "Smiley Face", speed, false, true )
+
+	if not face then
+		-- Couldn't find a path that collided with anyone.
+		return
+	end
+
+	face.rotation = 20
+	face.alpha = 0.8
+
+	local pathVector = face.finish - face.start
+	local heading = math.atan2( pathVector.y, pathVector.x )
+
+	physics.addBody( face, "kinematic", { radius = 100, bounce = 0.8 } )
+	face:setLinearVelocity(
+		face.speed * math.cos( heading ),
+		face.speed * math.sin( heading )
+	)
+	timer.performWithDelay( 100, function() sounds.play( "faceFX" ) end )
+	table.insert( self.eventsArray, face )
 end
 
 function scene:removeMinigames()
