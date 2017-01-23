@@ -30,7 +30,7 @@ function Pin:new( displayGroup, x, y )
 	local check = wallet.getCoins() / 500
 	local image
 	local imagePressed 
-	if check == 1 then 
+	if check == 1 or check == 0 then 
 		image = images.get( displayGroup, "Pin" )
 		imagePressed = images.get( displayGroup, "Pin Pressed" )
 	elseif check == 2 then 
