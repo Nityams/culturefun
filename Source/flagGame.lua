@@ -222,8 +222,8 @@ images.defineImage( "Right Side", sceneBuild[1], currentWidth / 3, currentHeight
 images.defineImage( "Road", sceneBuild[15], 100, currentHeight-174 )
 images.defineImage( "Cont Button", "FlagGame/Scene/22.png", currentWidth/5, currentHeight/8)
 images.defineImage( "Cont Button Pressed", "FlagGame/Scene/22-pressed.png", currentWidth/5, currentHeight/8)
-images.defineImage( "Repl Button", "FlagGame/Scene/23.png", currentWidth/5, currentHeight/8)
-images.defineImage( "Repl Button Pressed", "FlagGame/Scene/23-pressed.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Repl Button", "FlagGame/Scene/24.png", currentWidth/5, currentHeight/8)
+images.defineImage( "Repl Button Pressed", "FlagGame/Scene/24-pressed.png", currentWidth/5, currentHeight/8)
 images.defineSheet( "Cat", "FlagGame/Sprite/2.png", {
 	width = 276.29,
 	height = 238.29,
@@ -379,7 +379,7 @@ function scene:create( event )
 		speed1 = 7000
 	elseif difficulty == 2 then
 		level = 12		-- 12 rounds
-		lives = 4		-- 3 lives
+		lives = 4		-- 4 lives
 		randomNum = 30	-- use the first 30 flags
 		distance = 18
 		speed1 = 6000
@@ -1119,17 +1119,7 @@ function scene:create( event )
 	local function replayButtonTap()
 		-- this will stop the animations
 		transition.cancel()
-		local sourcePath = "Source.flagGame"
-		local minigameScene = require( sourcePath )
-		local params = {
-			minigame = {
-				name = "Flag Game",
-				sourcePath = sourcePath,
-				preloadFn = function() return minigameScene:preload() end
-			},
-			menuMusicChannel = nil
-		}
-		composer.gotoScene( "Source.difficultySelector", { params=params } )
+		returnToMenu()
 	end
 
 	local function contButtonTap()
