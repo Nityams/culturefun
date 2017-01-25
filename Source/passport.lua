@@ -177,7 +177,7 @@ end
 -- Note: Wallet value must be less than or equal to
 -- 4000 considering there's less than 8 groups
 function scene:addPins( countries )
-	--wallet.setCoins(1900)
+	--wallet.setCoins(600)
 	j = wallet.getCoins() / 500
 	print("Money Got: ".. j)
 	local tempChecker = "Mexico"

@@ -30,32 +30,34 @@ function Pin:new( displayGroup, x, y )
 	local check = wallet.getCoins() / 500
 	local image
 	local imagePressed 
-	if check == 1 or check == 0 then 
+	--print("wallet: ".. wallet.getCoins())
+	print("check: ".. check)
+	if check < 1 and check >= 0 then 
 		image = images.get( displayGroup, "Pin" )
 		imagePressed = images.get( displayGroup, "Pin Pressed" )
-	elseif check == 2 then 
+	elseif check < 2 and check >= 1 then 
 		image = images.get( displayGroup, "Pin 2" )
 		imagePressed = images.get( displayGroup, "Pin Pressed 2" )
-	elseif check == 3 then 
+	elseif check < 3 and check >= 2 then 
 		image = images.get( displayGroup, "Pin 3" )
 		imagePressed = images.get( displayGroup, "Pin Pressed 3" )
-	elseif check == 4 then 
+	elseif check < 4 and check >= 3 then 
 		image = images.get( displayGroup, "Pin 4" )
 		imagePressed = images.get( displayGroup, "Pin Pressed 4" )
-	elseif check == 5 then 
+	elseif check < 5 and check >= 4 then 
 		image = images.get( displayGroup, "Pin 1" )
 		imagePressed = images.get( displayGroup, "Pin Pressed 1" )
-	elseif check == 6 then 
+	elseif check < 6 and check >= 5 then 
 		image = images.get( displayGroup, "Pin 2" )
 		imagePressed = images.get( displayGroup, "Pin Pressed 2" )
-	elseif check == 7 then 
+	elseif check < 7 and check >= 6 then 
 		image = images.get( displayGroup, "Pin 3" )
 		imagePressed = images.get( displayGroup, "Pin Pressed 3" )
-	elseif check == 8 then 
+	elseif  check >= 7 then 
 		image = images.get( displayGroup, "Pin 4" )
 		imagePressed = images.get( displayGroup, "Pin Pressed 4" )
 	end
-
+	--print(imagePressed)
 	-- Make image.y be for the bottom of the image.
 	image.anchorY = 1.0
 	imagePressed.anchorY = 1.0
