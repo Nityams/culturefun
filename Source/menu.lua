@@ -172,6 +172,7 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
+	--[[
 	self.resetButton = Button:newTextButton{
 		group=uiGroup,
 		font=font, fontSize=14, fontColor={ 0.4 },
@@ -181,6 +182,7 @@ function scene:create( event )
 		fillColor={ 0.97 }, fillColorPressed={ 0.90 },
 		borderWidth=3, borderColor={ 0.85 }
 	}
+	]]--
 	self.creditButton = Button:newTextButton{
 		group=uiGroup,
 		font=font, fontSize=20, fontColor={ 0.4 },
@@ -204,7 +206,7 @@ function scene:create( event )
 		self.flagButton.enabled = false
 		self.foodButton.enabled = false
 		self.passportButton.enabled = false
-		self.resetButton.enabled = false
+		--self.resetButton.enabled = false
 		self.creditButton.enabled = false
 	end
 	self.flagButton:addEventListener( "pretap", disableButtons )
@@ -214,7 +216,7 @@ function scene:create( event )
 	self.flagButton:addEventListener( "tap", function() self:gotoFlagMinigame() end )
 	self.foodButton:addEventListener( "tap", function() self:gotoFoodMinigame() end )
 	self.passportButton:addEventListener( "tap", function() self:gotoPassport() end)
-	self.resetButton:addEventListener( "tap", function() self:resetCoins() end)
+	--self.resetButton:addEventListener( "tap", function() self:resetCoins() end)
 	self.creditButton:addEventListener( "tap", function() self:gotoCredit() end)
 end
 
@@ -230,7 +232,7 @@ function scene:show( event )
 		self.flagButton.enabled = true
 		self.foodButton.enabled = true
 		self.passportButton.enabled = true
-		self.resetButton.enabled = true
+		--self.resetButton.enabled = true
 		self.creditButton.enabled = true
 
 		self.logo.rotation = 0
