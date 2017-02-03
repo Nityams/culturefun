@@ -69,8 +69,8 @@ local Croatia = {
 }
 
 local DominicanRepublic = {
-  name = "Dominican Republic",
-  flag = "Assets/Images/Flags/Dominica_Republic_Flag.png",
+  name = "Dominican Rep.",
+  flag = "Assets/Images/Flags/Dominican_Republic_Flag.png",
   food ="Sancocho",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hola",
@@ -567,7 +567,7 @@ local Saudi_Arabia = {
 local Serbia = {
   name = "Serbia",
   flag = "Assets/Images/Flags/Serbia_Flag.png",
-  food = "PLJESKAVICA",
+  food = "Pljeskavica",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Zdravo!",
   coordinates = { lat = 44.79, lon = 20.45}, -- Belgrade

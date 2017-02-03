@@ -91,14 +91,17 @@ end
 
 local function showCoins(difficulty)
 	if difficulty == 1 then
+				print("difficulty = 1")
 		coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c1.png")
 		winText = display.newText(sceneGroup,"You won 100 gold coins", display.contentCenterX, display.contentCenterY + 20, native.systemFont, 30 )
 		wallet.addCoins( 100 )
 	elseif difficulty == 2 then
+		print("difficulty = 2")
 		coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c2.png")
 		winText = display.newText(sceneGroup, "You won 200 gold coins", display.contentCenterX, display.contentCenterY +20, native.systemFont, 30 )
 		wallet.addCoins( 200 )
 	elseif difficulty == 3 then
+				print("difficulty = 3")
 		coin = display.newImage( sceneGroup, "Assets/Images/FoodGame/c3.png")
 		winText = display.newText(sceneGroup, "You won 300 gold coins", display.contentCenterX, display.contentCenterY +20, native.systemFont, 30 )
 		wallet.addCoins( 300 )

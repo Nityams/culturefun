@@ -585,7 +585,7 @@ function correctAnswer()
   if difficulty == 1 then -- Easy
     score = score + 3
   elseif difficulty == 2 then -- Medium
-    score = score + 2
+    score = score + 12
   else -- Hard
     score = score + 1
   end
