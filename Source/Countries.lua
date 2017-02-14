@@ -112,7 +112,7 @@ local ElSalvador = {
   flag = "Assets/Images/Flags/El_Salvador_Flag.png",
   food = "Panes Rellenos",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
-  greeting = "buenos dias!",
+  greeting = "Buenos dias!",
   coordinates = { lat = 13.69, lon = -89.22 },  -- San Salvador
   fun_fact = {
     "Fun Fact: El Salvador is known as the Land of the Volcanoes!",
@@ -123,7 +123,7 @@ local ElSalvador = {
 local France = {
   name = "France",
   flag = "Assets/Images/Flags/France_Flag.png",
-  food = "Cassoulet",
+  food = "Croissant",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Bonjour",
   coordinates = {lat = 48.86, lon = 2.35}, -- Paris @48° 51.40 N, 2° 21.13 E
@@ -138,7 +138,7 @@ local Georgia = {
   flag = "Assets/Images/Flags/Georgia_Flag.png",
   food = "Khinkali",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
-  greeting = "buenos dias!",
+  greeting = "Buenos dias!",
   coordinates = { lat = 41.72, lon = 44.83 },  -- Tbilisi
   fun_fact = {
     "Tbilisi is Georgia’s largest capital and city!",
@@ -214,7 +214,7 @@ local Hungary = {
 local Italy = {
   name = "Italy",
   flag = "Assets/Images/Flags/Italy_Flag.png",
-  food = "Pasta",
+  food = "Pizza",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Ciao",
   coordinates = { lat = 40.90 , lon = 16.50}, -- Rome @ 41° 54.17'N, 12° 29.78' E
@@ -268,7 +268,7 @@ local Laos = {
   flag = "Assets/Images/Flags/Laos_Flag.png",
   food = "Ping Kai",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
-  greeting = "sabaidee!",
+  greeting = "Sabaidee!",
   coordinates = { lat =17.97, lon = 102.63}, -- Vientiane @ 17° 58.54' N, 102° 37.99' E
   fun_fact = {
     "The Laotian New Year is celebrated for three whole days! April 13th to 15th!",
@@ -517,7 +517,7 @@ local Philippines = {
   flag = "Assets/Images/Flags/Philippines_Flag.png",
   food = "Adobo",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
-  greeting = "kumusta ka!",
+  greeting = "Kumusta ka!",
   coordinates = { lat = 14.60, lon = 120.98}, -- Manila @ 14° 36' N, 120° 59' E
   fun_fact = {
     "The national symbol of the Philippines is the Philippine eagle which are the largest eagles in the world!",
@@ -608,7 +608,7 @@ local Slovenia = {
   flag = "Assets/Images/Flags/Slovenia_Flag.png",
   food = "Bujta repa ",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
-  greeting = "zdravo!",
+  greeting = "Zdravo!",
   coordinates = { lat = 46.06, lon = 14.50}, -- Ljubljana
   fun_fact = {
     "Fun Fact: The oldest vine in the world is in Maribor, Slovenia!",
@@ -684,7 +684,7 @@ local Syria = {
   flag = "Assets/Images/Flags/Syria_Flag.png",
   food = "Fattoush",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
-  greeting = "ahlan!",
+  greeting = "Ahlan!",
   coordinates = { lat = 33.51, lon = 36.27}, -- Damascus
   fun_fact = {
     "Did you know, the largest lake in Syria, Lake Assad, is man made?",
@@ -697,7 +697,7 @@ local Taiwan = {
   flag = "Assets/Images/Flags/Taiwan_Flag.png",
   food = "Gua bao",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
-  greeting = "ni hao!",
+  greeting = "Ni hao!",
   coordinates = { lat = 25.03, lon = 121.56}, -- Taipei
   fun_fact = {
     "Fun Fact: In Taiwan, the teachers switch classes, not the students!",
@@ -788,7 +788,7 @@ local Vietnam = {
   flag = "Assets/Images/Flags/Vietnam_Flag.png",
   food = "Pho",
   greetings_food = "Assets/Images/FoodGame/Dialogs/vietnamese_dialog.png",
-  greeting = "Chao ban",
+  greeting = "Xin chào",
   coordinates = { lat = 21.03, lon = 105.85 },  -- Hanoi @ 21°2′N 105°51′E
   fun_fact = {
     "Did you know the Tortoise is a lucky symbol in Vietnam?",
