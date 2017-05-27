@@ -26,7 +26,7 @@ local checkScore
 local checkStar
 local correctAnswer
 local starShine
-local audioButton
+-- local audioButton
 local getOverlayPause
 local infobutton
 local reutnBFunction
@@ -49,9 +49,9 @@ local text4
 local victory = false
 local difficulty
 local mute = false
-local muteButton
+-- local muteButton
 local infoButton
-local returnButton
+local pauseButton
 local choices = {}
 
 -- images.defineImage( "Paused Screen", "FoodGame/Background4-blur.png", display.contentWidth+190, currentHeight)
@@ -79,12 +79,12 @@ end
 
 local function disableMain()
   print("disableMain called!!!!")
-  returnButton:removeEventListener("tap", getOverlayPause)
+  pauseButton:removeEventListener("tap", getOverlayPause)
   -- if muteButton ~=nil then
   -- muteButton:removeEventListener("tap", audioButton) end
-  if muteButton ~= nil then
-     muteButton:removeSelf()
-    muteButton = nil end
+  -- if muteButton ~= nil then
+  --    muteButton:removeSelf()
+  --   muteButton = nil end
 
   infoButton:removeEventListener("tap", infobutton)
 
@@ -100,13 +100,12 @@ end
 
 local function enableMain()
   print("EnableMain called!!!!")
-  returnButton:addEventListener("tap", getOverlayPause)
-
-  muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
-  muteButton.y = returnButton.y
-  muteButton.x = returnButton.x + 70
+  pauseButton:addEventListener("tap", getOverlayPause)
+  --
+  -- muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
+  -- muteButton.y = pauseButton.y
+  -- muteButton.x = pauseButton.x + 70
   -- muteButton:addEventListener("tap", audioButton)
-
   infoButton:addEventListener("tap", infobutton)
   if choices[1] ~= nil then
     if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
@@ -131,7 +130,7 @@ function checkFunction(event)
  end
 
 function getOverlayPause()
-  print("!!!returnButton clicked!!!")
+  print("!!!pauseButton clicked!!!")
   disableMain()
   local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/Background4blur.png", display.contentWidth + 190, display.contentHeight )
   overlay.x = display.contentCenterX
@@ -268,20 +267,20 @@ function setBackground()
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  returnButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
-  returnButton.y = display.contentCenterY - display.contentCenterY / 1.5
-  returnButton.x = display.contentCenterX - display.contentCenterX / 1.1
+  pauseButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/9.png", 60, 60 )--11
+  pauseButton.y = display.contentCenterY - display.contentCenterY / 1.5
+  pauseButton.x = display.contentCenterX - display.contentCenterX / 1.1
 
-  returnButton:addEventListener("tap", getOverlayPause)
+  pauseButton:addEventListener("tap", getOverlayPause)
 
-  muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
-  muteButton.y = returnButton.y
-  muteButton.x = returnButton.x + 70
-  muteButton:addEventListener("tap", audioButton)
+  -- muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
+  -- muteButton.y = pauseButton.y
+  -- muteButton.x = pauseButton.x + 70
+  -- muteButton:addEventListener("tap", audioButton)
 
   infoButton = display.newImageRect ( sceneGroup, "Assets/Images/FlagGame/Scene/11.png", 60, 60)
-  infoButton.y = muteButton.y + 70
-  infoButton.x = returnButton.x
+  infoButton.y = pauseButton.y + 70
+  infoButton.x = pauseButton.x
   infoButton:addEventListener("tap", infobutton)
 
   local foodBack = display.newImageRect(sceneGroup, "Assets/Images/FoodGame/foodBack.png", currentWidth, currentHeight)
@@ -505,7 +504,7 @@ function setFoods()
 
   -- Country text
 
-  -- local returnButton = Button:newImageButton{
+  -- local pauseButton = Button:newImageButton{
   --   group = sceneGroup,
   --   image = images.get( sceneGroup, "Return Button" ),
   --   imagePressed = images.get( sceneGroup, "Return Button Pressed" ),
@@ -701,24 +700,24 @@ function leaveCharacters()
   choiceRemover()
 end
 
-function audioButton(event)
-  print("!!!audioButton clicked!!! audio is now: "..tostring(mute))
-  if mute == false then
-    mute = true
-    musics.pause()
-    sounds.mute()
-    muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/mute.png", 60, 60 )
-    muteButton.y = returnButton.y
-    muteButton.x = returnButton.x + 70
-  else
-    mute = false
-    musics.unPause()
-    sounds.unMute()
-    muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
-    muteButton.y = returnButton.y
-    muteButton.x = returnButton.x + 70
-  end
-end
+-- function audioButton(event)
+--   print("!!!audioButton clicked!!! audio is now: "..tostring(mute))
+--   if mute == false then
+--     mute = true
+--     musics.pause()
+--     sounds.mute()
+--     muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/mute.png", 60, 60 )
+--     muteButton.y = pauseButton.y
+--     muteButton.x = pauseButton.x + 70
+--   else
+--     mute = false
+--     musics.unPause()
+--     sounds.unMute()
+--     muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
+--     muteButton.y = pauseButton.y
+--     muteButton.x = pauseButton.x + 70
+--   end
+-- end
 
 
 -- show()

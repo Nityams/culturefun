@@ -28,9 +28,10 @@ settings =
 	{
 		plist =
 		{
-			UIStatusBarHidden = false,
-			UIPrerenderedIcon = true, -- set to false for "shine" overlay
-			--UIApplicationExitsOnSuspend = true, -- uncomment to quit app on suspend
+
+		UIStatusBarHidden = false,
+		UIPrerenderedIcon = true, -- set to false for "shine" overlay
+		--UIApplicationExitsOnSuspend = true, -- uncomment to quit app on suspend
 
 			CFBundleIconFiles =
 			{
