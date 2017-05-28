@@ -49,6 +49,7 @@ local text4
 local victory = false
 local difficulty
 local mute = false
+local pause = false; 
 -- local muteButton
 local infoButton
 local pauseButton
@@ -79,6 +80,8 @@ end
 
 local function disableMain()
   print("disableMain called!!!!")
+  print("pause == true");
+  pause = true; 
   pauseButton:removeEventListener("tap", getOverlayPause)
   -- if muteButton ~=nil then
   -- muteButton:removeEventListener("tap", audioButton) end
@@ -87,19 +90,23 @@ local function disableMain()
   --   muteButton = nil end
 
   infoButton:removeEventListener("tap", infobutton)
+  -- need not to run the main event
 
-  if choices[1] ~= nil then
-    if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
-      print("Nityam- Attempting to remove the flag listener") end
-  choices[1].image:removeEventListener("tap", checkFunction)
-  choices[2].image:removeEventListener("tap", checkFunction)
-  choices[3].image:removeEventListener("tap", checkFunction)
-  choices[4].image:removeEventListener("tap", checkFunction)
-  end
+
+  -- if choices[1] ~= nil then
+  --   if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
+  --     print("Nityam- Attempting to remove the flag listener") end
+  -- choices[1].image:removeEventListener("tap", checkFunction)
+  -- choices[2].image:removeEventListener("tap", checkFunction)
+  -- choices[3].image:removeEventListener("tap", checkFunction)
+  -- choices[4].image:removeEventListener("tap", checkFunction)
+  -- end
 end
 
 local function enableMain()
   print("EnableMain called!!!!")
+  print("Pause == False")
+  pause = false;
   pauseButton:addEventListener("tap", getOverlayPause)
   --
   -- muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
@@ -110,7 +117,8 @@ local function enableMain()
   if choices[1] ~= nil then
     if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
       print("Nityam- Attempting to remove the flag listener") end
-  choices[1].image:addEventListener("tap", checkFunction)
+    -- Might be when you call .image
+  choices[1].image:addEventListener("tap", checkFunction) -- Saying there is a Nil Value
   choices[2].image:addEventListener("tap", checkFunction)
   choices[3].image:addEventListener("tap", checkFunction)
   choices[4].image:addEventListener("tap", checkFunction)
@@ -222,8 +230,11 @@ function newFoods()
     winScene()
   else
     if DEBUG then print("********** Starting round! ****************************************") end
-    setFoods()
-    callCharacters()
+   -- if pause == false then  -- added pause statement in here
+      setFoods()
+      callCharacters()
+      print("Pause == false")
+   -- end
   end
 end
 
