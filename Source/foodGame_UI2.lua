@@ -50,6 +50,8 @@ local victory = false
 local difficulty
 local mute = false
 local pause = false; 
+local CA = false;
+
 -- local muteButton
 local infoButton
 local pauseButton
@@ -103,8 +105,8 @@ local function enableMain()
   infoButton:addEventListener("tap", infobutton)
   -- reset dialog
   setFoods()
-  callGreetings()
- 
+  -- callGreetings()
+  callCharacters()
 end
 
 
@@ -479,7 +481,7 @@ function setFoods()
       v.image.alpha = 0
       v.image:scale(0, 0)
     end
-    print ("Begining Pause:")
+    print ("Pause Value:")
     print (pause)
     
     choices[1].image.x = display.contentCenterX + 125
@@ -512,25 +514,25 @@ function setFoods()
         v.text = display.newText(sceneGroup, v.name, v.image.x, v.image.y + 96, "Helvetica", 31)
         v.text:setFillColor(0, 0, 35)
       end
-    -- end
-    -- Staggered animation for food choice grid
+      -- end
+      -- Staggered animation for food choice grid
 
-    for i,v in ipairs(choices) do
-      v.appear = function ()
-        transition.to(v.image, {
-            time = 1000,
-            alpha = 1,
-            xScale = 1,
-            yScale = 1,
-            transition = easing.outElastic
-          })
+      for i,v in ipairs(choices) do
+        v.appear = function ()
+          transition.to(v.image, {
+              time = 1000,
+              alpha = 1,
+              xScale = 1,
+              yScale = 1,
+              transition = easing.outElastic
+            })
+        end
       end
-    end
-    -- if (pause == false) then
-      timer.performWithDelay(200, choices[3].appear)
-      timer.performWithDelay(400, choices[4].appear)
-      timer.performWithDelay(600, choices[2].appear)
-      timer.performWithDelay(800, choices[1].appear)
+      -- if (pause == false) then
+        timer.performWithDelay(200, choices[3].appear)
+        timer.performWithDelay(400, choices[4].appear)
+        timer.performWithDelay(600, choices[2].appear)
+        timer.performWithDelay(800, choices[1].appear)
     end
     -- tap action listener and answer checker for all the foods in the grid
 
@@ -636,14 +638,18 @@ function callGreetings()
 end
 
 function callCharacters()
-  character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/bear.png")
-  character_one.y = display.contentCenterY + 30
-  character_one.x = - 20
-  --character_one:scale(0.8,0.8)
-  character_one:scale(0.45,0.45)
   if (pause == false) then
     print("Pause Set Back to False")
-    transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
+  character_one = display.newImage(sceneGroup,"Assets/Images/FoodGame/bear.png")
+  character_one.y = display.contentCenterY + 30
+  -- character_one.x = - 20
+  character_one.x = display.contentCenterX/2.5
+  callGreetings()
+  --character_one:scale(0.8,0.8)
+  character_one:scale(0.45,0.45)
+  -- if (pause == false) then
+    -- print("Pause Set Back to False")
+    -- transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
   end
 end
 
