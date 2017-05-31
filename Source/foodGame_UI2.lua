@@ -80,8 +80,7 @@ end
 
 local function disableMain()
   print("disableMain called!!!!")
-  print("pause == true");
-  pause = true; 
+  pause = true
   pauseButton:removeEventListener("tap", getOverlayPause)
   -- if muteButton ~=nil then
   -- muteButton:removeEventListener("tap", audioButton) end
@@ -90,23 +89,11 @@ local function disableMain()
   --   muteButton = nil end
 
   infoButton:removeEventListener("tap", infobutton)
-  -- need not to run the main event
-
-
-  -- if choices[1] ~= nil then
-  --   if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
-  --     print("Nityam- Attempting to remove the flag listener") end
-  -- choices[1].image:removeEventListener("tap", checkFunction)
-  -- choices[2].image:removeEventListener("tap", checkFunction)
-  -- choices[3].image:removeEventListener("tap", checkFunction)
-  -- choices[4].image:removeEventListener("tap", checkFunction)
-  -- end
 end
 
 local function enableMain()
   print("EnableMain called!!!!")
-  print("Pause == False")
-  pause = false;
+  pause = false
   pauseButton:addEventListener("tap", getOverlayPause)
   --
   -- muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
@@ -114,15 +101,10 @@ local function enableMain()
   -- muteButton.x = pauseButton.x + 70
   -- muteButton:addEventListener("tap", audioButton)
   infoButton:addEventListener("tap", infobutton)
-  if choices[1] ~= nil then
-    if DEBUG then print("Nityam..Choices present..Value:"..choices[1].name)
-      print("Nityam- Attempting to remove the flag listener") end
-    -- Might be when you call .image
-  choices[1].image:addEventListener("tap", checkFunction) -- Saying there is a Nil Value
-  choices[2].image:addEventListener("tap", checkFunction)
-  choices[3].image:addEventListener("tap", checkFunction)
-  choices[4].image:addEventListener("tap", checkFunction)
-  end
+  -- reset dialog
+  setFoods()
+  callGreetings()
+ 
 end
 
 
@@ -139,6 +121,7 @@ function checkFunction(event)
 
 function getOverlayPause()
   print("!!!pauseButton clicked!!!")
+  pause = true
   disableMain()
   local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/Background4blur.png", display.contentWidth + 190, display.contentHeight )
   overlay.x = display.contentCenterX
@@ -204,7 +187,6 @@ function scene:create( event )
   currentWidth = display.contentWidth
   currentHeight = display.contentHeight
   -- foodGroup = display.newGroup()
-  -- `Code here runs when the scene is first created but has not yet appeared on screen
 
   startGame()
 end
@@ -217,30 +199,27 @@ function startGame()
   setBackground()
   newFoods()
 
-  -- local time1 = display.newSprite(sceneGroup,mySheetTimer,sequenceTimer)
-  -- time1.x = display.contentCenterX + display.contentCenterX /2
-  -- time1.y = display.contentCenterY - display.contentCenterY /2
-  -- time1:setSequence("1")
-  -- time1:play()
 end
 
 function newFoods()
-  if victory then
-    if DEBUG then print("***** You win!") end
-    winScene()
-  else
-    if DEBUG then print("********** Starting round! ****************************************") end
-   -- if pause == false then  -- added pause statement in here
-      setFoods()
-      callCharacters()
-      print("Pause == false")
-   -- end
-  end
+
+    if victory then
+      if DEBUG then print("***** You win!") end
+      winScene()
+    else
+      if DEBUG then print("********** Starting round! ****************************************") end
+      -- if pause == false then
+        setFoods()
+        callCharacters()
+      -- end
+    end
+  
 end
 
 
 function infobutton()
   print("!!!infobutton CLICKED!!!")
+  pause = true
     musics.pause()
     disableMain()
     local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/food_tutorial.png", display.contentWidth , display.contentHeight - 170)
@@ -262,6 +241,7 @@ function infobutton()
 
     end
    function reutnBFunction()
+      pause = false
       enableMain()
       purgeObjs()
       -- transition.cancel()
@@ -491,74 +471,75 @@ function setFoods()
   -- Begin drawing food grid
 
   for i,v in ipairs(choices) do
-    v.image = display.newImageRect(sceneGroup, v.flag, currentWidth / 5, currentHeight / 5)
+     v.image = display.newImageRect(sceneGroup, v.flag, currentWidth / 5, currentHeight / 5)
   end
 
   -- Setting the position of all four grid
-
-  for i,v in ipairs(choices) do
-    v.image.alpha = 0
-    v.image:scale(0, 0)
-  end
-
-  choices[1].image.x = display.contentCenterX + 125
-  choices[1].image.y = display.contentCenterY - 175
-
-  choices[2].image.x = choices[1].image.x + choices[1].image.width + 50
-  choices[2].image.y = choices[1].image.y
-
-  choices[3].image.x = choices[1].image.x
-  choices[3].image.y = display.contentCenterY + 150
-
-  choices[4].image.x = choices[2].image.x
-  choices[4].image.y = choices[3].image.y
-
-  -- Country text
-
-  -- local pauseButton = Button:newImageButton{
-  --   group = sceneGroup,
-  --   image = images.get( sceneGroup, "Return Button" ),
-  --   imagePressed = images.get( sceneGroup, "Return Button Pressed" ),
-  --   x = 70,
-  --   y = screenTop + 60,
-  --   width = images.width( "Pause Button" ),
-  --   height = images.height( "Pause Button" ),
-  --   alpha = 0.9,
-  --   allowance = 8  -- Normally 30, but they are 16 pixels apart
-  -- }
-
-  for i,v in ipairs(choices) do
-    v.text = display.newText(sceneGroup, v.name, v.image.x, v.image.y + 96, "Helvetica", 31)
-    v.text:setFillColor(0, 0, 35)
-  end
-
-  -- Staggered animation for food choice grid
-
-  for i,v in ipairs(choices) do
-    v.appear = function ()
-      transition.to(v.image, {
-          time = 1000,
-          alpha = 1,
-          xScale = 1,
-          yScale = 1,
-          transition = easing.outElastic
-        })
+    for i,v in ipairs(choices) do
+      v.image.alpha = 0
+      v.image:scale(0, 0)
     end
-  end
+    print ("Begining Pause:")
+    print (pause)
+    
+    choices[1].image.x = display.contentCenterX + 125
+    choices[1].image.y = display.contentCenterY - 175
 
-  timer.performWithDelay(200, choices[3].appear)
-  timer.performWithDelay(400, choices[4].appear)
-  timer.performWithDelay(600, choices[2].appear)
-  timer.performWithDelay(800, choices[1].appear)
+    choices[2].image.x = choices[1].image.x + choices[1].image.width + 50
+    choices[2].image.y = choices[1].image.y
 
-  -- tap action listener and answer checker for all the foods in the grid
+    choices[3].image.x = choices[1].image.x
+    choices[3].image.y = display.contentCenterY + 150
 
-  for i,v in ipairs(choices) do
-    print("Nityam- Printing the myChoice before callings: "..i)
-    v.image.num = i
-    v.image:addEventListener("tap", checkFunction)
-  end
+    choices[4].image.x = choices[2].image.x
+    choices[4].image.y = choices[3].image.y
+    
+    -- Country text
 
+    -- local pauseButton = Button:newImageButton{
+    --   group = sceneGroup,
+    --   image = images.get( sceneGroup, "Return Button" ),
+    --   imagePressed = images.get( sceneGroup, "Return Button Pressed" ),
+    --   x = 70,
+    --   y = screenTop + 60,
+    --   width = images.width( "Pause Button" ),
+    --   height = images.height( "Pause Button" ),
+    --   alpha = 0.9,
+    --   allowance = 8  -- Normally 30, but they are 16 pixels apart
+    -- }
+    if (pause == false) then 
+      for i,v in ipairs(choices) do
+        v.text = display.newText(sceneGroup, v.name, v.image.x, v.image.y + 96, "Helvetica", 31)
+        v.text:setFillColor(0, 0, 35)
+      end
+    -- end
+    -- Staggered animation for food choice grid
+
+    for i,v in ipairs(choices) do
+      v.appear = function ()
+        transition.to(v.image, {
+            time = 1000,
+            alpha = 1,
+            xScale = 1,
+            yScale = 1,
+            transition = easing.outElastic
+          })
+      end
+    end
+    -- if (pause == false) then
+      timer.performWithDelay(200, choices[3].appear)
+      timer.performWithDelay(400, choices[4].appear)
+      timer.performWithDelay(600, choices[2].appear)
+      timer.performWithDelay(800, choices[1].appear)
+    end
+    -- tap action listener and answer checker for all the foods in the grid
+
+    for i,v in ipairs(choices) do
+      -- print("Nityam- Printing the myChoice before callings: "..i)
+      v.image.num = i
+      v.image:addEventListener("tap", checkFunction)
+    end
+   
 end
 ---------------------------
 function wrongAnswer()
@@ -623,26 +604,35 @@ function callGreetings()
   if DEBUG then
     print("<NITYAM>..Correct from the deck -> "..choices[correctFood].name)
   end
-  fname = choices[correctFood].food
-  greet = choices[correctFood].greeting
-  -- print(greeting)
+  
+    fname = choices[correctFood].food
+    greet = choices[correctFood].greeting
+    -- print(greeting)
 
-  -- dialogBox = display.newImage(sceneGroup, "greeting")
-  -- dialogBox.xScale = 0.5
-  -- dialogBox.yScale = 0.5
-  -- dialogBox.y = display.contentCenterY - display.contentCenterY/2.5
-  -- dialogBox.x = character_one.x - 30
+    -- dialogBox = display.newImage(sceneGroup, "greeting")
+    -- dialogBox.xScale = 0.5
+    -- dialogBox.yScale = 0.5
+    -- dialogBox.y = display.contentCenterY - display.contentCenterY/2.5
+    -- dialogBox.x = character_one.x - 30
 
-  display.remove(dialogBox) -- in case it was there before
-  dialogBox = display.newImage(sceneGroup, "Assets/Images/FoodGame/Dialogs/dialogBox_white.png")
-  dialogBox.xScale = 0.4
-  dialogBox.yScale = 0.35
-  dialogBox.y = display.contentCenterY - display.contentCenterY/2.5 - 20
-  dialogBox.x = character_one.x + 85
-  greetingText = greet..", \n may I get some \n "..fname
-  display.remove(dialogText) -- in case it was there before
-  dialogText = display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
-  dialogText:setFillColor(0,0,0)
+    display.remove(dialogBox) -- in case it was there before
+    if pause == false then
+     dialogBox = display.newImage(sceneGroup, "Assets/Images/FoodGame/Dialogs/dialogBox_white.png")
+    end
+    dialogBox.xScale = 0.4
+    dialogBox.yScale = 0.35
+    
+    dialogBox.y = display.contentCenterY - display.contentCenterY/2.5 - 20
+    
+    dialogBox.x = character_one.x + 85
+    greetingText = greet..", \n may I get some \n "..fname
+    display.remove(dialogText) -- in case it was there before
+    if pause == false then
+      dialogText = display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
+    end
+    dialogText:setFillColor(0,0,0)
+
+  
 end
 
 function callCharacters()
@@ -651,12 +641,17 @@ function callCharacters()
   character_one.x = - 20
   --character_one:scale(0.8,0.8)
   character_one:scale(0.45,0.45)
-  transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
+  if (pause == false) then
+    print("Pause Set Back to False")
+    transition.to(character_one,{time = 500, x = display.contentCenterX/2.5, onComplete = callGreetings})
+  end
 end
 
 function choiceFade()
   for i,v in ipairs(choices) do
     v.image._functionListeners = nil
+
+  
     transition.to(v.image, {time = 500, alpha = 0})
     transition.to(v.text, {time = 500, alpha = 0})
     -- if v.response ~= nil then
@@ -682,8 +677,7 @@ function thankCharacter()
 end
 
 function wrongChoiceCharacter()
-  -- if DEBUG then print("Thank you!!!!") end
-
+  
   choiceFade()
 
   display.remove(dialogText)
@@ -695,6 +689,7 @@ function wrongChoiceCharacter()
       alpha = 1,
       onComplete = callGreetings
     })
+
 end
 
 function leaveCharacters()
@@ -733,8 +728,7 @@ end
 
 -- show()
 function scene:show( event )
-    print( "scene:show" )
-
+    -- print( "scene:show" )
   local sceneGroup = self.view
   local phase = event.phase
 
