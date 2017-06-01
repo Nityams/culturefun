@@ -49,8 +49,8 @@ local text4
 local victory = false
 local difficulty
 local mute = false
-local pause = false; 
-local CA = false;
+local pause = false
+local isFoodPlaced = false;
 
 -- local muteButton
 local infoButton
@@ -83,6 +83,7 @@ end
 local function disableMain()
   print("disableMain called!!!!")
   pause = true
+  sounds.mute();
   pauseButton:removeEventListener("tap", getOverlayPause)
   -- if muteButton ~=nil then
   -- muteButton:removeEventListener("tap", audioButton) end
@@ -91,22 +92,23 @@ local function disableMain()
   --   muteButton = nil end
 
   infoButton:removeEventListener("tap", infobutton)
+  print("IS FOOD PLACED??"..tostring(isFoodPlaced))
 end
 
 local function enableMain()
   print("EnableMain called!!!!")
   pause = false
+  sounds.unMute();
   pauseButton:addEventListener("tap", getOverlayPause)
-  --
-  -- muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
-  -- muteButton.y = pauseButton.y
-  -- muteButton.x = pauseButton.x + 70
-  -- muteButton:addEventListener("tap", audioButton)
   infoButton:addEventListener("tap", infobutton)
   -- reset dialog
-  setFoods()
-  -- callGreetings()
+  -- setFoods()
+  -- -- callGreetings()
+
   callCharacters()
+  if (isFoodPlaced == false) then
+    setFoods()
+  end
 end
 
 
@@ -180,6 +182,7 @@ musics.defineMusic( "Food Theme", "Assets/Sounds/Music/bensound-buddy.mp3", 0.9,
 sounds.defineSound("Win","Assets/Sounds/win.wav",0.8 )
 sounds.defineSound("starWin", "Assets/Sounds/starWin.wav",0.8)
 sounds.defineSound("correct", "Assets/Sounds/FlagGame/DING_FX.mp3",0.8)
+sounds.defineSound("wrong","Assets/Sounds/FlagGame/WRONG_FX.mp3",0.8)
 -- create()
 function scene:create( event )
     print( "scene:create" )
@@ -215,7 +218,7 @@ function newFoods()
         callCharacters()
       -- end
     end
-  
+
 end
 
 
@@ -372,15 +375,6 @@ function checkStar()
     star1 = display.newImage(sceneGroup, "Assets/Images/FoodGame/star.png", currentWidth, currentHeight)
   end
 
-  -- star1.x = display.contentCenterX + display.contentCenterX / 2 - 150
-  -- star1.y = display.contentCenterY - display.contentCenterY / 1.5 + 15
-  --
-  -- star2.x = display.contentCenterX + display.contentCenterX / 2
-  -- star2.y = display.contentCenterY - display.contentCenterY / 1.5 + 15
-  --
-  -- star3.x = display.contentCenterX + display.contentCenterX / 2 + 150
-  -- star3.y = display.contentCenterY - display.contentCenterY / 1.5 + 15
-
   star1.x = display.contentCenterX - display.contentCenterX / 1.3
   star1.y = display.contentCenterY + display.contentCenterY / 1.8
 
@@ -461,92 +455,77 @@ function setFoods()
   -- Setting random countries i.e, not the correct one on the food grid
 
   -- 4 new random countries
+  if isFoodPlaced == false then
+    getChoices()
 
-  getChoices()
+    -- selecting random( out of 4) place in the food selection grid
+    math.randomseed(os.clock()*10000)
+    correctFood = math.random(4)
+    print("***** Correct country: "..correctFood..". "..choices[correctFood].name)
 
-  -- selecting random( out of 4) place in the food selection grid
-
-  math.randomseed(os.clock()*10000)
-  correctFood = math.random(4)
-  print("***** Correct country: "..correctFood..". "..choices[correctFood].name)
-
-  -- Begin drawing food grid
-
-  for i,v in ipairs(choices) do
-     v.image = display.newImageRect(sceneGroup, v.flag, currentWidth / 5, currentHeight / 5)
-  end
-
-  -- Setting the position of all four grid
+    -- Begin drawing food grid
     for i,v in ipairs(choices) do
-      v.image.alpha = 0
-      v.image:scale(0, 0)
+       v.image = display.newImageRect(sceneGroup, v.flag, currentWidth / 5, currentHeight / 5)
     end
-    print ("Pause Value:")
-    print (pause)
-    
-    choices[1].image.x = display.contentCenterX + 125
-    choices[1].image.y = display.contentCenterY - 175
 
-    choices[2].image.x = choices[1].image.x + choices[1].image.width + 50
-    choices[2].image.y = choices[1].image.y
-
-    choices[3].image.x = choices[1].image.x
-    choices[3].image.y = display.contentCenterY + 150
-
-    choices[4].image.x = choices[2].image.x
-    choices[4].image.y = choices[3].image.y
-    
-    -- Country text
-
-    -- local pauseButton = Button:newImageButton{
-    --   group = sceneGroup,
-    --   image = images.get( sceneGroup, "Return Button" ),
-    --   imagePressed = images.get( sceneGroup, "Return Button Pressed" ),
-    --   x = 70,
-    --   y = screenTop + 60,
-    --   width = images.width( "Pause Button" ),
-    --   height = images.height( "Pause Button" ),
-    --   alpha = 0.9,
-    --   allowance = 8  -- Normally 30, but they are 16 pixels apart
-    -- }
-    if (pause == false) then 
+    -- Setting the position of all four grid
       for i,v in ipairs(choices) do
-        v.text = display.newText(sceneGroup, v.name, v.image.x, v.image.y + 96, "Helvetica", 31)
-        v.text:setFillColor(0, 0, 35)
+        v.image.alpha = 0
+        v.image:scale(0, 0)
       end
-      -- end
-      -- Staggered animation for food choice grid
+      print ("Pause Value:")
+      print (pause)
 
-      for i,v in ipairs(choices) do
-        v.appear = function ()
-          transition.to(v.image, {
-              time = 1000,
-              alpha = 1,
-              xScale = 1,
-              yScale = 1,
-              transition = easing.outElastic
-            })
+      choices[1].image.x = display.contentCenterX + 125
+      choices[1].image.y = display.contentCenterY - 175
+
+      choices[2].image.x = choices[1].image.x + choices[1].image.width + 50
+      choices[2].image.y = choices[1].image.y
+
+      choices[3].image.x = choices[1].image.x
+      choices[3].image.y = display.contentCenterY + 150
+
+      choices[4].image.x = choices[2].image.x
+      choices[4].image.y = choices[3].image.y
+
+      if (pause == false) then
+        print("PAUSE IS FALSE")
+        for i,v in ipairs(choices) do
+          v.text = display.newText(sceneGroup, v.name, v.image.x, v.image.y + 96, "Helvetica", 31)
+          v.text:setFillColor(0, 0, 35)
         end
+        -- end
+        -- Staggered animation for food choice grid
+        for i,v in ipairs(choices) do
+          v.appear = function ()
+            transition.to(v.image, {
+                time = 1000,
+                alpha = 1,
+                xScale = 1,
+                yScale = 1,
+                transition = easing.outElastic
+              })end
+        end
+        -- if (pause == false) then
+          timer.performWithDelay(200, choices[3].appear)
+          timer.performWithDelay(400, choices[4].appear)
+          timer.performWithDelay(600, choices[2].appear)
+          timer.performWithDelay(800, choices[1].appear)
+          isFoodPlaced = true;
       end
-      -- if (pause == false) then
-        timer.performWithDelay(200, choices[3].appear)
-        timer.performWithDelay(400, choices[4].appear)
-        timer.performWithDelay(600, choices[2].appear)
-        timer.performWithDelay(800, choices[1].appear)
-    end
-    -- tap action listener and answer checker for all the foods in the grid
+      -- tap action listener and answer checker for all the foods in the grid
 
-    for i,v in ipairs(choices) do
-      -- print("Nityam- Printing the myChoice before callings: "..i)
-      v.image.num = i
-      v.image:addEventListener("tap", checkFunction)
-    end
-   
+      for i,v in ipairs(choices) do
+        -- print("Nityam- Printing the myChoice before callings: "..i)
+        v.image.num = i
+        v.image:addEventListener("tap", checkFunction)
+      end
+  end
 end
 ---------------------------
 function wrongAnswer()
   if DEBUG then print("WRONG!!!!") end
-
+  sounds.play("wrong")
   wrongChoiceCharacter()
   choiceRemover()
   timer.performWithDelay(1900, setFoods)
@@ -606,7 +585,7 @@ function callGreetings()
   if DEBUG then
     print("<NITYAM>..Correct from the deck -> "..choices[correctFood].name)
   end
-  
+
     fname = choices[correctFood].food
     greet = choices[correctFood].greeting
     -- print(greeting)
@@ -623,9 +602,9 @@ function callGreetings()
     end
     dialogBox.xScale = 0.4
     dialogBox.yScale = 0.35
-    
+
     dialogBox.y = display.contentCenterY - display.contentCenterY/2.5 - 20
-    
+
     dialogBox.x = character_one.x + 85
     greetingText = greet..", \n may I get some \n "..fname
     display.remove(dialogText) -- in case it was there before
@@ -634,7 +613,7 @@ function callGreetings()
     end
     dialogText:setFillColor(0,0,0)
 
-  
+
 end
 
 function callCharacters()
@@ -657,7 +636,7 @@ function choiceFade()
   for i,v in ipairs(choices) do
     v.image._functionListeners = nil
 
-  
+
     transition.to(v.image, {time = 500, alpha = 0})
     transition.to(v.text, {time = 500, alpha = 0})
     -- if v.response ~= nil then
@@ -668,7 +647,7 @@ end
 
 function thankCharacter()
   if DEBUG then print("Thank you!!!!") end
-
+  isFoodPlaced = false;
   choiceFade()
 
   display.remove(dialogText)
@@ -683,13 +662,13 @@ function thankCharacter()
 end
 
 function wrongChoiceCharacter()
-  
+
   choiceFade()
 
   display.remove(dialogText)
   dialogText = display.newText(sceneGroup, "I didn't order \nthat.", dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
   dialogText:setFillColor(0,0,0)
-
+    isFoodPlaced = false;
   transition.to(dialogText, {
       time = 2000,
       alpha = 1,
