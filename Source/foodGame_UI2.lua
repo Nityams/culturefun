@@ -91,11 +91,10 @@ local function disableMain()
   print("IS FOOD PLACED??"..tostring(isFoodPlaced))
 
   print("IS FOOD ACTIVATED?".. tostring( isFoodEventActivate ))
-  if choices[1] ~= nil and isFoodEventActivate then
-   if DEBUG then
-     print("Nityam..Choices present..Value:"..choices[1].name)
-     print("Nityam- Attempting to remove the flag listener")
-   end
+  if (choices[1].image ~= nil and choices[2].image ~= nil and choices[3].image ~= nil
+      and choices[4].image ~= nil and isFoodEventActivate )then
+   print("removing event listener now at ")
+   print(choices[1].image)
    choices[1].image:removeEventListener("tap", checkFunction)
    choices[2].image:removeEventListener("tap", checkFunction)
    choices[3].image:removeEventListener("tap", checkFunction)
@@ -111,26 +110,25 @@ local function enableMain()
   pauseButton:addEventListener("tap", getOverlayPause)
   infoButton:addEventListener("tap", infobutton)
 
-  if choices[1] ~= nil then
-    if DEBUG then
-      print("Nityam..Choices present..Value:"..choices[1].name)
-      print("Nityam- Attempting to remove the flag listener")
-     end
-    -- Might be when you call .image
+if (isFoodPlaced) then
+  if (choices[1].image ~= nil and choices[2].image ~= nil and choices[3].image ~= nil
+      and choices[4].image ~= nil and isFoodEventActivate == false)then
+        print("ADD event listener now at ")
+        print(choices[1].image)
+
     choices[1].image:addEventListener("tap", checkFunction) -- Saying there is a Nil Value
     choices[2].image:addEventListener("tap", checkFunction)
     choices[3].image:addEventListener("tap", checkFunction)
     choices[4].image:addEventListener("tap", checkFunction)
     isFoodEventActivate = true;
   end
-
+end
   -- reset dialog
   -- setFoods()
-  -- -- callGreetings()
+  -- callGreetings()
 
-  callCharacters()
   if (isFoodPlaced == false) then
-    setFoods()
+    newFoods()
   end
 end
 
@@ -241,8 +239,10 @@ function newFoods()
     else
       if DEBUG then print("********** Starting round! ****************************************") end
       -- if pause == false then
+      if(pause == false) then
         setFoods()
         callCharacters()
+      end
       -- end
     end
 
@@ -631,9 +631,9 @@ function callGreetings()
     dialogBox.x = character_one.x + 85
     greetingText = greet..", \n may I get some \n "..fname
     display.remove(dialogText) -- in case it was there before
-    if pause == false then
+    --if pause == false then
       dialogText = display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y - 15, "Helvetica", 27)
-    end
+    --end
     dialogText:setFillColor(0,0,0)
 
 
