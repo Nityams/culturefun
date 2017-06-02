@@ -341,7 +341,7 @@ local Malaysia = {
     "Fun Fact: Malaysia is located on two landmasses separated by the South China Sea?"
   }
 }
-
+--[[
 local Maldives = {
   name = "Maldives",
   flag = "Assets/Images/Flags/Maldives_Flag.png",
@@ -354,7 +354,7 @@ local Maldives = {
     "Did you know, Maldives held the first underwater meeting to raise awareness on climate change?"
   }
 }
-
+]]--
 local Mexico = {
   name = "Mexico",
   flag = "Assets/Images/Flags/Mexico_Flag.png",
@@ -860,7 +860,7 @@ table.insert(Countries, Georgia)
 table.insert(Countries, Egypt)
 table.insert(Countries, Saudi_Arabia)
 table.insert(Countries, Kazakhstan)
-table.insert(Countries, Maldives)
+--table.insert(Countries, Maldives)
 
 -- Group 7
 table.insert(Countries, Mongolia)

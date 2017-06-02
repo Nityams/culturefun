@@ -51,6 +51,7 @@ local difficulty
 local mute = false
 local pause = false
 local isFoodPlaced = false;
+local isFoodEventActivate = false;
 
 -- local muteButton
 local infoButton
@@ -85,14 +86,22 @@ local function disableMain()
   pause = true
   sounds.mute();
   pauseButton:removeEventListener("tap", getOverlayPause)
-  -- if muteButton ~=nil then
-  -- muteButton:removeEventListener("tap", audioButton) end
-  -- if muteButton ~= nil then
-  --    muteButton:removeSelf()
-  --   muteButton = nil end
 
   infoButton:removeEventListener("tap", infobutton)
   print("IS FOOD PLACED??"..tostring(isFoodPlaced))
+
+  print("IS FOOD ACTIVATED?".. tostring( isFoodEventActivate ))
+  if choices[1] ~= nil and isFoodEventActivate then
+   if DEBUG then
+     print("Nityam..Choices present..Value:"..choices[1].name)
+     print("Nityam- Attempting to remove the flag listener")
+   end
+   choices[1].image:removeEventListener("tap", checkFunction)
+   choices[2].image:removeEventListener("tap", checkFunction)
+   choices[3].image:removeEventListener("tap", checkFunction)
+   choices[4].image:removeEventListener("tap", checkFunction)
+   isFoodEventActivate = false;
+   end
 end
 
 local function enableMain()
@@ -101,6 +110,20 @@ local function enableMain()
   sounds.unMute();
   pauseButton:addEventListener("tap", getOverlayPause)
   infoButton:addEventListener("tap", infobutton)
+
+  if choices[1] ~= nil then
+    if DEBUG then
+      print("Nityam..Choices present..Value:"..choices[1].name)
+      print("Nityam- Attempting to remove the flag listener")
+     end
+    -- Might be when you call .image
+    choices[1].image:addEventListener("tap", checkFunction) -- Saying there is a Nil Value
+    choices[2].image:addEventListener("tap", checkFunction)
+    choices[3].image:addEventListener("tap", checkFunction)
+    choices[4].image:addEventListener("tap", checkFunction)
+    isFoodEventActivate = true;
+  end
+
   -- reset dialog
   -- setFoods()
   -- -- callGreetings()
@@ -116,6 +139,7 @@ function checkFunction(event)
   -- made changes here
    print("Nityam- myChoice in function ="..event.target.num)
    print("Nityam - correctAnswer = "..tostring(correctFood))
+   isFoodEventActivate = false;
    if event.target.num == correctFood then
      correctAnswer()
    else
@@ -136,6 +160,8 @@ function getOverlayPause()
   local quitButton = makeBox(sceneGroup, display.contentCenterX, display.contentCenterY+100, "Quit" )
   -- dump memories
   local function purgeObjs()
+    print("PURGED!!!!")
+    sounds.unMute();
     overlay:removeSelf()
     overlay = nil
     resumeButton:removeSelf()
@@ -153,6 +179,7 @@ function getOverlayPause()
   -- transition.resume()
   end
   local function quitTap()
+    -- musics.unPause()
     purgeObjs()
     transition.cancel()
     returnToMenu()
@@ -225,7 +252,7 @@ end
 function infobutton()
   print("!!!infobutton CLICKED!!!")
   pause = true
-    musics.pause()
+    -- musics.pause()
     disableMain()
     local overlay = display.newImageRect( sceneGroup, "Assets/Images/FoodGame/food_tutorial.png", display.contentWidth , display.contentHeight - 170)
     overlay.x = display.contentCenterX
@@ -242,7 +269,7 @@ function infobutton()
       -- returnB:removeEventListener("tap", reutnBFunction)
       returnB:removeSelf()
       resumeB = nil
-      musics.unPause()
+      -- musics.unPause()
 
     end
    function reutnBFunction()
@@ -268,11 +295,6 @@ function setBackground()
   pauseButton.x = display.contentCenterX - display.contentCenterX / 1.1
 
   pauseButton:addEventListener("tap", getOverlayPause)
-
-  -- muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
-  -- muteButton.y = pauseButton.y
-  -- muteButton.x = pauseButton.x + 70
-  -- muteButton:addEventListener("tap", audioButton)
 
   infoButton = display.newImageRect ( sceneGroup, "Assets/Images/FlagGame/Scene/11.png", 60, 60)
   infoButton.y = pauseButton.y + 70
@@ -520,6 +542,7 @@ function setFoods()
         v.image.num = i
         v.image:addEventListener("tap", checkFunction)
       end
+      isFoodEventActivate = true;
   end
 end
 ---------------------------
@@ -557,7 +580,7 @@ function correctAnswer()
   if difficulty == 1 then -- Easy
     score = score + 3
   elseif difficulty == 2 then -- Medium
-    score = score + 12
+    score = score + 2
   else -- Hard
     score = score + 1
   end
@@ -609,7 +632,7 @@ function callGreetings()
     greetingText = greet..", \n may I get some \n "..fname
     display.remove(dialogText) -- in case it was there before
     if pause == false then
-      dialogText = display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y - 10, "Helvetica", 27)
+      dialogText = display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y - 15, "Helvetica", 27)
     end
     dialogText:setFillColor(0,0,0)
 
@@ -690,26 +713,6 @@ function leaveCharacters()
     })
   choiceRemover()
 end
-
--- function audioButton(event)
---   print("!!!audioButton clicked!!! audio is now: "..tostring(mute))
---   if mute == false then
---     mute = true
---     musics.pause()
---     sounds.mute()
---     muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/mute.png", 60, 60 )
---     muteButton.y = pauseButton.y
---     muteButton.x = pauseButton.x + 70
---   else
---     mute = false
---     musics.unPause()
---     sounds.unMute()
---     muteButton = display.newImageRect( sceneGroup, "Assets/Images/FlagGame/Scene/unmute.png", 60, 60 )
---     muteButton.y = pauseButton.y
---     muteButton.x = pauseButton.x + 70
---   end
--- end
-
 
 -- show()
 function scene:show( event )
