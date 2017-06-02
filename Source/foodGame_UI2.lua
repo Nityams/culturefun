@@ -631,9 +631,9 @@ function callGreetings()
     dialogBox.x = character_one.x + 85
     greetingText = greet..", \n may I get some \n "..fname
     display.remove(dialogText) -- in case it was there before
-    --if pause == false then
+    if pause == false then
       dialogText = display.newText(sceneGroup, greetingText, dialogBox.x, dialogBox.y - 15, "Helvetica", 27)
-    --end
+    end
     dialogText:setFillColor(0,0,0)
 
 
