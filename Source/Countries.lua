@@ -232,8 +232,8 @@ local Japan = {
   greeting = "Kon'nichiwa",
   coordinates = { lat =35.69 , lon = 139.69}, -- Tokyo @ 35° 41.37'N, 139° 41.50' E
   fun_fact = {
-    "Did you know, Sumo wrestling is the national sport of Japan but Baseball is the most popular?",
-    "Fun Fact: Foods such as sushi, sashimi and tempura came from Japan!"
+    "Did you know Sumo wrestling is the national sport of Japan but baseball is the most popular?",
+    "Fun Fact: Foods such as sushi, sashimi and tempura come from Japan."
   }
 }
 
@@ -245,8 +245,8 @@ local Kazakhstan = {
   greeting = "Sälem!",
   coordinates = { lat =51.16 , lon = 71.47}, -- Astana @ 51° 9.63'N, 71° 28.22' E
   fun_fact = {
-    "Ancient Kazakhs were the first people to tame and ride horses!",
-    "Fun Fact: Snow Leopards are a national symbol of Kazakhstan! (They're very pretty)"
+    "Did you know ancient Kazakhs were the first people to tame and ride horses.",
+    "Fun Fact: Snow Leopards are a national symbol of Kazakhstan! (They're very pretty.)"
   }
 }
 
@@ -258,7 +258,7 @@ local Kenya = {
   greeting = "Jambo!",
   coordinates = { lat =-1.29, lon = 36.82}, -- Nairobi @ 1° 17.52'S, 36° 49.32' E
   fun_fact = {
-    "Nairobi is the largest city and capital of Kenya!",
+    "Did you know Nairobi is the largest city and capital of Kenya?",
     "Fun Fact: Kenya only has two seasons, a rainy and dry season!"
   }
 }
@@ -266,13 +266,13 @@ local Kenya = {
 local Laos = {
   name = "Laos",
   flag = "Assets/Images/Flags/Laos_Flag.png",
-  food = "Ping Kai",
+  food = "Ping kai",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Sabaidee!",
   coordinates = { lat =17.97, lon = 102.63}, -- Vientiane @ 17° 58.54' N, 102° 37.99' E
   fun_fact = {
-    "The Laotian New Year is celebrated for three whole days! April 13th to 15th!",
-    "Fun Fact: There is an area where there are over 300 giant jars of unknown origin! "
+    "Did you know the Laotian New Year is celebrated for three whole days? It is celebrated from April 13th to 15th.",
+    "Fun Fact: There is an area where there are over 300 giant jars of unknown origin."
   }
 }
 
@@ -285,21 +285,21 @@ local Liberia = {
   --coordinates = { lat = 34.14, lon = -118.00}, -- Monrovia @ 34° 8.66' N, 118° 0.12' W
     coordinates = { lat = 6.300774, lon = -10.797160}, -- Monrovia @ 34° 8.66' N, 118° 0.12' W
   fun_fact = {
-    "Did you know, The Liberian flag is designed after the American flag?",
-    "Fun Fact: Liberia is a bird-haven where more than 700 bird species reside!"
+    "Did you know the Liberian flag is designed after the American flag?",
+    "Fun Fact: Liberia is a bird-haven where more than 700 bird species reside."
   }
 }
 
 local Luxembourg = {
   name = "Luxembourg",
   flag = "Assets/Images/Flags/Luxembourg_Flag.png",
-  food = "F'rell Am Rèisleck",
+  food = "F'rell am rèisleck",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Salut!",
   coordinates = { lat = 49.61, lon = 6.13}, -- Luxembourg City @ 49° 36.70' N, 6° 7.92' E
   fun_fact = {
     "Fun Fact: Luxembourg was named the European Capital of Culture in 1995 and in 2007!",
-    "Did you know, forests cover more than 1/3rd of the country?"
+    "Did you know forests cover more than 1/3rd of the country?"
   }
 }
 
@@ -311,8 +311,8 @@ local Macedonia = {
   greeting = "Zdravo!",
   coordinates = { lat = 42.00, lon = 21.42}, -- Skopje@ 41° 59.84' N, 21° 25.68' E
   fun_fact = {
-    "The Millennium Cross being 66 metre, is the biggest cross in the world!",
-    "Did you know, sidewalks in Macedonia are used for parking but not walking?"
+    "Fun Fact: The Millennium Cross is 66 metre and the biggest cross in the world.",
+    "Did you know sidewalks in Macedonia are used for parking but not walking?"
   }
 }
 
@@ -337,8 +337,8 @@ local Malaysia = {
   greeting = "Selamat pagi",
   coordinates = { lat = 3.14, lon = 101.69}, -- Kuala Lumpur @ 3° 8.34' N, 101° 41.21 E
   fun_fact = {
-    "Did you know, the national animal of Malaysia is the endangered Malayan tiger? SAVE THE TIGERS!",
-    "Fun Fact: Malaysia is located on two landmasses separated by the South China Sea?"
+         "Did you know, the national animal of Malaysia is the endangered Malayan tiger? SAVE THE TIGERS!",
+    "Fun Fact: Malaysia is located on two landmasses separated by the South China Sea."
   }
 }
 --[[
@@ -363,8 +363,8 @@ local Mexico = {
   greeting = "Hola",
   coordinates = { lat = 19.43, lon = -99.13 }, -- Mexico City @ 19°26′N 99°08′W
   fun_fact = {
-    "Did you know, Mexico City is built over the ruins of an Aztec City, Tenochtitlan?",
-    "Fun Fact: The main language spoken in Mexico is Spanish!"
+    "Did you know Mexico City is built over the ruins of an Aztec City, Tenochtitlan?",
+    "Fun Fact: The main language spoken in Mexico is Spanish."
   }
 }
 
@@ -376,8 +376,8 @@ local Mongolia = {
   greeting = "Сайн уу!",
   coordinates = { lat = 47.89, lon = 106.91}, -- Ulaanbaatar @ 47° 53.18' N, 106° 54.34' E
   fun_fact = {
-    "Fun Fact: The Bogd Khan National Park is the oldest National Park in the world!",
-    "Did you know, gerbils run around as wild animals in Mongolia?"
+    "Fun Fact: The Bogd Khan National Park is the oldest National Park in the world.",
+    "Did you know gerbils run around as wild animals in Mongolia?"
   }
 }
 
@@ -402,8 +402,8 @@ local Morocco = {
   greeting = "ṣbah lkḥīr!",
   coordinates = { lat = 33.97, lon = -6.84}, -- Rabat @ 33° 58' N, 6° 51' W
   fun_fact = {
-    "Did you know, in Morocco it is impolite to say no to meat if it is offered at a meal? ",
-    "Fun fact: The most popular sport in Morocco is football(soccer)!"
+    "Did you know in Morocco it is impolite to say no to meat if it is offered at a meal? ",
+    "Fun fact: The most popular sport in Morocco is football(soccer)."
   }
 }
 
@@ -415,8 +415,8 @@ local Mozambique = {
   greeting = "Hola!",
   coordinates = { lat = -25.89, lon = 32.60}, -- Maputo @ 25° 54 S, 32° 36' E
   fun_fact = {
-    "Maputo is the largest city and the capital city of Mozambique",
-    "The official language of Mozambique is Portuguese!"
+    "Fun fact: Maputo is the largest city and the capital city of Mozambique.",
+    "Did you know the official language of Mozambique is Portuguese?"
   }
 }
 
@@ -442,8 +442,8 @@ local Netherlands = {
   greeting = "Ekamowir Omo!",
   coordinates = { lat = 52.37, lon = 4.90}, -- Amsterdam @ 52° 22' N, 4° 54' E
   fun_fact = {
-    "Amsterdam is the largest city and capital of the Netherlands!",
-    "Did you know, Amsterdam is built entirely on wooden poles?"
+    "Fun fact: Amsterdam is the largest city and capital of the Netherlands!",
+    "Did you know Amsterdam is built entirely on wooden poles?"
   }
 }
 
@@ -455,7 +455,7 @@ local New_Zealand = {
   greeting = "Hallo",
   coordinates = { lat = -41.28, lon = 174.45 },  -- Wellington @ 41°17′S 174°27′E
   fun_fact = {
-    "Did you know, Kiwi is a nickname for New Zealanders?",
+    "Did you know kiwi is a nickname for New Zealanders?",
     "Fun Fact: The Lord of the Rings movies were filmed in New Zealand!"
   }
 }
@@ -468,21 +468,22 @@ local Nigeria = {
   greeting = "Hello!",
   coordinates = { lat = 9.08, lon = 7.40}, -- Abuja @ 9° 4' N, 7° 24' E
   fun_fact = {
-    "English, is the official language of Nigeria!",
-    "Fun Fact: Nigeria is one of human existence oldest locations!"
+    "Did you know English is the official language of Nigeria?",
+    "Fun Fact: Nigeria is one of human existence oldest locations."
   }
 }
 
 local Norway = {
   name = "Norway",
   flag = "Assets/Images/Flags/Norway_Flag.png",
-  food = "Røkt Laks",
+  food = "Røkt laks",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Hallo!",
   coordinates = { lat = 59.91, lon = 10.75}, -- Oslo @ 59° 55' N, 10° 45' E
   fun_fact = {
-    "Football (soccer) is the most played sport in Norway!",
+    "Fun fact: Football (know as soccer in the United States) is the most played sport in Norway.",
     "Did you know that polar bears and reindeers can be found in Norway?"
+
   }
 }
 
@@ -494,8 +495,8 @@ local Palau = {
   greeting = "Alii!",
   coordinates = { lat = 7.50, lon = 134.62}, -- Ngerulmud @ 7° 30' N, 134° 37' E
   fun_fact = {
-    "The Milky Way Lagoon has millions of golden jellyfish that move horizontally across the lake daily! ",
-    "The Floating Garden Islands, is made up of limestone and used to be a coral reef!"
+    "Did you know the Milky Way Lagoon has millions of golden jellyfish that move horizontally across the lake daily?",
+    "Fun fact: The Floating Garden Islands is made up of limestone and used to be a coral reef!"
   }
 }
 
@@ -504,11 +505,11 @@ local Peru = {
   flag = "Assets/Images/Flags/Peru_Flag.png",
   food = "Ceviche",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
-  greeting = "Quechua !",
+  greeting = "Quechua!",
   coordinates = { lat = -12.05, lon = -77.04}, -- Lima @ 12° 3' S, 77° 3' W
   fun_fact = {
-    "Lake Titicaca in Southern Peru is South America’s largest lake!",
-    "Did you know, Peru is home to the most bird species in the world?"
+    "Fun fact: Lake Titicaca in Southern Peru is South America’s largest lake.",
+    "Did you know Peru is home to the most bird species in the world?"
   }
 }
 
@@ -520,21 +521,21 @@ local Philippines = {
   greeting = "Kumusta ka!",
   coordinates = { lat = 14.60, lon = 120.98}, -- Manila @ 14° 36' N, 120° 59' E
   fun_fact = {
-    "The national symbol of the Philippines is the Philippine eagle which are the largest eagles in the world!",
-    "Fun Fact: The Philippines are the world’s leading producer of coconuts!"
+    "Did you know the national symbol of the Philippines is the Philippine eagle which are the largest eagles in the world?",
+    "Fun Fact: The Philippines is the world’s leading producer of coconuts."
   }
 }
 
 local Portugal = {
   name = "Portugal",
   flag = "Assets/Images/Flags/Portugal_Flag.png",
-  food = "Caldo Verde",
+  food = "Caldo verde",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Boa tarde!",
   coordinates = { lat = 38.72, lon = -9.14}, -- Lisbon
   fun_fact = {
-    "Did you know, the oldest bookstore in the world is in Portugal’s capital, Lisbon?",
-    "Portugal's only neighbor is Spain which is to the East! "
+    "Did you know the oldest bookstore in the world is in Portugal’s capital, Lisbon?",
+    "Fun fact: Portugal's only neighbor is Spain which is to the East."
   }
 }
 
@@ -546,8 +547,8 @@ local Russia = {
   greeting = "Zdravstvuyte",
   coordinates = { lat = 55.75, lon = 37.62 },  -- Moscow @ 55°45′N 37°37′E
   fun_fact = {
-    "Did you know, in Russia it is believed to be a bad omen to shake hands over a doorway?",
-    "Fun Fact: the world’s first satellite, Sputnik, was launched by the Soviet Union (now Russia)!"
+    "Did you know in Russia it is believed to be a bad omen to shake hands over a doorway?",
+    "Fun Fact: The world’s first satellite, Sputnik, was launched by the Soviet Union (now Russia)."
   }
 }
 
@@ -559,8 +560,8 @@ local Saudi_Arabia = {
   greeting = "Marhaba!",
   coordinates = { lat = 24.71, lon = 46.68}, -- Riyadh
   fun_fact = {
-    "Fun Fact: Saudi Arabia is the birthplace of Islam and home to the Mecca and Medina",
-    "Did you know, Saudi Arabia is the largest country in the world without a river?"
+    "Fun Fact: Saudi Arabia is the birthplace of Islam and home to the Mecca and Medina.",
+    "Did you know Saudi Arabia is the largest country in the world without a river?"
   }
 }
 
@@ -572,21 +573,21 @@ local Serbia = {
   greeting = "Zdravo!",
   coordinates = { lat = 44.79, lon = 20.45}, -- Belgrade
   fun_fact = {
-    "Fun Fact: the name “Serbia” is Greek for “Land of the Serbs”",
-    "Did you know, famous scientists like Nikola Tesla were from Serbia?"
+    "Fun Fact: The name “Serbia” is Greek for “Land of the Serbs”.",
+    "Did you know famous scientists like Nikola Tesla were from Serbia?"
   }
 }
 
 local Singapore = {
   name = "Singapore",
   flag = "Assets/Images/Flags/Singapore_Flag.png",
-  food = "Bak Kut Teh",
+  food = "Bak kut teh",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "Ni hao!",
   coordinates = { lat = 1.35, lon = 103.82},
   fun_fact = {
-    "Singapore is one of three surviving city-states in the world!",
-    "Fun Fact: The National University of Singapore has the world’s first ‘Hug me’ Coca-Cola machine that gives you Cola for every hug you give it!"
+        "Did you know Singapore is one of three surviving city-states in the world?",
+    "Fun Fact: The National University of Singapore has the world’s first ‘Hug me’ Coca-Cola machine that gives you Cola for every hug you give it."
   }
 }
 
@@ -598,8 +599,8 @@ local Slovakia = {
   greeting = "Ahoj!",
   coordinates = { lat = 48.15, lon = 17.11}, -- Bratislava
   fun_fact = {
-    "Fun Fact: there are more than 6000 caves in Slovakia!",
-    "Did you know, Slovakia’s capital Bratislava borders two other countries; Austria and Hungary?"
+    "Fun Fact: There are more than 6000 caves in Slovakia.",
+    "Did you know Slovakia’s capital Bratislava borders two other countries: Austria and Hungary?"
   }
 }
 
@@ -611,8 +612,8 @@ local Slovenia = {
   greeting = "Zdravo!",
   coordinates = { lat = 46.06, lon = 14.50}, -- Ljubljana
   fun_fact = {
-    "Fun Fact: The oldest vine in the world is in Maribor, Slovenia!",
-    "The most famous wedding place in Slovenia is the island in Lake Bled, where the groom must carry the bride up 99 steps and the bride must remain quiet to ensure a happy and long marriage."
+    "Fun Fact: The oldest vine in the world is in Maribor, Slovenia.",
+    "Did you know the most famous wedding place in Slovenia is the island in Lake Bled? The groom must carry the bride up 99 steps and the bride must remain quiet to ensure a happy and long marriage."
   }
 }
 
@@ -624,8 +625,8 @@ local South_Africa= {
   greeting = "Hello",
   coordinates = { lat = -26.44, lon = 28.06 },  -- Johannesburg @ 26°12′16″S 28°2′44″E
   fun_fact = {
-    "Fun Fact: South Africa has three capital cities; Cape Town, Bloemfontein and Pretoria!",
-    "South Africa is the only country in the world to have hosted the Soccer, Cricket and Rugby World Cup!"
+    "Fun Fact: South Africa has three capital cities; Cape Town, Bloemfontein, and Pretoria!",
+    "Did you know South Africa is the only country in the world to have hosted the Soccer, Cricket,and Rugby World Cup?"
   }
 }
 
@@ -638,7 +639,7 @@ local Korea = {
   coordinates = {lat = 37.57, lon = 126.98}, --Seoul
   fun_fact = {
     "During the university entrance exam, family and friends of high school students give them sticky candy for good fortune!",
-    "Fun Fact: Koreans are pretty good at video games..."
+    "Fun Fact: In Korea, most restaurants, including McDonald's, will deliver food straight to your home."
   }
 }
 
@@ -650,8 +651,8 @@ local Spain = {
   greeting = "Hola",
   coordinates = { lat = 40.43, lon = -3.70 },  -- Madrid @ 40°26′N 3°42′W
   fun_fact = {
-    "Did you know, the world’s oldest restaurant, Botin Restaurant, is located in Madrid Spain?",
-    "Madrid is the largest city and capital of Spain!"
+    "Did you know the world’s oldest restaurant, Botin Restaurant, is located in Madrid Spain?",
+    "Fun fact: Madrid is the largest city and capital of Spain."
   }
 }
 
@@ -669,13 +670,13 @@ local Spain = {
 local Switzerland = {
   name = "Switzerland",
   flag = "Assets/Images/Flags/Switzerland_Flag.png",
-  food = "Cheese Fondue",
+  food = "Cheese fondue",
   greetings_food = "Assets/Images/FoodGame/Dialogs/swiss_dialog.png",
   greeting = "Bonjour",
   coordinates = { lat = 46.95, lon = 7.45},  -- Bern @ 46°57′N 7°27′E
   fun_fact = {
-    "There are taxes for owning a dog in Switzerland!",
-    "Did you know, Switzerland is one of only two countries to have a square flag?"
+    "Fun fact: There are taxes for owning a dog in Switzerland.",
+    "Did you know Switzerland is one of only two countries to have a square flag?"
   }
 }
 
@@ -687,8 +688,8 @@ local Syria = {
   greeting = "Ahlan!",
   coordinates = { lat = 33.51, lon = 36.27}, -- Damascus
   fun_fact = {
-    "Did you know, the largest lake in Syria, Lake Assad, is man made?",
-    "Fun Fact: Syria’s capital, Damascus, is called the Jasmine City!"
+    "Did you know the largest lake in Syria, Lake Assad, is man-made?",
+    "Fun Fact: Syria’s capital, Damascus, is called the Jasmine City."
   }
 }
 
@@ -700,21 +701,21 @@ local Taiwan = {
   greeting = "Ni hao!",
   coordinates = { lat = 25.03, lon = 121.56}, -- Taipei
   fun_fact = {
-    "Fun Fact: In Taiwan, the teachers switch classes, not the students!",
-    "Did you know, it takes around 8 hours to drive around the whole island?"
+    "Fun Fact: In Taiwan the teachers switch classes, not the students.",
+    "Did you know it takes around eight hours to drive around the whole island?"
   }
 }
 
 local Thailand = {
   name = "Thailand",
   flag = "Assets/Images/Flags/Thailand_Flag.png",
-  food = "Som Tum",
+  food = "Som tum",
   greetings_food = "Assets/Images/FoodGame/Dialogs/dialogBox_white.png",
   greeting = "S̄wạs̄dī",
   coordinates = {lat = 13.75, lon = 100.50}, --Bangkok
   fun_fact = {
-    "Fun Fact: Siamese cats originated in Thailand!",
-    "Elephants are Thailand’s national symbol!"
+    "Fun Fact: Siamese cats originated in Thailand.",
+    "Did you know elephants are Thailand’s national symbol?"
   }
 }
 
@@ -726,34 +727,34 @@ local Ukraine = {
   greeting = "Dobryy den'!",
   coordinates = { lat = 50.45, lon = 30.52}, -- Kiev
   fun_fact = {
-    "The official language is Ukrainian but most people are bilingual and speak Russian!",
-    "Ukraine has the deepest metro station in the world!"
+    "Did you know the official language is Ukrainian but most people are bilingual and speak Russian too?",
+    "Fun fact: Ukraine has the deepest metro station in the world!"
   }
 }
 
 local UK = {
   name = "United Kingdom",
   flag = "Assets/Images/Flags/United_Kingdom_Flag.png",
-  food = "Fish and Chips",
+  food = "Fish and chips",
   greetings_food = "Assets/Images/FoodGame/Dialogs/british_dialog.png",
   greeting = "Hello",
   coordinates = { lat = 51.62, lon = -0.12 },  -- London @ 51°30′N 0°7′W
   fun_fact = {
     "Fun Fact: In the UK, if you reach 100 years old, you will get a personalized card from the Queen!",
-    "London’s subway, the “Tube” is one of the oldest in the world!"
+    "Did you know London’s subway, the “Tube,” is one of the oldest in the world?"
   }
 }
 
 local USA = {
   name = "U.S.A",
   flag = "Assets/Images/Flags/United_States_Flag.png",
-  food = "Apple Pie",
+  food = "Apple pie",
   greetings_food = "Assets/Images/FoodGame/Dialogs/american_dialog.png",
   greeting = "Hello",
   coordinates = { lat = 38.88, lon = -77.02 },  -- Washington, D.C. @ 38°53′N 77°01′W
   fun_fact = {
-    "The first man to walk on the moon was the American Neil Armstrong.",
-    "The U.S. has the longest border in the world with Canada but the border is not a straight line!"
+    "Did you know the first man to walk on the moon was the American, Neil Armstrong?",
+    "Fun fact: The U.S. has the longest border in the world with Canada, but the border is not a straight line!"
   }
 }
 
@@ -765,8 +766,8 @@ local Uruguay = {
   greeting = "Hola!",
   coordinates = { lat = -34.90, lon = -56.16}, -- Montevideo
   fun_fact = {
-    "Fun Fact: There are three cows for every person in the country!",
-    "Did you know, there are more sheep and humans in Uruguay?"
+    "Fun Fact: There are three cows for every person in Uruguay",
+    "Did you know there are more sheep than humans in Uruguay?"
   }
 }
 
@@ -778,8 +779,8 @@ local Vatican = {
   greeting = "Ciao!",
   coordinates = { lat = 41.90, lon = 12.45},
   fun_fact = {
-    "Vatican City is the smallest country in the world and is one of three surviving city-states!",
-    "Did you know, Vatican City is the home of the Pope, the religious leader of the Catholic world!"
+    "Fun fact: Vatican City is the smallest country in the world and is one of three surviving city-states.",
+    "Did you know Vatican City is the home of the Pope, the religious leader of the Catholic world?"
   }
 }
 
@@ -791,8 +792,8 @@ local Vietnam = {
   greeting = "Xin chào",
   coordinates = { lat = 21.03, lon = 105.85 },  -- Hanoi @ 21°2′N 105°51′E
   fun_fact = {
-    "Did you know the Tortoise is a lucky symbol in Vietnam?",
-    "Fun Fact: Vietnam is home to the world’s largest cave, the Son Doong!"
+    "Did you know the tortoise is a lucky symbol in Vietnam?",
+    "Fun Fact: Vietnam is home to the world’s largest cave, the Son Doong."
   }
 }
 
@@ -804,8 +805,8 @@ local Zimbabwe = {
   greeting = "Hello!",
   coordinates = { lat = -17.83, lon = 31.03}, -- Harare
   fun_fact = {
-    "The largest Waterfall in the world, Victoria Falls, is in Zimbabwe!",
-    "Fun Fact: Zimbabwe means 'Great House of Stones'"
+    "Did you know the largest waterfall in the world, Victoria Falls, is in Zimbabwe!",
+    "Fun Fact: Zimbabwe means 'Great House of Stones'."
   }
 }
 --Group 1
