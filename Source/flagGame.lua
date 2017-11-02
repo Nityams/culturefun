@@ -78,7 +78,7 @@ local countryNames = {
 	"Luxembourg",
 	"Macedonia",
 	"Maldives",
-	"Motenegro",
+	"Montenegro",
 	"Mozambique",
 	"Nauru",
 	"Nigeria",
